@@ -41,6 +41,21 @@ def normalize_bus_code(value: str) -> str:
     return code
 
 
+def classify_bus_role(bus_name: str, bus_name_legacy: str) -> str:
+    """Marca terminales virtuales de generador.
+
+    En `MODOM` los bornes de baja tensión de los generadores aparecen como
+    barras `TERMINAL ... VIRTUAL`. Su `v_nom_kv` real es la tensión nominal del
+    generador, que el libro no trae explícitamente. Etiquetarlos permite separar
+    una ausencia esperada (terminal de generador) de un hueco genuinamente
+    desconocido, sin inventar tensiones.
+    """
+    text = " ".join(part for part in [clean(bus_name), clean(bus_name_legacy)] if part).upper()
+    if "TERMINAL" in text or "VIRTUAL" in text:
+        return "generator_terminal"
+    return "network"
+
+
 def infer_bus_voltage(
     bus_id: str,
     bus_name: str,
@@ -106,10 +121,32 @@ def extract_transformer_neighbors(reader: XlsmReader) -> dict[str, set[str]]:
     return neighbors
 
 
+def extract_line_neighbors(reader: XlsmReader) -> dict[str, set[str]]:
+    """Vecinos conectados por línea (`L...`).
+
+    Una línea no cambia el nivel de tensión: ambos extremos comparten `v_nom`.
+    Esto permite resolver tensiones por consenso eléctrico real, no por heurística.
+    """
+    matrix = reader.read_sheet_matrix("e_datred")
+    neighbors: dict[str, set[str]] = {}
+    for row in matrix[3:]:
+        if len(row) < 5:
+            continue
+        from_bus = normalize_bus_code(row[0])
+        to_bus = normalize_bus_code(row[2])
+        circuit_id = clean(row[4])
+        if not from_bus or not to_bus or not circuit_id.startswith("L"):
+            continue
+        neighbors.setdefault(from_bus, set()).add(to_bus)
+        neighbors.setdefault(to_bus, set()).add(from_bus)
+    return neighbors
+
+
 def build_buses(reader: XlsmReader) -> dict[str, object]:
     mapping_rows = extract_mapping_buses(reader)
     red_counts = extract_e_datred_bus_counts(reader)
     transformer_neighbors = extract_transformer_neighbors(reader)
+    line_neighbors = extract_line_neighbors(reader)
 
     buses_by_id: dict[str, dict[str, object]] = {}
     for row in mapping_rows:
@@ -154,6 +191,27 @@ def build_buses(reader: XlsmReader) -> dict[str, object]:
         item["v_nom_kv"] = v_nom_kv if v_nom_kv is not None else ""
         item["v_nom_inference_method"] = method
         item["v_nom_confidence"] = confidence
+        item["bus_role"] = classify_bus_role(
+            str(item["bus_name"]), str(item["bus_name_legacy"])
+        )
+
+    line_inferred_count = 0
+    for item in buses_by_id.values():
+        if item["v_nom_kv"] != "":
+            continue
+        bus_id = str(item["bus_id_modom"])
+        neighbor_values = sorted(
+            {
+                buses_by_id[other]["v_nom_kv"]
+                for other in line_neighbors.get(bus_id, set())
+                if other in buses_by_id and buses_by_id[other]["v_nom_kv"] != ""
+            }
+        )
+        if len(neighbor_values) == 1:
+            item["v_nom_kv"] = neighbor_values[0]
+            item["v_nom_inference_method"] = "topology_line_consensus"
+            item["v_nom_confidence"] = "medium"
+            line_inferred_count += 1
 
     topology_inferred_count = 0
     for item in buses_by_id.values():
@@ -186,6 +244,7 @@ def build_buses(reader: XlsmReader) -> dict[str, object]:
                     "bus_id_legacy": item["bus_id_legacy"],
                     "bus_name_legacy": item["bus_name_legacy"],
                     "bus_origin": item["bus_origin"],
+                    "bus_role": item["bus_role"],
                 }
             )
 
@@ -209,7 +268,14 @@ def build_buses(reader: XlsmReader) -> dict[str, object]:
             "v_nom_name_explicit_count": int(voltage_method_counts.get("name_explicit", 0)),
             "v_nom_suffix_E_default_count": int(voltage_method_counts.get("suffix_E_default", 0)),
             "v_nom_suffix_F_default_count": int(voltage_method_counts.get("suffix_F_default", 0)),
+            "v_nom_topology_line_consensus_count": line_inferred_count,
             "v_nom_topology_transformer_consensus_count": topology_inferred_count,
+            "unresolved_generator_terminal_count": sum(
+                1 for row in unresolved_voltage_rows if row["bus_role"] == "generator_terminal"
+            ),
+            "unresolved_network_count": sum(
+                1 for row in unresolved_voltage_rows if row["bus_role"] == "network"
+            ),
         },
         "consistency_flags": {
             "all_buses_have_v_nom_kv": len(unresolved_voltage_rows) == 0,
@@ -244,6 +310,7 @@ def export_buses(xlsm_path: Path, outdir: Path) -> dict[str, object]:
             "v_nom_kv",
             "v_nom_inference_method",
             "v_nom_confidence",
+            "bus_role",
             "source_sheet_primary",
             "bus_origin",
         ],

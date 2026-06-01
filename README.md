@@ -32,6 +32,7 @@ Implemented and working blocks:
 - canonical `renewable_profiles`
 - first `copperplate` dispatch
 - first `PyPSA v1` export of `lines` and `transformers`
+- first real `pypsa.Network()` builder with a network-constrained linear LOPF
 - regression tests based on synthetic workbook fixtures
 
 Current engineering status:
@@ -117,7 +118,7 @@ The current intended execution order is:
    - run a first reproducible `copperplate` base dispatch
 5. `build_pypsa`
    - export structured network components
-   - later assemble a full PyPSA network
+   - assemble and solve a real `pypsa.Network()` (network-constrained linear LOPF)
 6. `visualize`
    - future dashboard and map layers built from canonical data and study outputs
 
@@ -215,8 +216,10 @@ Current validated real-case indicators include:
 As of the current repository state:
 
 - buses: `717`
-- buses with `v_nom_kv`: `599`
-- buses without `v_nom_kv`: `118`
+- buses with `v_nom_kv`: `603`
+- buses without `v_nom_kv`: `114`
+  - `50` classified as `generator_terminal` (LV generator bus, `v_nom` intentionally absent in `MODOM`)
+  - `64` still classified as `network` (genuine residual)
 - branches: `846`
 - branches included in `PyPSA v1`: `753`
 - branches excluded in `PyPSA v1`: `93`
@@ -227,21 +230,42 @@ As of the current repository state:
 Current branch voltage audit:
 
 - `lines_v1`
-  - `same_voltage_ok = 577`
-  - `line_voltage_mismatch = 9`
-  - `missing_bus_v_nom = 6`
+  - `same_voltage_ok = 583`
+  - `line_voltage_mismatch = 4`
+  - `missing_bus_v_nom = 5`
 - `transformers_v1`
-  - `different_voltage_ok = 45`
-  - `same_voltage_transformer_suspect = 5`
-  - `missing_bus_v_nom = 111`
+  - `different_voltage_ok = 48`
+  - `same_voltage_transformer_suspect = 1`
+  - `missing_bus_v_nom = 112`
 
-Current base dispatch result:
+Current base dispatch result (copperplate, single snapshot, no network):
 
 - snapshot: `h_01`
 - total load: `3288.904 MW`
 - dispatched total: `3288.904 MW`
 - unserved load: `0 MW`
 - spare available capacity: `1706.115 MW`
+
+## PyPSA network v1 result (network-constrained linear LOPF)
+
+The first real `pypsa.Network()` (24 snapshots, 717 buses, 753 branches, 140
+generators) solves to optimality and, unlike the copperplate, exposes network
+congestion:
+
+- total load: `75421.329 MWh`
+- served: `74392.481 MWh`
+- unserved (load shedding from congestion): `1028.847 MWh` (`~1.4%`)
+- peak load: `3553.323 MW`
+- lines at `>=90%` loading at their peak snapshot: `22`
+- max line loading: `1.0` (binding thermal limits)
+
+Key modeling choices for v1 are documented in
+[`docs/pypsa_network.md`](./docs/pypsa_network.md). In short: all buses use
+`v_nom = 1.0` (per-unit common base, since MODOM impedances are already per-unit),
+lines and transformers are added as series `Line` components, and a costly
+`unserved` generator per demand bus guarantees feasibility and yields a per-node
+load-shedding KPI. The unserved energy reflects provisional impedance/thermal
+inputs and is an analytical signal, not a final operational conclusion.
 
 ## What this repository is for in local continuation
 
@@ -331,6 +355,16 @@ python3 scripts/validate_dispatch_inputs.py
 python3 scripts/run_dispatch_basecase.py
 ```
 
+To build and solve the real PyPSA network (requires the `pypsa` extra:
+`pip install -e .[pypsa]`):
+
+```bash
+python3 scripts/build_pypsa_network.py
+```
+
+This writes nodal generation, line flows, line loadings, nodal prices, and a
+summary to `results/pypsa_basecase/`.
+
 ### 4. Run tests locally
 
 ```bash
@@ -344,7 +378,8 @@ The canonical layer is already structured in the right direction for local visua
 Planned usage:
 
 - `buses`
-  - nodes on a network map
+  - nodes on a network map (real lat/lon available via the OC SMC scraping flow,
+    see [`docs/oc_smc_coordinates.md`](./docs/oc_smc_coordinates.md))
   - nominal voltage coloring
   - bus-level aggregation of study results
 - `lines_v1` and `transformers_v1`
@@ -378,10 +413,10 @@ Main open issues:
 
 1. one generator still lacks effective cost treatment
 2. branch impedance and unit interpretation are still not final
-3. `118` buses still lack `v_nom_kv`
-4. `9` line voltage mismatches still need classification
-5. `111` transformers still lack complete voltage audit because one or both buses remain unresolved
-6. no final `network = pypsa.Network()` builder exists yet
+3. `114` buses still lack `v_nom_kv` (`50` are `generator_terminal` LV buses whose nominal voltage is intentionally absent in `MODOM`; `64` are residual `network` buses)
+4. `4` line voltage mismatches still need classification
+5. `112` transformers still lack complete voltage audit because one or both buses remain unresolved
+6. the PyPSA network is a linear LOPF with provisional per-unit impedances; transformer tap semantics and a final impedance-unit confirmation are still pending, and there is no AC power flow yet
 7. no dashboard or map module exists yet inside the repository
 
 ## Testing
@@ -417,12 +452,12 @@ Even in this mode, never commit:
 
 Recommended near-term local continuation order:
 
-1. classify the `9` `line_voltage_mismatch` cases
+1. ~~classify the `9` `line_voltage_mismatch` cases~~ (reduced to `4` via line-voltage consensus)
 2. resolve more pending `v_nom_kv` values
-3. finish branch electrical interpretation
-4. build the first actual PyPSA network constructor
-5. export study-ready result tables
-6. add dashboard layer
+3. finish branch electrical interpretation (transformer tap semantics, impedance-unit confirmation)
+4. ~~build the first actual PyPSA network constructor~~ **done** — see [`docs/pypsa_network.md`](./docs/pypsa_network.md)
+5. export study-ready result tables (PyPSA results now written to `results/pypsa_basecase/`)
+6. add dashboard layer (Plotly Dash, consuming `results/pypsa_basecase/`)
 7. add map layer
 
 ## Documentation
@@ -438,6 +473,8 @@ See [`docs/`](./docs) for technical details on:
 - load time series
 - generator time series
 - PyPSA branch component export
+- PyPSA network v1 (linear LOPF builder)
+- OC SMC coordinate scraping flow (geographic map source)
 - first real MODOM mapping assumptions
 
 ## Bottom line

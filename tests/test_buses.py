@@ -4,7 +4,12 @@ import json
 from pathlib import Path
 from zipfile import ZipFile
 
-from modom_pypsa.buses import export_buses, infer_bus_voltage, normalize_bus_code
+from modom_pypsa.buses import (
+    classify_bus_role,
+    export_buses,
+    infer_bus_voltage,
+    normalize_bus_code,
+)
 
 
 def _worksheet_xml(rows: list[list[str]]) -> str:
@@ -115,6 +120,73 @@ def test_infer_bus_voltage() -> None:
     assert infer_bus_voltage("WNEW2", "BUS NEW 2", "") == (None, "unresolved", "low")
 
 
+def test_classify_bus_role() -> None:
+    assert classify_bus_role("TERMINAL LOS MINA 5", "TER LOS MINA 5") == "generator_terminal"
+    assert classify_bus_role("TER PALAMARA 1 VIRTUAL", "") == "generator_terminal"
+    assert classify_bus_role("PUNTA CATALINA 138 KV", "") == "network"
+
+
+def _build_line_consensus_workbook(path: Path) -> None:
+    """Barra desconocida unida por línea a una barra de 138 kV: debe heredar 138."""
+    sheet_names = ["MAPEO TODAS LAS BARRAS", "e_datred"]
+    rows_by_sheet = {
+        "MAPEO TODAS LAS BARRAS": [
+            ["ORG", "", "", "", ""],
+            ["MAPEO", "", "", "", ""],
+            ["CODIGO VIEJO", "NOMBRE VIEJO", "CODIGO NUEVO", "NOMBRE NUEVO", "CAMBIO EL CODIGO?"],
+            ["WOLDE", "BUS OLD E", "WNEWE", "BUS NEW E 138 KV", "NO"],
+            ["WOLDX", "BUS OLD X", "WNEWX", "BUS SIN TENSION", "NO"],
+        ],
+        "e_datred": [
+            ["22", "12", "12"],
+            ["TABLE", "", "DATRED"],
+            ["", "", "", "", "", "", "r", "x", "flmx", "status", "csl"],
+            ["WNEWE", ".", "WNEWX", ".", "L1", "", "0", "0.1", "10", "1", "1"],
+        ],
+    }
+    workbook_xml = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
+        'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+        "<sheets>"
+        + "".join(
+            f'<sheet name="{name}" sheetId="{idx}" r:id="rId{idx}"/>'
+            for idx, name in enumerate(sheet_names, start=1)
+        )
+        + "</sheets></workbook>"
+    )
+    rels_xml = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        + "".join(
+            f'<Relationship Id="rId{idx}" '
+            'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" '
+            f'Target="worksheets/sheet{idx}.xml"/>'
+            for idx in range(1, len(sheet_names) + 1)
+        )
+        + "</Relationships>"
+    )
+    with ZipFile(path, "w") as zf:
+        zf.writestr("xl/workbook.xml", workbook_xml)
+        zf.writestr("xl/_rels/workbook.xml.rels", rels_xml)
+        for idx, name in enumerate(sheet_names, start=1):
+            zf.writestr(f"xl/worksheets/sheet{idx}.xml", _worksheet_xml(rows_by_sheet[name]))
+
+
+def test_line_consensus_resolves_voltage(tmp_path: Path) -> None:
+    xlsm_path = tmp_path / "line.xlsm"
+    outdir = tmp_path / "out"
+    _build_line_consensus_workbook(xlsm_path)
+
+    payload = export_buses(xlsm_path, outdir)
+
+    resolved = next(row for row in payload["buses"] if row["bus_id_modom"] == "WNEWX")
+    assert resolved["v_nom_kv"] == 138.0
+    assert resolved["v_nom_inference_method"] == "topology_line_consensus"
+    assert resolved["v_nom_confidence"] == "medium"
+    assert payload["summary"]["counts"]["v_nom_topology_line_consensus_count"] == 1
+
+
 def test_export_buses(tmp_path: Path) -> None:
     xlsm_path = tmp_path / "sample.xlsm"
     outdir = tmp_path / "out"
@@ -131,6 +203,7 @@ def test_export_buses(tmp_path: Path) -> None:
 
     extra = next(row for row in payload["buses"] if row["bus_id_modom"] == "WEXTRA1")
     assert extra["bus_origin"] == "e_datred_only"
+    assert extra["bus_role"] == "network"
     assert extra["e_datred_endpoint_count"] == 2
     assert extra["v_nom_kv"] == ""
     assert extra["v_nom_inference_method"] == "unresolved"

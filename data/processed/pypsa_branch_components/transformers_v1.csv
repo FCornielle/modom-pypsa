@@ -10,8 +10,8 @@ WBCARF__WBARCE__T1,WBCARF,WBARCE,69.0,138.0,different_voltage_ok,0.0125,0.239674
 WBCHIE__WBCHIF__T1,WBCHIE,WBCHIF,138.0,69.0,different_voltage_ok,0.00963281,0.125882,96.0,,False,,WBCHIE__WBCHIF__T1,transformer,258,standard_branch
 WBDERF__WBDERK__T1,WBDERF,WBDERK,69.0,13.8,different_voltage_ok,0.125,1.99609,4.0,,False,,WBDERF__WBDERK__T1,transformer,462,standard_branch
 WBON2E__WBON2F__T1,WBON2E,WBON2F,138.0,69.0,different_voltage_ok,0.00274,0.07609354,138.0,1.1,True,,WBON2E__WBON2F__T1,transformer,334,transformer_with_tap_ratio
-WBON3C__WBON3D__T1,WBON3C,WBON3D,138.0,138.0,same_voltage_transformer_suspect,0.00016667,0.05671975,300.0,,False,,WBON3C__WBON3D__T1,transformer,779,standard_branch
-WBON3C__WBON3E__T1,WBON3C,WBON3E,138.0,138.0,same_voltage_transformer_suspect,0.001208,0.05998784,250.0,,False,,WBON3C__WBON3E__T1,transformer,782,standard_branch
+WBON3C__WBON3D__T1,WBON3C,WBON3D,,345.0,missing_bus_v_nom,0.00016667,0.05671975,300.0,,False,,WBON3C__WBON3D__T1,transformer,779,standard_branch
+WBON3C__WBON3E__T1,WBON3C,WBON3E,,138.0,missing_bus_v_nom,0.001208,0.05998784,250.0,,False,,WBON3C__WBON3E__T1,transformer,782,standard_branch
 WCANAE__WCANAF__T2,WCANAE,WCANAF,138.0,69.0,different_voltage_ok,0.00357143,0.07856172,140.0,,False,,WCANAE__WCANAF__T2,transformer,418,standard_branch
 WCANAE__WXCANF__T1,WCANAE,WXCANF,138.0,69.0,different_voltage_ok,0.00068,0.03749384,200.0,,False,,WCANAE__WXCANF__T1,transformer,417,standard_branch
 WCC21E__WCCA2F__T1,WCC21E,WCCA2F,138.0,69.0,different_voltage_ok,0.00666667,0.1202153,75.0,,False,,WCC21E__WCCA2F__T1,transformer,601,standard_branch
@@ -37,8 +37,8 @@ WGIRAK__WGIRAE__T1,WGIRAK,WGIRAE,,138.0,missing_bus_v_nom,0.01333334,0.282886,15
 WGNLLE__WGNLLK__T1,WGNLLE,WGNLLK,138.0,,missing_bus_v_nom,0.00793651,0.1815727,63.0,,False,,WGNLLE__WGNLLK__T1,transformer,829,standard_branch
 WGPALF__WTPA1K__T1,WGPALF,WTPA1K,69.0,,missing_bus_v_nom,0.002975207,0.061503833,150.0,,False,,WGPALF__WTPA1K__T1,transformer,109,standard_branch
 WGUAYE__WPFMSK__T1,WGUAYE,WPFMSK,138.0,20.0,different_voltage_ok,0.01,0.179722,50.0,,False,,WGUAYE__WPFMSK__T1,transformer,403,standard_branch
-WGUERD__WGUERE__T1,WGUERD,WGUERE,138.0,138.0,same_voltage_transformer_suspect,5.866e-05,0.02999994,450.0,,False,,WGUERD__WGUERE__T1,transformer,804,standard_branch
-WGUERD__WGUERE__T2,WGUERD,WGUERE,138.0,138.0,same_voltage_transformer_suspect,5.866e-05,0.02999994,450.0,,False,,WGUERD__WGUERE__T2,transformer,805,standard_branch
+WGUERD__WGUERE__T1,WGUERD,WGUERE,345.0,138.0,different_voltage_ok,5.866e-05,0.02999994,450.0,,False,,WGUERD__WGUERE__T1,transformer,804,standard_branch
+WGUERD__WGUERE__T2,WGUERD,WGUERE,345.0,138.0,different_voltage_ok,5.866e-05,0.02999994,450.0,,False,,WGUERD__WGUERE__T2,transformer,805,standard_branch
 WHAINE__WHAINF__T1,WHAINE,WHAINF,138.0,69.0,different_voltage_ok,0.00098,0.1057097,126.0,,False,,WHAINE__WHAINF__T1,transformer,227,standard_branch
 WHAINE__WTHAGK__T1,WHAINE,WTHAGK,138.0,,missing_bus_v_nom,0.0013,0.05330002,150.0,,False,,WHAINE__WTHAGK__T1,transformer,228,standard_branch
 WHATIF__WHAT2K__T1,WHATIF,WHAT2K,69.0,,missing_bus_v_nom,0.07959183,1.208095,14.0,,False,,WHATIF__WHAT2K__T1,transformer,448,standard_branch
@@ -106,7 +106,7 @@ WPLM1K__WPLM1E__T1,WPLM1K,WPLM1E,13.8,138.0,different_voltage_ok,0.01041,0.27007
 WPLM2K__WPLM1E__T1,WPLM2K,WPLM1E,13.8,138.0,different_voltage_ok,0.01041667,0.27007,48.0,,False,,WPLM2K__WPLM1E__T1,transformer,670,standard_branch
 WPP22E__WPPL2F__T1,WPP22E,WPPL2F,138.0,69.0,different_voltage_ok,0.00098,0.08578,140.0,1.03,True,,WPP22E__WPPL2F__T1,transformer,501,transformer_with_tap_ratio
 WPPLAF__WTCE1K__T1,WPPLAF,WTCE1K,69.0,,missing_bus_v_nom,0.0145,0.4870569,22.0,,False,,WPPLAF__WTCE1K__T1,transformer,407,standard_branch
-WQU11D__WQU12K__T1,WQU11D,WQU12K,230.0,,missing_bus_v_nom,0.001394,0.062931,286.0,,False,,WQU11D__WQU12K__T1,transformer,787,standard_branch
+WQU11D__WQU12K__T1,WQU11D,WQU12K,230.0,13.8,different_voltage_ok,0.001394,0.062931,286.0,,False,,WQU11D__WQU12K__T1,transformer,787,standard_branch
 WQU21D__WQU21K__T1,WQU21D,WQU21K,230.0,,missing_bus_v_nom,0.001394,0.062931,286.0,,False,,WQU21D__WQU21K__T1,transformer,786,standard_branch
 WRBLAF__WRBL1K__T1,WRBLAF,WRBL1K,69.0,,missing_bus_v_nom,0.07090133,0.6628857,15.0,,False,,WRBLAF__WRBL1K__T1,transformer,471,standard_branch
 WRBLAF__WRBL2K__T1,WRBLAF,WRBL2K,69.0,,missing_bus_v_nom,0.07090133,0.6628857,15.0,,False,,WRBLAF__WRBL2K__T1,transformer,472,standard_branch

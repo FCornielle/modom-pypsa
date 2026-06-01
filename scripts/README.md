@@ -19,3 +19,8 @@ Script ya implementado:
 - `build_generators.py`
 - `build_generator_time_series.py`
 - `build_pypsa_branch_components.py`
+- `build_pypsa_network.py` — arma y resuelve la red `pypsa.Network()` (LOPF lineal)
+- `scrape_oc_smc.py` — extrae coordenadas de los puntos SMC del mapa Power BI del OC
+  (Playwright). Flujo re-ejecutable; ver [`docs/oc_smc_coordinates.md`](../docs/oc_smc_coordinates.md)
+- `join_smc_coordinates.py` — cruza esos puntos con las barras y genera
+  `data/external/buses_with_coords.csv` (lat/lon por barra)

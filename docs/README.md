@@ -10,3 +10,5 @@ Documentos recomendados:
 - `mapping_modom_to_pypsa.md`
 - `validation_strategy.md`
 - `pypsa_branch_components.md`
+- `pypsa_network.md`
+- `oc_smc_coordinates.md`

@@ -6,12 +6,12 @@
     "pypsa_v1_transformers": 161,
     "pypsa_v1_excluded_branches": 93,
     "pypsa_v1_transformers_with_tap_ratio_hint": 6,
-    "line_same_voltage_ok_count": 577,
-    "line_voltage_mismatch_count": 9,
-    "line_missing_bus_v_nom_count": 6,
-    "transformer_different_voltage_ok_count": 45,
-    "transformer_same_voltage_suspect_count": 5,
-    "transformer_missing_bus_v_nom_count": 111
+    "line_same_voltage_ok_count": 583,
+    "line_voltage_mismatch_count": 4,
+    "line_missing_bus_v_nom_count": 5,
+    "transformer_different_voltage_ok_count": 48,
+    "transformer_same_voltage_suspect_count": 1,
+    "transformer_missing_bus_v_nom_count": 112
   },
   "assumptions": [
     "Las columnas `r_pu_hint`, `x_pu_hint` y `s_nom_mva_hint` son insumos provisionales para PyPSA v1, no una validación final de unidades.",

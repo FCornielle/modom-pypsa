@@ -1,5 +1,5 @@
 branch_id,branch_type,from_bus,to_bus,pypsa_v1_component,exclusion_reason,closure_semantics_hint,operational_status,closure_flag,tap_ratio_hint,v_nom_bus0_kv,v_nom_bus1_kv,voltage_pair_status,source_row_number
-WAANDE__WTAAVK__L1,line,WAANDE,WTAAVK,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,,missing_bus_v_nom,274
+WAANDE__WTAAVK__L1,line,WAANDE,WTAAVK,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,138.0,same_voltage_ok,274
 WAHO1E__WAHONF__T2,transformer,WAHO1E,WAHONF,transformer,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,69.0,different_voltage_ok,67
 WAIZSF__WXZSPF__L1,line,WAIZSF,WXZSPF,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,69.0,69.0,same_voltage_ok,738
 WBANIF__WXPIDF__L1,line,WBANIF,WXPIDF,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,69.0,69.0,same_voltage_ok,565
@@ -23,12 +23,12 @@ WEABAF__WXNAGF__L1,line,WEABAF,WXNAGF,line,out_of_service_base_case,binary_switc
 WESM3F__WEMB3F__L1,line,WESM3F,WEMB3F,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,69.0,69.0,same_voltage_ok,130
 WESP1E__WNAV2E__L2,line,WESP1E,WNAV2E,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,138.0,same_voltage_ok,831
 WGIRAE__WPIZAE__L1,line,WGIRAE,WPIZAE,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,138.0,same_voltage_ok,648
-WGU1AD__WGU1BD__L1,line,WGU1AD,WGU1BD,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,,,missing_bus_v_nom,813
+WGU1AD__WGU1BD__L1,line,WGU1AD,WGU1BD,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,345.0,345.0,same_voltage_ok,813
 WHENUF__WXALDF__L1,line,WHENUF,WXALDF,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,69.0,69.0,same_voltage_ok,11
 WHNS1F__WINVBF__L1,line,WHNS1F,WINVBF,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,69.0,69.0,same_voltage_ok,89
 WINVIF__WINVBF__L1,line,WINVIF,WINVBF,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,69.0,69.0,same_voltage_ok,94
 WITA1E__WXMETE__L1,line,WITA1E,WXMETE,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,138.0,same_voltage_ok,193
-WJSAUD__WBON3D__L2,line,WJSAUD,WBON3D,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,345.0,138.0,line_voltage_mismatch,801
+WJSAUD__WBON3D__L2,line,WJSAUD,WBON3D,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,345.0,345.0,same_voltage_ok,801
 WJSAUE__WMETRE__L1,line,WJSAUE,WMETRE,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,138.0,same_voltage_ok,225
 WKDMBF__WKDMEF__L1,line,WKDMBF,WKDMEF,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,69.0,69.0,same_voltage_ok,36
 WKQAZE__WSJU2E__L1,line,WKQAZE,WSJU2E,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,138.0,same_voltage_ok,675
@@ -60,7 +60,7 @@ WPP22E__WZFSAE__L1,line,WPP22E,WZFSAE,line,out_of_service_base_case,binary_switc
 WPP22E__WZFSAE__L2,line,WPP22E,WZFSAE,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,138.0,same_voltage_ok,500
 WPPLAF__WXPPEF__L1,line,WPPLAF,WXPPEF,auxiliary_tap_link,excluded_auxiliary_tap_link,tap_link_like,closure_fractional_or_unknown,1.05,1.05,69.0,69.0,same_voltage_ok,412
 WPPLAF__WXZPPF__L1,line,WPPLAF,WXZPPF,auxiliary_tap_link,excluded_auxiliary_tap_link,tap_link_like,closure_fractional_or_unknown,1.05,1.05,69.0,69.0,same_voltage_ok,411
-WQ1SPK__WQU12K__L1,line,WQ1SPK,WQU12K,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,13.8,,missing_bus_v_nom,789
+WQ1SPK__WQU12K__L1,line,WQ1SPK,WQU12K,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,13.8,13.8,same_voltage_ok,789
 WSESTE__WSPBEE__L1,line,WSESTE,WSPBEE,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,138.0,same_voltage_ok,712
 WSIBBE__WXSI1K__T1__p2,transformer,WSIBBE,WXSI1K,transformer,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,,missing_bus_v_nom,262
 WSLCOE__WCC21E__L1,line,WSLCOE,WCC21E,line,out_of_service_base_case,binary_switch_state,out_of_service,1,,138.0,138.0,same_voltage_ok,604

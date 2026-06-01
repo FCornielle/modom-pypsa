@@ -11,12 +11,15 @@
     "mapping_and_e_datred_overlap_count": 511,
     "e_datred_only_bus_count": 183,
     "mapping_only_bus_count": 23,
-    "buses_with_v_nom_kv_count": 599,
-    "buses_without_v_nom_kv_count": 118,
+    "buses_with_v_nom_kv_count": 603,
+    "buses_without_v_nom_kv_count": 114,
     "v_nom_name_explicit_count": 103,
     "v_nom_suffix_E_default_count": 93,
     "v_nom_suffix_F_default_count": 400,
-    "v_nom_topology_transformer_consensus_count": 3
+    "v_nom_topology_line_consensus_count": 7,
+    "v_nom_topology_transformer_consensus_count": 0,
+    "unresolved_generator_terminal_count": 50,
+    "unresolved_network_count": 64
   },
   "consistency_flags": {
     "all_buses_have_v_nom_kv": false
@@ -95,280 +98,320 @@
         "bus_name": "TERMINAL LOS MINA 5",
         "bus_id_legacy": "WLMI5K",
         "bus_name_legacy": "TER LOS MINA 5",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTMI6K",
         "bus_name": "TERMINAL LOS MINA 6",
         "bus_id_legacy": "WLMI6K",
         "bus_name_legacy": "TER LOS MINA 6",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTPA1K",
         "bus_name": "TERMINAL PALAMARA 1",
         "bus_id_legacy": "WPAL1K",
         "bus_name_legacy": "TER PALAMARA 1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTIT1K",
         "bus_name": "TERMINAL ITABO 1",
         "bus_id_legacy": "WITA1K",
         "bus_name_legacy": "TER ITABO 1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTIT2K",
         "bus_name": "TERMINAL ITABO 2",
         "bus_id_legacy": "WITA2K",
         "bus_name_legacy": "TER ITABO 2 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTHAGK",
         "bus_name": "TERMINAL HAINA GAS",
         "bus_id_legacy": "WHAIGK",
         "bus_name_legacy": "TER HAINA TG VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WMETAK",
         "bus_name": "METALDOM",
         "bus_id_legacy": "WMETAK",
         "bus_name_legacy": "METALDOM",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "network"
       },
       {
         "bus_id_modom": "WTAAGK",
         "bus_name": "TERMINAL AES ANDRES TURBINA DE GAS",
         "bus_id_legacy": "WAANGK",
         "bus_name_legacy": "TER AES ANDRES GAS VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTRINK",
         "bus_name": "TERMINAL RINCÓN",
         "bus_id_legacy": "WRINCK",
         "bus_name_legacy": "TER RINCON",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTFA1K",
         "bus_name": "TERMINAL FALCON 1",
         "bus_id_legacy": "WFAL1K",
         "bus_name_legacy": "TER FALCON 1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTTA1K",
         "bus_name": "TERMINAL TAVERA 1",
         "bus_id_legacy": "WTAV1K",
         "bus_name_legacy": "TER TAVERA 1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTTA2K",
         "bus_name": "TERMINAL TAVERA 2",
         "bus_id_legacy": "WTAV2K",
         "bus_name_legacy": "TER TAVERA 2 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTRJCK",
         "bus_name": "TERMINAL ROSA JULIA CRUZ",
         "bus_id_legacy": "WRJCRK",
         "bus_name_legacy": "TERM ROSA JULIA CRUZ VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTVE1K",
         "bus_name": "TERMINAL LA VEGA  1",
         "bus_id_legacy": "WLVE1K",
         "bus_name_legacy": "TER LA VEGA  1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTAV1K",
         "bus_name": "TERMINAL ANIANA VARGAS 1",
         "bus_id_legacy": "WAVA1K",
         "bus_name_legacy": "TER VARGAS 1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTFA2K",
         "bus_name": "TERMINAL FALCON 2",
         "bus_id_legacy": "WFAL2K",
         "bus_name_legacy": "TER FALCON 3 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTFA3K",
         "bus_name": "TERMINAL FALCON 3",
         "bus_id_legacy": "WFAL3K",
         "bus_name_legacy": "TER FALCON 3 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WFALCM",
         "bus_name": "FALCONDO",
         "bus_id_legacy": "WFALT3K",
         "bus_name_legacy": "FALCONDO",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "network"
       },
       {
         "bus_id_modom": "WTBA1K",
         "bus_name": "TERMINAL BAIGUAQUE 1",
         "bus_id_legacy": "WBAI1K",
         "bus_name_legacy": "TER BAIGUAQUE 1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTBA2K",
         "bus_name": "TERMINAL BAIGUAQUE 2",
         "bus_id_legacy": "WBAI2K",
         "bus_name_legacy": "TER BAIGUAQUE 2 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTDAJK",
         "bus_name": "TERMINAL DAJABÓN",
         "bus_id_legacy": "WDAJAK",
         "bus_name_legacy": "TER DAJABON VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTCE1K",
         "bus_name": "TERMINAL COMPAÑIA ELECTRICA DE PUERTO PLATA 1",
         "bus_id_legacy": "WCEP1K",
         "bus_name_legacy": "TER CEPP1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTCE2K",
         "bus_name": "TERMINAL COMPAÑIA ELECTRICA DE PUERTO PLATA 2",
         "bus_id_legacy": "WCEP2K",
         "bus_name_legacy": "TER CEPP2 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTSFVK",
         "bus_name": "TERMINAL SAN  FELIPE VAPOR",
         "bus_id_legacy": "WSFEVK",
         "bus_name_legacy": "TER SFELIP VA VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTESAK",
         "bus_name": "TERMINAL EL SALTO",
         "bus_id_legacy": "WESALK",
         "bus_name_legacy": "TER EL SALTO",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTJIMK",
         "bus_name": "TERMINAL JIMENOA",
         "bus_id_legacy": "WJIMEK",
         "bus_name_legacy": "TER JIMENOA VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WHATIK",
         "bus_name": "TERMINAL HATILLO",
         "bus_id_legacy": "WHATIK",
         "bus_name_legacy": "TER HATILLO VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTPI1K",
         "bus_name": "TERMINAL PINALITO 1",
         "bus_id_legacy": "WPIN1K",
         "bus_name_legacy": "TER PINALITO 1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTPI2K",
         "bus_name": "TERMINAL PINALITO 2",
         "bus_id_legacy": "WPIN2K",
         "bus_name_legacy": "TER  PINALITO 2 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WRBL1K",
         "bus_name": "RÍO BLANCO 1",
         "bus_id_legacy": "WRBL1K",
         "bus_name_legacy": "RIO BLANCO 1",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "network"
       },
       {
         "bus_id_modom": "WRBL2K",
         "bus_name": "RÍO BLANCO 2",
         "bus_id_legacy": "WRBL2K",
         "bus_name_legacy": "RIO BLANCO 2 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTLANK",
         "bus_name": "TERMINAL LÓPEZ ANGOSTURA",
         "bus_id_legacy": "WLANGK",
         "bus_name_legacy": "TER LOPEZ ANGOSTURA VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTMONK",
         "bus_name": "TERMINAL MONCIÓN",
         "bus_id_legacy": "WMONCK",
         "bus_name_legacy": "TER MONCION VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WRZMOK",
         "bus_name": "RETIRO ZONA MONCIÓN",
         "bus_id_legacy": "WZMONK",
         "bus_name_legacy": "RETIRO ZONA MONCION",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "network"
       },
       {
         "bus_id_modom": "WTCEMK",
         "bus_name": "TERMINAL CONTRA EMBALSE MONCIÓN",
         "bus_id_legacy": "WCEMOK",
         "bus_name_legacy": "TER CE MONCION VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTMNTK",
         "bus_name": "TERMINAL MONTECRISTI",
         "bus_id_legacy": "WMONTK",
         "bus_name_legacy": "TER MONTECRISTI VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTPG1K",
         "bus_name": "TERMINAL PIMENTEL GRUPO 1",
         "bus_id_legacy": "WPIM1K",
         "bus_name_legacy": "TER PIMENTEL GRUPO 1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTPG2K",
         "bus_name": "TERMINAL PIMENTEL GRUPO 2",
         "bus_id_legacy": "WPIM2K",
         "bus_name_legacy": "TER PIMENTEL GRUPO 2 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTPG3K",
         "bus_name": "TERMINAL PIMENTEL GRUPO 3",
         "bus_id_legacy": "WPIM3K",
         "bus_name_legacy": "TER PIMENTEL GRUPO 3 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       },
       {
         "bus_id_modom": "WTVA1K",
         "bus_name": "TERMINAL VALDESIA 1",
         "bus_id_legacy": "WVAL1K",
         "bus_name_legacy": "TER VALDESIA 1 VIRTUAL",
-        "bus_origin": "mapping"
+        "bus_origin": "mapping",
+        "bus_role": "generator_terminal"
       }
     ]
   }

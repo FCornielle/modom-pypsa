@@ -1,0 +1,25 @@
+{
+  "model": "linear_lopf_v1",
+  "objective": 1121084711.6195989,
+  "snapshots": 24,
+  "total_load_mwh": 75421.329,
+  "served_mwh": 74392.481,
+  "unserved_mwh": 1028.847,
+  "peak_load_mw": 3553.323,
+  "peak_unserved_mw": 60.754,
+  "dispatch_by_carrier_mwh": {
+    "1": 32679.719,
+    "2": 3513.65,
+    "3": 957.0,
+    "4": 37242.112
+  },
+  "lines_above_90pct_peak": 22,
+  "max_line_loading_pu": 1.0,
+  "counts": {
+    "buses": 717,
+    "lines_added": 592,
+    "transformers_added": 161,
+    "generators_added": 140,
+    "load_buses": 281
+  }
+}

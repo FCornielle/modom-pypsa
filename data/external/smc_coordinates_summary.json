@@ -1,0 +1,14 @@
+{
+  "oc_points_total": 535,
+  "oc_points_matched_exact": 194,
+  "oc_points_matched_fuzzy": 237,
+  "oc_points_unmatched": 104,
+  "buses_total": 717,
+  "buses_with_coordinates": 305,
+  "buses_without_coordinates": 412,
+  "notes": [
+    "El `punto` del OC se resuelve por nombre (exact/fuzzy) a una barra.",
+    "Si varios puntos OC caen en la misma barra, lat/lon se promedian.",
+    "Un match `fuzzy` con score bajo debe auditarse antes de usarse en producción."
+  ]
+}
