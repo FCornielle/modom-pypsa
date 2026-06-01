@@ -1,0 +1,36 @@
+{
+  "source_sheets": [
+    "Reporte de Disponibilidad",
+    "e_datgen",
+    "e_sets"
+  ],
+  "counts": {
+    "generator_availability_row_count": 3360,
+    "sheet_generator_count": 147,
+    "matched_generator_count": 140,
+    "sheet_only_generator_count": 7,
+    "catalog_only_generator_count": 0,
+    "snapshot_count": 24
+  },
+  "consistency_flags": {
+    "sheet_period_count_matches_snapshots": true,
+    "all_catalog_generators_present_in_sheet": true
+  },
+  "time_alignment": {
+    "source_period_count": 48,
+    "canonical_snapshot_count": 24,
+    "method": "pairwise_average_48_to_24"
+  },
+  "reconciliation": {
+    "sheet_only_generator_sample": [
+      "G3E4CSFO",
+      "G3E4CSGN",
+      "G3MPLACC",
+      "G6AANDRE",
+      "G6EMAR3",
+      "G6ITABO",
+      "G6PEMINA"
+    ],
+    "catalog_only_generator_sample": []
+  }
+}

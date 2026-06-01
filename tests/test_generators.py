@@ -72,7 +72,7 @@ def _build_test_workbook(path: Path) -> None:
             [""],
             ["", "YN", "PMX", "PMN", "CVP", "TCG", "SSAA", "MRPF", "MRSF", "FACTORA", "H_P", "PGN"],
             ["G3TEST1", "1", "50", "20", "100", "1", "0.02", "1", "2", "3", "4", "5"],
-            ["G3TEST2", "1", "40", "10", "200", "4", "0.02", "", "", "", "", ""],
+            ["G3TEST2", "1", "0", "10", "", "4", "0.02", "", "", "", "", ""],
             ["+", "", "", "", "", "", "", "", "", "", "", ""],
         ],
         "MAPEO CENTRALES DE GENERACION": [
@@ -153,8 +153,14 @@ def test_export_generators(tmp_path: Path) -> None:
     g2 = next(row for row in payload["generators"] if row["generator_id"] == "G3TEST2")
     assert g2["bus_id"] == "WGEN2K"
     assert g2["bus_resolution_method"] == "centrales_zonas_terminal"
+    assert g2["effective_pmax_mw"] == 0.0
+    assert g2["effective_pmin_mw"] == 0.0
+    assert g2["limits_sanitization_method"] == "zero_pmax_forces_zero_pmin"
+    assert g2["effective_cvp"] == 0.0
+    assert g2["cost_sanitization_method"] == "heuristic_zero_for_variable_renewable"
 
     summary_path = outdir / "generators_reconciliation_summary.json"
     assert summary_path.exists()
     summary_json = json.loads(summary_path.read_text(encoding="utf-8"))
     assert summary_json["consistency_flags"]["all_resolved_buses_exist_in_buses"] is True
+    assert summary_json["consistency_flags"]["all_effective_pmax_ge_effective_pmin"] is True

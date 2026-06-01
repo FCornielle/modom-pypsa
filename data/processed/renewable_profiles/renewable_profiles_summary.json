@@ -1,0 +1,55 @@
+{
+  "source_sheets": [
+    "Pronostico Renovable",
+    "Total Renovable",
+    "e_datgen",
+    "e_sets"
+  ],
+  "counts": {
+    "renewable_profiles_row_count": 1032,
+    "forecast_generator_count": 43,
+    "matched_generator_count": 43,
+    "forecast_only_generator_count": 0,
+    "catalog_only_generator_count": 97,
+    "total_renovable_generator_count": 44,
+    "total_renovable_only_generator_count": 1,
+    "snapshot_count": 24
+  },
+  "consistency_flags": {
+    "sheet_period_count_matches_snapshots": true,
+    "all_forecast_ids_exist_in_generators": true
+  },
+  "time_alignment": {
+    "source_period_count": 48,
+    "canonical_snapshot_count": 24,
+    "method": "pairwise_average_48_to_24"
+  },
+  "reconciliation": {
+    "forecast_only_generator_sample": [],
+    "catalog_only_generator_sample": [
+      "G3AANDFO",
+      "G3AANDGN",
+      "G3AGUAC1",
+      "G3AGUAC2",
+      "G3AVARG1",
+      "G3AVARG2",
+      "G3BAIGU1",
+      "G3BAIGU2",
+      "G3BCARBO",
+      "G3BDEREC",
+      "G3BERSAL",
+      "G3CEMON1",
+      "G3CEMON2",
+      "G3CES1FO",
+      "G3CES1GN",
+      "G3CES2FO",
+      "G3CES2GN",
+      "G3CES3FO",
+      "G3CES3GN",
+      "G3DRODR1"
+    ],
+    "total_renovable_only_generator_sample": [
+      "G3SPBIOE"
+    ]
+  }
+}

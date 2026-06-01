@@ -1,0 +1,25 @@
+snapshot_id,snapshot_order,snapshot_label_modom,time_block_group,source_sheet,horizon_count,time_resolution_minutes,hour_block_start_label,notes
+h_01,1,1,canonical_hours_24h,PDemanda,24,60,00:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_02,2,2,canonical_hours_24h,PDemanda,24,60,01:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_03,3,3,canonical_hours_24h,PDemanda,24,60,02:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_04,4,4,canonical_hours_24h,PDemanda,24,60,03:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_05,5,5,canonical_hours_24h,PDemanda,24,60,04:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_06,6,6,canonical_hours_24h,PDemanda,24,60,05:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_07,7,7,canonical_hours_24h,PDemanda,24,60,06:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_08,8,8,canonical_hours_24h,PDemanda,24,60,07:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_09,9,9,canonical_hours_24h,PDemanda,24,60,08:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_10,10,10,canonical_hours_24h,PDemanda,24,60,09:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_11,11,11,canonical_hours_24h,PDemanda,24,60,10:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_12,12,12,canonical_hours_24h,PDemanda,24,60,11:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_13,13,13,canonical_hours_24h,PDemanda,24,60,12:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_14,14,14,canonical_hours_24h,PDemanda,24,60,13:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_15,15,15,canonical_hours_24h,PDemanda,24,60,14:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_16,16,16,canonical_hours_24h,PDemanda,24,60,15:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_17,17,17,canonical_hours_24h,PDemanda,24,60,16:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_18,18,18,canonical_hours_24h,PDemanda,24,60,17:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_19,19,19,canonical_hours_24h,PDemanda,24,60,18:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_20,20,20,canonical_hours_24h,PDemanda,24,60,19:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_21,21,21,canonical_hours_24h,PDemanda,24,60,20:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_22,22,22,canonical_hours_24h,PDemanda,24,60,21:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_23,23,23,canonical_hours_24h,PDemanda,24,60,22:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.
+h_24,24,24,canonical_hours_24h,PDemanda,24,60,23:00,Snapshot canónico v1 derivado del eje horario `PDemanda`.

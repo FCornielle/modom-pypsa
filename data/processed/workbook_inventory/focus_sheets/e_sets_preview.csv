@@ -1,0 +1,6 @@
+PD,col_B,col_C,periodos,/,pd001pd007,col_H
+N,,,horizonte de estudio,/,1*48,
+FG  ,,,conjunto de referencia flowgate,/,fg1*fg3,
+CP(ATG),,,compañías eléctricas genéricas,/,E01*E50,
+ZN,,,conjunto de zonas ,/,"SUR,NORTE,ESTE",
+EM empresas,,,,,G1EHAINA,

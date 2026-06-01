@@ -18,3 +18,4 @@ Script ya implementado:
 - `build_branches.py`
 - `build_generators.py`
 - `build_generator_time_series.py`
+- `build_pypsa_branch_components.py`

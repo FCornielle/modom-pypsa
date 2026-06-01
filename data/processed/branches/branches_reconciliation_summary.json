@@ -1,0 +1,203 @@
+{
+  "source_sheets": [
+    "e_datred",
+    "buses"
+  ],
+  "counts": {
+    "branches_row_count": 846,
+    "line_count": 676,
+    "transformer_count": 170,
+    "missing_bus_reference_count": 0,
+    "duplicate_branch_base_id_count": 1,
+    "closure_nonbinary_count": 10,
+    "base_out_of_service_count": 90,
+    "series_parameter_issue_count": 0,
+    "thermal_limit_issue_count": 0,
+    "closure_semantics_tap_ratio_like_count": 6,
+    "closure_semantics_tap_link_like_count": 3,
+    "pypsa_v1_included_count": 753,
+    "pypsa_v1_excluded_count": 93,
+    "pypsa_v1_transformer_tap_candidate_count": 6,
+    "pypsa_v1_auxiliary_tap_link_count": 3
+  },
+  "consistency_flags": {
+    "all_branch_endpoints_resolved_in_buses": true,
+    "branch_ids_are_unique": true,
+    "all_branches_have_series_parameters": true,
+    "all_branches_have_positive_thermal_limit": true,
+    "closure_flags_are_binary": false,
+    "branch_units_confirmed_for_pypsa": false
+  },
+  "reconciliation": {
+    "missing_bus_reference_sample": [],
+    "duplicate_branch_base_id_sample": [
+      "WSIBBE__WXSI1K__T1"
+    ],
+    "closure_nonbinary_sample": [
+      {
+        "source_row_number": 202,
+        "branch_id": "WHERRE__WHENUF__T1",
+        "closure_flag": "1.1000000000000001",
+        "closure_semantics_hint": "tap_ratio_like"
+      },
+      {
+        "source_row_number": 208,
+        "branch_id": "WNAG2E__WNAG2F__T2",
+        "closure_flag": "0.6875",
+        "closure_semantics_hint": "nonbinary_control_value_on_out_of_service_branch"
+      },
+      {
+        "source_row_number": 334,
+        "branch_id": "WBON2E__WBON2F__T1",
+        "closure_flag": "1.1000000000000001",
+        "closure_semantics_hint": "tap_ratio_like"
+      },
+      {
+        "source_row_number": 410,
+        "branch_id": "WXZPPF__WPPL2F__L1",
+        "closure_flag": "1.05",
+        "closure_semantics_hint": "tap_link_like"
+      },
+      {
+        "source_row_number": 411,
+        "branch_id": "WPPLAF__WXZPPF__L1",
+        "closure_flag": "1.05",
+        "closure_semantics_hint": "tap_link_like"
+      },
+      {
+        "source_row_number": 412,
+        "branch_id": "WPPLAF__WXPPEF__L1",
+        "closure_flag": "1.05",
+        "closure_semantics_hint": "tap_link_like"
+      },
+      {
+        "source_row_number": 424,
+        "branch_id": "WSFMAE__WSFMAF__T1",
+        "closure_flag": "1.03",
+        "closure_semantics_hint": "tap_ratio_like"
+      },
+      {
+        "source_row_number": 477,
+        "branch_id": "WTMONK__WRZMOK__T1",
+        "closure_flag": "1.2",
+        "closure_semantics_hint": "tap_ratio_like"
+      },
+      {
+        "source_row_number": 488,
+        "branch_id": "WZFSAF__WZFSAE__T1",
+        "closure_flag": "0.98",
+        "closure_semantics_hint": "tap_ratio_like"
+      },
+      {
+        "source_row_number": 501,
+        "branch_id": "WPP22E__WPPL2F__T1",
+        "closure_flag": "1.03",
+        "closure_semantics_hint": "tap_ratio_like"
+      }
+    ],
+    "base_out_of_service_sample": [
+      {
+        "source_row_number": 11,
+        "branch_id": "WHENUF__WXALDF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 26,
+        "branch_id": "WCNPEE__WMETRE__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 29,
+        "branch_id": "WXTREFF__WXGBOF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 32,
+        "branch_id": "WXBA2F__WXBAYF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 36,
+        "branch_id": "WKDMBF__WKDMEF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 41,
+        "branch_id": "WLCUAF__WAHOBF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 43,
+        "branch_id": "WLMINF__WXGRCF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 67,
+        "branch_id": "WAHO1E__WAHONF__T2",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 84,
+        "branch_id": "WXMPAF__WMPALF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 89,
+        "branch_id": "WHNS1F__WINVBF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 94,
+        "branch_id": "WINVIF__WINVBF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 100,
+        "branch_id": "WPALBF__WPALAF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 108,
+        "branch_id": "WPALBF__WXPFLF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 119,
+        "branch_id": "WXPFLF__WXLALF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 130,
+        "branch_id": "WESM3F__WEMB3F__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 137,
+        "branch_id": "WTORGF__WHAIBF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 142,
+        "branch_id": "WBAYOF__WXCBAF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 143,
+        "branch_id": "WMLTPF__WXCBAF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 146,
+        "branch_id": "WCATAF__WXKVEF__L1",
+        "in_service_base": "0"
+      },
+      {
+        "source_row_number": 147,
+        "branch_id": "WXKVEF__WXLCAF__L1",
+        "in_service_base": "0"
+      }
+    ],
+    "series_parameter_issue_sample": [],
+    "thermal_limit_issue_sample": []
+  }
+}

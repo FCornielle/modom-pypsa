@@ -1,0 +1,91 @@
+{
+  "source_sheets": [
+    "e_sets",
+    "PDemanda"
+  ],
+  "canonical_horizon_v1": {
+    "source_sheet": "PDemanda",
+    "block_count": 24,
+    "snapshot_ids": [
+      "h_01",
+      "h_02",
+      "h_03",
+      "h_04",
+      "h_05",
+      "h_06",
+      "h_07",
+      "h_08",
+      "h_09",
+      "h_10",
+      "h_11",
+      "h_12",
+      "h_13",
+      "h_14",
+      "h_15",
+      "h_16",
+      "h_17",
+      "h_18",
+      "h_19",
+      "h_20",
+      "h_21",
+      "h_22",
+      "h_23",
+      "h_24"
+    ],
+    "time_block_group": "canonical_hours_24h"
+  },
+  "dispatch_horizon": {
+    "set_name": "N",
+    "description": "horizonte de estudio",
+    "range_spec": "1*48",
+    "period_count": 48,
+    "snapshot_ids": [
+      "pd001",
+      "pd002",
+      "pd003",
+      "pd004",
+      "pd005",
+      "pd006",
+      "..."
+    ]
+  },
+  "load_profile_horizon": {
+    "sheet_name": "PDemanda",
+    "block_labels": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24"
+    ],
+    "block_count": 24,
+    "hour_block_convention": {
+      "h_1": "00:00-00:59",
+      "h_24": "23:00-23:59"
+    }
+  },
+  "consistency_flags": {
+    "dispatch_vs_load_period_count_match": false,
+    "canonical_v1_uses_24h_load_blocks": true,
+    "requires_operational_48_to_24_translation": true
+  }
+}

@@ -22,6 +22,12 @@ SITE_STOPWORDS = {
     "PLANTA",
     "CENTRAL",
 }
+RENEWABLE_NAME_HINTS = (
+    "EOLIC",
+    "EÓLIC",
+    "SOLAR",
+    "FOTOVOLTAIC",
+)
 
 
 def write_json(path: Path, payload: object) -> None:
@@ -56,6 +62,40 @@ def normalize_site_name(name: str) -> str:
     text = re.sub(r"[^\w\s]", " ", text)
     tokens = [token for token in text.split() if token and token not in SITE_STOPWORDS]
     return " ".join(tokens)
+
+
+def infer_effective_cvp(
+    *,
+    cvp: float | None,
+    technology_group: str,
+    generator_name: str,
+) -> tuple[float | None, str]:
+    if cvp is not None:
+        return (cvp, "source_e_datgen")
+
+    name_upper = clean(generator_name).upper()
+    if technology_group == "4" and any(token in name_upper for token in RENEWABLE_NAME_HINTS):
+        return (0.0, "heuristic_zero_for_variable_renewable")
+
+    return (None, "missing")
+
+
+def infer_effective_limits(
+    *,
+    pmax_mw: float | None,
+    pmin_mw: float | None,
+) -> tuple[float | None, float | None, str]:
+    if pmax_mw is None and pmin_mw is None:
+        return (None, None, "missing")
+    if pmax_mw is None:
+        return (None, pmin_mw, "missing_pmax")
+    if pmin_mw is None:
+        return (pmax_mw, None, "missing_pmin")
+    if pmax_mw >= pmin_mw:
+        return (pmax_mw, pmin_mw, "unchanged")
+    if pmax_mw == 0.0 and pmin_mw > 0.0:
+        return (0.0, 0.0, "zero_pmax_forces_zero_pmin")
+    return (pmax_mw, pmax_mw, "clamp_pmin_to_pmax")
 
 
 def parse_primary_e_datgen(reader: XlsmReader) -> list[dict[str, object]]:
@@ -249,6 +289,20 @@ def build_generators(reader: XlsmReader) -> dict[str, object]:
             "factor_node_smc_point_id": factor.get("smc_point_id", ""),
             "centrales_terminal_bus_id": central.get("terminal_bus_id", ""),
         }
+        effective_pmax, effective_pmin, limits_method = infer_effective_limits(
+            pmax_mw=row["pmax_mw"] if isinstance(row["pmax_mw"], float) else to_float(str(row["pmax_mw"])),
+            pmin_mw=row["pmin_mw"] if isinstance(row["pmin_mw"], float) else to_float(str(row["pmin_mw"])),
+        )
+        effective_cvp, cost_method = infer_effective_cvp(
+            cvp=row["cvp"] if isinstance(row["cvp"], float) else to_float(str(row["cvp"])),
+            technology_group=str(row["technology_group"]),
+            generator_name=generator_name,
+        )
+        item["effective_pmax_mw"] = effective_pmax if effective_pmax is not None else ""
+        item["effective_pmin_mw"] = effective_pmin if effective_pmin is not None else ""
+        item["effective_cvp"] = effective_cvp if effective_cvp is not None else ""
+        item["limits_sanitization_method"] = limits_method
+        item["cost_sanitization_method"] = cost_method
         generators.append(item)
         if not bus_id:
             unresolved_bus_rows.append(
@@ -273,15 +327,56 @@ def build_generators(reader: XlsmReader) -> dict[str, object]:
             "resolved_bus_count": sum(1 for row in generators if str(row["bus_id"])),
             "unresolved_bus_count": sum(1 for row in generators if not str(row["bus_id"])),
             "mapped_name_count": sum(1 for row in generators if str(row["generator_name"])),
+            "limits_sanitized_count": sum(
+                1 for row in generators if str(row["limits_sanitization_method"]) != "unchanged"
+            ),
+            "effective_cvp_filled_count": sum(
+                1
+                for row in generators
+                if str(row["cost_sanitization_method"]) == "heuristic_zero_for_variable_renewable"
+            ),
+            "effective_cvp_missing_count": sum(
+                1 for row in generators if str(row["cost_sanitization_method"]) == "missing"
+            ),
         },
         "consistency_flags": {
             "all_generator_ids_unique": len({str(row["generator_id"]) for row in generators}) == len(generators),
             "all_resolved_buses_exist_in_buses": all(
                 (not str(row["bus_id"])) or bool(row["bus_id_in_buses"]) for row in generators
             ),
+            "all_effective_pmax_ge_effective_pmin": all(
+                (
+                    str(row["effective_pmax_mw"]) == ""
+                    or str(row["effective_pmin_mw"]) == ""
+                    or float(row["effective_pmax_mw"]) >= float(row["effective_pmin_mw"])
+                )
+                for row in generators
+            ),
         },
         "reconciliation": {
             "unresolved_bus_sample": unresolved_bus_rows[:20],
+            "limits_sanitized_sample": [
+                {
+                    "generator_id": row["generator_id"],
+                    "generator_name": row["generator_name"],
+                    "pmax_mw": row["pmax_mw"],
+                    "pmin_mw": row["pmin_mw"],
+                    "effective_pmax_mw": row["effective_pmax_mw"],
+                    "effective_pmin_mw": row["effective_pmin_mw"],
+                    "limits_sanitization_method": row["limits_sanitization_method"],
+                }
+                for row in generators
+                if str(row["limits_sanitization_method"]) != "unchanged"
+            ][:20],
+            "effective_cvp_missing_sample": [
+                {
+                    "generator_id": row["generator_id"],
+                    "generator_name": row["generator_name"],
+                    "technology_group": row["technology_group"],
+                }
+                for row in generators
+                if str(row["cost_sanitization_method"]) == "missing"
+            ][:20],
         },
     }
     return {
@@ -308,6 +403,11 @@ def export_generators(xlsm_path: Path, outdir: Path) -> dict[str, object]:
             "pmax_mw",
             "pmin_mw",
             "cvp",
+            "effective_pmax_mw",
+            "effective_pmin_mw",
+            "effective_cvp",
+            "limits_sanitization_method",
+            "cost_sanitization_method",
             "technology_group",
             "ssaa",
             "mrpf",

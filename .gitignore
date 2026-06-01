@@ -24,10 +24,8 @@ dist/
 *.egg-info/
 
 # Project data
-data/raw/**
-data/processed/**
-!data/raw/.gitkeep
-!data/processed/.gitkeep
+# Current repository mode: keep the reference MODOM workbook and processed
+# artifacts versioned so the project can be continued locally after pull.
 
 # Temporary outputs
 outputs/

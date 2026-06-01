@@ -1,0 +1,22 @@
+{
+  "counts": {
+    "input_buses": 717,
+    "input_branches": 846,
+    "pypsa_v1_lines": 592,
+    "pypsa_v1_transformers": 161,
+    "pypsa_v1_excluded_branches": 93,
+    "pypsa_v1_transformers_with_tap_ratio_hint": 6,
+    "line_same_voltage_ok_count": 577,
+    "line_voltage_mismatch_count": 9,
+    "line_missing_bus_v_nom_count": 6,
+    "transformer_different_voltage_ok_count": 45,
+    "transformer_same_voltage_suspect_count": 5,
+    "transformer_missing_bus_v_nom_count": 111
+  },
+  "assumptions": [
+    "Las columnas `r_pu_hint`, `x_pu_hint` y `s_nom_mva_hint` son insumos provisionales para PyPSA v1, no una validación final de unidades.",
+    "Los enlaces clasificados como `auxiliary_tap_link` se excluyen del modelo serie v1.",
+    "Los transformadores con `tap_ratio_hint` conservan el valor observado en `closure_flag`, pero la semántica final de tap_side y base sigue pendiente.",
+    "La consistencia de `v_nom_kv` se usa como auditoría estructural de la exportación v1, no como sustituto de una validación completa de parámetros eléctricos."
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "sheet_name": "e_sets",
+  "configured_header_row_trimmed_1_based": 3,
+  "detected_header_row_trimmed_1_based": 3,
+  "resolved_header_row_trimmed_1_based": 3,
+  "header_row_detection_matches_configured": true,
+  "header_detection_candidates": [
+    {
+      "row_1_based": 1,
+      "non_empty_cell_count": 1,
+      "unique_value_count": 1,
+      "supported_column_count": 1,
+      "score": 9
+    },
+    {
+      "row_1_based": 3,
+      "non_empty_cell_count": 5,
+      "unique_value_count": 4,
+      "supported_column_count": 5,
+      "score": 43
+    },
+    {
+      "row_1_based": 4,
+      "non_empty_cell_count": 5,
+      "unique_value_count": 4,
+      "supported_column_count": 5,
+      "score": 43
+    },
+    {
+      "row_1_based": 5,
+      "non_empty_cell_count": 5,
+      "unique_value_count": 4,
+      "supported_column_count": 5,
+      "score": 43
+    },
+    {
+      "row_1_based": 6,
+      "non_empty_cell_count": 5,
+      "unique_value_count": 4,
+      "supported_column_count": 5,
+      "score": 43
+    },
+    {
+      "row_1_based": 7,
+      "non_empty_cell_count": 5,
+      "unique_value_count": 4,
+      "supported_column_count": 3,
+      "score": 37
+    },
+    {
+      "row_1_based": 10,
+      "non_empty_cell_count": 3,
+      "unique_value_count": 3,
+      "supported_column_count": 1,
+      "score": 21
+    }
+  ],
+  "row_count_trimmed": 2212,
+  "col_count_trimmed": 8,
+  "structured_column_count": 8,
+  "structured_columns": [
+    "PD",
+    "col_B",
+    "col_C",
+    "periodos",
+    "/",
+    "pd001pd007",
+    "/",
+    "col_H"
+  ],
+  "first_useful_columns": [
+    "PD",
+    "periodos",
+    "/",
+    "pd001pd007",
+    "/"
+  ],
+  "preview_rows": [
+    {
+      "PD": "N",
+      "col_B": "",
+      "col_C": "",
+      "periodos": "horizonte de estudio",
+      "/": "/",
+      "pd001pd007": "1*48",
+      "col_H": ""
+    },
+    {
+      "PD": "FG  ",
+      "col_B": "",
+      "col_C": "",
+      "periodos": "conjunto de referencia flowgate",
+      "/": "/",
+      "pd001pd007": "fg1*fg3",
+      "col_H": ""
+    },
+    {
+      "PD": "CP(ATG)",
+      "col_B": "",
+      "col_C": "",
+      "periodos": "compañías eléctricas genéricas",
+      "/": "/",
+      "pd001pd007": "E01*E50",
+      "col_H": ""
+    },
+    {
+      "PD": "ZN",
+      "col_B": "",
+      "col_C": "",
+      "periodos": "conjunto de zonas ",
+      "/": "/",
+      "pd001pd007": "SUR,NORTE,ESTE",
+      "col_H": ""
+    },
+    {
+      "PD": "EM empresas",
+      "col_B": "",
+      "col_C": "",
+      "periodos": "",
+      "/": "",
+      "pd001pd007": "G1EHAINA",
+      "col_H": ""
+    }
+  ]
+}

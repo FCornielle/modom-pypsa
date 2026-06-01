@@ -9,3 +9,4 @@ Documentos recomendados:
 - `modom_sheet_inventory.md`
 - `mapping_modom_to_pypsa.md`
 - `validation_strategy.md`
+- `pypsa_branch_components.md`

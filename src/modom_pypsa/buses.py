@@ -12,6 +12,9 @@ from .xlsm import XlsmReader
 
 
 LEADING_STAR_RE = re.compile(r"^\*\s*")
+VOLTAGE_RE = re.compile(
+    r"(?<!\d)(345|230|138|115|69|34\.5|20|13\.8|13\.5|12\.47|12\.5|7\.2|4\.2|4\.16)(?!\d)"
+)
 
 
 def write_json(path: Path, payload: object) -> None:
@@ -36,6 +39,24 @@ def normalize_bus_code(value: str) -> str:
     code = LEADING_STAR_RE.sub("", code)
     code = code.replace(" ", "")
     return code
+
+
+def infer_bus_voltage(
+    bus_id: str,
+    bus_name: str,
+    bus_name_legacy: str,
+) -> tuple[float | None, str, str]:
+    text = " ".join(part for part in [clean(bus_name), clean(bus_name_legacy)] if part)
+    matches = VOLTAGE_RE.findall(text)
+    if matches:
+        return float(matches[0]), "name_explicit", "high"
+
+    suffix = clean(bus_id)[-1:] if clean(bus_id) else ""
+    if suffix == "E":
+        return 138.0, "suffix_E_default", "medium"
+    if suffix == "F":
+        return 69.0, "suffix_F_default", "medium"
+    return None, "unresolved", "low"
 
 
 def extract_mapping_buses(reader: XlsmReader) -> list[dict[str, str]]:
@@ -69,9 +90,26 @@ def extract_e_datred_bus_counts(reader: XlsmReader) -> Counter[str]:
     return counts
 
 
+def extract_transformer_neighbors(reader: XlsmReader) -> dict[str, set[str]]:
+    matrix = reader.read_sheet_matrix("e_datred")
+    neighbors: dict[str, set[str]] = {}
+    for row in matrix[3:]:
+        if len(row) < 5:
+            continue
+        from_bus = normalize_bus_code(row[0])
+        to_bus = normalize_bus_code(row[2])
+        circuit_id = clean(row[4])
+        if not from_bus or not to_bus or not circuit_id.startswith("T"):
+            continue
+        neighbors.setdefault(from_bus, set()).add(to_bus)
+        neighbors.setdefault(to_bus, set()).add(from_bus)
+    return neighbors
+
+
 def build_buses(reader: XlsmReader) -> dict[str, object]:
     mapping_rows = extract_mapping_buses(reader)
     red_counts = extract_e_datred_bus_counts(reader)
+    transformer_neighbors = extract_transformer_neighbors(reader)
 
     buses_by_id: dict[str, dict[str, object]] = {}
     for row in mapping_rows:
@@ -105,6 +143,52 @@ def build_buses(reader: XlsmReader) -> dict[str, object]:
             "bus_origin": "e_datred_only",
         }
 
+    voltage_method_counts: Counter[str] = Counter()
+    unresolved_voltage_rows: list[dict[str, object]] = []
+    for item in buses_by_id.values():
+        v_nom_kv, method, confidence = infer_bus_voltage(
+            bus_id=str(item["bus_id_modom"]),
+            bus_name=str(item["bus_name"]),
+            bus_name_legacy=str(item["bus_name_legacy"]),
+        )
+        item["v_nom_kv"] = v_nom_kv if v_nom_kv is not None else ""
+        item["v_nom_inference_method"] = method
+        item["v_nom_confidence"] = confidence
+
+    topology_inferred_count = 0
+    for item in buses_by_id.values():
+        if item["v_nom_kv"] != "":
+            continue
+        bus_id = str(item["bus_id_modom"])
+        suffix = bus_id[-1:] if bus_id else ""
+        if suffix not in {"C", "D"}:
+            continue
+        neighbor_values = sorted(
+            {
+                buses_by_id[other]["v_nom_kv"]
+                for other in transformer_neighbors.get(bus_id, set())
+                if other in buses_by_id and buses_by_id[other]["v_nom_kv"] != ""
+            }
+        )
+        if len(neighbor_values) == 1:
+            item["v_nom_kv"] = neighbor_values[0]
+            item["v_nom_inference_method"] = "topology_transformer_consensus"
+            item["v_nom_confidence"] = "low"
+            topology_inferred_count += 1
+
+    for item in buses_by_id.values():
+        voltage_method_counts[str(item["v_nom_inference_method"])] += 1
+        if item["v_nom_kv"] == "":
+            unresolved_voltage_rows.append(
+                {
+                    "bus_id_modom": item["bus_id_modom"],
+                    "bus_name": item["bus_name"],
+                    "bus_id_legacy": item["bus_id_legacy"],
+                    "bus_name_legacy": item["bus_name_legacy"],
+                    "bus_origin": item["bus_origin"],
+                }
+            )
+
     buses = list(buses_by_id.values())
     buses.sort(key=lambda item: str(item["bus_id_modom"]))
 
@@ -120,10 +204,20 @@ def build_buses(reader: XlsmReader) -> dict[str, object]:
             "mapping_and_e_datred_overlap_count": len(mapped_bus_ids & red_bus_ids),
             "e_datred_only_bus_count": len(red_bus_ids - mapped_bus_ids),
             "mapping_only_bus_count": len(mapped_bus_ids - red_bus_ids),
+            "buses_with_v_nom_kv_count": len(buses) - len(unresolved_voltage_rows),
+            "buses_without_v_nom_kv_count": len(unresolved_voltage_rows),
+            "v_nom_name_explicit_count": int(voltage_method_counts.get("name_explicit", 0)),
+            "v_nom_suffix_E_default_count": int(voltage_method_counts.get("suffix_E_default", 0)),
+            "v_nom_suffix_F_default_count": int(voltage_method_counts.get("suffix_F_default", 0)),
+            "v_nom_topology_transformer_consensus_count": topology_inferred_count,
+        },
+        "consistency_flags": {
+            "all_buses_have_v_nom_kv": len(unresolved_voltage_rows) == 0,
         },
         "reconciliation": {
             "e_datred_only_bus_sample": sorted(list(red_bus_ids - mapped_bus_ids))[:40],
             "mapping_only_bus_sample": sorted(list(mapped_bus_ids - red_bus_ids))[:40],
+            "unresolved_v_nom_bus_sample": unresolved_voltage_rows[:40],
         },
     }
     return {
@@ -147,6 +241,9 @@ def export_buses(xlsm_path: Path, outdir: Path) -> dict[str, object]:
             "appears_in_mapping",
             "appears_in_e_datred",
             "e_datred_endpoint_count",
+            "v_nom_kv",
+            "v_nom_inference_method",
+            "v_nom_confidence",
             "source_sheet_primary",
             "bus_origin",
         ],

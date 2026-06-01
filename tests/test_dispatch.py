@@ -261,6 +261,14 @@ def test_validate_dispatch_inputs(tmp_path: Path) -> None:
     assert payload["counts"]["generators"] == 2
     assert payload["counts"]["snapshots"] == 1
     assert payload["counts"]["load_blocks"] == 1
+    assert payload["counts"]["buses_with_v_nom_kv"] == 0
+    assert payload["counts"]["buses_without_v_nom_kv"] == 1
+    assert payload["counts"]["pypsa_v1_branch_included_count"] == 0
+    assert payload["counts"]["pypsa_v1_branch_excluded_count"] == 0
+    assert payload["network_topology_ready"] is False
+    assert payload["branch_series_data_ready"] is False
+    assert payload["branch_units_confirmed_for_pypsa"] is False
+    assert payload["network_constraints_ready"] is False
 
 
 def test_run_copperplate_dispatch(tmp_path: Path) -> None:

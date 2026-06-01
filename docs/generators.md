@@ -43,6 +43,25 @@ La auditoría exporta:
 - cuántos generadores quedaron con barra resuelta
 - cuántos quedaron sin resolver
 - una muestra de casos sin barra
+- cuántos límites `pmax/pmin` se sanitizaron para dejar el catálogo consistente
+- cuántos `cvp` faltantes pudieron rellenarse solo en casos renovables obvios
+
+## Regla v1 de saneamiento
+
+La tabla conserva los valores crudos de `e_datgen`, pero además exporta campos
+efectivos para análisis inicial:
+
+- `effective_pmax_mw`
+- `effective_pmin_mw`
+- `effective_cvp`
+
+Reglas actuales:
+
+- si `pmax_mw = 0` y `pmin_mw > 0`, el catálogo efectivo fuerza ambos a `0`
+- si falta `cvp` y el caso es renovable variable claramente identificable por
+  `technology_group` y nombre, el costo efectivo se fija en `0`
+- los casos no resueltos explícitamente siguen marcados como faltantes, no se
+  inventan a ciegas
 
 ## Script
 

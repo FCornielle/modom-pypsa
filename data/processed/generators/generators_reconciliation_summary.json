@@ -1,0 +1,215 @@
+{
+  "source_sheets": [
+    "e_datgen",
+    "MAPEO CENTRALES DE GENERACION",
+    "Factores de Nodo (Inyección)",
+    "Centrales (Zonas)",
+    "Reporte de Disponibilidad"
+  ],
+  "counts": {
+    "generators_row_count": 140,
+    "resolved_bus_count": 140,
+    "unresolved_bus_count": 0,
+    "mapped_name_count": 140,
+    "limits_sanitized_count": 20,
+    "effective_cvp_filled_count": 32,
+    "effective_cvp_missing_count": 1
+  },
+  "consistency_flags": {
+    "all_generator_ids_unique": true,
+    "all_resolved_buses_exist_in_buses": true,
+    "all_effective_pmax_ge_effective_pmin": true
+  },
+  "reconciliation": {
+    "unresolved_bus_sample": [],
+    "limits_sanitized_sample": [
+      {
+        "generator_id": "G3AANDFO",
+        "generator_name": "AES ANDRÉS FO",
+        "pmax_mw": 0.0,
+        "pmin_mw": 150.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3CES1FO",
+        "generator_name": "CESPM 1 FO",
+        "pmax_mw": 0.0,
+        "pmin_mw": 65.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3CES2FO",
+        "generator_name": "CESPM 2 FO",
+        "pmax_mw": 0.0,
+        "pmin_mw": 65.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3CES3FO",
+        "generator_name": "CESPM 3 FO",
+        "pmax_mw": 0.0,
+        "pmin_mw": 65.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3EM2CGN",
+        "generator_name": "ESTRELLA DEL MAR 2 CGN",
+        "pmax_mw": 0.0,
+        "pmin_mw": 49.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3EM2SFO",
+        "generator_name": "ESTRELLA DEL MAR 2 SFO",
+        "pmax_mw": 0.0,
+        "pmin_mw": 28.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3EM2SGN",
+        "generator_name": "ESTRELLA DEL MAR 2 SGN",
+        "pmax_mw": 0.0,
+        "pmin_mw": 30.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3EM3CCP",
+        "generator_name": "ESTRELLA DEL MAR 3 CCP",
+        "pmax_mw": 0.0,
+        "pmin_mw": 46.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3EM3CS",
+        "generator_name": "ESTRELLA DEL MAR 3 CS",
+        "pmax_mw": 0.0,
+        "pmin_mw": 27.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3HTG",
+        "generator_name": "HAINA TG",
+        "pmax_mw": 0.0,
+        "pmin_mw": 60.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3LMINA5",
+        "generator_name": "LOS MINA 5",
+        "pmax_mw": 0.0,
+        "pmin_mw": 60.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3LMINA6",
+        "generator_name": "LOS MINA 6",
+        "pmax_mw": 0.0,
+        "pmin_mw": 60.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3LOPPGN",
+        "generator_name": "LOS ORÍGENES POWER PLANT GAS NATURAL",
+        "pmax_mw": 0.0,
+        "pmin_mw": 14.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3METALD",
+        "generator_name": "METALDOM",
+        "pmax_mw": 0.0,
+        "pmin_mw": 10.5,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3MPLACS",
+        "generator_name": "MANZANILLO POWER LAND CICLO SIMPLE",
+        "pmax_mw": 0.0,
+        "pmin_mw": 170.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3PEMCP",
+        "generator_name": "PARQUE ENERGETICO LOS MINA CC PARCIAL",
+        "pmax_mw": 0.0,
+        "pmin_mw": 93.7,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3Q1SPFO",
+        "generator_name": "QUISQUEYA 1 SAN PEDRO",
+        "pmax_mw": 0.0,
+        "pmin_mw": 10.3,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3QUI1FO",
+        "generator_name": "QUISQUEYA 1",
+        "pmax_mw": 0.0,
+        "pmin_mw": 66.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3QUI2FO",
+        "generator_name": "QUISQUEYA 2 FO",
+        "pmax_mw": 0.0,
+        "pmin_mw": 66.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      },
+      {
+        "generator_id": "G3SIBACS",
+        "generator_name": "SIBA CICLO SIMPLE",
+        "pmax_mw": 0.0,
+        "pmin_mw": 13.0,
+        "effective_pmax_mw": 0.0,
+        "effective_pmin_mw": 0.0,
+        "limits_sanitization_method": "zero_pmax_forces_zero_pmin"
+      }
+    ],
+    "effective_cvp_missing_sample": [
+      {
+        "generator_id": "G3PAK01",
+        "generator_name": "POWERSHIP AZUA KPS 01",
+        "technology_group": "4"
+      }
+    ]
+  }
+}

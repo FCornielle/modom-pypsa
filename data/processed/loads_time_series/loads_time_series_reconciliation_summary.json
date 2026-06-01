@@ -1,0 +1,35 @@
+{
+  "source_sheets": [
+    "PDemanda",
+    "DEMANDA SMC",
+    "e_datdem"
+  ],
+  "time_block_group": "load_blocks_pdemanda_24h",
+  "hour_block_convention": {
+    "h_01": "00:00-00:59",
+    "h_24": "23:00-23:59"
+  },
+  "counts": {
+    "pdemanda_raw_row_count": 9456,
+    "pdemanda_raw_load_count": 315,
+    "loads_time_series_row_count": 6744,
+    "loads_time_series_load_count": 281,
+    "e_datdem_load_count": 281,
+    "time_block_count": 24,
+    "demanda_smc_registry_count": 358,
+    "resolved_bus_registry_count": 358,
+    "unresolved_bus_registry_count": 0
+  },
+  "consistency_flags": {
+    "uses_explicit_snapshot_mapping": false,
+    "uses_canonical_24h_snapshots": true,
+    "requires_snapshot_translation": false,
+    "all_pdemanda_ids_found_in_demanda_smc": true
+  },
+  "reconciliation": {
+    "canonical_vs_e_datdem_exact_overlap_count": 281,
+    "canonical_not_in_e_datdem_sample": [],
+    "e_datdem_not_in_canonical_sample": [],
+    "unresolved_bus_registry_sample": []
+  }
+}

@@ -26,6 +26,9 @@ Eso evita perder barras de la red por depender solo de la hoja de mapeo.
 - `appears_in_mapping`
 - `appears_in_e_datred`
 - `e_datred_endpoint_count`
+- `v_nom_kv`
+- `v_nom_inference_method`
+- `v_nom_confidence`
 - `bus_origin`
 
 ## Limitación explícita
@@ -36,6 +39,24 @@ Para `V449`, el bloque exporta también una auditoría:
 
 - barras en `e_datred` no presentes en el mapeo
 - barras del mapeo no vistas en `e_datred`
+- barras cuyo `v_nom_kv` sigue sin poder inferirse de forma conservadora
+
+## Regla actual para `v_nom_kv`
+
+La inferencia actual es deliberadamente conservadora:
+
+- `name_explicit`
+  - si `bus_name` o `bus_name_legacy` contiene una tensión explícita (`345`,
+    `230`, `138`, `69`, `34.5`, `13.8`, etc.), se usa ese valor
+- `suffix_E_default`
+  - si no hay tensión explícita y la barra termina en `E`, se asigna `138 kV`
+- `suffix_F_default`
+  - si no hay tensión explícita y la barra termina en `F`, se asigna `69 kV`
+- `unresolved`
+  - barras `K`, `D`, `M` u otras ambiguas quedan pendientes
+
+Eso permite avanzar con una capa de voltajes nominales útil sin inventar
+semánticas débiles para barras de terminal o niveles especiales.
 
 ## Script
 

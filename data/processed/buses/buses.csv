@@ -1,0 +1,718 @@
+bus_id_modom,bus_name,bus_id_legacy,bus_name_legacy,code_changed,appears_in_mapping,appears_in_e_datred,e_datred_endpoint_count,v_nom_kv,v_nom_inference_method,v_nom_confidence,source_sheet_primary,bus_origin
+WAANDE,AES ANDRÉS,WAANDE,AES ANDRES,NO,True,True,4,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WABCOF,ABCO,WABCOF,ABCO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WABISF,ARROZ BISONO,WABISF,ARROZ BISONO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WABRUF,ACUEDUCTO BRUJUELA,WABRUF,ACUEDUCTO BRUJUELA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WACIBF,ACERO CIBAO,WACIBF,ACERO CIBAO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WACLAE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WACLAK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WADMIF,ARGOS DOMINICANA (CEMENTO COLÓN),WCCOLF,CEMENTO COLON,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WADOMF,ALUMINIO DOMINICANO,WADOMF,ALUMINIO DOMINICANO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAGUAE,AGUACATE,WAGUAE,AGUACATE,NO,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAGUBE,AGUACATE B,WAGUBE,AGUACATE B,NO,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAHMIF,ACUADUCTO HERMANAS MIRABAL,WAHMIF,ACUEDUCTO CABUYA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAHO1E,ARROYO HONDO 138 kV Barra 1,WAHO1E,ARROYO HONDO 138 kV Barra 1,NO,True,True,4,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WAHO2E,ARROYO HONDO 138 kV Barra 2,WAHO2E,ARROYO HONDO 138 kV Barra 2,NO,True,True,2,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WAHOBF,ARROYO HONDO B,WAHOBF,ARROYO HONDO B,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAHONF,ARROYO HONDO,WAHONF,ARROYO HONDO,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAIAMF,AEROPUERTO INTERNACIONAL LAS AMÉRICAS,WAAMEF,AEROPUERTO INTERNACIONAL LAS AMÉRICAS,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAIAZF,ACUEDUCTO INAPA AZUA,WAIAZF,ACUEDUCTO INAPA AZUA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAIBAF,AEROPUERTO INTERNACIONAL BARAHONA,WABARF,AEROPUERTO INTERNACIONAL BARAHONA,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAIISF,AEROPUERTO INTERNACIONAL LA ISABELA,WAHIGF,AEROPUERTO INTERNACIONAL LA ISABELA,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAISAF,ACUEDUCTO LA ISABELA,WALISF,ACUEDUCTO LA ISABELA,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAISCF,ACUEDUCTO INAPA SAN CRISTOBAL,WAISCF,ACUEDUCTO INAPA SAN CRISTOBAL,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAISOF,ACUEDUCTO INAPA SOSUA,WAISOF,ACUEDUCTO INAPA SOSUA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAIUNF,AEROPUERTO INTERNACIONAL LA UNIÓN,WAPPLF,AEROPUERTO INTERNACIONAL LA UNIÓN,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAIZSF,ASOCIACIÓN INDUSUSTRIAS ZONA FRANCA SAN PEDRO DE MACORIS,WZSPMF,ASOC INDUS ZF SPM,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAORIF,ACUEDUCTO ORIENTAL,WAORIF,ACUEDUCTO ORIENTAL,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAPERF,ABANICO PER,WAPERF,ABANICO PER,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAPFAF,ARTÍCULOS PIEL FAVORITOS,WAPFAF,ARTÍCULOS PIEL FAVORITOS,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAQUIF,ACUEDUCTO QUINIGUA,WAQUIF,ACUEDUCTO QUINIGUA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WASOEF,ACUEDUCTO SUR-OESTE,WASOEF,ACUEDUCTO MULT BARAHO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WAZUAF,AZUA,WAZUAF,AZUA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBALDF,BALDOM,WBALDF,BALDOM,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBANIF,BANÍ,WBANIF,BANI PUEBLO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBAPEF,BANÍ PER,WBAPEF,BANI PER,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBARAF,BARAHONA 69,WBARAF,BARAHONA,NO,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WBARCE,BARAHONA CARBÓN 138,WBCA1E,BARAHONA CARBON 138,SI,True,True,5,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WBASIF,BASE AÉREA SAN ISIDRO,WBASIF,BASE AEREA SAN ISIDR,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBAYAE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WBAYAK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WBAYOF,BAYONA,WBAYOF,BAYONA,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBCARF,BARAHONA CARBÓN 69,WBCARF,BARAHONA CARBON 69,NO,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WBCARK,TER BARAHONA CARBON,WBCARK,TER BARAHONA CARBON,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WBCHIE,BOCA CHICA 138,WBCHIE,BOCA CHICA 138,NO,True,True,4,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WBCHIF,BOCA CHICA 69,WBCHIF,BOCA CHICA 69,NO,True,True,3,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WBDERF,BRAZO DERECHO,WBDERF,BRAZO DERECHO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBDERK,TERMINAL BRAZO DERECHO 13.8 Kv,WBDERK,TERMINAL BRAZO DERECHO 13.8 Kv,NO,True,True,1,13.8,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WBENEF,BENEDICTO,WBENEF,BENEDICTO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBERSF,BERSAL,WCEMEK,BESAL,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBLECF,BATEY LECHUGA,WBLECF,BATEY LECHUGA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBMATF,BANÍ MATADERO,WBMATF,BANI MATADERO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBNVFF,BANCO NACIONAL DE LA VIVIENDA FACIL,WBNVIF,BNV  FACIL,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBON2E,BONAO 2 138,WBO21E,BONAO 2 138,SI,True,True,7,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WBON2F,BONAO 2 69,WBO21F,BONAO 2 69,SI,True,True,7,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WBON3C,,,,,False,True,4,138.0,topology_transformer_consensus,low,e_datred,e_datred_only
+WBON3D,,,,,False,True,6,138.0,topology_transformer_consensus,low,e_datred,e_datred_only
+WBON3E,,,,,False,True,4,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WBONAF,BONAO,WBONAF,BONAO PUEBLO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBOPEF,BONAO PER,WBPERF,BONAO PER,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBPOPF,BANCO POPULAR,WBPOPF,BANCO POPULAR,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WBVISF,BUENA VISTA,WBVISF,BUENA VISTA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCABAF,CABARETE,WCABAF,CABARETE,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCALAE,,,,,False,True,5,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WCALBE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WCANAE,CANABACOA 138,WCANAE,CANABACOA 138,NO,True,True,14,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WCANAF,CANABACOA 69,WCANAF,CANABACOA 69,NO,True,True,9,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WCAPOF,CAPOTILLO,WCAPOF,CAPOTILLO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCATAF,CATALINA,WCATAF,CATALINA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCAYAF,CAYACOA,WCAYAF,CAYACOA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCBOHF,CERVECERÍA BOHEMIA,WCBOHF,CERVECERIA BOHEMIA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCBYNF,CABAYONA,WCBYNF,CABAYONA VIRTUAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCC21E,CRUCE CABRAL 2 - BARRA 1,WCC21E,BARRA 1 CRUCE CABRAL 2,NO,True,True,9,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCCA2F,CRUCE DE CABRAL 2 69,WCCA2F,BARRA 69 KV CRUCE DE CABRAL 2,NO,True,True,3,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WCCABF,CRUCE DE CABRAL,WCCABF,CRUCE DE CABRAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCCARF,CARTONES DEL CARIBE,WCCARF,CARTONES DEL CARIBE,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCCIBF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WCDAGF,CAMPAMENTO DIECISEIS DE AGO,WCDAGF,CAMPAMENTO 16 DE AGO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCEMEE,CEMEX 138,WCEMEE,CEMEX 138,NO,True,True,2,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WCENOF,CENOVÍ,WCENOF,CENOVI,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCEPPF,COMPAÑÍA ELÉCTRICA DE PUERTO PLATA,WCEP2F,COMPAÑIA ELECTRICA D,SI,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCES1K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WCES2K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WCES3K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WCESPF,CRUCE DE ESPERANZA,WCESPF,CRUCE DE ESPERANZA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCESPK,TER_CESPM 1,WCESPK,TER_CESPM 1,NO,True,False,0,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WCINDF,CARIBBEAN INDUSTRIAL,WCIPAF,CARIBBEAN INDUSTRIAL,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCLUIE,CONSORCIO MINERO DOMINICANO,WCLUIE,LA LUISA,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCNACF,CÍTRICOS NACIONALES,WCINAF,CITRICOS NACIONALES,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCNPEE,CÉSAR NICOLÁS PÉNSON,WCNPEE,CESAR NICOLAS PENSON,NO,True,True,4,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCNSLF,CONSUELO,WCSULF,CONSUELO,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCOAPE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WCOCOF,CRUCE DE OCOA,WCOCOF,CRUCE DE OCOA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCODAF,CODAL,WCODAF,CODAL,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCOHEF,CENTRO OPERACIONES HERRERA,WCOHEF,CENTRO OPERA HERRERA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCONSF,CONSTANZA,WCONSF,CONSTANZA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCORMF,CORMIDOM,WCORMF,CORMIDOM,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCOTAE,,,,,False,True,4,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WCOTBE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WCOTUF,COTUÍ,WCOTUF,COTUI,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCPVCF,CORVI PVC,WCPVCF,CORVI PVC,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCSATF,CIUDAD SATÉLITE,WCSATF,CIUDAD SATELITE,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCSO1K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WCSO2K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WCSO3K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WCSOLK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WCTP1D,PUNTA CATALINA 1 345 KV BARRA 1,WPCA1D,PUNTA CATALINA 1 345 KV BARRA 1,SI,True,True,3,345.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WCTP2D,PUNTA CATALINA 2 345 KV BARRA 1,WPCA2D,PUNTA CATALINA 2 345 KV BARRA 1,SI,True,True,3,345.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WCUMAE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WCUMBE,,,,,False,True,4,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WCVEGF,CERVECERÍA VEGANA,WCVEGF,CERVECERIA VEGANA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WCZFSF,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WDAJAE,DAJABÓN 138,WDAJAE,DAJABON 138,NO,True,True,3,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WDAJAF,DAJAO,WDJAOF,DAJAO,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WDESPF,DESPACHO,WDESPF,DESPACHO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WDISDF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WDJAOE,,,,,False,True,2,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WDJAOF,,,,,False,True,4,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WDPEDF,DON PEDRO,WDPEDF,DON PEDRO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WDRODF,DOMINGO RODRÍGUEZ,WDRODF,DOMINGO RODRIGUEZ,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WDRODK,DOMINGO RODRÍGUEZ 12.5,WDRODK,D. RODRIGUEZ 12.5 VIRTUAL,NO,True,True,2,12.5,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WDRODM,DOMINGO RODRÍGUEZ 4.16,WDRODL,D. RODRIGUEZ 4.16 VIRTUAL,SI,True,True,1,4.16,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WDURAF,DURALÓN,WDURAF,DURALON,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WDUVEF,DUVERGÉ,WDUVEF,DUVERGE,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WEABAF,EL ABANICO,WEABAF,EL ABANICO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WEBRIE,EL BRISAL,WEBRIE,EL BRISAL,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WECHIF,EL CHIVO,WECHIF,EL CHIVO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WELJIF,E LEÓN JIMÉNEZ,WELJIF,E LEON JIMENEZ,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WEM21K,TER EMD2 GRUPO 1,WEM21K,TER EMD2 GRUPO 1,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WEMA2E,,,,,False,True,2,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WEMA2F,ESTRELLA DEL MAR 2,WEMA2F,ESTRELLA DEL MAR 2,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WEMA3F,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WEMB2F,ESTRELLA DEL MAR 2 B,WEMB2F,ESTRELLA DEL MAR 2 B,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WEMB3F,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WEMBAE,EMBAJADOR,WEMBAE,EMBAJADOR,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WENADE,,,,,False,True,1,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WENE4E,,,,,False,True,2,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WEPINF,ELÍAS PIÑA,WEPINF,ELIAS PIÑA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WERIOF,EL RÍO,WERIOF,EL RIO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WESEIE,EL SEIBO,WESEIE,EL SEIBO,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WESM3F,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WESM3K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WESOCE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WESP1E,,,,,False,True,5,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WFALCE,FALCONDO 138,WFALCE,FALCONDO 138,NO,True,True,2,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WFALCF,FALCONDO 69,WFALCF,FALCONDO 69,NO,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WFALCK,FALCONDO 34.5,WFALCK,FALCONDO 34.5,NO,True,True,6,34.5,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WFALCM,FALCONDO,WFALT3K,FALCONDO,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WFANTF,FANTINO,WFANTF,FANTINO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WFNEGF,FONDO NEGRO,WFNEGF,FONDO NEGRO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WFOCHF,FERRETERÍA OCHOA,WFOCHF,FERRETERIA OCHOA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WFOLAF,FERRETERÍA OCHOA LAS LAVAS,WFOLVF,FERRETERIA OCHOA LAS LAVAS,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGALAF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WGBOJF,GRANITOS BOJOS,WGBOJF,GRANITOS BOJOS,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGHACF,GRUPO HACHE,WGHACF,GRUPO HACHE,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGIRAE,,,,,False,True,4,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WGIRAK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WGMALF,GRUPO MALLA,WGMALF,GRUPO MALLA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGNLLE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WGNLLK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WGOYAF,GOYA,WGOYAF,GOYA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGPALF,GENERADORA PALAMARA,WGPALF,GENERADORA PALAMARA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGPETF,GRUPO PETROQUÍMICA,WGPETF,GRUPO PETROQUIMICA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGPLAF,GOMAS Y PLÁSTICOS,WGPLAF,GOMAS Y PLASTICOS,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGRCHF,GRUPO RAMOS CHARLES,WGRCHF,GRUPO RAMOS CHARLES,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGRSFF,GRUPO RAMOS SAN FRANCISCO DE MACORIS,WGRSFF,GRUPO RAMOS SFM,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGU1AD,,,,,False,True,5,,unresolved,low,e_datred,e_datred_only
+WGU1BD,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WGUA2F,GUANITO 2,WGUA2F,GUANITO 2,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGUANE,GUANITO 138,WGUANE,GUANITO 138 KV,NO,True,False,0,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WGUANF,GUANITO,WGUANF,GUANITO,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGUAVF,GUAVABERRY,WGUAVF,GUAVABERRY,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGUAYE,BARRA GUAYUBIN 138 KV,WGUAYE,BARRA GUAYUBIN 138 KV,NO,True,True,3,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WGUAYF,GUAYMATE,WGUAYF,GUAYMATE,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGUERD,,,,,False,True,4,138.0,topology_transformer_consensus,low,e_datred,e_datred_only
+WGUERE,,,,,False,True,10,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WGUERF,GUERRA,WGUERF,GUERRA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WGVEGF,GENERADORA LA VEGA,WGVEGF,LA VEGA GENERADORA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WHAIBF,HAINA B 69,WHAIBF,HAINA 69 B,NO,True,True,4,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WHAINE,HAINA 138,WHAINE,HAINA 138,NO,True,True,6,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WHAINF,HAINA 69,WHAINF,HAINA 69,NO,True,True,4,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WHAT2K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WHATIF,HATILLO,WHATIF,HATILLO,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WHATIK,TERMINAL HATILLO,WHATIK,TER HATILLO VIRTUAL,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WHENUF,HERRERA NUEVA,WHNVAF,HERRERA NUEVA,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WHERRE,HERRERA 138,WHERRE,HERRERA 138,NO,True,True,3,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WHGMOE,HIGUAMO,WHGMOE,HIGUAMO,NO,True,True,1,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WHGUEE,HIGUEY 138,WHIGUE,HIGUEY 138,SI,True,True,3,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WHIGUF,HIGUEY 69,WHIGUF,HIGUEY 69,NO,True,True,1,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WHJBOF,HOSPITAL JUAN BOSCH,WHJBOF,HOSPITAL JUAN BOSCH,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WHLINF,HOYO LIMA INDUSTRIAL,WHLINF,HOYO LIMA INDUSTRIAL,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WHMA2E,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WHMA2F,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WHMAYF,HATO MAYOR,WHMAYF,HATO MAYOR,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WHMSAF,HOSPITAL METROPOLITANO SANTIAGO,WHMSAF,HOSPITAL MET STGO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WHNACF,HIELOS NACIONALES,WHNACF,HIELOS NACIONALES,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WHNS1E,HAINAMOSA 138 - BARRA 1,WHNS1E,HAINAMOSA 138,NO,True,True,14,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WHNS1F,HAINAMOSA 69 - BARRA 1,WHNS1F,HAINAMOSA 69,NO,True,True,4,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WHNUEF,HATO NUEVO,WHNUEF,HATO NUEVO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WIAANE,INTERCONEXIÓN AES ANDRÉS,WAAINE,AES ANDRÉS INTERCONEXIÓN,SI,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WIBARF,INGENIO BARAHONA,WIBARF,INGENIO BARAHONA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WICAEF,INGENIO CAEI,WICAEF,INGENIO CAEI,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WICNAF,INCARNA,WICNAF,INCARNA,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WIDALF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WIGASE,ITABO GAS,WITAGE,ITABO TG,SI,True,True,5,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WIISAF,INCA ISABELA,WIISAF,INCA ISABELA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WIMB2F,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WIMBEF,IMBERT,WIMBEF,IMBERT,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WINCAF,INCA,WINCAF,INCA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WINCAK,INCA 12.5,WINCAK,INCA 12.5,NO,True,True,1,12.5,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WINVBF,INVIVIENDA T1,WINVBF,INVIVIENDA T1 (LADO VILLA DUARTE),NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WINVIF,INVIVIENDA T2,WINVIF,INVIVIENDA T2 (LADO HAINAMOSA),NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WIPSIF,INDUSTRIA PAPEL SIDO,WIPSIF,INDUSTRIA PAPEL SIDO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WITA1E,ITABO 1,WITA1E,ITABO BARRA 1,NO,True,True,9,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WJARAF,JARABACOA,WJARAF,JARABACOA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WJDOLE,JUAN DOLIO,WJDOLE,JUAN DOLIO,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WJIBPE,,,,,False,True,1,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WJIGBE,JIGUEY B,WJIGBE,JIGUEY B,NO,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WJIGUE,JIGUEY,WJIGUE,JIGUEY,NO,True,True,4,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WJIMEF,JIMENOA,WJIMEF,JIMENOA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WJSAUD,JULIO SAURI 345,WJSA1D,JULIO SAURI 345 kV,SI,True,True,7,345.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WJSAUE,JULIO SAURI 138,WJSA1E,JULIO SAURI 138 kV,SI,True,True,10,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WKDMBF,KILOMETRO DIEZ Y MEDIO B,WKDMBF,KILOMETRO 10.5 B,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WKDMEF,KILOMETRO DIEZ Y MEDIO,WKDMEF,KILOMETRO 10.5,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WKINDF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WKQA1F,KILOMETRO QUINCE DE AZUA 69,WKQA1F,KILOMETRO 15 AZUA 69,NO,True,True,5,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WKQAZE,KILOMETRO QUINCE DE AZUA,WKQAZE,KILOMETRO 15 DE AZUA,NO,True,True,15,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WKVEIF,KILOMETRO VEINTICUATRO,WKVENF,KILOMETRO 24,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLALFF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WLANGE,LÓPEZ ANGOSTURA,WLANGE,LOPEZ ANGOSTURA,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLBARF,LAS BARIAS,WLBARK,LAS BARIAS,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLCALF,LA CALETA,WLCALF,LA CALETA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLCBOF,LA CUMBRE BONAO,WLCBOF,LA CUMBRE BONAO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLCOCK,BARRA JUANCHO LOS COCOS 34.5 kV,WLCOCK,BARRA JUANCHO LOS COCOS 34.5 kV,NO,True,True,1,34.5,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WLCUAF,LA CUARENTA,WLCUAF,LA CUARENTA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLDAMF,LAS DAMAS,WLDAMF,LAS DAMAS,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLDAMK,LAS DAMAS,WLDAMK,LAS DAMAS,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WLDIAF,LISTÍN DIARIO,WLDIAF,LISTIN DIARIO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLGALE,LA GALLERA,WLGALE,LA GALLERA,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLGU2K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WLGUZE,,,,,False,True,4,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WLGUZK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WLISAE,LA ISABELA 138,WLISAE,LA ISABELA 138kV,NO,True,True,2,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WLLAGF,LAS LAGUNAS,WLLAGF,LAS LAGUNAS,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLMFAF,LAS MATAS DE FARFÁN,WLMFAF,LAS MATAS DE FARFAN,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLMI5E,LOS MINA 5,WLMI5E,LOS MINA 5,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLMI6E,LOS MINA 6,WLMI6E,LOS MINA 6,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLMI7E,LOS MINA 7,WLMI7E,LOS MINA 7,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLMI7K,LOS MINA 7 13.5,WLMI7K,LOS MINA 7 13.5,NO,True,True,1,13.5,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WLMINE,LOS MINA 138,WLMINE,LOS MINA 138,NO,True,True,9,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WLMINF,LOS MINA 69,WLMINF,LOS MINA 69,NO,True,True,4,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WLORIE,LOS ORÍGENES,WLORIE,LOS ORIGENES,NO,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLORIK,LOS ORIGENES  12.47,WLORIK,LOS ORIGENES  12.47,NO,True,True,1,12.47,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WLPARF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WLPENF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WLPRAE,LOS PRADOS,WLPRAE,LOS PRADOS,NO,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLROME,LA ROMANA 138,WLROME,LA ROMANA 138,NO,True,True,7,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WLROMF,LA ROMANA 69,WLROMF,LA ROMANA 69,NO,True,True,4,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WLRPUF,LA ROMANA PUEBLO,WLRMAF,LA ROMANA PUEBLO,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLTORF,LOS TOROS,WLTORF,LOS TOROS,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLUCIF,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WLUPEF,LUPERÓN,WLUPEF,LUPERON,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLVEGF,LA VEGA,WLVEGF,LA VEGA,NO,True,True,5,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WLVICE,,,,,False,True,2,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WLVICK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WLVPEF,LA VEGA PER,WLVPEF,LA VEGA PER,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMAGUF,MAGUEYAL,WMAGUF,MAGUEYAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMAIMF,MAIMÓN,WMAIMF,MAIMON,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMARAF,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WMARAK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WMARTF,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WMARTK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WMAT1E,,,,,False,True,4,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WMATAE,MATADERO 138,WMATAE,MATADERO 138,NO,True,True,4,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WMATBE,MATADERO B,WMATBE,MATADERO B,NO,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMEGAF,MEGACENTRO,WMEGAF,MEGACENTRO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMERCF,MERCASID,WMERCF,MERCASID,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMETAE,METALDOM 138,WMETAE,METALDOM 138,NO,True,True,2,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WMETAK,METALDOM,WMETAK,METALDOM,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WMETBF,METROPOLITANO B,WMETBF,METROPOLITANO B,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMETEE,,,,,False,True,2,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WMETEF,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WMETRE,METROPOLITANO 138,WMETRE,METROPOLITANO 138,NO,True,True,4,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WMETRF,METROPOLITANO,WMETRF,METROPOLITANO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMIR1E,,,,,False,True,5,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WMIRAK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WMLTPF,MULTIPARQUES,WMLTPF,MULTIPARQUES,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMOCAE,MOCA 138,WMOCAE,MOCA 138,NO,True,True,2,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WMOCAF,MOCA,WMOCAF,MOCA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMONCE,MONCION,WMONCE,MONCION,NO,True,True,4,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMONTE,MONTECRISTI,WMONTE,MONTECRISTI,NO,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMOZAF,MOLINOS DEL OZAMA,WMOZAF,MOLINOS DEL OZAMA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMP2AE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WMP2BE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WMPALF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WMPALK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WMPL1D,,,,,False,True,2,,unresolved,low,e_datred,e_datred_only
+WMPL2D,,,,,False,True,3,,unresolved,low,e_datred,e_datred_only
+WMPLAF,MONTE PLATA,WMPLAF,MONTE PLATA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMPSOE,MONTE PLATA SOLAR,WMPSOF,MONTE PLATA SOLAR,SI,True,False,0,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMPSOF,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WMPSOK,TERMINAL MONTE PLATA SOLAR,WMPSOK,TERMINAL MONTE PLATA SOLAR,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WMRI2E,MONTE RÍO,WMRI2E,MONTE RIO,NO,True,True,4,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMTFNE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WMTFNK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WMULTF,MULTIFORM,WMULTF,MULTIFORM,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMVCIF,MOLINOS VALLE CIBAO,WMVCIF,MOLINOS VALLE CIBAO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WMVIEF,MADRE VIEJA,WMVIEF,MADRE VIEJA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WNAG2E,NAGUA 2 138,WNAG2E,NAGUA 2 138,NO,True,True,7,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WNAG2F,NAGUA 2 69,WNAG2F,NAGUA 2 69,NO,True,True,5,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WNAGUF,NAGUA,WNAGUF,NAGUA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WNARAD,NARANJO 345 kV,WNAR1D,NARANJO 345 kV,SI,True,True,6,345.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WNARAE,NARANJO 138 kV,WNAR1E,NARANJO 138 kV,SI,True,True,10,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WNAV2E,NAVARRETE 2,WNAV2E,NAVARRETE 2,NO,True,True,6,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WNAVAF,NAVARRETE,WNAVAF,NAVARRETE,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WNEYBF,NEYBA,WNEYBF,NEYBA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WNIBAE,NIBAJE 138,WNIBAE,NIBAJE 138,NO,True,True,2,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WNOVOF,NOVOPLAST,WNOVOF,NOVOPLAST,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WOFALF,OLEODUCTO FALCONBRID,WOFALF,OLEODUCTO FALCONBRID,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WOJIVF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WPAK0E,,,,,False,True,2,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPAK2E,,,,,False,True,5,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPAK5E,,,,,False,True,2,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPAK6E,,,,,False,True,2,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPAL1E,PALAMARA 1,WPAL1E,BARRA 1 PALAMARA 138,NO,True,True,14,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPALAF,PALAMARA,WPALAF,PALAMARA 69 Kv,NO,True,True,7,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPALBE,DOMICEN,WPALBE,DOMICEN,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPALBF,PALAMARA B,WPALBF,PALAMARA 69 B,NO,True,True,5,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPALEE,PALENQUE 138 BARRA A,WPALEE,PALENQUE 138 BARRA A,NO,True,True,3,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPAQ1K,PALENQUE 4.2 - BARRA 1,WPAQ1K,PALENQUE BARRA 4.2 KV-1,NO,True,True,1,4.2,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPARAE,PARAISO,WPARAE,PARAISO,NO,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPAYAE,,,,,False,True,2,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPAYBE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPAYIF,PAYITA,WPAYIF,PAYITA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPBAJF,PASO BAJITO,WPBAJF,PASO BAJITO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPBBAE,PIEDRA BLANCA BARRA 138 KV,WPBLAE,PIEDRA BLANCA BARRA 138 KV,SI,True,False,0,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPBLAD,PIEDRA BLANCA 230 KV,WPBLAD,PIEDRA BLANCA 230 KV,NO,True,False,0,230.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPCA1K,BARRA LADO DE BAJA PUNTA CATALINA,WPCA1K,BARRA LADO DE BAJA PUNTA CATALINA,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WPCA2K,BARRA LADO DE BAJA PUNTA CATALINA 2,WPCA2K,BARRA LADO DE BAJA PUNTA CATALINA 2,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WPCATE,PUNTA CATALINA 138,WPCATE,PUNTA CATALINA 138,NO,True,True,2,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPCGLF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WPCIBF,PARQUE CIBERNÉTICO,WPCIBF,PARQUE CIBERNETICO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPDISF,PIZARRETE DISTRIBUCIÓN,WPIZDF,PIZARRETE DISTR,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPDIVF,PRODUCTOS DIVERSOS,WPDIVF,PRODUCTOS DIVERSOS,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPDORE,,,,,False,True,1,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPDORF,PLAYA DORADA,WPDORF,PLAYA DORADA,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPEBPE,,,,,False,True,1,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPERAE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPERBE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WPES1K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WPES2K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WPFLEF,PLÁSTICOS FLEXIBLES,WPFLEF,PLASTICOS FLEXIBLES,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPFMSK,BARRA PARQUE FOTOVOLTAICO MONTE CRISTI SOLAR 20 KV,WPFMSK,BARRA PARQUE FOTOVOLTAICO MONTE CRISTI SOLAR 20 KV,NO,True,True,1,20.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPGARF,PEDRO GARCIA,WPGARF,PEDRO GARCIA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPHAIF,PUERTO DE HAINA,WPHAIF,PUERTO DE HAINA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPIDUF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WPIISF,PIISA,WLAFZF,PIISA,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPIMCF,PIMCO,WPIMCF,PIMCO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPIMEE,PIMENTEL,WPIMEE,PIMENTEL,NO,True,True,6,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPIMEF,PIMENTEL,WPIMEF,PIMENTEL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPINAF,PINALITO,WPINAF,PINALITO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPIZAE,PIZARRETE 138,WPIZAE,PIZARRETE 138,NO,True,True,13,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPIZAF,PIZARRETE 69,WPIZAF,PIZARRETE 69,NO,True,True,5,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPIZBF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WPLASF,PLASTIFAR,WPLASF,PLASTIFAR,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPLCCF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WPLINF,PRODUCTOS LINDA,WPLINF,PRODUCTOS LINDA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPLM1E,PALOMINO 1,WPLM1E,PALOMINO B1 138,NO,True,True,4,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPLM1K,PALOMINO G1 13.8,WPLM1K,PALOMINO G1 13.8,NO,True,True,1,13.8,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPLM2K,PALOMINO G2 13.8,WPLM2K,PALOMINO G2 13.8,NO,True,True,1,13.8,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPP22E,PUERTO PLATA 2 138 - BARRA 2,WPP22E,PUERTO PLATA 2 138,NO,True,True,7,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPPELF,PPE PLAYA DORADA,WPPELF,PPE PLAYA DORADA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPPL2F,PUERTO PLATA 2 69,WPPL2F,PUERTO PLATA 2 69,NO,True,True,3,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPPLAF,PUERTO PLATA 69 - BARRA A,WPPLAF,PUERTO PLATA 69,NO,True,True,4,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPPLBF,PUERTO PLATA 69 B,WPPLBF,PUERTO PLATA 69 B,NO,True,True,1,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WPPLIF,PORTELA PASTA LINDA,WPPLIF,PORTELA PASTA LINDA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPPRIF,PASTAS PRINCESA,WPPRIF,PASTAS PRINCESA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WPSCEF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WPSESK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WPVIEE,PUEBLO VIEJO,WPVDCD,PUEBLO VIEJO,SI,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WQ1SPK,BARRA 13.8 KV QUISQUEYA 1 SAN PEDRO,WQ1SPK,BARRA 13.8 KV QUISQUEYA 1 SAN PEDRO,NO,True,True,2,13.8,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WQCORF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WQU11D,SE QUISQUEYA LADO G QUISQUEYA 1 BARRA 1 230KV,WQU11D,SE QUISQUEYA LADO G QUISQUEYA 1 BARRA 1 230KV,NO,True,True,3,230.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WQU12K,SE QUISQUEYA LADO G QUISQUEYA 1 GRUPOS MOTORES,WQU12K,SE QUISQUEYA LADO G QUISQUEYA 1 GRUPOS MOTORES,NO,True,True,2,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WQU21D,SE QUISQUEYA LADO G QUISQUEYA 2 BARRA 1 230KV,WQU21D,SE QUISQUEYA LADO G QUISQUEYA 2 BARRA 1 230KV,NO,True,True,3,230.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WQU21K,SE QUISQUEYA LADO G QUISQUEYA 2 GRUPOS MOTORES,WQU21K,SE QUISQUEYA LADO G QUISQUEYA 2 GRUPOS MOTORES,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WQUINF,QUINIGUA,WQUINF,QUINIGUA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WQUISD,BARRA QUISQUEYA 230 KV,WQUISD,BARRA QUISQUEYA 230 KV,NO,True,True,1,230.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WQUISE,BARRA QUISQUEYA 138 KV,WQUISE,BARRA QUISQUEYA 138 KV,NO,True,False,0,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WRARRF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WRBL1K,RÍO BLANCO 1,WRBL1K,RIO BLANCO 1,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WRBL2K,RÍO BLANCO 2,WRBL2K,RIO BLANCO 2 VIRTUAL,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WRBLAF,RÍO BLANCO,WRBLAF,RIO BLANCO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WRCHAF,RÍO CHAVÓN,WRCHAF,RIO CHAVON,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WREFIF,REFIDOMSA,WREFIF,REFIDOMSA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WRINCF,RINCÓN,WRINCF,RINCON,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WRNUEF,RINCÓN NUEVA,WRNUEF,RINCON NUEVA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WRPELF,RANCHO PELIGRO,WRPELF,RANCHO PELIGRO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WRSJUE,RÍO SAN JUAN,WRSJUF,RIO SAN JUAN 69kV,SI,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WRZMOK,RETIRO ZONA MONCIÓN,WZMONK,RETIRO ZONA MONCION,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WSABAF,SABANETA,WSABAF,SABANETA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSAJ1E,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WSALCE,SALCEDO,WSALCE,SALCEDO,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSALIF,SALINAS 69 KV,WSALIF,SALINAS 69 KV,NO,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSAMAE,SAMANA 138KV,WSAMAE,SAMANA 138KV,NO,True,True,1,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSANCE,SÁNCHEZ 138,WSANCE,SANCHEZ 138 KV,NO,True,True,2,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSANTE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WSANTK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WSCANF,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WSCANK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WSCNOE,SAN CRISTOBAL NORTE,WSCNOE,SAN CRISTOBAL NORTE,NO,True,True,4,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSESTE,SULTANA DEL ESTE,WSESTE,SULTANA,NO,True,True,3,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSFELE,SAN FELIPE 138,WSFELE,SAN FELIPE 138 KV,NO,True,True,3,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSFMAE,SAN FRANCISCO DE MACORÍS,WSFMAE,SFM 138 KV,NO,True,True,3,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSFMAF,SAN FRANCISCO DE MACORÍS,WSFMAF,SFM 69 KV,NO,True,True,4,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSIBBE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WSJMAF,SAN JOSÉ DE LA MATAS,WSJMAF,SAN JOSE DE LA MATAS,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSJOCF,SAN JOSÉ DE OCOA,WSJOCF,SAN JOSE DE OCOA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSJU2E,SAN JUAN 2 138 KV,WSJU2E,SAN JUAN 2 138 KV,NO,True,True,4,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSJU2F,SAN JUAN 2 69,WSJU2F,SAN JUAN 2,NO,True,True,5,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSJUAF,SAN JUAN 1 69,WSJUAF,SAN JUAN 69 KV,NO,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSKAPF,SMURFIT KAPPA,WRIERF,SMURFIT KAPPA,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSLCOE,SE LOS COCOS 138,WLCOCE,SE LOS COCOS 138,SI,True,True,5,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSLORK,SAN LORENZO 13.8,WSLORK,SAN LORENZO 13.8,NO,True,True,1,13.8,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSMARF,SABANA DE LA MAR,WSMARF,SABANA DE LA MAR,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSODOF,SODOCAL,WSODOF,SODOCAL,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSOSUF,SOSUA,WSOSUF,SOSUA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSPB1K,TERMINAL SAN PEDRO BIOENERGY,WSPB1K,TERMINAL SAN PEDRO BIOENERGY,NO,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WSPBEE,SAN PEDRO BIO-ENERGY,WSPBEE,SAN PEDRO BIO-ENERGY,NO,True,True,4,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSPERF,SABANA PERDIDA,WSPERF,SABANA PERDIDA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSPEVF,SAN PEDRO VAPOR,WSPEVF,SAN PEDRO VAPOR,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSPM2E,SAN PEDRO DE MACORIS 2,WSPM2E,SPM  2,NO,True,True,14,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSPMAE,SAN PEDRO DE MACORIS,WSPMAE,SPM 138 KV,NO,True,True,4,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSPMAF,SAN PEDRO DE MACORÍS,WSPMAF,SPM 69 KV,NO,True,True,5,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSPMBE,SAN PEDRO DE MACORIS B,WSPMBE,SPM B 138 KV,NO,True,True,6,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WSPRIF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WSRODE,SANTIAGO RODRÍGUEZ,WSRODE,SANTIAGO RODRIGUEZ,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSYASF,SABANETA DE YASICA,WSYASF,SABANETA DE YASICA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WSYEGF,SABANA YEGUA,WSYEGF,SABANA YEGUA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTAAGK,TERMINAL AES ANDRES TURBINA DE GAS,WAANGK,TER AES ANDRES GAS VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTAAVK,TERMINAL AES ANDRES TURBINA DE VAPOR,WAANVK,TER AES ANDRES VA VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTAG1K,TERMINAL AGUACATE 1,WAGU1K,TER AGUACATE 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTAG2K,TERMINAL AGUACATE 2,WAGU2K,TER AGUACATE 2 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTAMAF,TAMARINDO,WTAMAF,TAMARINDO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTANOK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WTAV1K,TERMINAL ANIANA VARGAS 1,WAVA1K,TER VARGAS 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTAVBE,TAVERA B,WTAVBE,TAVERA B,NO,True,True,7,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTBA1K,TERMINAL BAIGUAQUE 1,WBAI1K,TER BAIGUAQUE 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTBA2K,TERMINAL BAIGUAQUE 2,WBAI2K,TER BAIGUAQUE 2 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTCE1K,TERMINAL COMPAÑIA ELECTRICA DE PUERTO PLATA 1,WCEP1K,TER CEPP1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTCE2K,TERMINAL COMPAÑIA ELECTRICA DE PUERTO PLATA 2,WCEP2K,TER CEPP2 VIRTUAL,SI,True,False,0,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTCEMK,TERMINAL CONTRA EMBALSE MONCIÓN,WCEMOK,TER CE MONCION VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTDAJK,TERMINAL DAJABÓN,WDAJAK,TER DAJABON VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTEMPF,TEMPLASTISA,WTEMPF,TEMPLASTISA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTESAK,TERMINAL EL SALTO,WESALK,TER EL SALTO,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTFA1K,TERMINAL FALCON 1,WFAL1K,TER FALCON 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTFA2K,TERMINAL FALCON 2,WFAL2K,TER FALCON 3 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTFA3K,TERMINAL FALCON 3,WFAL3K,TER FALCON 3 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTHAGK,TERMINAL HAINA GAS,WHAIGK,TER HAINA TG VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTHAIF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WTIM2E,TIMBEQUE 2,WTIM2E,TIMBEQUE 2 138,NO,True,True,5,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WTIM2F,TIMBEQUE 2,WTIM2F,TIMBEQUE 2 69,NO,True,True,4,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WTIMBF,TIMBEQUE,WTIMBF,TIMBEQUE,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTIREF,TIREO,WTIREF,TIREO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTIT1K,TERMINAL ITABO 1,WITA1K,TER ITABO 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTIT2K,TERMINAL ITABO 2,WITA2K,TER ITABO 2 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTJI1K,TERMIAL JIGUEY 1,WJIG1K,TER JIGUEY 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTJI2K,TERMINAL JIGUEY 2,WJIG2K,TER JIGUEY 2 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTJIMK,TERMINAL JIMENOA,WJIMEK,TER JIMENOA VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTLANK,TERMINAL LÓPEZ ANGOSTURA,WLANGK,TER LOPEZ ANGOSTURA VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTMAGK,TERMINAL MAGUEYAL,WMAGUK,TER MAGUEYAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTMBBF,TIMBEQUE B,WTMBBF,TIMBEQUE B,NO,True,True,5,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTMI5K,TERMINAL LOS MINA 5,WLMI5K,TER LOS MINA 5,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTMI6K,TERMINAL LOS MINA 6,WLMI6K,TER LOS MINA 6,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTMNTK,TERMINAL MONTECRISTI,WMONTK,TER MONTECRISTI VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTMONK,TERMINAL MONCIÓN,WMONCK,TER MONCION VIRTUAL,SI,True,True,4,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTMR1K,TERMINAL MONTE RÍO 1,WMRI1K,TER MONTERIO 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTMR2K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WTNNAK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WTORGF,TORGINOL,WTORGF,TORGINOL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTPA1K,TERMINAL PALAMARA 1,WPAL1K,TER PALAMARA 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTPG1K,TERMINAL PIMENTEL GRUPO 1,WPIM1K,TER PIMENTEL GRUPO 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTPG2K,TERMINAL PIMENTEL GRUPO 2,WPIM2K,TER PIMENTEL GRUPO 2 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTPG3K,TERMINAL PIMENTEL GRUPO 3,WPIM3K,TER PIMENTEL GRUPO 3 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTPI1K,TERMINAL PINALITO 1,WPIN1K,TER PINALITO 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTPI2K,TERMINAL PINALITO 2,WPIN2K,TER  PINALITO 2 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTRINK,TERMINAL RINCÓN,WRINCK,TER RINCON,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTRJCK,TERMINAL ROSA JULIA CRUZ,WRJCRK,TERM ROSA JULIA CRUZ VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTROQF,TROQUEDOM,WTROQF,TROQUEDOM,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTSABK,TERMINAL SABANETA,WSABAK,TER SABANETA,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTSE1K,TERMINAL SULTANA DEL ESTE 1,WSES1K,TERMINAL SULTANA DEL ESTE 1,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTSFVK,TERMINAL SAN  FELIPE VAPOR,WSFEVK,TER SFELIP VA VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTSPVK,TERMINAL SAN PEDRO VAPOR,WSPEVK,TERMINAL SAN PEDRO VAPOR,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTSYEK,TERMINAL SABANA YEGUA,WSYEGK,TER SABANA YEGUA VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTTA1K,TERMINAL TAVERA 1,WTAV1K,TER TAVERA 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTTA2K,TERMINAL TAVERA 2,WTAV2K,TER TAVERA 2 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTTITF,TEXTILES TITÁN,WTTITF,TEXTILES TITÁN,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WTTO1K,TERMINAL LOS TOROS 1,WLTO1K,TER LOS TOROS 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTVA1K,TERMINAL VALDESIA 1,WVAL1K,TER VALDESIA 1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTVA2K,TERMINAL VALDESIA 2,WVAL2K,TER VALDESIA 2 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTVE1K,TERMINAL LA VEGA  1,WLVE1K,TER LA VEGA  1 VIRTUAL,SI,True,True,1,,unresolved,low,MAPEO TODAS LAS BARRAS,mapping
+WTZFPF,TERMINAL ZONA FRANCA PISANO,WZPISF,TER ZF PISANO VIRTUAL,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WUASDE,UASD 138,WUASDE,UASD 138,NO,True,True,3,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WUMEDF,UNION MEDICA,WUMEDF,UNION MEDICA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WVALBE,VALDESIA B,WVALBE,VALDESIA B,NO,True,True,4,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WVALDE,VALDESIA,WVALDE,VALDESIA,NO,True,True,7,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WVALLF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WVALTF,VILLA ALTAGRACIA,WVALTF,VILLA ALTAGRACIA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WVDU1E,VILLA DUARTE 138 BARRA 1,WVDU1E,VILLA DUARTE 138,NO,True,True,5,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WVDUAF,VILLA DUARTE 69,WVDU1F,VILLA DUARTE 69,SI,True,True,4,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WVILAE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WVILLF,VILLARPANDO,WVILLF,VILLARPANDO,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WVMAOE,VALVERDE MAO,WVMAOE,VALVERDE MAO,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WVMELE,VILLA MELLA,WVMELE,VILLA MELLA,NO,True,True,2,138.0,suffix_E_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WVNOBF,VICENTE NOBLE,WVNOBF,VICENTE NOBLE,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WVOLGF,VILLA OLGA,WVOLGF,VILLA OLGA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WX1PAK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXABIF,TAP ARROZ BISONO,WXABIF,TAP ARROZ BISONO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXABRF,TAP AEROPUERTO BARAHONA,WXABRF,TAP AEROPUERTO BARAHONA,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXAD2F,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXADOF,TAP ALAMBRRES DOMINICANOS,WXADOF,TAP ALAMBR DOMINICAN,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXAHGF,TAP AEROPUERTO HIGUERO,WXAHGF,TAP AEROPUERTO HIGUERO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXAHMF,TAP ACUEDUCTO HERMANAS MIRABAL,WXAHMF,TAP ACUEDUCTO HERMANAS MIRABAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXAISF,TAP ACDUCTO INAPA SAN CRISTOBAL,WXAISF,TAP AEROPUERTO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXALDF,TAP ALUMINIOS DOMINICANOS,WXALDF,TAP ALDOM VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXALIF,TAP ACUEDUCTO LA ISABELA,WXALIF,TAP ACU LA ISABELA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXAORF,TAP ACUEDUCTO ORIENT,WXAORF,TAP ACUEDUCTO ORIENT,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXAPFF,TAP ARTICULOS PIEL FAVORITOS,WXAPFF,TAP ARTICULOS PIEL FAVORITOS,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXAPPF,TAP AEROPUERTO DE PUERTO PLATA,WXAPPF,TAP AEROPUERTO DE PUERTO PLATA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXAQUF,TAP ACUEDUCTO QUINIGUA,WXEBQF,2611 TEBQU/TAP ESTAC VIRTUAL,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXARDF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXASOF,TAP ACUEDUCTO SOSUA,WXASOF,TAP ACUEDUCT SOSUA VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXBA1F,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXBA2F,TAP BAYONA,WXBA2F,TAP BAYONA,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXBASF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXBAYF,TAP BAYONA,WXBAYF,TAP BAYONA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXBDEF,TAP BRAZO DERECHO,WXBDEF,TAP BRAZO DERECHO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXBLEF,TAP BATEY LECHUGA,WXBLEF,TAP BATEY LECHUGA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXBMAF,TAP BANI MATADERO,WXBMAF,TAP BANI MATADERO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXBOHF,TAP BOHEMIA,WXBOHF,TAP BOHEMIA VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXBPEF,TAP BONAO PER,WXBPEF,TAP BONAO PER,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCA1K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXCABF,TAP CABAYONA,WXCABF,TAP CABAYONA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCANF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXCARF,TAP CARREFOUR,WXCARF,TAP CARREFOUR VIRTUAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCATF,TAP CATALINA,WXCATF,TAP CATALINA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCB2F,TAP CAASD BAYONA 2,WXCB2F,TAP CAASD BAYONA 2 VIRTUAL,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCBAF,TAP CAASD BAYONA 1,WXCBAF,TAP CAASD BAYONA VIRTUAL,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCC1E,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WXCC3E,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WXCCOF,TAP CEMENTO COLON,WXCCOF,TAP CEMENTO COLON,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCDAF,TAP CAMP 16  AGOSTO,WXCDAF,TAP CAMP 16  AGOSTO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCDLF,TAP CODAL,WXCDLF,TAP CODAL VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCENF,TAP CENOVI,WXCENF,TAP CENOVI,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCHAF,TAP CHAVÓN,WXCHAF,TAP CHAVON VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCIGF,TAP CÉSAR IGLESIAS,WXCIGF,TAP CESAR IGLESIAS VIRTUAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCINF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXCNAF,TAP CEMENTOS NACACIONALES,WXCNAF,TAP CEMENTOS NAC VIRTUAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCOCF,TAP CRUCE DE OCOA,WXCOCF,TAP CRUCE DE OCOA,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCODF,TAP CODETEL,WXCODF,TAP CODETEL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCORF,Tap CORMIDOM,WXCORF,Tap CORMIDOM,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCSAF,TAP CIUDAD SATELITE,WXCSAF,TAP CIUDAD SATELITE,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCTAF,TAP CRUCE TAVERA,WXCTAF,TAP CRUCE TAVERA VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXCU1K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXCU2K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXCU4K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXDBRF,TAP DESTILERÍA BRUGAL,WXDBRF,TAP DESTILERI BRUGAL VIRTUAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXDISF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXDROF,TAP DOMINGO RODRÍGUEZ,WXDROF,TAP DOMINGO RODRIGUE,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXDURF,TAP DURALÓN,WXDURF,TAP DURALON,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXEANF,ENVASES ANTILLANOS,WXEANF,ENVASES ANTILLANO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXECHF,TAP EL CHIVO,WXECHF,TAP EL CHIVO,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXES2K,,,,,False,True,3,,unresolved,low,e_datred,e_datred_only
+WXES3K,,,,,False,True,2,,unresolved,low,e_datred,e_datred_only
+WXESPF,TAP ESPERANZA,WXESPF,TAP ESPERANZA VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXEV4K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXGALF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXGAVF,TAP GUAVABERRY,WXGAVF,TAP GUAVABERRY VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXGBOF,TAP GRANITOS BOJOS,WXGBOF,TAP GRANITOS BOJOS,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXGOYF,TAP GOYA,WXGOYF,TAP GOYA,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXGPLF,TAP GOMAS Y PLASTICO,WXGPLF,TAP GOMAS Y PLASTICO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXGRCF,TAP GRUPO RAMOS CHARLES,WXGRCF,TAP GRUPO RAMOS CHAR,NO,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXGRMF,GRUPO RAMOS MELLA,WXGRMF,GRUPO RAMOS MELLA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXGRSF,TAP GRUPO RAMOS,WXGRSF,TAP GRUPO RAMOS,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXGU2F,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXHACF,TAP HACHE,WXHACF,TAP HACHE VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXHE1F,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXHE2F,TAP 2 HERRERA,WXHE2F,TAP HERRERA 2 VIRTUAL,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXHHIF,TAP HARINAS DEL HIGUAMO,WHHIGF,TAP HARINAS DEL HIGU,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXHJBF,TAP HOSPITAL JUAN BOSH,WXHJBF,TAP HOSP JUAN BOSH,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXHMSF,TAP HOSPITAL METROPOLITANO SANTIAGO,WXHMSF,TAP HOSP METROP STGO,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXHNAF,TAP HIELOS NACIONALES,WXHNAF,TAP HIELOS NACIONALE,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXHNUF,TAP HATO NUEVO,WXHNUF,TAP HATO NUEVO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXIBAF,TAP INGENIO BARAHONA,WXIBAF,TAP INGENIO BARAHONA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXICAF,TAP INGENIO CAEI,WXICAF,TAP INGENIO CAEI,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXICNF,TAP INCARNA,WXICNF,TAP INCARNA,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXIDAF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXIDUF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXIISF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXIMBF,TAP IMBERT,WXIMBF,TAP IMBERT,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXINAF,TAP INDUSTRIAS NACIONALES,WXINAF,TAP INDUSTRIAS NAC VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXINDF,TAP INDUVECA,WXINDF,TAP INDUVECA VIRTUAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXINVF,TAP INVIVIENDA,WXINVF,TAP INVIVIENDA,NO,True,True,5,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXIPRF,TAP INTERAMERICANA PRODUCTOS,WXIPRF,TAP INTER PRODUCTS VIRTUAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXIPSF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXJIMF,TAP JIMENOA,WXJIMF,TAP JIMENOA,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXJINF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXKINF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXKVEF,TAP KILÓMETRO 24,WXKVEF,TAP KILOMETRO 24,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXLADF,TAP LADOM,WXLADF,TAP LADON,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXLALF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXLC1E,,,,,False,True,4,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WXLCAF,TAP LAS CALETAS,WXLCAF,TAP LAS CALETAS,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXLCBF,TAP LA CUMBRE BONAO,WXLCBF,TAP LA CUMBRE BONAO,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXLFAF,TAP LA FAMOSA,WXLFAF,TAP LA FAMOSA VIRTUAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXLPAF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXLPEF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXLUCK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXLULF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXLUPF,TAP LUPERON,WXLUPF,TAP LUPERON,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXMAGF,TAP MAGUEYAL,WXMAGF,TAP MAGUEYAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXMAIF,TAP MAIMÓN,WXMAIF,TAP MAIMON,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXMALF,TAP MALLA,WXMALF,TAP MALLA VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXMARF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXMATK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXMEGF,TAP MEGACENTRO,WXMEGF,TAP MEGACENTRO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXMETE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WXMETF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXMOZF,TAP MOLINOS OZAMA,WXMOLF,TAP MOLINOS OZAMA VIRTUAL,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXMPAF,,,,,False,True,4,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXMPGK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXMPSF,TAP MONTE PLATA SOLAR,WXMPSF,TAP MONTE PLATA SOLAR,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXMV2F,,,,,False,True,4,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXMVAF,TAP MOLINOS DEL VALLE,WXMVCF,TAP MOLINOS DE VALLE,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXNAGF,TAP NAGUA,WXNAGF,TAP NAGUA,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXNOVF,TAP NOVOPLAST,WXNOVF,TAP NOVOPLAST,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXOC2F,TAP 2 OCHOA,WXOC2F,TAP OCHOA 2 VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXOFAF,TAP OLEODUCTO FALCON,WXOFAF,TAP OLEODUCTO FALCON,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXOLVF,TAP OCHOA LAS LAVAS,WXOLVF,TAP OCHOA LAS LAVAS,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPA1K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXPA3K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXPA4K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXPC2F,TAP-2 PARQUE CIBERNE,WXPC2F,TAP-2 PARQUE CIBERNE,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPCGF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXPCIF,TAP PARQUE CIBERNÉTICO,WXPCIF,TAP PARQUE CIBERNET,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPETF,TAP PETROQUÍMICA,WXPETF,TAP PETROQUIMICA VIRTUAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPFLF,TAP PLÁSTICOS FLEXIBLES,WXPLAF,TAP PLASTI FLEXIBLES,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPFSK,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXPGAF,TAP PEDRO GARCÍA,WXPGAF,TAP PEDRO GARCIA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPGMF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXPHAF,TAP PUERTO DE HAINA,WXPHAF,TAP PUERTO DE HAINA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPI4K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXPIDF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXPINF,TAP PARQUE INDUSTRIAL,WXPICF,TAP PARQUE INDUSTR VIRTUAL,SI,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPLCF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXPPEF,TAP PUERTO PLATA ELECTRICIDAD,WXPPEF,TAP PUERTO PLATA ELECTRICIDAD,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPPLF,TAP PORTELA PASTA LINDA,WXPORF,TAP PORTE VIRTUAL,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPPRF,TAP PASTAS PRINCESA,WXPPRF,TAP PASTAS PRINCESA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXPS1K,,,,,False,True,2,,unresolved,low,e_datred,e_datred_only
+WXPY1K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXQAZF,TAP QUINCE DE AZUA,WXKQAF,TAP 15 DE AZUA,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXQCOF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXRARF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXRIEF,TAP RIERBA,WXRIEF,TAP RIERBA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXRINF,TAP RINCO,WXRINF,TAP RINCO,NO,True,True,4,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXSADF,TAP INTERQUIMICA VIRTUAL,WXSADF,TAP INTERQUIMICA VIRTUAL,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXSESE,,,,,False,True,3,138.0,suffix_E_default,medium,e_datred,e_datred_only
+WXSESF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXSI1K,,,,,False,True,2,,unresolved,low,e_datred,e_datred_only
+WXSODF,TAP SODOCAL,WXSODF,TAP SODOCAL,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXSOSF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXSPRF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXSYEF,TAP S. YEGUA,WXSYEF,TAP S. YEGUA,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXTAMF,TAP TAMARA,WXTAMF,TAP TAMARA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXTDAF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXTH1F,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXTH2F,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXTISF,,,,,False,True,2,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXTREFF,,,,,False,True,5,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXTROF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXTTIF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXVALF,TAP VILLA ALTAGRACIA,WXVALF,TAP VILLA ALTAGRACIA,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXVILF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXVL1K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXWC2K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXWC3K,,,,,False,True,1,,unresolved,low,e_datred,e_datred_only
+WXYAGF,TAP YAGUATE,WXYAGF,TAP YAGUATE,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXZAMF,TAP ZF LAS AMERICAS,WXZAMF,TAP ZF LAS AMERICAS,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXZFBF,TAP ZF BUENA VISTA,WXZBVF,TAP ZF BUENA VISTA VIRTUAL,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXZFHF,TAP ZF DE HAINAMOSA,WXZFHF,TAP ZF DE HAINAMOSA,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXZFNF,TAP ZF NIGUA,WXZNIF,TAP ZF NIGUA VIRTUAL,SI,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXZGUF,TAP ZF GURABO,WXZGUF,TAP ZF GURABO,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXZHAF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
+WXZISF,TAP ZF INDUSTRIAL SANTIAGO,WXZISF,TAP ZF INDUSTRIAL SANTIAGO,NO,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXZPPF,TAP ZF PUERTO PLATA,WXZPPF,TAP ZF PUERTO PLATA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WXZSPF,TAP ZF SPM,WXZSPF,TAP ZF SPM,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WYAGUF,YAGUATE,WYAGUF,YAGUATE,NO,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WYAMAF,YAMASA,WYAMAF,YAMASA,NO,True,True,3,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFALF,ZONA FRANCA LOS ALCARRIZOS,WZALCF,ZF LOS ALCARRIZOS,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFAMF,ZONA FRANCA LAS AMÉRICAS,WZAMEF,ZF LAS AMERICAS,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFBAF,ZONA FRANCA BARAHONA,WZBARF,ZF BARAHONA,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFDRF,ZONA FRANCA DOS RÍOS,WZDRIF,DOS RIOS,SI,True,True,2,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFESF,ZONA FRANCA ESPERANZA,WZESPF,ZF ESPERANZA,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFGIF,ZONA FRANCA GILDAN,WZGILF,ZF GILDAN,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFGUF,ZONA FRANCA GURABO,WZGURF,ZF GURABO,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFISF,ZF INDUSTRIAL SANTIAGO,WZISAF,LM INDUSTRIES,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFLIF,ZONA FRANCA LICEY 69,WZLICF,ZF LICEY 69 KV,SI,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WZFMCF,ZONA FRANCA MULTINODAL CAUCEDO,WZMCAF,ZF MULTINOD CAUCEDO,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFPPF,ZONA FRANCA PUERTO PLATA,WZPPLF,ZF PUERTO PLATA,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFS2F,ZONA FRANCA SAN PEDRO 2 69,WZSPCF,ZF SAN PEDRO 2 69KV,SI,True,True,1,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WZFSAE,ZONA FRANCA SANTIAGO 138,WZSA1E,ZF SANTIAGO 138 KV,SI,True,True,8,138.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WZFSAF,ZONA FRANCA SANTIAGO 69,WZSANF,ZF SANTIAGO 69 KV,SI,True,True,5,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WZFSFF,ZONA FRANCA SAN FRANCISCO,WZSFRF,ZF SAN FRANCISCO,SI,True,False,0,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFSIF,ZONA FRANCA SAN ISIDRO 69,WZSISF,ZF SAN ISIDRO 69 KV,SI,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WZFSPF,ZONA FRANCA SAN PEDRO 69,WZSPAF,ZF SAN PEDRO  69KV,SI,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WZFVAF,ZONA FRANCA VILLA ALTAGRACIA,WZVALF,ZF VILLA ALTAGRACIA,SI,True,True,1,69.0,suffix_F_default,medium,MAPEO TODAS LAS BARRAS,mapping
+WZFVEF,ZONA FRANCA LA VEGA 69,WZLVEF,ZF LA VEGA 69 KV,SI,True,True,2,69.0,name_explicit,high,MAPEO TODAS LAS BARRAS,mapping
+WZHAIF,,,,,False,True,1,69.0,suffix_F_default,medium,e_datred,e_datred_only
+ZXOJIF,,,,,False,True,3,69.0,suffix_F_default,medium,e_datred,e_datred_only
