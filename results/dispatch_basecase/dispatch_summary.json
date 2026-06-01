@@ -1,0 +1,62 @@
+{
+  "mode": "copperplate_single_snapshot",
+  "snapshot_id": "h_01",
+  "load_block_id": "h_01",
+  "total_load_mw": 3288.9039967111153,
+  "dispatched_total_mw": 3288.903996711115,
+  "unserved_load_mw": 0.0,
+  "total_available_mw": 4995.0191,
+  "spare_available_mw": 1706.1151032888856,
+  "dispatch_cost_variable": 9580521.544479787,
+  "weighted_average_cost": 2912.983034488162,
+  "dispatched_unit_count": 50,
+  "enabled_unit_count": 140,
+  "cost_fallback_unit_count": 33,
+  "technology_dispatch_mw": {
+    "1": 2561.953997,
+    "2": 192.7,
+    "3": 40.0,
+    "4": 494.25000000000006
+  },
+  "assumptions": [
+    "Se usa demanda agregada del bloque horario seleccionado.",
+    "Se usa disponibilidad del snapshot seleccionado.",
+    "No se aplican todavía restricciones de red ni flujo de potencia.",
+    "Los p_min de generadores se reportan, pero no se imponen en esta primera versión."
+  ],
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "counts": {
+      "generators": 140,
+      "generator_availability_rows": 3360,
+      "loads_rows": 6744,
+      "unique_loads": 281,
+      "buses": 717,
+      "branches": 846,
+      "snapshots": 24,
+      "load_blocks": 24,
+      "availability_generator_overlap": 140,
+      "generators_missing_cost": 33,
+      "generators_with_pmax_lt_pmin": 20,
+      "generators_with_missing_bus": 0
+    },
+    "warnings": [
+      {
+        "type": "generator_capacity_inconsistency",
+        "detail": "Hay unidades con pmax_mw < pmin_mw.",
+        "count": 20
+      },
+      {
+        "type": "missing_generator_cost",
+        "detail": "Hay unidades sin `cvp`; el despacho base les asigna un costo de respaldo muy alto.",
+        "count": 33
+      },
+      {
+        "type": "branch_impedance_units_pending",
+        "detail": "Las ramas existen, pero antes de un OPF de red hay que confirmar la conversión de impedancias de MODOM a PyPSA."
+      }
+    ],
+    "network_constraints_ready": true
+  }
+}
