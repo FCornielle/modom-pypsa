@@ -39,6 +39,33 @@ FUEL_COLORS = {
     "Otra": "#9b7fd4",
 }
 
+# Paleta por nivel de tensión (kV -> color) para las líneas del mapa.
+# Colores según la convención del SENI; el 138 kV va en naranja CLARO a propósito
+# para que una línea congestionada (roja y gruesa) se distinga con claridad.
+VOLT_COLORS = {
+    "LT 345 kV": "#0b6e36",            # verde oscuro
+    "LT 230 kV": "#4b0082",            # índigo / morado
+    "LT 138 kV": "#ff9e3d",            # naranja claro
+    "LT 69 kV": "#1414ff",             # azul
+    "LT o cable 34.5 kV": "#10c0d0",   # cian
+    "LT Fuera de servicio": "#9aa0a8", # gris
+}
+VOLT_ORDER = ["LT 345 kV", "LT 230 kV", "LT 138 kV", "LT 69 kV",
+              "LT o cable 34.5 kV", "LT Fuera de servicio"]
+CONGESTION_COLOR = "#e8001c"  # rojo para líneas congestionadas (>=90%)
+_VOLT_STD = [(345, "LT 345 kV"), (230, "LT 230 kV"), (138, "LT 138 kV"),
+             (69, "LT 69 kV"), (34.5, "LT o cable 34.5 kV")]
+
+
+def volt_bucket(kv: float | None) -> str:
+    """Asigna una tensión (kV) al nivel estándar más cercano del SENI."""
+    if kv is None or kv != kv:  # None o NaN
+        return "LT Fuera de servicio"
+    for std, label in _VOLT_STD:
+        if abs(float(kv) - std) < 0.7:
+            return label
+    return "LT Fuera de servicio"
+
 
 def _norm(text: str) -> str:
     out = unicodedata.normalize("NFKD", str(text)).encode("ascii", "ignore").decode()
@@ -99,8 +126,13 @@ def load_inputs(
         for r in generators.itertuples()
     }
     buses_full = _read(data_dir / "buses" / "buses.csv")
+
+    def _name(raw, bus_id) -> str:
+        s = "" if raw is None else str(raw).strip()
+        return s if s and s.lower() != "nan" else str(bus_id)
+
     name_by_bus = {
-        str(r.bus_id_modom): (str(r.bus_name).strip() or str(r.bus_id_modom))
+        str(r.bus_id_modom): _name(r.bus_name, r.bus_id_modom)
         for r in buses_full.itertuples()
     }
     coords = _read(external_dir / "buses_with_coords.csv")
@@ -109,9 +141,16 @@ def load_inputs(
     coords["lon"] = pd.to_numeric(coords["lon"], errors="coerce")
     coords = coords.dropna(subset=["lat", "lon"])
 
+    bcols = ["name", "bus0", "bus1", "v_nom_bus0_kv", "v_nom_bus1_kv"]
     lines = _read(data_dir / "pypsa_branch_components" / "lines_v1.csv")
     trafos = _read(data_dir / "pypsa_branch_components" / "transformers_v1.csv")
-    branches = pd.concat([lines[["name", "bus0", "bus1"]], trafos[["name", "bus0", "bus1"]]])
+    branches = pd.concat([lines[bcols], trafos[bcols]], ignore_index=True)
+    excl_path = data_dir / "pypsa_branch_components" / "excluded_branches_v1.csv"
+    excluded = (
+        _read(excl_path)
+        if excl_path.exists()
+        else pd.DataFrame(columns=["branch_id", "from_bus", "to_bus"])
+    )
 
     return {
         "gen": gen,
@@ -123,6 +162,7 @@ def load_inputs(
         "name_by_bus": name_by_bus,
         "coords": coords,
         "branches": branches,
+        "excluded": excluded,
     }
 
 
@@ -139,6 +179,7 @@ def build_figures(data: dict[str, object]):
 
     gen, load, prices = data["gen"], data["load"], data["prices"]
     loading, coords, branches = data["loading"], data["coords"], data["branches"]
+    excluded = data["excluded"]
     fuel_by_gen = data["fuel_by_gen"]
     name_by_bus = data["name_by_bus"]
 
@@ -212,29 +253,78 @@ def build_figures(data: dict[str, object]):
     load_map = load.loc[peak_snap]
     load_by_bus = {c.replace("load_", ""): load_map[c] for c in load.columns}
 
-    # aristas: segmentos normales vs congestionados (>=90% en la hora pico)
+    # aristas coloreadas por NIVEL DE TENSIÓN; hover con nombre largo + % de carga.
+    # Una traza por tensión (color por kV) con texto por segmento (hover por línea),
+    # y una capa roja/gruesa encima para las congestionadas (>=90%).
     load_peak_line = loading.loc[peak_snap]
-    norm_lat, norm_lon, cong_lat, cong_lon = [], [], [], []
+    groups: dict[str, dict[str, list]] = {}
+    cong = {"lat": [], "lon": [], "text": []}
     n_lines_drawn = 0
     for b in branches.itertuples():
-        if b.bus0 in coord and b.bus1 in coord:
-            la0, lo0 = coord[b.bus0]
-            la1, lo1 = coord[b.bus1]
-            n_lines_drawn += 1
-            congested = float(load_peak_line.get(b.name, 0) or 0) >= 0.9
-            (cong_lat if congested else norm_lat).extend([la0, la1, None])
-            (cong_lon if congested else norm_lon).extend([lo0, lo1, None])
+        if b.bus0 not in coord or b.bus1 not in coord:
+            continue
+        la0, lo0 = coord[b.bus0]
+        la1, lo1 = coord[b.bus1]
+        n_lines_drawn += 1
+        vals = [
+            v for v in (pd.to_numeric(b.v_nom_bus0_kv, errors="coerce"),
+                        pd.to_numeric(b.v_nom_bus1_kv, errors="coerce"))
+            if pd.notna(v)
+        ]
+        bucket = volt_bucket(max(vals) if vals else None)
+        pct = float(load_peak_line.get(b.name, 0) or 0) * 100
+        label = f"{line_label(b.name, name_by_bus)}<br>carga {pct:.0f}% del límite"
+        g = groups.setdefault(bucket, {"lat": [], "lon": [], "text": []})
+        g["lat"] += [la0, la1, None]
+        g["lon"] += [lo0, lo1, None]
+        g["text"] += [label, label, None]
+        if pct >= 90:
+            cong["lat"] += [la0, la1, None]
+            cong["lon"] += [lo0, lo1, None]
+            cong["text"] += [label, label, None]
+
+    # ramas excluidas del modelo v1 -> "Fuera de servicio" (gris, debajo de todo)
+    fs = {"lat": [], "lon": [], "text": []}
+    for e in excluded.itertuples():
+        a = str(getattr(e, "from_bus", "") or "").strip()
+        c = str(getattr(e, "to_bus", "") or "").strip()
+        if a in coord and c in coord:
+            (la0, lo0), (la1, lo1) = coord[a], coord[c]
+            lbl = f"{line_label(getattr(e, 'branch_id', ''), name_by_bus)}<br>fuera del modelo v1"
+            fs["lat"] += [la0, la1, None]
+            fs["lon"] += [lo0, lo1, None]
+            fs["text"] += [lbl, lbl, None]
 
     fig_map = go.Figure()
-    fig_map.add_trace(go.Scattermapbox(
-        lat=norm_lat, lon=norm_lon, mode="lines",
-        line=dict(width=1.6, color="rgba(120,200,255,0.55)"),
-        name="Líneas / transformadores", hoverinfo="skip"))
-    fig_map.add_trace(go.Scattermapbox(
-        lat=cong_lat, lon=cong_lon, mode="lines",
-        line=dict(width=3.5, color="#ff3b3b"),
-        name="Congestión ≥90%", hoverinfo="skip"))
+    # 1) fuera de servicio (fondo)
+    if fs["lat"]:
+        fig_map.add_trace(go.Scattermapbox(
+            lat=fs["lat"], lon=fs["lon"], mode="lines",
+            line=dict(width=1.2, color=VOLT_COLORS["LT Fuera de servicio"]),
+            name="LT Fuera de servicio", legendgroup="tension", legendrank=1006,
+            text=fs["text"], hovertemplate="%{text}<extra></extra>"))
+    # 2) líneas por tensión
+    for rank, bucket in enumerate(VOLT_ORDER):
+        if bucket == "LT Fuera de servicio" or bucket not in groups:
+            continue
+        g = groups[bucket]
+        fig_map.add_trace(go.Scattermapbox(
+            lat=g["lat"], lon=g["lon"], mode="lines",
+            line=dict(width=2.0, color=VOLT_COLORS[bucket]),
+            name=bucket, legendgroup="tension", legendrank=1000 + rank,
+            text=g["text"], hovertemplate="%{text}<extra></extra>"))
+    # 3) congestión (encima, roja y gruesa)
+    if cong["lat"]:
+        fig_map.add_trace(go.Scattermapbox(
+            lat=cong["lat"], lon=cong["lon"], mode="lines",
+            line=dict(width=4.5, color=CONGESTION_COLOR),
+            name="Congestión ≥90%", legendgroup="tension", legendrank=1007,
+            text=cong["text"], hovertemplate="%{text}<extra></extra>"))
 
+    src_by_bus = {
+        str(r.bus_id_modom): str(getattr(r, "coord_source", "") or "")
+        for r in coords.itertuples()
+    }
     blat, blon, bcolor, bsize, btext = [], [], [], [], []
     pcap = float(finite.stack().quantile(0.97)) if finite.stack().size else 1.0
     for bus_id, (la, lo) in coord.items():
@@ -244,19 +334,32 @@ def build_figures(data: dict[str, object]):
         bcolor.append(min(pr, pcap) if pr == pr else 0)
         bsize.append(6 + min(ld, 200) / 200 * 22)
         nm = name_by_bus.get(bus_id, bus_id)
+        approx = " · ubic. aprox." if src_by_bus.get(bus_id) == "inferred_topology" else ""
         btext.append(
-            f"<b>{nm}</b> ({bus_id})<br>precio: {pr:,.0f} RD$/MWh<br>carga: {ld:,.1f} MW"
+            f"<b>{nm}</b> ({bus_id}){approx}<br>precio: {pr:,.0f} RD$/MWh<br>carga: {ld:,.1f} MW"
         )
     fig_map.add_trace(go.Scattermapbox(
         lat=blat, lon=blon, mode="markers",
-        marker=dict(size=bsize, color=bcolor, colorscale="Turbo", cmin=0, cmax=pcap,
-                    colorbar=dict(title="RD$/MWh"), opacity=0.9),
-        text=btext, hovertemplate="%{text}<extra></extra>", name="Barras"))
+        marker=dict(
+            size=bsize, color=bcolor, colorscale="Turbo", cmin=0, cmax=pcap, opacity=0.9,
+            colorbar=dict(
+                title=dict(text="RD$/MWh", font=dict(color="#222")),
+                tickfont=dict(color="#222"), bgcolor="rgba(255,255,255,0.75)",
+                outlinewidth=0, thickness=14, len=0.6, x=0.99,
+            ),
+        ),
+        text=btext, hovertemplate="%{text}<extra></extra>", name="Barras (precio nodal)",
+        legendrank=1009))
     fig_map.update_layout(
-        title=f"Mapa SENI — precio nodal y congestión (hora pico {peak_snap})",
-        mapbox=dict(style="open-street-map", center=dict(lat=18.8, lon=-70.4), zoom=6.7),
-        template="plotly_dark", margin=dict(l=0, r=0, t=50, b=0), height=560,
-        legend=dict(orientation="h", y=0, x=0, bgcolor="rgba(0,0,0,0.4)"),
+        title=f"Mapa SENI — barras por precio nodal · líneas por tensión (hora pico {peak_snap})",
+        mapbox=dict(style="carto-positron", center=dict(lat=18.8, lon=-70.4), zoom=6.7),
+        template="plotly_dark", margin=dict(l=0, r=0, t=50, b=0), height=620,
+        legend=dict(
+            orientation="v", x=0.012, y=0.985, xanchor="left", yanchor="top",
+            bgcolor="rgba(255,255,255,0.92)", font=dict(color="#1a1a1a", size=11),
+            bordercolor="#c2c9d2", borderwidth=1,
+            title=dict(text="Leyenda", font=dict(color="#1a1a1a", size=12)),
+        ),
     )
 
     kpis = _kpis(data, total_load, mix, peak_snap)
@@ -268,6 +371,8 @@ def build_figures(data: dict[str, object]):
         "n_gen": len([c for c in gen.columns if not str(c).startswith("unserved")]),
         "n_buses": len(name_by_bus),
         "n_buses_geo": len(coords),
+        "n_coords_real": sum(1 for v in src_by_bus.values() if v == "smc_match"),
+        "n_coords_inferred": sum(1 for v in src_by_bus.values() if v == "inferred_topology"),
         "n_branches": len(branches),
         "n_lines_drawn": n_lines_drawn,
     }
@@ -291,8 +396,10 @@ def conditions_html(data: dict[str, object], stats: dict, mix, case_label: str) 
         f"{stats['n_gen']} generadores",
         f"<b>Energía servida / no suministrada:</b> {s.get('served_mwh', 0):,.0f} / "
         f"{s.get('unserved_mwh', 0):,.0f} MWh · aporte renovable ≈ {renew_share:.0f}%",
-        f"<b>Geolocalización:</b> {stats['n_buses_geo']} barras con coordenadas reales "
-        f"(puntos SMC del OC); {stats['n_lines_drawn']} ramas dibujadas en el mapa",
+        f"<b>Geolocalización:</b> {stats['n_buses_geo']} barras con coordenadas "
+        f"({stats.get('n_coords_real', 0)} reales del mapa SMC del OC + "
+        f"{stats.get('n_coords_inferred', 0)} aproximadas por topología); "
+        f"{stats['n_lines_drawn']} de {stats['n_branches']} ramas dibujadas en el mapa",
     ]
     supuestos = [
         "Despacho económico con red <b>LOPF lineal</b> (balance nodal + ley de "
@@ -395,9 +502,20 @@ def build_dashboard(
     mix = _fuel_mix(data["gen"], data["fuel_by_gen"])
     cond = conditions_html(data, stats, mix, case_label)
 
-    def div(fig) -> str:
-        return pio.to_html(fig, full_html=False, include_plotlyjs=False,
-                           config={"displayModeBar": False, "responsive": True})
+    def div(fig, config: dict | None = None) -> str:
+        cfg = {"displayModeBar": False, "responsive": True}
+        if config:
+            cfg.update(config)
+        return pio.to_html(fig, full_html=False, include_plotlyjs=False, config=cfg)
+
+    # El mapa se comporta como Google Maps: zoom con la rueda, arrastrar para mover,
+    # doble clic para acercar y barra con zoom/encuadre. Basemap OSM (open source).
+    map_config = {
+        "scrollZoom": True,
+        "displayModeBar": True,
+        "displaylogo": False,
+        "modeBarButtonsToRemove": ["lasso2d", "select2d", "toImage"],
+    }
 
     kpi_html = "".join(
         f'<div class="kpi"><div class="v">{v}</div><div class="l">{l}</div></div>'
@@ -407,7 +525,7 @@ def build_dashboard(
         plotly_js=get_plotlyjs(),
         gen_date=_dt.date.today().isoformat(),
         kpi_html=kpi_html,
-        map=div(figs["map"]), mix=div(figs["mix"]),
+        map=div(figs["map"], map_config), mix=div(figs["mix"]),
         price=div(figs["price"]), cong=div(figs["cong"]),
         conditions=cond,
     )

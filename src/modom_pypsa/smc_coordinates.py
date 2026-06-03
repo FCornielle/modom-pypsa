@@ -26,6 +26,7 @@ import csv
 import json
 import re
 import unicodedata
+from collections import defaultdict
 from pathlib import Path
 
 DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "processed"
@@ -144,6 +145,7 @@ def match_point(
 def join_coordinates(
     data_dir: Path = DEFAULT_DATA_DIR,
     oc_csv: Path = DEFAULT_OC_CSV,
+    propagate_rounds: int = 15,
 ) -> dict[str, object]:
     buses = read_csv(data_dir / "buses" / "buses.csv")
     generators = read_csv(data_dir / "generators" / "generators.csv")
@@ -216,6 +218,7 @@ def join_coordinates(
                 "bus_role": clean(b.get("bus_role")),
                 "lat": lat,
                 "lon": lon,
+                "coord_source": "smc_match" if lat != "" else "",
                 "oc_point_count": agg["n"] if agg else 0,
                 "match_method": agg["best_method"] if agg else "",
                 "match_score": agg["best_score"] if agg else "",
@@ -223,30 +226,93 @@ def join_coordinates(
             }
         )
 
-    buses_with_coords = sum(1 for r in bus_rows if r["lat"] != "")
+    n_smc = sum(1 for r in bus_rows if r["coord_source"] == "smc_match")
+    if propagate_rounds > 0:
+        propagate_topology(bus_rows, _branch_edges(data_dir), propagate_rounds)
+    n_total_coords = sum(1 for r in bus_rows if r["lat"] != "")
+
     summary = {
         "oc_points_total": len(oc_points),
         "oc_points_matched_exact": method_counts["exact"],
         "oc_points_matched_fuzzy": method_counts["fuzzy"],
         "oc_points_unmatched": method_counts["unmatched"],
         "buses_total": len(bus_rows),
-        "buses_with_coordinates": buses_with_coords,
-        "buses_without_coordinates": len(bus_rows) - buses_with_coords,
+        "buses_with_coordinates": n_total_coords,
+        "buses_coords_smc_match": n_smc,
+        "buses_coords_inferred_topology": n_total_coords - n_smc,
+        "buses_without_coordinates": len(bus_rows) - n_total_coords,
         "notes": [
             "El `punto` del OC se resuelve por nombre (exact/fuzzy) a una barra.",
             "Si varios puntos OC caen en la misma barra, lat/lon se promedian.",
-            "Un match `fuzzy` con score bajo debe auditarse antes de usarse en producción.",
+            "`coord_source=inferred_topology`: ubicación APROXIMADA (centroide de "
+            "vecinos en la red); solo para visualizar la malla, no es GPS real.",
         ],
     }
     return {"bus_rows": bus_rows, "point_rows": point_rows, "summary": summary}
+
+
+def _branch_edges(data_dir: Path) -> list[tuple[str, str]]:
+    """Aristas (bus0, bus1) de líneas + transformadores del modelo PyPSA v1."""
+    edges: list[tuple[str, str]] = []
+    base = data_dir / "pypsa_branch_components"
+    for fname in ("lines_v1.csv", "transformers_v1.csv"):
+        path = base / fname
+        if path.exists():
+            for r in read_csv(path):
+                a, b = clean(r.get("bus0")), clean(r.get("bus1"))
+                if a and b:
+                    edges.append((a, b))
+    return edges
+
+
+def propagate_topology(
+    bus_rows: list[dict[str, object]],
+    edges: list[tuple[str, str]],
+    rounds: int = 15,
+) -> None:
+    """Rellena coords faltantes con el centroide de vecinos ya ubicados.
+
+    Itera por la red: en cada ronda, una barra sin coordenada toma el promedio de
+    las coordenadas de sus vecinos conocidos; así la ubicación se propaga por el
+    troncal. Marca esas barras como `inferred_topology` (posición aproximada).
+    """
+    coord: dict[str, tuple[float, float]] = {}
+    for r in bus_rows:
+        if r["lat"] != "":
+            coord[r["bus_id_modom"]] = (float(r["lat"]), float(r["lon"]))
+    adj: dict[str, set[str]] = defaultdict(set)
+    for a, b in edges:
+        if a != b:
+            adj[a].add(b)
+            adj[b].add(a)
+    for _ in range(rounds):
+        new: dict[str, tuple[float, float]] = {}
+        for bus_id, neigh in adj.items():
+            if bus_id in coord:
+                continue
+            pts = [coord[n] for n in neigh if n in coord]
+            if pts:
+                new[bus_id] = (
+                    sum(p[0] for p in pts) / len(pts),
+                    sum(p[1] for p in pts) / len(pts),
+                )
+        if not new:
+            break
+        coord.update(new)
+    for r in bus_rows:
+        if r["lat"] == "" and r["bus_id_modom"] in coord:
+            la, lo = coord[r["bus_id_modom"]]
+            r["lat"], r["lon"] = round(la, 6), round(lo, 6)
+            r["coord_source"] = "inferred_topology"
 
 
 def export_coordinates(
     data_dir: Path = DEFAULT_DATA_DIR,
     oc_csv: Path = DEFAULT_OC_CSV,
     outdir: Path = DEFAULT_EXTERNAL_DIR,
+    propagate_rounds: int = 15,
 ) -> dict[str, object]:
-    payload = join_coordinates(data_dir, oc_csv)
+    payload = join_coordinates(data_dir, oc_csv, propagate_rounds)
     outdir.mkdir(parents=True, exist_ok=True)
 
     def write(path: Path, rows: list[dict[str, object]], fields: list[str]) -> None:
@@ -259,7 +325,7 @@ def export_coordinates(
         outdir / "buses_with_coords.csv",
         payload["bus_rows"],
         ["bus_id_modom", "bus_name", "v_nom_kv", "bus_role", "lat", "lon",
-         "oc_point_count", "match_method", "match_score", "oc_puntos"],
+         "coord_source", "oc_point_count", "match_method", "match_score", "oc_puntos"],
     )
     write(
         outdir / "smc_point_matches.csv",
