@@ -40,6 +40,10 @@ La reactancia se acota a un mínimo (`1e-5`) para que KVL sea resoluble.
 - `p_max_pu` por snapshot desde `generator_availability` (`available_mw / p_nom`).
 - `marginal_cost` = `effective_cvp` (con respaldo a `cvp` y luego un costo alto si
   ambos faltan).
+- **VRE (solar/eólico):** las unidades con perfil en `renewable_profiles` se capan
+  por el **pronóstico** (`forecast_mw`, ~0 de noche) en vez de la disponibilidad.
+  Esto evita el solar de madrugada: como su costo es ≈0, con tope de disponibilidad
+  el optimizador lo despacharía las 24 h.
 - `p_min` **no** se impone todavía, igual que en el despacho copperplate v1.
 - `carrier` = `technology_group` (para agregación por tecnología).
 
@@ -70,8 +74,9 @@ energía no suministrada por nodo.
   analítica, no una conclusión operativa final.
 - Semántica de tap de transformadores aún pendiente (los transformadores se tratan
   como impedancia serie).
-- `renewable_profiles` todavía no se usa como recorte específico de VRE; la
-  disponibilidad de `generator_availability` es la única fuente de tope por ahora.
+- El recorte VRE por pronóstico elimina el solar de madrugada y, con la corrección
+  del eje temporal (ver abajo), la campana solar cae correctamente al mediodía
+  (pico ≈h_13).
 
 ## Ejecución
 

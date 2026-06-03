@@ -19,7 +19,7 @@
   "time_alignment": {
     "source_period_count": 48,
     "canonical_snapshot_count": 24,
-    "method": "pairwise_average_48_to_24"
+    "method": "first_day_24_of_48"
   },
   "reconciliation": {
     "sheet_only_generator_sample": [

@@ -93,22 +93,6 @@ def parse_wide_generator_sheet(
     }
 
 
-def collapse_48_to_24_hourly(
-    period_labels: list[str],
-    values: list[float],
-) -> tuple[list[str], list[float]]:
-    """Reduce un eje 48 a 24 horas usando promedio por parejas consecutivas."""
-    if len(period_labels) % 2 != 0 or len(period_labels) != len(values):
-        raise ValueError("No se puede colapsar el eje temporal 48->24 con longitud impar.")
-
-    collapsed_labels: list[str] = []
-    collapsed_values: list[float] = []
-    for idx in range(0, len(period_labels), 2):
-        collapsed_labels.append(str((idx // 2) + 1))
-        collapsed_values.append((values[idx] + values[idx + 1]) / 2.0)
-    return (collapsed_labels, collapsed_values)
-
-
 def align_generator_rows_to_snapshots(
     parsed: dict[str, object],
     snapshot_ids: list[str],
@@ -124,23 +108,23 @@ def align_generator_rows_to_snapshots(
         }
 
     if len(period_labels) == 2 * len(snapshot_ids):
-        collapsed_rows: list[dict[str, object]] = []
-        collapsed_labels: list[str] | None = None
-        for item in rows:
-            labels, values = collapse_48_to_24_hourly(period_labels, list(item["values_mw"]))
-            if collapsed_labels is None:
-                collapsed_labels = labels
-            collapsed_rows.append(
-                {
-                    "generator_id": item["generator_id"],
-                    "generator_name_sheet": item["generator_name_sheet"],
-                    "values_mw": values,
-                }
-            )
+        # Los 48 períodos de MODOM son DOS días de 24 h (horizonte de 48 h, e_sets
+        # N=1*48), NO medias-horas: cada bloque de 24 trae su propia campana solar.
+        # La demanda es de 1 día (24 bloques), así que se toma el DÍA 1 (primeros 24
+        # períodos) para alinear con el reloj y con la demanda.
+        n = len(snapshot_ids)
+        sliced_rows = [
+            {
+                "generator_id": item["generator_id"],
+                "generator_name_sheet": item["generator_name_sheet"],
+                "values_mw": list(item["values_mw"])[:n],
+            }
+            for item in rows
+        ]
         return {
-            "period_labels": collapsed_labels or [],
-            "rows": collapsed_rows,
-            "time_alignment_method": "pairwise_average_48_to_24",
+            "period_labels": period_labels[:n],
+            "rows": sliced_rows,
+            "time_alignment_method": "first_day_24_of_48",
         }
 
     raise ValueError("El eje temporal de la hoja de generación no coincide con `snapshots`.")

@@ -155,12 +155,21 @@ Real `V449` evidence shows that `MODOM` mixes two temporal layers:
 - `48` periods in `e_sets`
 - `48` periods in `S_FLUJO`, `VOLTAJE`, `Reporte de Disponibilidad`, and `Pronostico Renovable`
 
+Key finding (confirmed from raw `Pronostico Renovable`): the **`48` periods are two
+days of 24 hours** (the MODOM 48-hour horizon, `e_sets` N=1*48), **not** half-hours.
+Each 24-block carries its own diurnal solar bell.
+
 Current `v1` decision:
 
-- canonical axis = `24h`
-- `48`-period horizon remains preserved as source-side operational information
+- canonical axis = `24h`, aligned to `PDemanda` (one operational day)
+- the time-varying generator series (`Reporte de Disponibilidad`,
+  `Pronostico Renovable`) take **day 1 = the first 24 periods**
+  (`time_alignment_method = first_day_24_of_48`), so solar peaks at midday
+- day 2 of the horizon remains available in the source for a future 48-hour model
 
-This is an explicit engineering choice for reproducibility. It is not yet a final authoritative interpretation of market or operational semantics.
+This corrected an earlier bug where the 48→24 reduction averaged consecutive pairs
+(treating them as half-hours), which merged the two daily solar bells into a false
+double peak (≈h_07 and h_19) with zero at real midday.
 
 ### 2. Generator cost handling
 

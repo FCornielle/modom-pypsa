@@ -230,136 +230,169 @@ def build_figures(data: dict[str, object]):
         legend=dict(orientation="h", y=-0.2), margin=dict(l=40, r=20, t=50, b=40),
     )
 
-    # ---- Top líneas congestionadas (carga pico), con nombres largos ----
-    peak_loading = loading.max().sort_values(ascending=False).head(15) * 100
-    cong_labels = [line_label(n, name_by_bus) for n in peak_loading.index]
+    # ---- Top 15 líneas más cargadas (varía con el deslizador de hora vía JS) ----
+    def _top15(snap):
+        s = (loading.loc[snap] * 100).sort_values(ascending=False).head(15)
+        labels = [line_label(n, name_by_bus) for n in s.index][::-1]
+        vals = [round(float(v), 1) for v in s.values][::-1]
+        return labels, vals
+
+    top_labels, top_vals = _top15(peak_snap)
     fig_cong = go.Figure(
         go.Bar(
-            x=peak_loading.values[::-1], y=cong_labels[::-1],
-            orientation="h",
-            marker=dict(color=peak_loading.values[::-1], colorscale="YlOrRd", cmin=0, cmax=100),
+            x=top_vals, y=top_labels, orientation="h",
+            marker=dict(color=top_vals, colorscale="YlOrRd", cmin=0, cmax=100),
             hovertemplate="%{y}<br>%{x:.0f}% del límite<extra></extra>",
         )
     )
     fig_cong.update_layout(
-        title="Top 15 líneas por carga máxima (%)", xaxis_title="% del límite térmico",
-        template="plotly_dark", margin=dict(l=320, r=20, t=50, b=40),
-        yaxis=dict(tickfont=dict(size=10)),
+        title="Top 15 líneas más cargadas (hora del deslizador)",
+        xaxis_title="% del límite térmico", xaxis=dict(range=[0, 105]),
+        template="plotly_dark", margin=dict(l=232, r=12, t=50, b=40),
+        yaxis=dict(tickfont=dict(size=8.5)),
     )
 
-    # ---- Mapa geográfico (hora pico) ----
+    # ---- Mapa geográfico ANIMADO por hora (slider 1..24) ----
+    # Geometría estática (las líneas no se mueven); por hora cambian: color/size/
+    # hover de barras (precio y carga) y la capa roja de congestión + el % en el hover.
     coord = {r.bus_id_modom: (r.lat, r.lon) for r in coords.itertuples()}
-    price_peak = prices.loc[peak_snap]
-    load_map = load.loc[peak_snap]
-    load_by_bus = {c.replace("load_", ""): load_map[c] for c in load.columns}
+    src_by_bus = {str(r.bus_id_modom): str(getattr(r, "coord_source", "") or "")
+                  for r in coords.itertuples()}
+    snaps = list(load.index)
+    hour_labels = [str(i + 1) for i in range(len(snaps))]
+    load_cols = {c.replace("load_", ""): c for c in load.columns}
+    pcap = float(finite.stack().quantile(0.97)) if finite.stack().size else 1.0
 
-    # aristas coloreadas por NIVEL DE TENSIÓN; hover con nombre largo + % de carga.
-    # Una traza por tensión (color por kV) con texto por segmento (hover por línea),
-    # y una capa roja/gruesa encima para las congestionadas (>=90%).
-    load_peak_line = loading.loc[peak_snap]
-    groups: dict[str, dict[str, list]] = {}
-    cong = {"lat": [], "lon": [], "text": []}
+    seg_by_bucket: dict[str, list] = {}
     n_lines_drawn = 0
     for b in branches.itertuples():
         if b.bus0 not in coord or b.bus1 not in coord:
             continue
-        la0, lo0 = coord[b.bus0]
-        la1, lo1 = coord[b.bus1]
         n_lines_drawn += 1
-        vals = [
-            v for v in (pd.to_numeric(b.v_nom_bus0_kv, errors="coerce"),
-                        pd.to_numeric(b.v_nom_bus1_kv, errors="coerce"))
-            if pd.notna(v)
-        ]
+        vals = [v for v in (pd.to_numeric(b.v_nom_bus0_kv, errors="coerce"),
+                            pd.to_numeric(b.v_nom_bus1_kv, errors="coerce")) if pd.notna(v)]
         bucket = volt_bucket(max(vals) if vals else None)
-        pct = float(load_peak_line.get(b.name, 0) or 0) * 100
-        label = f"{line_label(b.name, name_by_bus)}<br>carga {pct:.0f}% del límite"
-        g = groups.setdefault(bucket, {"lat": [], "lon": [], "text": []})
-        g["lat"] += [la0, la1, None]
-        g["lon"] += [lo0, lo1, None]
-        g["text"] += [label, label, None]
-        if pct >= 90:
-            cong["lat"] += [la0, la1, None]
-            cong["lon"] += [lo0, lo1, None]
-            cong["text"] += [label, label, None]
+        (la0, lo0), (la1, lo1) = coord[b.bus0], coord[b.bus1]
+        seg_by_bucket.setdefault(bucket, []).append(
+            (la0, lo0, la1, lo1, b.name, line_label(b.name, name_by_bus)))
+    volt_buckets = [bk for bk in VOLT_ORDER
+                    if bk != "LT Fuera de servicio" and bk in seg_by_bucket]
 
-    # ramas excluidas del modelo v1 -> "Fuera de servicio" (gris, debajo de todo)
-    fs = {"lat": [], "lon": [], "text": []}
+    fs_lat, fs_lon, fs_text = [], [], []
     for e in excluded.itertuples():
         a = str(getattr(e, "from_bus", "") or "").strip()
         c = str(getattr(e, "to_bus", "") or "").strip()
         if a in coord and c in coord:
             (la0, lo0), (la1, lo1) = coord[a], coord[c]
             lbl = f"{line_label(getattr(e, 'branch_id', ''), name_by_bus)}<br>fuera del modelo v1"
-            fs["lat"] += [la0, la1, None]
-            fs["lon"] += [lo0, lo1, None]
-            fs["text"] += [lbl, lbl, None]
+            fs_lat += [la0, la1, None]; fs_lon += [lo0, lo1, None]; fs_text += [lbl, lbl, None]
 
-    fig_map = go.Figure()
-    # 1) fuera de servicio (fondo)
-    if fs["lat"]:
-        fig_map.add_trace(go.Scattermapbox(
-            lat=fs["lat"], lon=fs["lon"], mode="lines",
-            line=dict(width=1.2, color=VOLT_COLORS["LT Fuera de servicio"]),
-            name="LT Fuera de servicio", legendgroup="tension", legendrank=1006,
-            text=fs["text"], hovertemplate="%{text}<extra></extra>"))
-    # 2) líneas por tensión
-    for rank, bucket in enumerate(VOLT_ORDER):
-        if bucket == "LT Fuera de servicio" or bucket not in groups:
-            continue
-        g = groups[bucket]
-        fig_map.add_trace(go.Scattermapbox(
-            lat=g["lat"], lon=g["lon"], mode="lines",
-            line=dict(width=2.0, color=VOLT_COLORS[bucket]),
-            name=bucket, legendgroup="tension", legendrank=1000 + rank,
-            text=g["text"], hovertemplate="%{text}<extra></extra>"))
-    # 3) congestión (encima, roja y gruesa)
-    if cong["lat"]:
-        fig_map.add_trace(go.Scattermapbox(
-            lat=cong["lat"], lon=cong["lon"], mode="lines",
-            line=dict(width=4.5, color=CONGESTION_COLOR),
+    bus_items = list(coord.items())
+
+    def _line_texts(snap, bk):
+        lp = loading.loc[snap]
+        txt: list = []
+        for (_, _, _, _, name, base) in seg_by_bucket[bk]:
+            pct = float(lp.get(name, 0) or 0) * 100
+            t = f"{base}<br>carga {pct:.0f}% del límite"
+            txt += [t, t, None]
+        return txt
+
+    def _cong_trace(snap):
+        lp = loading.loc[snap]
+        lat, lon, txt = [], [], []
+        for bk in volt_buckets:
+            for (la0, lo0, la1, lo1, name, base) in seg_by_bucket[bk]:
+                pct = float(lp.get(name, 0) or 0) * 100
+                if pct >= 90:
+                    t = f"{base}<br>carga {pct:.0f}% del límite"
+                    lat += [la0, la1, None]; lon += [lo0, lo1, None]; txt += [t, t, None]
+        return go.Scattermapbox(
+            lat=lat, lon=lon, mode="lines", line=dict(width=4.5, color=CONGESTION_COLOR),
             name="Congestión ≥90%", legendgroup="tension", legendrank=1007,
-            text=cong["text"], hovertemplate="%{text}<extra></extra>"))
+            text=txt, hovertemplate="%{text}<extra></extra>")
 
-    src_by_bus = {
-        str(r.bus_id_modom): str(getattr(r, "coord_source", "") or "")
-        for r in coords.itertuples()
-    }
-    blat, blon, bcolor, bsize, btext = [], [], [], [], []
-    pcap = float(finite.stack().quantile(0.97)) if finite.stack().size else 1.0
-    for bus_id, (la, lo) in coord.items():
-        pr = float(price_peak.get(bus_id, float("nan")))
-        ld = float(load_by_bus.get(bus_id, 0) or 0)
-        blat.append(la); blon.append(lo)
-        bcolor.append(min(pr, pcap) if pr == pr else 0)
-        bsize.append(6 + min(ld, 200) / 200 * 22)
-        nm = name_by_bus.get(bus_id, bus_id)
-        approx = " · ubic. aprox." if src_by_bus.get(bus_id) == "inferred_topology" else ""
-        btext.append(
-            f"<b>{nm}</b> ({bus_id}){approx}<br>precio: {pr:,.0f} RD$/MWh<br>carga: {ld:,.1f} MW"
-        )
+    def _marker_arrays(snap):
+        pr_s, ld_s = prices.loc[snap], load.loc[snap]
+        color, size, text = [], [], []
+        for bus_id, _ in bus_items:
+            pr = float(pr_s.get(bus_id, float("nan")))
+            ld = float(ld_s.get(load_cols.get(bus_id, ""), 0) or 0) if bus_id in load_cols else 0.0
+            color.append(min(pr, pcap) if pr == pr else 0)
+            size.append(6 + min(ld, 200) / 200 * 22)
+            nm = name_by_bus.get(bus_id, bus_id)
+            approx = " · ubic. aprox." if src_by_bus.get(bus_id) == "inferred_topology" else ""
+            text.append(f"<b>{nm}</b> ({bus_id}){approx}<br>"
+                        f"precio: {pr:,.0f} RD$/MWh<br>carga: {ld:,.1f} MW")
+        return color, size, text
+
+    # --- figura base (abre en la hora pico) ---
+    fig_map = go.Figure()
     fig_map.add_trace(go.Scattermapbox(
-        lat=blat, lon=blon, mode="markers",
-        marker=dict(
-            size=bsize, color=bcolor, colorscale="Turbo", cmin=0, cmax=pcap, opacity=0.9,
-            colorbar=dict(
-                title=dict(text="RD$/MWh", font=dict(color="#222")),
-                tickfont=dict(color="#222"), bgcolor="rgba(255,255,255,0.75)",
-                outlinewidth=0, thickness=14, len=0.6, x=0.99,
-            ),
-        ),
-        text=btext, hovertemplate="%{text}<extra></extra>", name="Barras (precio nodal)",
-        legendrank=1009))
+        lat=fs_lat, lon=fs_lon, mode="lines",
+        line=dict(width=1.2, color=VOLT_COLORS["LT Fuera de servicio"]),
+        name="LT Fuera de servicio", legendgroup="tension", legendrank=1006,
+        text=fs_text, hovertemplate="%{text}<extra></extra>"))
+    for bk in volt_buckets:
+        lat, lon = [], []
+        for (la0, lo0, la1, lo1, _, _) in seg_by_bucket[bk]:
+            lat += [la0, la1, None]; lon += [lo0, lo1, None]
+        fig_map.add_trace(go.Scattermapbox(
+            lat=lat, lon=lon, mode="lines", line=dict(width=2.0, color=VOLT_COLORS[bk]),
+            name=bk, legendgroup="tension", legendrank=1000 + VOLT_ORDER.index(bk),
+            text=_line_texts(peak_snap, bk), hovertemplate="%{text}<extra></extra>"))
+    fig_map.add_trace(_cong_trace(peak_snap))
+    b_color, b_size, b_text = _marker_arrays(peak_snap)
+    fig_map.add_trace(go.Scattermapbox(
+        lat=[la for _, (la, _) in bus_items], lon=[lo for _, (_, lo) in bus_items],
+        mode="markers",
+        marker=dict(size=b_size, color=b_color, colorscale="Turbo", cmin=0, cmax=pcap,
+                    opacity=0.9,
+                    colorbar=dict(title=dict(text="RD$/MWh", font=dict(color="#222")),
+                                  tickfont=dict(color="#222"), bgcolor="rgba(255,255,255,0.75)",
+                                  outlinewidth=0, thickness=14, len=0.55, x=0.99)),
+        text=b_text, hovertemplate="%{text}<extra></extra>",
+        name="Barras (precio nodal)", legendrank=1009))
+
+    # índices de trazas para los frames: [fs=0, buckets 1..k, cong=k+1, barras=k+2]
+    n_vb = len(volt_buckets)
+    idx_buckets = list(range(1, 1 + n_vb))
+    idx_cong, idx_mark = 1 + n_vb, 2 + n_vb
+    frames = []
+    for i, snap in enumerate(snaps):
+        fdata = [go.Scattermapbox(text=_line_texts(snap, bk)) for bk in volt_buckets]
+        fdata.append(_cong_trace(snap))
+        c, s, t = _marker_arrays(snap)
+        fdata.append(go.Scattermapbox(marker=dict(color=c, size=s), text=t))
+        frames.append(go.Frame(name=hour_labels[i], data=fdata,
+                               traces=idx_buckets + [idx_cong, idx_mark]))
+    fig_map.frames = frames
+
+    steps = [dict(method="animate", label=hour_labels[i],
+                  args=[[hour_labels[i]], dict(mode="immediate",
+                        frame=dict(duration=0, redraw=True), transition=dict(duration=0))])
+             for i in range(len(snaps))]
     fig_map.update_layout(
-        title=f"Mapa SENI — barras por precio nodal · líneas por tensión (hora pico {peak_snap})",
+        title="Mapa SENI — precio nodal y congestión por hora (usa el deslizador)",
         mapbox=dict(style="carto-positron", center=dict(lat=18.8, lon=-70.4), zoom=6.7),
-        template="plotly_dark", margin=dict(l=0, r=0, t=50, b=0), height=620,
-        legend=dict(
-            orientation="v", x=0.012, y=0.985, xanchor="left", yanchor="top",
-            bgcolor="rgba(255,255,255,0.92)", font=dict(color="#1a1a1a", size=11),
-            bordercolor="#c2c9d2", borderwidth=1,
-            title=dict(text="Leyenda", font=dict(color="#1a1a1a", size=12)),
-        ),
+        template="plotly_dark", margin=dict(l=0, r=0, t=50, b=0), height=660,
+        legend=dict(orientation="v", x=0.012, y=0.985, xanchor="left", yanchor="top",
+                    bgcolor="rgba(255,255,255,0.92)", font=dict(color="#1a1a1a", size=11),
+                    bordercolor="#c2c9d2", borderwidth=1,
+                    title=dict(text="Leyenda", font=dict(color="#1a1a1a", size=12))),
+        sliders=[dict(active=snaps.index(peak_snap), x=0.06, y=0, len=0.9,
+                      pad=dict(t=6, b=2),
+                      currentvalue=dict(prefix="Hora: ", font=dict(color="#e6e6e6")),
+                      steps=steps)],
+        updatemenus=[dict(type="buttons", direction="left", showactive=False,
+                          x=0.0, y=0, xanchor="right", yanchor="bottom", pad=dict(r=8, t=4),
+                          buttons=[
+                              dict(label="▶", method="animate",
+                                   args=[None, dict(frame=dict(duration=700, redraw=True),
+                                                    fromcurrent=True, transition=dict(duration=0))]),
+                              dict(label="⏸", method="animate",
+                                   args=[[None], dict(mode="immediate",
+                                                      frame=dict(duration=0, redraw=False))])])],
     )
 
     kpis = _kpis(data, total_load, mix, peak_snap)
@@ -376,8 +409,14 @@ def build_figures(data: dict[str, object]):
         "n_branches": len(branches),
         "n_lines_drawn": n_lines_drawn,
     }
+    # datos por hora del Top-15 (para que el gráfico siga al deslizador vía JS)
+    hourly_top = {}
+    for i, snap in enumerate(snaps):
+        labels, vals = _top15(snap)
+        hourly_top[hour_labels[i]] = {"y": labels, "x": vals, "color": vals}
+
     figs = {"map": fig_map, "mix": fig_mix, "price": fig_price, "cong": fig_cong}
-    return figs, kpis, stats
+    return figs, kpis, stats, hourly_top
 
 
 def conditions_html(data: dict[str, object], stats: dict, mix, case_label: str) -> str:
@@ -467,18 +506,19 @@ _TEMPLATE = """<!DOCTYPE html>
 </style></head>
 <body>
 <header><h1>⚡ SENI · Dashboard de despacho</h1>
-<p>Modelo PyPSA (LOPF lineal, 24 h) desde la capa canónica MODOM · {gen_date}</p></header>
+<p>Modelo PyPSA (LOPF lineal, 24 h) desde la capa canónica MODOM · mapa interactivo por hora (deslizador 1–24) · {gen_date}</p></header>
 <div class="kpis">{kpi_html}</div>
 <div class="grid">
  <div class="card full">{map}</div>
  <div class="card">{mix}</div>
  <div class="card">{price}</div>
- <div class="card full">{cong}</div>
+ <div class="card">{cong}</div>
 </div>
 <section class="cond"><div class="box">{conditions}</div></section>
 <footer>Artefacto analítico reproducible. La energía no suministrada y los precios
 reflejan insumos provisionales (impedancias/costos) del modelo v1, no resultados
 operativos finales.</footer>
+{sync_script}
 </body></html>"""
 
 
@@ -498,15 +538,16 @@ def build_dashboard(
     from plotly.offline import get_plotlyjs
 
     data = load_inputs(results_dir, data_dir, external_dir)
-    figs, kpis, stats = build_figures(data)
+    figs, kpis, stats, hourly_top = build_figures(data)
     mix = _fuel_mix(data["gen"], data["fuel_by_gen"])
     cond = conditions_html(data, stats, mix, case_label)
 
-    def div(fig, config: dict | None = None) -> str:
+    def div(fig, config: dict | None = None, div_id: str | None = None) -> str:
         cfg = {"displayModeBar": False, "responsive": True}
         if config:
             cfg.update(config)
-        return pio.to_html(fig, full_html=False, include_plotlyjs=False, config=cfg)
+        return pio.to_html(fig, full_html=False, include_plotlyjs=False,
+                           config=cfg, div_id=div_id)
 
     # El mapa se comporta como Google Maps: zoom con la rueda, arrastrar para mover,
     # doble clic para acercar y barra con zoom/encuadre. Basemap OSM (open source).
@@ -517,6 +558,19 @@ def build_dashboard(
         "modeBarButtonsToRemove": ["lasso2d", "select2d", "toImage"],
     }
 
+    # Script que sincroniza el Top-15 con el deslizador de hora del mapa.
+    sync_script = (
+        "<script>(function(){var HOURLY=" + json.dumps(hourly_top, ensure_ascii=False) + ";"
+        "function upd(h){var d=HOURLY[String(h)];var g=document.getElementById('cong-div');"
+        "if(d&&g&&window.Plotly){Plotly.update(g,{x:[d.x],y:[d.y],'marker.color':[d.color]},{},[0]);}}"
+        "function attach(){var m=document.getElementById('map-div');"
+        "if(!m||!m.on){setTimeout(attach,300);return;}"
+        "m.on('plotly_sliderchange',function(e){if(e&&e.step&&e.step.label!=null)upd(e.step.label);});"
+        "m.on('plotly_animatingframe',function(e){if(e&&e.frame&&e.frame.name!=null)upd(e.frame.name);});}"
+        "if(document.readyState!=='loading')attach();else window.addEventListener('load',attach);"
+        "})();</script>"
+    )
+
     kpi_html = "".join(
         f'<div class="kpi"><div class="v">{v}</div><div class="l">{l}</div></div>'
         for l, v in kpis
@@ -525,9 +579,10 @@ def build_dashboard(
         plotly_js=get_plotlyjs(),
         gen_date=_dt.date.today().isoformat(),
         kpi_html=kpi_html,
-        map=div(figs["map"], map_config), mix=div(figs["mix"]),
-        price=div(figs["price"]), cong=div(figs["cong"]),
+        map=div(figs["map"], map_config, div_id="map-div"), mix=div(figs["mix"]),
+        price=div(figs["price"]), cong=div(figs["cong"], div_id="cong-div"),
         conditions=cond,
+        sync_script=sync_script,
     )
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(html, encoding="utf-8")

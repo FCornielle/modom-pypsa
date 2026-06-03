@@ -172,22 +172,23 @@ def test_export_generator_time_series(tmp_path: Path) -> None:
     assert renewable_counts["matched_generator_count"] == 1
     assert renewable_counts["total_renovable_only_generator_count"] == 1
 
+    # Eje 8->4: se toma el DÍA 1 (primeros 4 períodos), no el promedio de parejas.
     therm_h1 = next(
         row
         for row in payload["generator_availability"]["rows"]
         if row["generator_id"] == "G3THERM" and row["snapshot_id"] == "h_01"
     )
-    assert therm_h1["available_mw"] == 90.0
-    assert therm_h1["available_pu"] == 0.9
-    assert payload["generator_availability"]["summary"]["time_alignment"]["method"] == "pairwise_average_48_to_24"
+    assert therm_h1["available_mw"] == 80.0   # período 1 del día 1
+    assert therm_h1["available_pu"] == 0.8
+    assert payload["generator_availability"]["summary"]["time_alignment"]["method"] == "first_day_24_of_48"
 
     ren_h4 = next(
         row
         for row in payload["renewable_profiles"]["rows"]
         if row["generator_id"] == "G3REN01" and row["snapshot_id"] == "h_04"
     )
-    assert ren_h4["forecast_mw"] == 25.0
-    assert ren_h4["forecast_pu"] == 0.5
+    assert ren_h4["forecast_mw"] == 20.0   # período 4 del día 1
+    assert ren_h4["forecast_pu"] == 0.4
 
     summary_path = (
         outroot / "renewable_profiles" / "renewable_profiles_summary.json"

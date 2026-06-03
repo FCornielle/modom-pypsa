@@ -66,12 +66,26 @@ Reglas actuales:
 - `data/processed/renewable_profiles/renewable_profiles.csv`
 - `data/processed/renewable_profiles/renewable_profiles_summary.json`
 
+## Eje temporal: los 48 períodos son DOS DÍAS de 24 h
+
+Punto clave para la fidelidad al MODOM: las hojas `Reporte de Disponibilidad` y
+`Pronostico Renovable` traen **48 columnas** que **no** son medias-horas, sino el
+**horizonte de 48 h del MODOM** (`e_sets` N=1*48) = **dos días de 24 horas**. Cada
+bloque de 24 trae su propia campana solar diurna (p.ej. para un parque solar, pico
+en el período 13 y otra vez en el período 36).
+
+Como la demanda (`PDemanda`) es de **un día (24 bloques)**, estas series se alinean
+tomando el **DÍA 1 (primeros 24 períodos)** (`time_alignment_method =
+first_day_24_of_48`). Así el perfil queda alineado al reloj y a la demanda (el solar
+hace pico al mediodía, h_13). Promediar por parejas (lo que se hacía antes) mezclaba
+las dos campanas y producía un doble pico falso (h_07 y h_19) con cero al mediodía.
+
 ## Limitaciones actuales
 
-- la demanda sigue teniendo un eje de `24` bloques, mientras estas series usan
-  `48` períodos y sí coinciden con `snapshots`
 - `available_pu` y `forecast_pu` se calculan contra `pmax_mw` estático de
   `e_datgen`; eso sirve como primera normalización, pero aún no representa toda
   la lógica operativa de MODOM
+- se usa el día 1 del horizonte de 48 h; el día 2 queda disponible en la fuente si
+  más adelante se quiere un horizonte de 48 h completo
 - `Total Renovable` contiene al menos un caso adicional frente a
   `Pronostico Renovable`; por ahora eso queda como señal de auditoría

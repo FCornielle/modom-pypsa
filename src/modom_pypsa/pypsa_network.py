@@ -10,9 +10,12 @@ Decisiones de modelado v1 (documentadas y conservadoras):
 - Ramas: líneas y transformadores se añaden como componentes `Line` con su
   reactancia en por-unidad. Con base común esto es eléctricamente equivalente a
   una impedancia serie; la columna `branch_kind` preserva la distinción.
-- Generadores: `p_nom` = capacidad estática efectiva (o disponibilidad máxima);
-  `p_max_pu` por snapshot a partir de `generator_availability`. `p_min` no se
-  impone todavía (consistente con el despacho copperplate v1).
+- Generadores: `p_nom` = capacidad estática efectiva (o disponibilidad máxima).
+  `p_max_pu` por snapshot: para las unidades VRE (con perfil en
+  `renewable_profiles`) se usa el **pronóstico** (`forecast_mw`, ~0 de noche para
+  el solar); el resto usa `generator_availability`. Sin esto, el solar (costo ≈0)
+  se despacharía de madrugada hasta su disponibilidad. `p_min` no se impone
+  todavía (consistente con el despacho copperplate v1).
 - Demanda: nodal, por snapshot, desde `loads_time_series`.
 - Holgura: un generador `unserved` muy caro por barra con demanda garantiza
   factibilidad y entrega un KPI de energía no suministrada por nodo.
@@ -138,6 +141,22 @@ def build_network(data_dir: Path = DEFAULT_DATA_DIR):
         index="snapshot_id", columns="generator_id", values="available_mw", aggfunc="sum"
     ).reindex(snapshot_ids)
 
+    # Pronóstico renovable (solar/eólico): es el tope CORRECTO para las VRE.
+    # La disponibilidad refleja la capacidad en servicio (no-cero de noche), así que
+    # usarla como tope dejaría correr el solar de madrugada. Para las unidades con
+    # perfil renovable se usa el pronóstico (~0 de noche); el resto usa disponibilidad.
+    rp_path = data_dir / "renewable_profiles" / "renewable_profiles.csv"
+    forecast_pivot = None
+    vre_ids: set[str] = set()
+    if rp_path.exists():
+        rp = _read(rp_path)
+        rp = rp[rp["snapshot_id"].isin(snapshot_ids)].copy()
+        rp["forecast_mw"] = _num(rp["forecast_mw"]).fillna(0.0)
+        forecast_pivot = rp.pivot_table(
+            index="snapshot_id", columns="generator_id", values="forecast_mw", aggfunc="sum"
+        ).reindex(snapshot_ids)
+        vre_ids = set(forecast_pivot.columns)
+
     p_max_pu_cols: dict[str, pd.Series] = {}
     gen_added: list[str] = []
     for _, row in generators.iterrows():
@@ -168,10 +187,16 @@ def build_network(data_dir: Path = DEFAULT_DATA_DIR):
             carrier=str(row.get("technology_group", "") or "unknown"),
         )
         gen_added.append(gid)
-        if p_nom > 0 and gid in avail_pivot.columns:
-            p_max_pu_cols[gid] = (avail_series.reindex(snapshot_ids).fillna(0.0) / p_nom).clip(
-                0.0, 1.0
-            )
+        if p_nom > 0:
+            if gid in vre_ids and forecast_pivot is not None:
+                # VRE: tope = pronóstico renovable (0 de noche para el solar)
+                cap_mw = forecast_pivot[gid].reindex(snapshot_ids).fillna(0.0)
+                p_max_pu_cols[gid] = (cap_mw / p_nom).clip(0.0, 1.0)
+            elif gid in avail_pivot.columns:
+                # convencional: tope = disponibilidad declarada
+                p_max_pu_cols[gid] = (
+                    avail_series.reindex(snapshot_ids).fillna(0.0) / p_nom
+                ).clip(0.0, 1.0)
 
     if p_max_pu_cols:
         n.generators_t.p_max_pu = pd.DataFrame(p_max_pu_cols, index=snapshot_ids)
@@ -196,8 +221,11 @@ def build_network(data_dir: Path = DEFAULT_DATA_DIR):
             "lines_added": int(n_lines),
             "transformers_added": int(n_trafos),
             "generators_added": int(len(gen_added)),
+            "vre_with_forecast": int(sum(1 for g in gen_added if g in vre_ids)),
             "load_buses": int(len(load_buses)),
         },
+        "vre_note": "Las unidades con perfil renovable se capan por pronóstico "
+                    "(forecast_mw), no por disponibilidad; el resto por disponibilidad.",
     }
     return n
 
