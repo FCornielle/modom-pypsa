@@ -33,6 +33,8 @@ Implemented and working blocks:
 - first `copperplate` dispatch
 - first `PyPSA v1` export of `lines` and `transformers`
 - first real `pypsa.Network()` builder with a network-constrained linear LOPF
+- real substation coordinates scraped from the OC Power BI map and joined to buses
+- self-contained HTML dashboard (map + fuel mix + nodal prices + congestion)
 - regression tests based on synthetic workbook fixtures
 
 Current engineering status:
@@ -319,6 +321,82 @@ You can either:
 - continue directly from the tracked artifacts
 - or rebuild everything locally from the tracked workbook
 
+## Actualizar los datos con un caso nuevo (guía para el agente)
+
+> Esta sección está escrita para que un agente recargue los datos desde cero cuando
+> llegue un **caso nuevo del MODOM** (u otra fecha). Explica las **fuentes**, dónde
+> va cada una y en qué **orden** correr los scripts.
+
+### Fuentes necesarias
+
+| # | Fuente | De dónde sale | Dónde colocarla | Alimenta | ¿Requerida? |
+|---|--------|---------------|-----------------|----------|-------------|
+| 1 | **Caso MODOM** (`.xlsm`) | Workbook diario del SENI (PowerFactory/DIgSILENT) | `data/raw/` | Toda la capa canónica, el despacho y la red PyPSA | **Sí** (núcleo) |
+| 2 | **Ubicaciones del mapa Power BI del OC** | Reporte público "Ubicación" del OC (se **scrapea**, no se descarga a mano) | se genera en `data/external/oc_smc_points.csv` | Coordenadas lat/lon de las barras → mapa del dashboard | Sí, para el **mapa geográfico** |
+| 3 | **PDF de transacciones económicas** (`OC-GC-07-IMTE-*.pdf`) | Informe mensual del OC | (opcional) `data/external/` | **Auxiliar**: puente `PUNTO → ID SMC → barra` (Tabla 19) para validar/ampliar el cruce de coordenadas | No (validación) |
+
+Notas clave:
+
+- La **fuente 1 es la única imprescindible** para el modelo (canónicas + PyPSA). Las
+  fuentes 2 y 3 solo aportan la capa geográfica del dashboard.
+- La **fuente 2 NO es un archivo que se descargue**: `scripts/scrape_oc_smc.py` abre el
+  Power BI del OC con un navegador (Playwright) y extrae los puntos. Requiere internet
+  y se auto-recupera si el OC cambia el token del reporte. Ver
+  [`docs/oc_smc_coordinates.md`](./docs/oc_smc_coordinates.md).
+- La **fuente 3 (PDF) hoy no la consume ningún script**: el cruce de coordenadas usa
+  coincidencia de nombres (barra/generador/registro SMC). El PDF sirve para validar o
+  ampliar el cruce a mano (su `ID SMC` `3303-`**`ABCOF`**`-T01` tiene el código de barra
+  `WABCOF` en el token central). Si más adelante se automatiza, su Tabla 19 iría a
+  `data/external/oc_connection_points.csv`.
+
+### Flujo completo de recarga (orden exacto)
+
+```powershell
+# 0) Entorno (una sola vez). Python >= 3.11.
+py -3.11 -m venv .venv
+.\.venv\Scripts\python -m pip install -U pip
+.\.venv\Scripts\python -m pip install -e .[pypsa,dashboard,scrape,dev]
+.\.venv\Scripts\python -m playwright install chromium   # navegador para la fuente 2
+
+# 1) FUENTE 1 — colocar el caso nuevo del MODOM en data/raw/ y fijar su ruta.
+#    (reemplaza el nombre por el del archivo real que te entreguen)
+$XLSM = "data\raw\MODOM_DIARIO_dd-mm-yyyy_V449.xlsm"
+
+# 2) Reconstruir la capa canónica desde el workbook
+.\.venv\Scripts\python scripts\inventory_modom_workbook.py --xlsm $XLSM
+.\.venv\Scripts\python scripts\build_snapshots.py            --xlsm $XLSM
+.\.venv\Scripts\python scripts\build_buses.py                --xlsm $XLSM
+.\.venv\Scripts\python scripts\build_branches.py             --xlsm $XLSM
+.\.venv\Scripts\python scripts\build_generators.py           --xlsm $XLSM
+.\.venv\Scripts\python scripts\build_loads_time_series.py    --xlsm $XLSM
+.\.venv\Scripts\python scripts\build_generator_time_series.py --xlsm $XLSM
+.\.venv\Scripts\python scripts\build_pypsa_branch_components.py
+.\.venv\Scripts\python scripts\validate_dispatch_inputs.py
+
+# 3) Resolver la red PyPSA (LOPF lineal) -> results/pypsa_basecase/
+.\.venv\Scripts\python scripts\build_pypsa_network.py
+
+# 4) FUENTE 2 — extraer las coordenadas del mapa del OC (necesita internet)
+#    -> data/external/oc_smc_points.csv
+.\.venv\Scripts\python scripts\scrape_oc_smc.py
+
+# 5) Cruzar coordenadas con las barras -> data/external/buses_with_coords.csv
+.\.venv\Scripts\python scripts\join_smc_coordinates.py
+
+# 6) Generar el dashboard HTML (pon la fecha real del caso en --case-label)
+.\.venv\Scripts\python scripts\build_dashboard.py --case-label "MODOM_DIARIO dd-mm-aaaa V449"
+#    -> results/dashboard/seni_dashboard.html  (abrir/compartir)
+```
+
+¿Cuándo re-correr cada paso?
+
+- **Caso nuevo del MODOM** → pasos 2, 3, 5 y 6 (la fuente 2 solo si cambian ubicaciones).
+- **Solo actualizar ubicaciones del OC** → pasos 4, 5 y 6.
+- **Solo regenerar el dashboard** (mismos datos) → paso 6.
+
+La geolocalización (fuente 2) cambia poco entre casos; normalmente basta con correr el
+scraper de vez en cuando, no en cada caso diario.
+
 ## Recommended local continuation flow
 
 After pulling the repository locally:
@@ -417,7 +495,7 @@ Main open issues:
 4. `4` line voltage mismatches still need classification
 5. `112` transformers still lack complete voltage audit because one or both buses remain unresolved
 6. the PyPSA network is a linear LOPF with provisional per-unit impedances; transformer tap semantics and a final impedance-unit confirmation are still pending, and there is no AC power flow yet
-7. no dashboard or map module exists yet inside the repository
+7. only `305` of `717` buses have real coordinates, so the dashboard map shows a partial grid (and the coordinate join uses name matching — `fuzzy` matches below `~0.7` should be audited)
 
 ## Testing
 
@@ -457,8 +535,8 @@ Recommended near-term local continuation order:
 3. finish branch electrical interpretation (transformer tap semantics, impedance-unit confirmation)
 4. ~~build the first actual PyPSA network constructor~~ **done** — see [`docs/pypsa_network.md`](./docs/pypsa_network.md)
 5. export study-ready result tables (PyPSA results now written to `results/pypsa_basecase/`)
-6. add dashboard layer (Plotly Dash, consuming `results/pypsa_basecase/`)
-7. add map layer
+6. ~~add dashboard layer~~ **done** — self-contained HTML via `scripts/build_dashboard.py` → `results/dashboard/seni_dashboard.html`
+7. ~~add map layer~~ **done** — geographic OSM map with real coordinates (`scripts/scrape_oc_smc.py` + `scripts/join_smc_coordinates.py`); next: geolocate more buses and add a per-hour slider
 
 ## Documentation
 
