@@ -72,27 +72,52 @@ def _norm(text: str) -> str:
     return out.upper()
 
 
-def classify_fuel(name: str, technology_group: str) -> str:
-    """Clasifica un generador en un combustible a partir de su nombre.
+# Combustible por central, según el unifilar (SLD) del OC. Listas de nombres para
+# las plantas cuyo combustible no se infiere del nombre genérico.
+_CARBON = ("PUNTA CATALINA", "BARAHONA CARBON")
+_WIND = ("LOS COCOS", "JUANCHO", "QUILVIO", "CABRERA", "GUANILLO", "MATAFONGO",
+         "AGUA CLARA", "GUZMANCITO", "LARIMAR", "PECASA")
+_GAS = ("ESTRELLA DEL MAR", "SEABOARD", "LOS MINA", "SIBA", "MANZANILLO", "ENERGAS")
+_FUEL = ("POWERSHIP", "KPS", "SULTANA", "PIMENTEL", "PALAMARA", "LA VEGA", "BERSAL",
+         "HAINA TG", "INCA", "METALDOM", "MONTE RIO", "SAN LORENZO", "PALENQUE",
+         "LOS ORIGENES", "QUISQUEYA", "EDM", "CESPM")
+_HYDRO = ("JIGUEY", "AGUACATE", "VALDESIA", "TAVERA", "PALOMINO", "MONCION",
+          "RIO BLANCO", "PINALITO", "HATILLO", "LOPEZ ANGOSTURA", "SABANA YEGUA",
+          "SABANETA", "RINCON", "BAIGUAQUE", "ANIANA VARGAS", "DOMINGO RODRIGUEZ",
+          "LAS DAMAS", "LAS BARIAS", "BRAZO DERECHO", "NIZAO", "NAJAYO", "MAGUEYAL",
+          "JIMENOA", "EL SALTO", "CONTRAEMBALSE", "CONTRA EMBALSE", "LOS TOROS",
+          "LOS ANONES")
 
-    Reglas por palabra clave; hidro como respaldo para los grupos tecnológicos
-    2 y 3 (centrales hidroeléctricas de EGEHID en MODOM).
+
+def classify_fuel(name: str, technology_group: str) -> str:
+    """Clasifica un generador en un combustible.
+
+    Usa el combustible declarado en el unifilar (SLD) del OC: prioriza nombres
+    explícitos (carbón, parques eólicos/solares, térmicas a gas o fuel oil) y deja
+    los grupos tecnológicos 2/3 como hidro (centrales EGEHID).
     """
     n = _norm(name)
-    if re.search(r"SOLAR|FOTOVOLT|\bFV\b|PV", n):
-        return "Solar"
-    if re.search(r"EOLIC|VIENTO|WIND", n):
-        return "Eólica"
-    if "CARBON" in n:
+    tg = str(technology_group).strip()
+
+    def has(words: tuple[str, ...]) -> bool:
+        return any(w in n for w in words)
+
+    if "ITABO" in n and "TG" not in n:        # Itabo 1/2 = carbón; Itabo TG = fuel oil
         return "Carbón"
-    if re.search(r"\bGN\b|GAS NATURAL|ENERGAS|CICLO COMBINADO|\bCC\b", n):
-        return "Gas Natural"
-    if re.search(r"\bFO\b|FUEL|VAPOR|DIESEL|MOTOR|GASOIL|\bGAS OIL\b", n):
-        return "Fuel Oil / Diesel"
+    if has(_CARBON):
+        return "Carbón"
+    if re.search(r"SOLAR|FOTOVOLT|\bFV\b|\bPV\b", n):
+        return "Solar"
+    if re.search(r"EOLIC|VIENTO|\bWIND\b", n) or has(_WIND):
+        return "Eólica"
     if re.search(r"BIO|INGENIO|BAGAZO", n):
         return "Biomasa"
-    if str(technology_group).strip() in {"2", "3"}:
+    if tg in {"2", "3"} or has(_HYDRO):
         return "Hidro"
+    if re.search(r"\bGN\b|GAS NATURAL|CICLO COMBINADO|\bCC\b", n) or has(_GAS):
+        return "Gas Natural"
+    if re.search(r"\bFO\b|FUEL|VAPOR|DIESEL|MOTOR|GASOIL", n) or has(_FUEL):
+        return "Fuel Oil / Diesel"
     return "Otra"
 
 
@@ -135,6 +160,18 @@ def load_inputs(
         str(r.bus_id_modom): _name(r.bus_name, r.bus_id_modom)
         for r in buses_full.itertuples()
     }
+
+    # Barra de referencia del SENI: PALAMARA 138 kV (la usa el OC para el CMg).
+    def _find_ref_bus() -> str:
+        bf = buses_full.copy()
+        bf["v"] = pd.to_numeric(bf["v_nom_kv"], errors="coerce")
+        names = (bf["bus_name"].astype(str) + " " + bf.get("bus_name_legacy", "").astype(str))
+        pal = bf[names.str.contains("PALAMARA", case=False, na=False)]
+        ref = pal[(pal["v"] - 138).abs() < 1]
+        pick = ref if len(ref) else pal
+        return str(pick["bus_id_modom"].iloc[0]) if len(pick) else ""
+
+    ref_bus = _find_ref_bus()
     coords = _read(external_dir / "buses_with_coords.csv")
     coords = coords[coords["lat"].astype(str).str.strip() != ""].copy()
     coords["lat"] = pd.to_numeric(coords["lat"], errors="coerce")
@@ -160,6 +197,7 @@ def load_inputs(
         "summary": summary,
         "fuel_by_gen": fuel_by_gen,
         "name_by_bus": name_by_bus,
+        "ref_bus": ref_bus,
         "coords": coords,
         "branches": branches,
         "excluded": excluded,
@@ -182,6 +220,7 @@ def build_figures(data: dict[str, object]):
     excluded = data["excluded"]
     fuel_by_gen = data["fuel_by_gen"]
     name_by_bus = data["name_by_bus"]
+    ref_bus = data.get("ref_bus", "")
 
     hours = list(range(1, len(gen.index) + 1))
     total_load = load.sum(axis=1)
@@ -207,27 +246,38 @@ def build_figures(data: dict[str, object]):
             hovertemplate="Demanda: %{y:.0f} MW<extra></extra>",
         )
     )
+    mix_ymax = float(max(total_load.max(), mix.sum(axis=1).max())) * 1.05
     fig_mix.update_layout(
-        title="Mezcla de generación por combustible (24 h)",
+        title="Mezcla de generación (MW)",
         xaxis_title="Hora", yaxis_title="MW", template="plotly_dark",
+        xaxis=dict(range=[0.5, len(hours) + 0.5]),
+        yaxis=dict(range=[0, mix_ymax]),
         legend=dict(orientation="h", y=-0.2), margin=dict(l=40, r=20, t=50, b=40),
     )
 
-    # ---- Precios nodales: banda min/prom/max por hora ----
+    # ---- Precio nodal en la BARRA DE REFERENCIA (Palamara 138 kV) ----
     finite = prices.where(prices < 1e5)  # excluir precio de no-suministro (~1e6)
-    p_min, p_avg, p_max = finite.min(axis=1), finite.mean(axis=1), finite.max(axis=1)
-    fig_price = go.Figure()
-    fig_price.add_trace(go.Scatter(x=hours, y=p_max, name="Máx", mode="lines",
-                                   line=dict(width=0, color="#f08a24")))
-    fig_price.add_trace(go.Scatter(x=hours, y=p_min, name="Mín", mode="lines",
-                                   fill="tonexty", fillcolor="rgba(240,138,36,0.2)",
-                                   line=dict(width=0, color="#f08a24")))
-    fig_price.add_trace(go.Scatter(x=hours, y=p_avg, name="Promedio", mode="lines",
-                                   line=dict(color="#f4c430", width=2)))
+    if ref_bus and ref_bus in finite.columns:
+        ref_series = finite[ref_bus]
+        ref_title = "Precio nodal · Palamara 138 kV (ref.)"
+    else:  # respaldo si no se halla la barra de referencia
+        ref_series = finite.mean(axis=1)
+        ref_title = "Precio nodal (promedio del sistema)"
+    price_ymax = float(ref_series.max()) * 1.1 if ref_series.notna().any() else 1.0
+    fig_price = go.Figure(
+        go.Scatter(
+            x=hours, y=ref_series.values, name="Palamara 138 kV", mode="lines",
+            line=dict(color="#f4c430", width=2.5),
+            fill="tozeroy", fillcolor="rgba(244,196,48,0.15)",
+            hovertemplate="Hora %{x}<br>%{y:,.0f} RD$/MWh<extra></extra>",
+        )
+    )
     fig_price.update_layout(
-        title="Precio marginal nodal (RD$/MWh)", xaxis_title="Hora",
-        yaxis_title="RD$/MWh", template="plotly_dark",
-        legend=dict(orientation="h", y=-0.2), margin=dict(l=40, r=20, t=50, b=40),
+        title=ref_title, xaxis_title="Hora", yaxis_title="RD$/MWh",
+        template="plotly_dark", showlegend=False,
+        xaxis=dict(range=[0.5, len(hours) + 0.5]),
+        yaxis=dict(range=[0, price_ymax]),
+        margin=dict(l=50, r=20, t=50, b=40),
     )
 
     # ---- Top 15 líneas más cargadas (varía con el deslizador de hora vía JS) ----
@@ -246,7 +296,7 @@ def build_figures(data: dict[str, object]):
         )
     )
     fig_cong.update_layout(
-        title="Top 15 líneas más cargadas (hora del deslizador)",
+        title="Top 15 líneas más cargadas",
         xaxis_title="% del límite térmico", xaxis=dict(range=[0, 105]),
         template="plotly_dark", margin=dict(l=232, r=12, t=50, b=40),
         yaxis=dict(tickfont=dict(size=8.5)),
@@ -309,7 +359,7 @@ def build_figures(data: dict[str, object]):
                     lat += [la0, la1, None]; lon += [lo0, lo1, None]; txt += [t, t, None]
         return go.Scattermapbox(
             lat=lat, lon=lon, mode="lines", line=dict(width=4.5, color=CONGESTION_COLOR),
-            name="Congestión ≥90%", legendgroup="tension", legendrank=1007,
+            name="Congestión ≥90%", legendrank=1007,
             text=txt, hovertemplate="%{text}<extra></extra>")
 
     def _marker_arrays(snap):
@@ -331,7 +381,7 @@ def build_figures(data: dict[str, object]):
     fig_map.add_trace(go.Scattermapbox(
         lat=fs_lat, lon=fs_lon, mode="lines",
         line=dict(width=1.2, color=VOLT_COLORS["LT Fuera de servicio"]),
-        name="LT Fuera de servicio", legendgroup="tension", legendrank=1006,
+        name="LT Fuera de servicio", legendrank=1006,
         text=fs_text, hovertemplate="%{text}<extra></extra>"))
     for bk in volt_buckets:
         lat, lon = [], []
@@ -339,7 +389,7 @@ def build_figures(data: dict[str, object]):
             lat += [la0, la1, None]; lon += [lo0, lo1, None]
         fig_map.add_trace(go.Scattermapbox(
             lat=lat, lon=lon, mode="lines", line=dict(width=2.0, color=VOLT_COLORS[bk]),
-            name=bk, legendgroup="tension", legendrank=1000 + VOLT_ORDER.index(bk),
+            name=bk, legendrank=1000 + VOLT_ORDER.index(bk),
             text=_line_texts(peak_snap, bk), hovertemplate="%{text}<extra></extra>"))
     fig_map.add_trace(_cong_trace(peak_snap))
     b_color, b_size, b_text = _marker_arrays(peak_snap)
@@ -373,7 +423,7 @@ def build_figures(data: dict[str, object]):
                         frame=dict(duration=0, redraw=True), transition=dict(duration=0))])
              for i in range(len(snaps))]
     fig_map.update_layout(
-        title="Mapa SENI — precio nodal y congestión por hora (usa el deslizador)",
+        title="Mapa SENI · precio nodal y tensión",
         mapbox=dict(style="carto-positron", center=dict(lat=18.8, lon=-70.4), zoom=6.7),
         template="plotly_dark", margin=dict(l=0, r=0, t=50, b=0), height=660,
         legend=dict(orientation="v", x=0.012, y=0.985, xanchor="left", yanchor="top",
@@ -558,15 +608,29 @@ def build_dashboard(
         "modeBarButtonsToRemove": ["lasso2d", "select2d", "toImage"],
     }
 
-    # Script que sincroniza el Top-15 con el deslizador de hora del mapa.
+    # Script que sincroniza el Top-15 y la mezcla de generación con el deslizador.
+    try:
+        init_hour = int(str(stats.get("peak_snap", "h_01")).split("_")[1])
+    except Exception:
+        init_hour = 1
     sync_script = (
         "<script>(function(){var HOURLY=" + json.dumps(hourly_top, ensure_ascii=False) + ";"
-        "function upd(h){var d=HOURLY[String(h)];var g=document.getElementById('cong-div');"
+        "var INIT=" + str(init_hour) + ";"
+        # Top-15 líneas: reemplaza los datos por los de la hora seleccionada
+        "function updCong(h){var d=HOURLY[String(h)];var g=document.getElementById('cong-div');"
         "if(d&&g&&window.Plotly){Plotly.update(g,{x:[d.x],y:[d.y],'marker.color':[d.color]},{},[0]);}}"
+        # Mezcla de generación: se llena moviendo el rango del eje X hasta la hora h
+        "function updMix(h){var g=document.getElementById('mix-div');"
+        "if(g&&window.Plotly){Plotly.relayout(g,{'xaxis.range':[0.5,h+0.5]});}}"
+        # Precio de la barra de referencia: se llena igual que la mezcla
+        "function updPrice(h){var g=document.getElementById('price-div');"
+        "if(g&&window.Plotly){Plotly.relayout(g,{'xaxis.range':[0.5,h+0.5]});}}"
+        "function upd(h){h=parseInt(h);if(!isNaN(h)){updCong(h);updMix(h);updPrice(h);}}"
         "function attach(){var m=document.getElementById('map-div');"
         "if(!m||!m.on){setTimeout(attach,300);return;}"
         "m.on('plotly_sliderchange',function(e){if(e&&e.step&&e.step.label!=null)upd(e.step.label);});"
-        "m.on('plotly_animatingframe',function(e){if(e&&e.frame&&e.frame.name!=null)upd(e.frame.name);});}"
+        "m.on('plotly_animatingframe',function(e){if(e&&e.frame&&e.frame.name!=null)upd(e.frame.name);});"
+        "setTimeout(function(){upd(INIT);},900);}"
         "if(document.readyState!=='loading')attach();else window.addEventListener('load',attach);"
         "})();</script>"
     )
@@ -579,8 +643,10 @@ def build_dashboard(
         plotly_js=get_plotlyjs(),
         gen_date=_dt.date.today().isoformat(),
         kpi_html=kpi_html,
-        map=div(figs["map"], map_config, div_id="map-div"), mix=div(figs["mix"]),
-        price=div(figs["price"]), cong=div(figs["cong"], div_id="cong-div"),
+        map=div(figs["map"], map_config, div_id="map-div"),
+        mix=div(figs["mix"], div_id="mix-div"),
+        price=div(figs["price"], div_id="price-div"),
+        cong=div(figs["cong"], div_id="cong-div"),
         conditions=cond,
         sync_script=sync_script,
     )

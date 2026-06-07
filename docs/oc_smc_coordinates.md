@@ -95,6 +95,30 @@ Salidas (en `data/external/`):
 Cobertura de referencia: **305 / 717 barras geolocalizadas** (las que tienen
 inyección/retiro SMC), 431 / 535 puntos cruzados (194 `exact` + 237 `fuzzy`).
 
+## Segunda fuente de coordenadas: el plano geográfico del OC
+
+Muchas barras sin punto SMC quedaban con coordenada **inferida por topología**
+(centroide de vecinos), que a veces cae "en el mar". `scripts/extract_plano_coords.py`
+(módulo `modom_pypsa/plano_coordinates.py`) las rescata desde el **plano geográfico
+mensual** del OC (`data/Plano RD Lineas Transmision *.pdf`, vectorial).
+
+El plano es **semi-esquemático**, no una proyección cartográfica: un ajuste afín
+global solo logra ~22 % de inliers (RMS 7.6 km) y las anclas de ciudad ~15 km. Por
+eso se usa **interpolación local IDW (k=4)** anclada en las 305 barras `smc_match`
+(emparejadas con etiquetas del plano por solape de tokens del nombre), con:
+
+- **pool de anclas auto-depurado**: descarta anclas inconsistentes (etiquetas mal
+  fusionadas o plantas nombradas como un pueblo pero ubicadas en otro sitio) por
+  error leave-one-out > 18 km;
+- **tope de cordura**: descarta predicciones que difieran del afín global > 40 km;
+- **recorte** a la caja terrestre de RD.
+
+Resultado: rescata **~40 barras** (`coord_source="plano_idw"`), precisión LOO
+mediana ≈ 5.8 km / p90 ≈ 18 km. **Nunca** pisa las coordenadas reales `smc_match`.
+Audita el emparejamiento en `data/external/plano_substation_matches.csv`.
+Distribución final de `coord_source`: 305 `smc_match`, 333 `inferred_topology`,
+40 `plano_idw`, 39 sin coordenada (no aparecen en el plano).
+
 > Confianza: usa `match_method`/`match_score` para filtrar. Los `fuzzy` con score
 > ≥ 0.9 son fiables; los de 0.5–0.7 conviene auditarlos (puede haber falsos
 > positivos por nombres parecidos). El token central del ID SMC del informe del OC

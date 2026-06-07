@@ -343,6 +343,15 @@ You can either:
 | 1 | **Caso MODOM** (`.xlsm`) | Workbook diario del SENI (PowerFactory/DIgSILENT) | `data/raw/` | Toda la capa canónica, el despacho y la red PyPSA | **Sí** (núcleo) |
 | 2 | **Ubicaciones del mapa Power BI del OC** | Reporte público "Ubicación" del OC (se **scrapea**, no se descarga a mano) | se genera en `data/external/oc_smc_points.csv` | Coordenadas lat/lon de las barras → mapa del dashboard | Sí, para el **mapa geográfico** |
 | 3 | **PDF de transacciones económicas** (`OC-GC-07-IMTE-*.pdf`) | Informe mensual del OC | (opcional) `data/external/` | **Auxiliar**: puente `PUNTO → ID SMC → barra` (Tabla 19) para validar/ampliar el cruce de coordenadas | No (validación) |
+| 4 | **Unifilar del SENI** (`*UNIFILAR SENI*.pdf`) | Diagrama unifilar mensual del OC | (opcional) `data/external/` | **Combustible por central** (ya usado para clasificar la mezcla); a futuro: impedancias de transformadores (Ucc%+MVA) y líneas (longitud+conductor) | Parcial (mejora fidelidad) |
+| 5 | **Plano geográfico de transmisión** (`*Plano*Lineas*.pdf`) | Plano mensual del OC (vectorial) | `data/` | **Rescata coordenadas** de barras que el cruce SMC no ubicó (las "en el mar"): georreferenciación por IDW local anclada en las barras con coords reales | Parcial (mejora el mapa) |
+
+> Las fuentes 3–5 son **publicaciones mensuales del OC**, igual que el caso MODOM.
+> La 4 (unifilar) ya alimenta la clasificación de combustible del dashboard (sus
+> impedancias son mejora futura); la 5 (plano) ya rescata ~40 barras sin coordenada
+> real. El plano es **semi-esquemático** (no proyección exacta): se ancla en las
+> barras `smc_match` reales y se aplica solo a las que no tienen coordenada, con
+> precisión ~6 km de mediana. Nunca pisa las coordenadas reales del OC.
 
 Notas clave:
 
@@ -392,6 +401,11 @@ $XLSM = "data\raw\MODOM_DIARIO_dd-mm-yyyy_V449.xlsm"
 # 5) Cruzar coordenadas con las barras -> data/external/buses_with_coords.csv
 .\.venv\Scripts\python scripts\join_smc_coordinates.py
 
+# 5b) FUENTE 5 (opcional) — rescatar barras sin coord real desde el plano del OC.
+#     Guarda el "Plano RD Lineas Transmision *.pdf" en data/ y corre:
+.\.venv\Scripts\python scripts\extract_plano_coords.py
+#     -> reescribe buses_with_coords.csv (coord_source="plano_idw") + plano_substation_matches.csv
+
 # 6) Generar el dashboard HTML (pon la fecha real del caso en --case-label)
 .\.venv\Scripts\python scripts\build_dashboard.py --case-label "MODOM_DIARIO dd-mm-aaaa V449"
 #    -> results/dashboard/seni_dashboard.html  (abrir/compartir)
@@ -399,9 +413,13 @@ $XLSM = "data\raw\MODOM_DIARIO_dd-mm-yyyy_V449.xlsm"
 
 ¿Cuándo re-correr cada paso?
 
-- **Caso nuevo del MODOM** → pasos 2, 3, 5 y 6 (la fuente 2 solo si cambian ubicaciones).
-- **Solo actualizar ubicaciones del OC** → pasos 4, 5 y 6.
+- **Caso nuevo del MODOM** → pasos 2, 3, 5, 5b y 6 (la fuente 2 solo si cambian ubicaciones).
+- **Solo actualizar ubicaciones del OC** → pasos 4, 5, 5b y 6.
+- **Plano nuevo del OC** (mismo caso) → paso 5 (re-cruzar) + 5b + 6.
 - **Solo regenerar el dashboard** (mismos datos) → paso 6.
+
+> Nota: el paso 5b debe correrse **después** del 5, porque parte de
+> `buses_with_coords.csv` y reescribe solo las barras sin coordenada real.
 
 La geolocalización (fuente 2) cambia poco entre casos; normalmente basta con correr el
 scraper de vez en cuando, no en cada caso diario.
@@ -545,7 +563,9 @@ Recommended near-term local continuation order:
 4. ~~build the first actual PyPSA network constructor~~ **done** — see [`docs/pypsa_network.md`](./docs/pypsa_network.md)
 5. export study-ready result tables (PyPSA results now written to `results/pypsa_basecase/`)
 6. ~~add dashboard layer~~ **done** — self-contained HTML via `scripts/build_dashboard.py` → `results/dashboard/seni_dashboard.html`
-7. ~~add map layer~~ **done** — geographic OSM map with real coordinates (`scripts/scrape_oc_smc.py` + `scripts/join_smc_coordinates.py`); next: geolocate more buses and add a per-hour slider
+7. ~~add map layer~~ **done** — geographic OSM map with real coordinates (`scripts/scrape_oc_smc.py` + `scripts/join_smc_coordinates.py`); per-hour slider added
+8. ~~geolocate more buses~~ **done** — `scripts/extract_plano_coords.py` rescues buses without OC coords from the geographic plano via local IDW (`coord_source="plano_idw"`); see [`docs/oc_smc_coordinates.md`](./docs/oc_smc_coordinates.md)
+9. next (fidelity): extract transformer/line impedances from the unifilar SLD to replace provisional per-unit values
 
 ## Documentation
 
