@@ -12,5 +12,6 @@
     "El `punto` del OC se resuelve por nombre (exact/fuzzy) a una barra.",
     "Si varios puntos OC caen en la misma barra, lat/lon se promedian.",
     "`coord_source=inferred_topology`: ubicación APROXIMADA (centroide de vecinos en la red); solo para visualizar la malla, no es GPS real."
-  ]
+  ],
+  "manual_override_count": 15
 }
