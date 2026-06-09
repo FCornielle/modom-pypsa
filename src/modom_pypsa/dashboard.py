@@ -143,6 +143,7 @@ def load_inputs(
     load = _read(results_dir / "load_by_snapshot.csv", index_col=0)
     prices = _read(results_dir / "nodal_prices_by_snapshot.csv", index_col=0)
     loading = _read(results_dir / "line_loading_by_snapshot.csv", index_col=0)
+    flows = _read(results_dir / "line_flows_by_snapshot.csv", index_col=0)
     summary = json.loads((results_dir / "pypsa_basecase_summary.json").read_text("utf-8"))
 
     generators = _read(data_dir / "generators" / "generators.csv")
@@ -194,6 +195,7 @@ def load_inputs(
         "load": load,
         "prices": prices,
         "loading": loading,
+        "flows": flows,
         "summary": summary,
         "fuel_by_gen": fuel_by_gen,
         "name_by_bus": name_by_bus,
@@ -201,6 +203,9 @@ def load_inputs(
         "coords": coords,
         "branches": branches,
         "excluded": excluded,
+        "lines_full": lines,
+        "trafos_full": trafos,
+        "generators_full": generators,
     }
 
 
@@ -469,6 +474,120 @@ def build_figures(data: dict[str, object]):
     return figs, kpis, stats, hourly_top
 
 
+# Etiquetas legibles para los campos estáticos de cada equipo (col -> rótulo).
+_FIELD_LABELS = {
+    "name": "ID rama", "bus0": "Barra 0", "bus1": "Barra 1",
+    "v_nom_bus0_kv": "Tensión barra 0 (kV)", "v_nom_bus1_kv": "Tensión barra 1 (kV)",
+    "voltage_pair_status": "Estado par de tensión",
+    "r_pu_hint": "R (pu)", "x_pu_hint": "X (pu)", "s_nom_mva_hint": "Límite S (MVA)",
+    "tap_ratio_hint": "Relación de tap", "has_tap_ratio_hint": "¿Tiene tap?",
+    "tap_side_hint": "Lado del tap",
+    "source_branch_id": "ID rama (origen)", "source_branch_type": "Tipo (origen)",
+    "source_row_number": "Fila (origen)", "notes": "Notas",
+    "generator_id": "ID generador", "generator_name": "Nombre",
+    "generator_id_legacy": "ID anterior", "bus_id": "Barra",
+    "enabled_flag": "Habilitado", "pmax_mw": "Pmax (MW)", "pmin_mw": "Pmin (MW)",
+    "cvp": "CVP (RD$/MWh)", "effective_pmax_mw": "Pmax efectivo (MW)",
+    "effective_pmin_mw": "Pmin efectivo (MW)", "effective_cvp": "CVP efectivo (RD$/MWh)",
+    "technology_group": "Grupo tecnológico", "ssaa": "Servicios auxiliares",
+    "pgn_mw": "Potencia nominal Pgn (MW)", "factora": "Factor A",
+    "heat_parameter": "Parámetro de calor",
+}
+# Campos de poco valor para la auditoría (se omiten para no saturar).
+_AUDIT_SKIP = {
+    "source_name_sheet", "source_sheet_primary", "bus_resolution_method",
+    "bus_id_in_buses", "code_changed", "limits_sanitization_method",
+    "cost_sanitization_method", "mrpf", "mrsf", "factor_node_bus_id",
+    "factor_node_smc_point_id", "centrales_terminal_bus_id",
+    "bus_id",  # se muestra ya como "Barra" amigable (nombre + id)
+}
+
+
+def _fmt_val(v: object) -> str:
+    """Formatea un valor para la tabla de auditoría (NaN/vacío -> '—')."""
+    if v is None:
+        return "—"
+    if isinstance(v, float):
+        if v != v:  # NaN
+            return "—"
+        if abs(v) < 5e-4:  # evita "-0" y ruido numérico
+            return "0"
+        return f"{v:,.4g}" if abs(v) < 1e4 else f"{v:,.0f}"
+    s = str(v).strip()
+    return s if s and s.lower() != "nan" else "—"
+
+
+def _static_rows(row: dict) -> list[list[str]]:
+    """Convierte una fila (col->valor) en pares [rótulo, valor] para la tabla."""
+    out = []
+    for col, val in row.items():
+        if col in _AUDIT_SKIP:
+            continue
+        out.append([_FIELD_LABELS.get(col, col), _fmt_val(val)])
+    return out
+
+
+def build_audit(data: dict[str, object]) -> dict[str, dict]:
+    """Datos para los tres paneles de auditoría: línea, transformador, generador.
+
+    Cada equipo lleva sus datos estáticos (todas las columnas de origen) más sus
+    resultados del despacho por hora (siguen el deslizador). Las llaves de `hourly`
+    son la hora 1..N como texto, igual que el deslizador del mapa.
+    """
+    loading = data["loading"]
+    flows = data["flows"]
+    gen = data["gen"]
+    name_by_bus = data["name_by_bus"]
+    fuel_by_gen = data["fuel_by_gen"]
+    snaps = list(loading.index)
+    hour_lbl = [str(i + 1) for i in range(len(snaps))]
+
+    def branch_entry(row: dict) -> dict:
+        name = str(row["name"])
+        b0, b1 = str(row["bus0"]), str(row["bus1"])
+        static = [
+            ["Conexión", f"{name_by_bus.get(b0, b0)} ↔ {name_by_bus.get(b1, b1)}"],
+        ] + _static_rows(row)
+        hourly = {}
+        for i, snap in enumerate(snaps):
+            fl = flows.loc[snap].get(name, float("nan"))
+            ld = loading.loc[snap].get(name, float("nan"))
+            hourly[hour_lbl[i]] = {
+                "Flujo (MW)": _fmt_val(float(fl)) if fl == fl else "—",
+                "Carga (% del límite)": (f"{float(ld) * 100:.1f}" if ld == ld else "—"),
+            }
+        return {"label": line_label(name, name_by_bus), "static": static, "hourly": hourly}
+
+    lines = {str(r["name"]): branch_entry(r)
+             for r in data["lines_full"].to_dict("records")}
+    trafos = {str(r["name"]): branch_entry(r)
+              for r in data["trafos_full"].to_dict("records")}
+
+    gens: dict[str, dict] = {}
+    for r in data["generators_full"].to_dict("records"):
+        gid = str(r["generator_id"])
+        bus = str(r.get("bus_id", ""))
+        fuel = fuel_by_gen.get(gid, "Otra")
+        pmax = pd.to_numeric(r.get("effective_pmax_mw"), errors="coerce")
+        static = [
+            ["Combustible (SLD)", fuel],
+            ["Barra", f"{name_by_bus.get(bus, bus)} ({bus})"],
+        ] + _static_rows(r)
+        hourly = {}
+        for i, snap in enumerate(snaps):
+            mw = gen.loc[snap].get(gid, float("nan")) if gid in gen.columns else float("nan")
+            pct = (f"{float(mw) / float(pmax) * 100:.0f}%"
+                   if mw == mw and pmax == pmax and pmax else "—")
+            hourly[hour_lbl[i]] = {
+                "Despacho (MW)": _fmt_val(float(mw)) if mw == mw else "—",
+                "% de Pmax": pct,
+            }
+        label = f"{_fmt_val(r.get('generator_name'))} · {fuel}"
+        gens[gid] = {"label": label, "static": static, "hourly": hourly}
+
+    return {"line": lines, "trafo": trafos, "gen": gens}
+
+
 def conditions_html(data: dict[str, object], stats: dict, mix, case_label: str) -> str:
     """Bloque HTML con las condiciones iniciales y supuestos del modelo."""
     s = data["summary"]
@@ -552,6 +671,20 @@ _TEMPLATE = """<!DOCTYPE html>
  .cond code{{background:#1b2230;padding:1px 5px;border-radius:4px;color:#d6e2f0}}
  .cond .box{{background:#161b24;border:1px solid #232730;border-radius:10px;padding:16px 20px}}
  footer{{color:#6b7280;font-size:12px;padding:0 24px 30px}}
+ .audit{{display:flex;flex-direction:column;height:470px}}
+ .aud-head{{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #232730}}
+ .aud-head .t{{font-size:15px;font-weight:600;color:#e6e6e6;white-space:nowrap}}
+ .aud-head select{{flex:1;min-width:0;background:#0e1117;color:#e6e6e6;border:1px solid #2c3340;
+   border-radius:7px;padding:6px 8px;font-size:12.5px}}
+ .aud-body{{overflow:auto;flex:1;padding:0}}
+ .aud-tbl{{width:100%;border-collapse:collapse;font-size:12.5px}}
+ .aud-tbl td{{padding:6px 14px;border-bottom:1px solid #1c2230;vertical-align:top}}
+ .aud-tbl td:first-child{{color:#8b94a3;width:48%}}
+ .aud-tbl td:last-child{{color:#dde4ee;font-weight:500}}
+ .aud-sec td{{background:#161b24;color:#cdd5e0 !important;font-weight:600;font-size:11.5px;
+   text-transform:uppercase;letter-spacing:.04em}}
+ .aud-hl td:last-child{{color:#f4c430 !important}}
+ .aud-empty{{padding:20px;color:#6b7280;font-size:13px}}
  @media(max-width:900px){{.grid,.cond-grid{{grid-template-columns:1fr}}}}
 </style></head>
 <body>
@@ -563,6 +696,12 @@ _TEMPLATE = """<!DOCTYPE html>
  <div class="card">{mix}</div>
  <div class="card">{price}</div>
  <div class="card">{cong}</div>
+ <div class="card audit"><div class="aud-head"><span class="t">🔍 Auditar línea</span>
+   <select id="sel-line"></select></div><div id="aud-line" class="aud-body"></div></div>
+ <div class="card audit"><div class="aud-head"><span class="t">🔍 Auditar generador</span>
+   <select id="sel-gen"></select></div><div id="aud-gen" class="aud-body"></div></div>
+ <div class="card audit"><div class="aud-head"><span class="t">🔍 Auditar transformador</span>
+   <select id="sel-trafo"></select></div><div id="aud-trafo" class="aud-body"></div></div>
 </div>
 <section class="cond"><div class="box">{conditions}</div></section>
 <footer>Artefacto analítico reproducible. La energía no suministrada y los precios
@@ -589,6 +728,7 @@ def build_dashboard(
 
     data = load_inputs(results_dir, data_dir, external_dir)
     figs, kpis, stats, hourly_top = build_figures(data)
+    audit = build_audit(data)
     mix = _fuel_mix(data["gen"], data["fuel_by_gen"])
     cond = conditions_html(data, stats, mix, case_label)
 
@@ -615,7 +755,8 @@ def build_dashboard(
         init_hour = 1
     sync_script = (
         "<script>(function(){var HOURLY=" + json.dumps(hourly_top, ensure_ascii=False) + ";"
-        "var INIT=" + str(init_hour) + ";"
+        "var AUDIT=" + json.dumps(audit, ensure_ascii=False) + ";"
+        "var INIT=" + str(init_hour) + ";var AUD_HOUR=INIT;var CUR={line:null,gen:null,trafo:null};"
         # Top-15 líneas: reemplaza los datos por los de la hora seleccionada
         "function updCong(h){var d=HOURLY[String(h)];var g=document.getElementById('cong-div');"
         "if(d&&g&&window.Plotly){Plotly.update(g,{x:[d.x],y:[d.y],'marker.color':[d.color]},{},[0]);}}"
@@ -625,7 +766,27 @@ def build_dashboard(
         # Precio de la barra de referencia: se llena igual que la mezcla
         "function updPrice(h){var g=document.getElementById('price-div');"
         "if(g&&window.Plotly){Plotly.relayout(g,{'xaxis.range':[0.5,h+0.5]});}}"
-        "function upd(h){h=parseInt(h);if(!isNaN(h)){updCong(h);updMix(h);updPrice(h);}}"
+        # --- Paneles de auditoría por equipo ---
+        "function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}"
+        "function renderAud(k){var id=CUR[k];var box=document.getElementById('aud-'+k);if(!box)return;"
+        "var it=id&&AUDIT[k]?AUDIT[k][id]:null;"
+        "if(!it){box.innerHTML='<div class=\"aud-empty\">Sin datos</div>';return;}"
+        "var rows='';var hh=it.hourly[String(AUD_HOUR)]||{};var hk=Object.keys(hh);"
+        "if(hk.length){rows+='<tr class=\"aud-sec\"><td colspan=2>Resultados · hora '+AUD_HOUR+'</td></tr>';"
+        "hk.forEach(function(k2){rows+='<tr class=\"aud-hl\"><td>'+esc(k2)+'</td><td>'+esc(hh[k2])+'</td></tr>';});}"
+        "rows+='<tr class=\"aud-sec\"><td colspan=2>Datos del equipo</td></tr>';"
+        "it.static.forEach(function(kv){rows+='<tr><td>'+esc(kv[0])+'</td><td>'+esc(kv[1])+'</td></tr>';});"
+        "box.innerHTML='<table class=\"aud-tbl\"><tbody>'+rows+'</tbody></table>';}"
+        "function fillSel(k,sid){var sel=document.getElementById(sid);if(!sel||!AUDIT[k])return;"
+        "var es=Object.keys(AUDIT[k]).map(function(id){return [id,AUDIT[k][id].label||id];});"
+        "es.sort(function(a,b){return a[1].localeCompare(b[1]);});"
+        "sel.innerHTML=es.map(function(e){return '<option value=\"'+esc(e[0])+'\">'+esc(e[1])+'</option>';}).join('');"
+        "CUR[k]=es.length?es[0][0]:null;"
+        "sel.onchange=function(){CUR[k]=sel.value;renderAud(k);};}"
+        "function updAud(h){AUD_HOUR=h;['line','gen','trafo'].forEach(renderAud);}"
+        "fillSel('line','sel-line');fillSel('gen','sel-gen');fillSel('trafo','sel-trafo');"
+        "['line','gen','trafo'].forEach(renderAud);"
+        "function upd(h){h=parseInt(h);if(!isNaN(h)){updCong(h);updMix(h);updPrice(h);updAud(h);}}"
         "function attach(){var m=document.getElementById('map-div');"
         "if(!m||!m.on){setTimeout(attach,300);return;}"
         "m.on('plotly_sliderchange',function(e){if(e&&e.step&&e.step.label!=null)upd(e.step.label);});"
