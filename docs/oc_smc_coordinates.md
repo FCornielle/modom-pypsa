@@ -119,6 +119,20 @@ Audita el emparejamiento en `data/external/plano_substation_matches.csv`.
 Distribución final de `coord_source`: 305 `smc_match`, 333 `inferred_topology`,
 40 `plano_idw`, 39 sin coordenada (no aparecen en el plano).
 
+## Correcciones manuales auditadas
+
+Para casos donde la heurística automática produce una ubicación claramente
+incorrecta pero la identidad de la subestación sí está clara, el flujo puede
+aplicar `data/external/coordinate_overrides.csv` al final del proceso.
+
+Uso previsto:
+
+- pares por transformador que deberían compartir patio/subestación y quedaron a
+  decenas de km de distancia;
+- terminales/generadores donde el match por nombre del punto SMC resolvió contra
+  la planta correcta pero al bus equivocado;
+- ajustes confirmados manualmente contra mapa/GIS antes de abrir un PR.
+
 > Confianza: usa `match_method`/`match_score` para filtrar. Los `fuzzy` con score
 > ≥ 0.9 son fiables; los de 0.5–0.7 conviene auditarlos (puede haber falsos
 > positivos por nombres parecidos). El token central del ID SMC del informe del OC

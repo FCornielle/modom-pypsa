@@ -32,6 +32,7 @@ from pathlib import Path
 DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "processed"
 DEFAULT_EXTERNAL_DIR = Path(__file__).resolve().parents[2] / "data" / "external"
 DEFAULT_OC_CSV = DEFAULT_EXTERNAL_DIR / "oc_smc_points.csv"
+DEFAULT_OVERRIDE_CSV = DEFAULT_EXTERNAL_DIR / "coordinate_overrides.csv"
 
 FUZZY_THRESHOLD = 0.5
 
@@ -74,6 +75,48 @@ def to_float(value: object) -> float | None:
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8", newline="") as fh:
         return list(csv.DictReader(fh))
+
+
+def apply_coordinate_overrides(
+    bus_rows: list[dict[str, object]],
+    override_csv: Path = DEFAULT_OVERRIDE_CSV,
+) -> dict[str, object]:
+    """Aplica correcciones manuales auditadas a `buses_with_coords`.
+
+    El archivo de overrides debe traer al menos:
+      - `bus_id_modom`
+      - `lat`
+      - `lon`
+
+    Campos opcionales:
+      - `coord_source` (default: `manual_override`)
+      - `rationale`
+      - `based_on_bus_id`
+    """
+    if not override_csv.exists():
+        return {"override_file": str(override_csv), "applied_count": 0, "applied_bus_ids": []}
+
+    rows = read_csv(override_csv)
+    by_bus = {clean(r.get("bus_id_modom")): r for r in bus_rows}
+    applied: list[str] = []
+    for item in rows:
+        bus_id = clean(item.get("bus_id_modom"))
+        if not bus_id or bus_id not in by_bus:
+            continue
+        lat = to_float(item.get("lat"))
+        lon = to_float(item.get("lon"))
+        if lat is None or lon is None:
+            continue
+        target = by_bus[bus_id]
+        target["lat"] = round(lat, 6)
+        target["lon"] = round(lon, 6)
+        target["coord_source"] = clean(item.get("coord_source")) or "manual_override"
+        applied.append(bus_id)
+    return {
+        "override_file": str(override_csv),
+        "applied_count": len(applied),
+        "applied_bus_ids": applied,
+    }
 
 
 class Candidate:
@@ -311,8 +354,10 @@ def export_coordinates(
     oc_csv: Path = DEFAULT_OC_CSV,
     outdir: Path = DEFAULT_EXTERNAL_DIR,
     propagate_rounds: int = 15,
+    override_csv: Path = DEFAULT_OVERRIDE_CSV,
 ) -> dict[str, object]:
     payload = join_coordinates(data_dir, oc_csv, propagate_rounds)
+    override_summary = apply_coordinate_overrides(payload["bus_rows"], override_csv)
     outdir.mkdir(parents=True, exist_ok=True)
 
     def write(path: Path, rows: list[dict[str, object]], fields: list[str]) -> None:
@@ -334,6 +379,11 @@ def export_coordinates(
          "matched_bus_id", "matched_name", "match_source", "match_method", "match_score"],
     )
     (outdir / "smc_coordinates_summary.json").write_text(
-        json.dumps(payload["summary"], indent=2, ensure_ascii=False), encoding="utf-8"
+        json.dumps(
+            {**payload["summary"], "manual_override_count": override_summary["applied_count"]},
+            indent=2,
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
     )
-    return payload["summary"]
+    return {**payload["summary"], "manual_override_count": override_summary["applied_count"]}

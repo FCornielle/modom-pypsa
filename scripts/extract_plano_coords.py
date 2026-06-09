@@ -20,6 +20,7 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from modom_pypsa import plano_coordinates as pc
+from modom_pypsa.smc_coordinates import apply_coordinate_overrides
 
 
 def parse_args() -> argparse.Namespace:
@@ -63,6 +64,8 @@ def main() -> int:
             r["coord_source"] = "plano_idw"
             updated += 1
 
+    override_summary = apply_coordinate_overrides(rows)
+
     with args.buses_csv.open("w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=fields)
         w.writeheader()
@@ -82,6 +85,7 @@ def main() -> int:
                             f"{lab.x:.1f}", f"{lab.y:.1f}", "yes" if bid in coords else "no"])
 
     summary = {"plano_pdf": pdf.name, "updated_buses": updated, **stats,
+               "manual_override_count": override_summary["applied_count"],
                "audit_csv": str(audit)}
     print(json.dumps(summary, indent=2, ensure_ascii=False))
     return 0
