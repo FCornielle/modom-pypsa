@@ -1,6 +1,6 @@
 {
-  "model": "linear_lopf_v1",
-  "objective": 1218359114.9615502,
+  "model": "linear_lopf_v2_modom_commitment",
+  "objective": 2112527060.0162227,
   "snapshots": 24,
   "total_load_mwh": 75421.329,
   "served_mwh": 74389.797,
@@ -8,12 +8,12 @@
   "peak_load_mw": 3553.323,
   "peak_unserved_mw": 61.912,
   "dispatch_by_carrier_mwh": {
-    "1": 52617.407,
+    "1": 54273.568,
     "2": 3340.8,
-    "3": 944.7,
-    "4": 17486.89
+    "3": 913.7,
+    "4": 15861.73
   },
-  "lines_above_90pct_peak": 20,
+  "lines_above_90pct_peak": 18,
   "max_line_loading_pu": 1.0,
   "counts": {
     "buses": 717,
@@ -21,6 +21,7 @@
     "transformers_added": 161,
     "generators_added": 140,
     "vre_with_forecast": 43,
-    "load_buses": 281
+    "load_buses": 281,
+    "committed_from_modom": 63
   }
 }

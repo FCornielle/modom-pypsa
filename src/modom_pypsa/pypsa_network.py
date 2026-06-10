@@ -37,6 +37,8 @@ DEFAULT_RESULTS_DIR = Path(__file__).resolve().parents[2] / "results" / "pypsa_b
 EPS_X = 1e-5  # reactancia mínima para que KVL sea resoluble
 UNSERVED_COST = 1_000_000.0  # costo de energía no suministrada
 MISSING_COST_FALLBACK = 1_000_000.0  # costo de respaldo si falta `cvp`
+DUMP_COST = 1_000_000.0  # penalización por sobre-generación (holgura de balance)
+COMMIT_EPS = 0.05  # MW: umbral para considerar una unidad "encendida" en el MODOM
 
 
 def _read(path: Path) -> pd.DataFrame:
@@ -59,8 +61,19 @@ def resolve_paths(data_dir: Path) -> dict[str, Path]:
     }
 
 
-def build_network(data_dir: Path = DEFAULT_DATA_DIR):
-    """Arma la red PyPSA desde las tablas canónicas. Devuelve un `pypsa.Network`."""
+def build_network(
+    data_dir: Path = DEFAULT_DATA_DIR, use_modom_commitment: bool = True
+):
+    """Arma la red PyPSA desde las tablas canónicas. Devuelve un `pypsa.Network`.
+
+    Si `use_modom_commitment` y existe `modom_results/modom_generator_dispatch.csv`,
+    el estado de encendido/apagado por hora se TOMA del despacho del propio MODOM
+    (las unidades que el OC no commiteó quedan apagadas; las commiteadas deben dar
+    >= su Pmin técnico). PyPSA resuelve el despacho económico y los flujos DENTRO de
+    ese commitment. Es la vía fiel para reproducir el operativo del OC: GAMS decide
+    el commitment (con contratos/reservas/seguridad que no modelamos aún) y nosotros
+    reproducimos la red. Una holgura de sobre-generación mantiene el LP factible.
+    """
     import pypsa
 
     paths = resolve_paths(data_dir)
@@ -157,7 +170,19 @@ def build_network(data_dir: Path = DEFAULT_DATA_DIR):
         ).reindex(snapshot_ids)
         vre_ids = set(forecast_pivot.columns)
 
+    # Commitment (encendido/apagado por hora) tomado del despacho del propio MODOM.
+    commit_pivot = None
+    commit_path = data_dir / "modom_results" / "modom_generator_dispatch.csv"
+    if use_modom_commitment and commit_path.exists():
+        commit_pivot = _read(commit_path)
+        commit_pivot = commit_pivot.set_index(commit_pivot.columns[0])
+        commit_pivot.index = [str(i) for i in commit_pivot.index]
+        commit_pivot = commit_pivot.apply(pd.to_numeric, errors="coerce").reindex(snapshot_ids)
+
     p_max_pu_cols: dict[str, pd.Series] = {}
+    p_min_pu_cols: dict[str, pd.Series] = {}
+    gen_buses: set[str] = set()
+    committed_units = 0
     gen_added: list[str] = []
     for _, row in generators.iterrows():
         gid = row["generator_id"]
@@ -187,6 +212,7 @@ def build_network(data_dir: Path = DEFAULT_DATA_DIR):
             carrier=str(row.get("technology_group", "") or "unknown"),
         )
         gen_added.append(gid)
+        gen_buses.add(bus)
         if p_nom > 0:
             if gid in vre_ids and forecast_pivot is not None:
                 # VRE: tope = pronóstico renovable (0 de noche para el solar)
@@ -198,8 +224,25 @@ def build_network(data_dir: Path = DEFAULT_DATA_DIR):
                     avail_series.reindex(snapshot_ids).fillna(0.0) / p_nom
                 ).clip(0.0, 1.0)
 
+            # Commitment del MODOM (solo unidades convencionales, no VRE):
+            # apaga lo no-commiteado por hora; lo commiteado debe dar >= Pmin tecnico.
+            if (commit_pivot is not None and gid in commit_pivot.columns
+                    and gid not in vre_ids):
+                com = commit_pivot[gid].fillna(0.0) > COMMIT_EPS
+                base_cap = p_max_pu_cols.get(gid, pd.Series(1.0, index=snapshot_ids))
+                pmax_s = base_cap.where(com, 0.0)
+                eff_pmin = pd.to_numeric(row.get("effective_pmin_mw", ""), errors="coerce")
+                pmin_pu = (0.0 if pd.isna(eff_pmin) or eff_pmin <= 0
+                           else min(float(eff_pmin) / p_nom, 1.0))
+                pmin_s = pd.Series(pmin_pu, index=snapshot_ids).where(com, 0.0)
+                p_max_pu_cols[gid] = pmax_s
+                p_min_pu_cols[gid] = pd.concat([pmin_s, pmax_s], axis=1).min(axis=1)
+                committed_units += 1
+
     if p_max_pu_cols:
         n.generators_t.p_max_pu = pd.DataFrame(p_max_pu_cols, index=snapshot_ids)
+    if p_min_pu_cols:
+        n.generators_t.p_min_pu = pd.DataFrame(p_min_pu_cols, index=snapshot_ids).fillna(0.0)
 
     # --- Holgura: generador de energía no suministrada por barra con demanda ---
     total_peak_load = float(load_pivot.sum(axis=1).max()) if len(load_pivot) else 0.0
@@ -213,8 +256,26 @@ def build_network(data_dir: Path = DEFAULT_DATA_DIR):
         carrier="unserved",
     )
 
+    # --- Holgura de sobre-generación: si los Pmin forzados (commitment del MODOM)
+    # superan la demanda en alguna hora (el balance sin pérdidas no la absorbe),
+    # este "dump" la disipa con penalización. Generador con p en [-p_nom, 0] y costo
+    # negativo, de modo que disipar suma penalización al objetivo. ---
+    if p_min_pu_cols:
+        dump_buses = sorted(gen_buses | set(load_buses))
+        dump_names = [f"dump_{b}" for b in dump_buses]
+        n.add(
+            "Generator",
+            dump_names,
+            bus=dump_buses,
+            p_nom=max(total_peak_load, 1.0),
+            p_min_pu=-1.0,
+            p_max_pu=0.0,
+            marginal_cost=-DUMP_COST,
+            carrier="dump",
+        )
+
     n.meta = {
-        "model": "linear_lopf_v1",
+        "model": "linear_lopf_v2_modom_commitment" if committed_units else "linear_lopf_v1",
         "per_unit_base_note": "v_nom=1.0 en todas las barras; impedancias en por-unidad de MODOM.",
         "counts": {
             "buses": int(len(n.buses)),
@@ -223,9 +284,16 @@ def build_network(data_dir: Path = DEFAULT_DATA_DIR):
             "generators_added": int(len(gen_added)),
             "vre_with_forecast": int(sum(1 for g in gen_added if g in vre_ids)),
             "load_buses": int(len(load_buses)),
+            "committed_from_modom": int(committed_units),
         },
         "vre_note": "Las unidades con perfil renovable se capan por pronóstico "
                     "(forecast_mw), no por disponibilidad; el resto por disponibilidad.",
+        "commitment_note": (
+            "Encendido/apagado por hora tomado del despacho del MODOM (S_DESPACHOM); "
+            "las commiteadas dan >= su Pmin tecnico. PyPSA resuelve despacho economico "
+            "y flujos dentro de ese commitment."
+            if committed_units else "Sin commitment del MODOM (despacho libre por merito)."
+        ),
     }
     return n
 
@@ -236,7 +304,7 @@ def solve_network(n, solver_name: str = "highs"):
 
 
 def summarize(n) -> dict[str, object]:
-    real_gens = n.generators.index[n.generators.carrier != "unserved"]
+    real_gens = n.generators.index[~n.generators.carrier.isin(["unserved", "dump"])]
     unserved_gens = n.generators.index[n.generators.carrier == "unserved"]
     gen_p = n.generators_t.p
 
@@ -282,7 +350,9 @@ def export_results(n, outdir: Path = DEFAULT_RESULTS_DIR) -> dict[str, object]:
     outdir.mkdir(parents=True, exist_ok=True)
     summary = summarize(n)
 
-    n.generators_t.p.round(4).to_csv(outdir / "generation_by_snapshot.csv")
+    # se excluye el "dump" (holgura de sobre-generación) de los resultados publicados
+    keep_gens = n.generators.index[n.generators.carrier != "dump"]
+    n.generators_t.p[keep_gens].round(4).to_csv(outdir / "generation_by_snapshot.csv")
     n.loads_t.p_set.round(4).to_csv(outdir / "load_by_snapshot.csv")
     if len(n.lines):
         n.lines_t.p0.round(4).to_csv(outdir / "line_flows_by_snapshot.csv")
