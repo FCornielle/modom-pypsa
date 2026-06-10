@@ -65,6 +65,30 @@ def test_build_network_assembles(tmp_path: Path) -> None:
     assert len(n.snapshots) == 2
 
 
+def test_modom_commitment_forces_on_off_and_pmin(tmp_path: Path) -> None:
+    """Con commitment del MODOM: apaga lo no-commiteado y exige Pmin en lo encendido."""
+    _build_canonical(tmp_path)
+    # G1 con Pmin = 50 MW (p_nom = 200 -> pmin_pu = 0.25)
+    _write(
+        tmp_path / "generators" / "generators.csv",
+        "generator_id,generator_name,bus_id,enabled_flag,effective_pmax_mw,effective_pmin_mw,cvp,effective_cvp,technology_group",
+        ["G1,GEN UNO,A,1,200.0,50.0,30.0,30.0,1"],
+    )
+    # MODOM: G1 encendida en h_01 (100 MW), apagada en h_02 (0)
+    _write(
+        tmp_path / "modom_results" / "modom_generator_dispatch.csv",
+        ",G1",
+        ["h_01,100.0", "h_02,0.0"],
+    )
+    n = build_network(data_dir=tmp_path, use_modom_commitment=True)
+    assert n.meta["counts"]["committed_from_modom"] == 1
+    assert n.generators_t.p_max_pu.at["h_02", "G1"] == 0.0   # apagada
+    assert n.generators_t.p_max_pu.at["h_01", "G1"] == pytest.approx(1.0)
+    assert n.generators_t.p_min_pu.at["h_01", "G1"] == pytest.approx(0.25)  # >= Pmin
+    assert n.generators_t.p_min_pu.at["h_02", "G1"] == 0.0
+    assert (n.generators.carrier == "dump").sum() >= 1  # holgura de sobre-generación
+
+
 def test_solve_serves_load(tmp_path: Path) -> None:
     _build_canonical(tmp_path)
     n = build_network(data_dir=tmp_path)
