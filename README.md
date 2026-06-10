@@ -338,6 +338,10 @@ You can either:
 
 ### Fuentes necesarias
 
+> 📚 **Guía única y homologada de todas las fuentes** (formato consistente para el
+> agente: origen · cadencia · dónde guardar · qué alimenta · extractor · llaves):
+> [`docs/fuentes_datos.md`](./docs/fuentes_datos.md). La tabla de abajo es el resumen.
+
 | # | Fuente | De dónde sale | Dónde colocarla | Alimenta | ¿Requerida? |
 |---|--------|---------------|-----------------|----------|-------------|
 | 1 | **Caso MODOM** (`.xlsm`) | Workbook diario del SENI (PowerFactory/DIgSILENT) | `data/raw/` | Toda la capa canónica, el despacho y la red PyPSA | **Sí** (núcleo) |
