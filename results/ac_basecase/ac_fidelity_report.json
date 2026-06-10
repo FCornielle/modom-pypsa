@@ -1,13 +1,13 @@
 {
   "matched_buses": 406,
   "n_points": 1137,
-  "vm_mae_pu": 0.0356,
-  "vm_median_pu": 0.0215,
-  "vm_p90_pu": 0.0679,
-  "vm_max_pu": 0.4406,
-  "within_0p02_pct": 43.8,
-  "within_0p05_pct": 82.1,
+  "vm_mae_pu": 0.0357,
+  "vm_median_pu": 0.0216,
+  "vm_p90_pu": 0.0677,
+  "vm_max_pu": 0.4412,
+  "within_0p02_pct": 44.5,
+  "within_0p05_pct": 82.0,
   "snapshots": 24,
   "converged": 3,
-  "losses_mw_avg": 92.22
+  "losses_mw_avg": 91.13
 }

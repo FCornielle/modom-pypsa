@@ -24,6 +24,7 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = REPO_ROOT / "data" / "processed"
 DEFAULT_RESULTS_DIR = REPO_ROOT / "results" / "ac_basecase"
+PYPSA_RESULTS_DIR = REPO_ROOT / "results" / "pypsa_basecase"
 S_BASE_MVA = 100.0
 EPS_X = 1e-4
 DEFAULT_VN_KV = 138.0
@@ -67,12 +68,21 @@ def load_ac_inputs(data_dir: Path, results_dir: Path) -> dict[str, object]:
         f = m / name
         return pd.read_csv(f, index_col=0) if f.exists() else pd.DataFrame()
 
+    # despacho propio de PyPSA (P por generador), sin las holguras unserved/dump
+    pdisp = PYPSA_RESULTS_DIR / "generation_by_snapshot.csv"
+    pypsa_disp = pd.read_csv(pdisp, index_col=0) if pdisp.exists() else pd.DataFrame()
+    if len(pypsa_disp):
+        keep = [c for c in pypsa_disp.columns
+                if not str(c).startswith(("unserved", "dump"))]
+        pypsa_disp = pypsa_disp[keep]
+
     return {
         "buses": buses,
         "lines": lines,
         "trafos": trafos,
         "load_pivot": load_pivot,
         "disp": _csv("modom_generator_dispatch.csv"),
+        "pypsa_disp": pypsa_disp,
         "qgen": _csv("modom_reactive_gen.csv"),
         "qload": _csv("modom_reactive_load.csv"),
         "vbus": _csv("modom_bus_voltage.csv"),
@@ -83,8 +93,12 @@ def load_ac_inputs(data_dir: Path, results_dir: Path) -> dict[str, object]:
     }
 
 
-def build_ac_snapshot(inp: dict, snap: str):
-    """Construye la red pandapower para un snapshot (hora)."""
+def build_ac_snapshot(inp: dict, snap: str, dispatch: str = "pypsa"):
+    """Construye la red pandapower para un snapshot (hora).
+
+    `dispatch`: "pypsa" usa nuestro despacho (punto de operación más sano, mejor
+    convergencia y base del lazo iterativo); "modom" usa el despacho del OC.
+    """
     import pandapower as pp
 
     vn = inp["vn"]
@@ -155,7 +169,8 @@ def build_ac_snapshot(inp: dict, snap: str):
 
     # generación agregada por barra: P y Q del MODOM (modelo PQ, estable). La barra
     # con mayor generación es el slack (ext_grid) y fija la tensión de referencia.
-    disp = inp["disp"].loc[snap] if snap in getattr(inp["disp"], "index", []) else pd.Series(dtype=float)
+    disp_df = inp.get("pypsa_disp") if (dispatch == "pypsa" and len(inp.get("pypsa_disp", []))) else inp["disp"]
+    disp = disp_df.loc[snap] if snap in getattr(disp_df, "index", []) else pd.Series(dtype=float)
     qgen = inp["qgen"].loc[snap] if snap in getattr(inp["qgen"], "index", []) else pd.Series(dtype=float)
     vb = inp["vbus"].loc[snap] if snap in getattr(inp["vbus"], "index", []) else pd.Series(dtype=float)
     p_by_bus: dict[str, float] = {}
@@ -181,16 +196,21 @@ def build_ac_snapshot(inp: dict, snap: str):
 
 
 def run_ac(data_dir: Path = DEFAULT_DATA_DIR,
-           results_dir: Path = DEFAULT_RESULTS_DIR) -> dict[str, object]:
-    """Corre el flujo AC por hora; escribe tensiones, pérdidas y un reporte de fidelidad."""
+           results_dir: Path = DEFAULT_RESULTS_DIR,
+           dispatch: str = "pypsa") -> dict[str, object]:
+    """Corre el flujo AC por hora; escribe tensiones, pérdidas y un reporte de fidelidad.
+
+    `dispatch="pypsa"` alimenta el AC con nuestro despacho; "modom" con el del OC.
+    """
     import pandapower as pp
 
     inp = load_ac_inputs(data_dir, results_dir)
-    snaps = [s for s in inp["disp"].index] if len(inp["disp"]) else list(inp["load_pivot"].index)
+    src = inp["pypsa_disp"] if (dispatch == "pypsa" and len(inp["pypsa_disp"])) else inp["disp"]
+    snaps = list(src.index) if len(src) else list(inp["load_pivot"].index)
     vm_rows: dict[str, pd.Series] = {}
     losses, conv = {}, {}
     for snap in snaps:
-        net, idx, _ = build_ac_snapshot(inp, snap)
+        net, idx, _ = build_ac_snapshot(inp, snap, dispatch=dispatch)
         ok = False
         for init in ("dc", "flat"):  # DC-init es mucho más robusto; flat de respaldo
             try:
