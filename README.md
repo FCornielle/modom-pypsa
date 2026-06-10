@@ -394,6 +394,12 @@ $XLSM = "data\raw\MODOM_DIARIO_dd-mm-yyyy_V449.xlsm"
 # 3) Resolver la red PyPSA (LOPF lineal) -> results/pypsa_basecase/
 .\.venv\Scripts\python scripts\build_pypsa_network.py
 
+# 3b) VALIDACIÓN — extraer los resultados del propio MODOM (verdad de referencia)
+#     -> data/processed/modom_results/  y comparar la fidelidad de PyPSA vs MODOM
+.\.venv\Scripts\python scripts\build_modom_results.py --xlsm $XLSM
+.\.venv\Scripts\python scripts\validate_against_modom.py
+#     -> results/pypsa_basecase/fidelity_report.json (+ score 0-100 por consola)
+
 # 4) FUENTE 2 — extraer las coordenadas del mapa del OC (necesita internet)
 #    -> data/external/oc_smc_points.csv
 .\.venv\Scripts\python scripts\scrape_oc_smc.py
