@@ -151,6 +151,14 @@ def load_inputs(
         str(r.generator_id): classify_fuel(r.generator_name, r.technology_group)
         for r in generators.itertuples()
     }
+    # Override con el combustible OFICIAL declarado (VEROPE), donde exista.
+    dcvp_path = (data_dir.parent / "external" / "programacion_seni" / "verope"
+                 / "declared_cvp.csv")
+    if dcvp_path.exists():
+        for r in _read(dcvp_path).itertuples():
+            fuel = str(getattr(r, "combustible", "") or "").strip()
+            if fuel and fuel != "Otra":
+                fuel_by_gen[str(r.generator_id)] = fuel
     buses_full = _read(data_dir / "buses" / "buses.csv")
 
     def _name(raw, bus_id) -> str:

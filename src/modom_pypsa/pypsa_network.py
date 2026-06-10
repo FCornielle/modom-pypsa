@@ -194,6 +194,17 @@ def build_network(
         commit_pivot.index = [str(i) for i in commit_pivot.index]
         commit_pivot = commit_pivot.apply(pd.to_numeric, errors="coerce").reindex(snapshot_ids)
 
+    # CVP declarado (VEROPE): override de costo con el valor vigente del OC.
+    declared_cvp: dict[str, float] = {}
+    dcvp_path = (data_dir.parent / "external" / "programacion_seni" / "verope"
+                 / "declared_cvp.csv")
+    if dcvp_path.exists():
+        dc = _read(dcvp_path)
+        for _, r in dc.iterrows():
+            v = pd.to_numeric(r.get("cvp_declarado", ""), errors="coerce")
+            if pd.notna(v) and float(v) > 0:
+                declared_cvp[str(r.get("generator_id", "")).strip()] = float(v)
+
     p_max_pu_cols: dict[str, pd.Series] = {}
     p_min_pu_cols: dict[str, pd.Series] = {}
     gen_buses: set[str] = set()
@@ -213,10 +224,13 @@ def build_network(
         avail_max = float(avail_series.max()) if len(avail_series) else 0.0
         p_nom = max(eff_pmax, avail_max, 0.0) if enabled else 0.0
 
-        cost = pd.to_numeric(row.get("effective_cvp", ""), errors="coerce")
-        if pd.isna(cost):
-            cost = pd.to_numeric(row.get("cvp", ""), errors="coerce")
-        cost = MISSING_COST_FALLBACK if pd.isna(cost) else float(cost)
+        if gid in declared_cvp:                 # CVP declarado vigente (VEROPE)
+            cost = declared_cvp[gid]
+        else:
+            cost = pd.to_numeric(row.get("effective_cvp", ""), errors="coerce")
+            if pd.isna(cost):
+                cost = pd.to_numeric(row.get("cvp", ""), errors="coerce")
+            cost = MISSING_COST_FALLBACK if pd.isna(cost) else float(cost)
 
         n.add(
             "Generator",
@@ -301,6 +315,7 @@ def build_network(
             "load_buses": int(len(load_buses)),
             "committed_from_modom": int(committed_units),
             "loads_with_nodal_factor": int(n_loss_factors),
+            "declared_cvp_overrides": int(sum(1 for g in gen_added if g in declared_cvp)),
         },
         "vre_note": "Las unidades con perfil renovable se capan por pronóstico "
                     "(forecast_mw), no por disponibilidad; el resto por disponibilidad.",
