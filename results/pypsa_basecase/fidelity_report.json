@@ -4,19 +4,19 @@
     "modom_only": [],
     "per_unit_hourly": {
       "n": 3360,
-      "mae": 5.103,
-      "rmse": 14.167,
-      "bias": -2.118,
-      "r2": 0.9356,
-      "rel_err_pct": 21.04
+      "mae": 4.834,
+      "rmse": 13.419,
+      "bias": -1.715,
+      "r2": 0.9423,
+      "rel_err_pct": 19.93
     },
     "system_total_hourly": {
       "n": 24,
-      "mae": 296.452,
-      "rmse": 297.011,
-      "bias": -296.452,
-      "r2": -0.3192,
-      "rel_err_pct": 8.73
+      "mae": 240.134,
+      "rmse": 240.438,
+      "bias": -240.134,
+      "r2": 0.1355,
+      "rel_err_pct": 7.07
     },
     "top_divergent_units": [
       {
@@ -26,22 +26,22 @@
         "abs_diff_mwh": 1352.5
       },
       {
-        "gen": "G3AANDGN",
-        "ours_mwh": 4626.0,
-        "modom_mwh": 5932.3,
-        "abs_diff_mwh": 1306.3
+        "gen": "G3SIBACC",
+        "ours_mwh": 3959.8,
+        "modom_mwh": 5041.8,
+        "abs_diff_mwh": 1082.0
       },
       {
-        "gen": "G3SIBACC",
-        "ours_mwh": 3778.7,
-        "modom_mwh": 5041.8,
-        "abs_diff_mwh": 1263.1
+        "gen": "G3AANDGN",
+        "ours_mwh": 4870.9,
+        "modom_mwh": 5932.3,
+        "abs_diff_mwh": 1061.3
       },
       {
         "gen": "G3QUI1GN",
-        "ours_mwh": 2474.7,
+        "ours_mwh": 2522.0,
         "modom_mwh": 3089.2,
-        "abs_diff_mwh": 614.5
+        "abs_diff_mwh": 567.2
       },
       {
         "gen": "G3PAK01",
@@ -50,28 +50,16 @@
         "abs_diff_mwh": 504.0
       },
       {
-        "gen": "G3EM2CFO",
-        "ours_mwh": 676.6,
-        "modom_mwh": 1076.2,
-        "abs_diff_mwh": 399.5
-      },
-      {
-        "gen": "G3PFCOAS",
-        "ours_mwh": 189.8,
-        "modom_mwh": 541.9,
-        "abs_diff_mwh": 352.2
-      },
-      {
-        "gen": "G3PIMEN4",
-        "ours_mwh": 302.4,
-        "modom_mwh": 641.4,
-        "abs_diff_mwh": 339.0
-      },
-      {
         "gen": "G3PEACLA",
         "ours_mwh": 251.5,
         "modom_mwh": 586.8,
         "abs_diff_mwh": 335.3
+      },
+      {
+        "gen": "G3PIMEN4",
+        "ours_mwh": 306.7,
+        "modom_mwh": 641.4,
+        "abs_diff_mwh": 334.7
       },
       {
         "gen": "G3PAK26",
@@ -86,10 +74,22 @@
         "abs_diff_mwh": 328.5
       },
       {
-        "gen": "G3PFMIRA",
-        "ours_mwh": 190.3,
-        "modom_mwh": 497.4,
-        "abs_diff_mwh": 307.1
+        "gen": "G3LVEGA",
+        "ours_mwh": 166.2,
+        "modom_mwh": 463.1,
+        "abs_diff_mwh": 296.9
+      },
+      {
+        "gen": "G3PFCOAS",
+        "ours_mwh": 252.4,
+        "modom_mwh": 541.9,
+        "abs_diff_mwh": 289.6
+      },
+      {
+        "gen": "G3PSGIRA",
+        "ours_mwh": 234.1,
+        "modom_mwh": 519.6,
+        "abs_diff_mwh": 285.5
       }
     ]
   },
@@ -99,17 +99,17 @@
     "ours_branches": 753,
     "abs_flow": {
       "n": 12672,
-      "mae": 12.629,
-      "rmse": 21.156,
-      "bias": 9.26,
-      "r2": -0.0173,
-      "rel_err_pct": 115.52
+      "mae": 13.232,
+      "rmse": 22.268,
+      "bias": 10.013,
+      "r2": -0.1271,
+      "rel_err_pct": 121.03
     }
   },
   "ens": {
-    "ours_ens_mwh": 1031.5,
+    "ours_ens_mwh": 1167.2,
     "modom_ens_mwh": 2865.6,
-    "abs_diff_mwh": 1834.1
+    "abs_diff_mwh": 1698.4
   },
-  "fidelity_score": 61.6
+  "fidelity_score": 62.4
 }

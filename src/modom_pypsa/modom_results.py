@@ -100,10 +100,41 @@ def extract_bus_ens(reader: XlsmReader, n: int = N_PERIODS) -> pd.DataFrame:
     return pd.DataFrame(data, index=SNAPSHOT_IDS[:n])
 
 
+def extract_nodal_factors(reader: XlsmReader) -> pd.DataFrame:
+    """Factores de nodo del MODOM por barra (pérdidas marginales / pricing).
+
+    `Factores de Nodo (Retiro)` -> factor por barra de retiro (col BARRA, col FACTOR);
+    `Factores de Nodo (Inyección)` -> factor por barra de inyección. Devuelve
+    DataFrame index=bus con columnas `factor_retiro`, `factor_inyeccion` (promedio si
+    una barra aparece varias veces).
+    """
+    def _read_factor_sheet(sheet: str) -> pd.Series:
+        m = reader.read_sheet_matrix(sheet)
+        # localizar la fila de encabezado y las columnas de BARRA y FACTOR
+        head_i = next((i for i, r in enumerate(m)
+                       if any("BARRA" in str(c).upper() for c in r)), 1)
+        head = [str(c).upper() for c in m[head_i]]
+        bcol = next(i for i, c in enumerate(head) if "BARRA" in c)
+        fcol = next(i for i, c in enumerate(head) if "FACTOR" in c)
+        vals: dict[str, list[float]] = {}
+        for row in m[head_i + 1:]:
+            if bcol >= len(row) or fcol >= len(row):
+                continue
+            bus = str(row[bcol]).strip()
+            f = _to_float(row[fcol])
+            if bus.startswith("W") and f == f and f > 0:
+                vals.setdefault(bus, []).append(f)
+        return pd.Series({b: sum(v) / len(v) for b, v in vals.items()})
+
+    ret = _read_factor_sheet("Factores de Nodo (Retiro)").rename("factor_retiro")
+    inj = _read_factor_sheet("Factores de Nodo (Inyección)").rename("factor_inyeccion")
+    return pd.concat([ret, inj], axis=1)
+
+
 def export_modom_results(
     xlsm_path: Path, data_dir: Path = DEFAULT_DATA_DIR, n: int = N_PERIODS
 ) -> dict[str, object]:
-    """Escribe las tres tablas de verdad de referencia a `modom_results/`."""
+    """Escribe las tablas de verdad de referencia + factores de nodo a `modom_results/`."""
     reader = XlsmReader(xlsm_path)
     gens_csv = data_dir / "generators" / "generators.csv"
     valid_gens = set(pd.read_csv(gens_csv, dtype=str)["generator_id"].str.strip())
@@ -111,12 +142,14 @@ def export_modom_results(
     disp = extract_generator_dispatch(reader, valid_gens, n)
     flows = extract_branch_flows(reader, n)
     ens = extract_bus_ens(reader, n)
+    factors = extract_nodal_factors(reader)
 
     outdir = data_dir / "modom_results"
     outdir.mkdir(parents=True, exist_ok=True)
     disp.to_csv(outdir / "modom_generator_dispatch.csv")
     flows.to_csv(outdir / "modom_branch_flows.csv")
     ens.to_csv(outdir / "modom_bus_ens.csv")
+    factors.to_csv(outdir / "nodal_factors.csv", index_label="bus_id_modom")
 
     return {
         "outdir": str(outdir),
@@ -125,4 +158,5 @@ def export_modom_results(
         "branches": flows.shape[1],
         "ens_buses": ens.shape[1],
         "ens_total_mwh": round(float(ens.to_numpy(dtype=float).sum()), 3),
+        "nodal_factors_retiro": int(factors["factor_retiro"].notna().sum()),
     }

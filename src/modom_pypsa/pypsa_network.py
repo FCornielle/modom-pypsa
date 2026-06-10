@@ -139,6 +139,21 @@ def build_network(
         index="snapshot_id", columns="load_id", values="p_set_mw", aggfunc="sum"
     ).reindex(snapshot_ids).fillna(0.0)
     load_buses = [b for b in load_pivot.columns if b in valid_buses]
+
+    # Factores de nodo (pérdidas marginales del MODOM): se aplican a la demanda como
+    # uplift de pérdidas (effective_load = load * factor_retiro). Cierra parte del
+    # sesgo del balance sin pérdidas y acerca el despacho/precios al MODOM.
+    n_loss_factors = 0
+    nf_path = data_dir / "modom_results" / "nodal_factors.csv"
+    if nf_path.exists():
+        nf = _read(nf_path).set_index("bus_id_modom")
+        fr = _num(nf["factor_retiro"]) if "factor_retiro" in nf.columns else pd.Series(dtype=float)
+        for b in load_buses:
+            f = fr.get(b)
+            if f is not None and f == f and f > 0:
+                load_pivot[b] = load_pivot[b] * float(f)
+                n_loss_factors += 1
+
     load_names = [f"load_{b}" for b in load_buses]
     n.add("Load", load_names, bus=load_buses)
     p_set = load_pivot[load_buses]
@@ -285,6 +300,7 @@ def build_network(
             "vre_with_forecast": int(sum(1 for g in gen_added if g in vre_ids)),
             "load_buses": int(len(load_buses)),
             "committed_from_modom": int(committed_units),
+            "loads_with_nodal_factor": int(n_loss_factors),
         },
         "vre_note": "Las unidades con perfil renovable se capan por pronóstico "
                     "(forecast_mw), no por disponibilidad; el resto por disponibilidad.",
