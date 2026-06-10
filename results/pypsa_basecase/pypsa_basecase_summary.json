@@ -1,6 +1,6 @@
 {
   "model": "linear_lopf_v2_modom_commitment",
-  "objective": 2253426709.099652,
+  "objective": 2260298981.0488353,
   "snapshots": 24,
   "total_load_mwh": 76908.656,
   "served_mwh": 75741.431,
@@ -23,6 +23,7 @@
     "vre_with_forecast": 43,
     "load_buses": 281,
     "committed_from_modom": 63,
-    "loads_with_nodal_factor": 268
+    "loads_with_nodal_factor": 268,
+    "declared_cvp_overrides": 54
   }
 }
