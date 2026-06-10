@@ -1,0 +1,13 @@
+{
+  "matched_buses": 406,
+  "n_points": 1137,
+  "vm_mae_pu": 0.0356,
+  "vm_median_pu": 0.0215,
+  "vm_p90_pu": 0.0679,
+  "vm_max_pu": 0.4406,
+  "within_0p02_pct": 43.8,
+  "within_0p05_pct": 82.1,
+  "snapshots": 24,
+  "converged": 3,
+  "losses_mw_avg": 92.22
+}
