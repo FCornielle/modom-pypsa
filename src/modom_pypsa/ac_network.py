@@ -68,6 +68,9 @@ def load_ac_inputs(data_dir: Path, results_dir: Path) -> dict[str, object]:
         f = m / name
         return pd.read_csv(f, index_col=0) if f.exists() else pd.DataFrame()
 
+    dg_shunt_path = data_dir.parent / "external" / "digsilent" / "dg_shunts.csv"
+    dg_shunts = pd.read_csv(dg_shunt_path) if dg_shunt_path.exists() else pd.DataFrame()
+
     # despacho propio de PyPSA (P por generador), sin las holguras unserved/dump
     pdisp = PYPSA_RESULTS_DIR / "generation_by_snapshot.csv"
     pypsa_disp = pd.read_csv(pdisp, index_col=0) if pdisp.exists() else pd.DataFrame()
@@ -87,6 +90,7 @@ def load_ac_inputs(data_dir: Path, results_dir: Path) -> dict[str, object]:
         "qload": _csv("modom_reactive_load.csv"),
         "vbus": _csv("modom_bus_voltage.csv"),
         "shunt": _csv("modom_shunt_capacitors.csv"),
+        "dg_shunts": dg_shunts,
         "vn": bus_vn_kv_map(buses, lines, trafos),
         "gen_bus": {str(r.generator_id).strip(): str(r.bus_id) for r in
                     pd.read_csv(p / "generators" / "generators.csv").itertuples()},
@@ -160,12 +164,20 @@ def build_ac_snapshot(inp: dict, snap: str, dispatch: str = "pypsa"):
         if abs(p) > 1e-9 or abs(q) > 1e-9:
             pp.create_load(net, idx[b], p_mw=p, q_mvar=q)
 
-    # shunts (capacitores): MVAr capacitivo -> q_mvar negativo en pandapower
-    sh = inp["shunt"].loc[snap] if snap in getattr(inp["shunt"], "index", []) else pd.Series(dtype=float)
-    for b in getattr(sh, "index", []):
-        b = str(b)
-        if b in idx and abs(float(sh.get(b, 0.0) or 0.0)) > 1e-9:
-            pp.create_shunt(net, idx[b], q_mvar=-float(sh[b]), p_mw=0.0)
+    # shunts: si hay inventario real de DIgSILENT (cap/reactor, q_mvar con signo)
+    # se usa ese (más completo); si no, los CAPACITORES del MODOM por hora.
+    dgs = inp.get("dg_shunts")
+    if dgs is not None and len(dgs):
+        for r in dgs.itertuples():
+            b = str(r.bus)
+            if b in idx and abs(float(r.q_mvar)) > 1e-9:
+                pp.create_shunt(net, idx[b], q_mvar=float(r.q_mvar), p_mw=0.0)
+    else:
+        sh = inp["shunt"].loc[snap] if snap in getattr(inp["shunt"], "index", []) else pd.Series(dtype=float)
+        for b in getattr(sh, "index", []):
+            b = str(b)
+            if b in idx and abs(float(sh.get(b, 0.0) or 0.0)) > 1e-9:
+                pp.create_shunt(net, idx[b], q_mvar=-float(sh[b]), p_mw=0.0)
 
     # generación agregada por barra: P y Q del MODOM (modelo PQ, estable). La barra
     # con mayor generación es el slack (ext_grid) y fija la tensión de referencia.
@@ -209,8 +221,16 @@ def run_ac(data_dir: Path = DEFAULT_DATA_DIR,
     snaps = list(src.index) if len(src) else list(inp["load_pivot"].index)
     vm_rows: dict[str, pd.Series] = {}
     losses, conv = {}, {}
+    import pandapower.topology as top
     for snap in snaps:
         net, idx, _ = build_ac_snapshot(inp, snap, dispatch=dispatch)
+        # poda de islas: barras no conectadas al slack (islas sin fuente) fuera de servicio
+        try:
+            unsup = top.unsupplied_buses(net)
+            if len(unsup):
+                net.bus.loc[list(unsup), "in_service"] = False
+        except Exception:
+            pass
         ok = False
         for init in ("dc", "flat"):  # DC-init es mucho más robusto; flat de respaldo
             try:
