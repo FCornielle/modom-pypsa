@@ -1,0 +1,5 @@
+﻿loc_name,for_name,ruta,outserv,cpZone,cpArea,cpGrid,cpSubstat,typ_id
+Sec. Voltage Transformer,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Matrisol.ElmSite\Planta_MATRISOL.ElmComp\Voltage Transformer.StaVt\Sec. Voltage Transformer.StaVtsec,0,,,NORTE 138 kV,,Sec. Voltage Transformer Type
+Sec. Voltage Transformer,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Esperanza.ElmSite\Planta_Parque Solar Esperanza.ElmComp\VT-PS Esperanza.StaVt\Sec. Voltage Transformer.StaVtsec,0,,,NORTE 138 kV,,
+Sec. Voltage Transformer,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Santanasol.ElmSite\Planta_Santanasol.ElmComp\VT-Santanasol.StaVt\Sec. Voltage Transformer.StaVtsec,0,,,SUR 138 kV,,
+Sec. Voltage Transformer,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Planta Martí.ElmComp\Voltage Transformer.StaVt\Sec. Voltage Transformer.StaVtsec,0,,,CENTRAL 138 kV,,

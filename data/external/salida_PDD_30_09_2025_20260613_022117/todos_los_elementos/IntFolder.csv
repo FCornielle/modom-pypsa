@@ -1,0 +1,62 @@
+﻿loc_name,for_name,ruta
+Used Macros,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Voltage Transducer and Compensation\vtc_IEEE_1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\vtc_IEEE_1.BlkDef\Used Macros
+TCCs,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Generic relays\F50N_F51N Neutral overcurrent.TypRelay\TCCs
+TCCs,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Generic relays\F50_F51  Phase overcurrent.TypRelay\TCCs
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Used Macros\Input Selector 2.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Used Macros\Input Selector 2.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Voltage Transducer and Compensation\drp_PSSE_COMP.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Used Macros\Input.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Vtc\vtc_IEEE_1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_IEEET1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_TGOV1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Used Macros
+Used Macros,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Used Macros
+Used Macros,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Used Macros
