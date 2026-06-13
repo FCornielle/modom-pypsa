@@ -95,12 +95,22 @@ def inject_modom_dispatch(net, ctx, hour, gen_disp, gens, loads):
     load_groups: dict[int, list] = {}
     for i in net.load.index:
         load_groups.setdefault(int(net.load.at[i, "bus"]), []).append(i)
+    # Carga MODOM no cruzada (W-code sin barra en el export): no se puede ubicar, pero
+    # MODOM SÍ la tiene. La representamos escalando la carga del export en las barras
+    # SIN match al total no cruzado -> la demanda total = demanda MODOM real (fiel) y
+    # con la distribución espacial del export. Equilibra el slack.
+    unmatched_buses = [b for b in load_groups if b not in load_by_bus]
+    export_at_unmatched = sum(
+        float(net.load.at[i, "p_mw"]) for b in unmatched_buses for i in load_groups[b])
+    fill_k = (l_miss / export_at_unmatched) if export_at_unmatched > 1e-6 else 0.0
+    kept_export_mw = 0.0
     for b, idxs in load_groups.items():
         target = load_by_bus.get(b)
         if target is None:
             for i in idxs:
-                net.load.at[i, "p_mw"] = 0.0
-                net.load.at[i, "q_mvar"] = 0.0
+                net.load.at[i, "p_mw"] *= fill_k
+                net.load.at[i, "q_mvar"] *= fill_k
+            kept_export_mw += sum(float(net.load.at[i, "p_mw"]) for i in idxs)
             continue
         cur = sum(float(net.load.at[i, "p_mw"]) for i in idxs)
         if cur > 1e-6:
@@ -123,6 +133,7 @@ def inject_modom_dispatch(net, ctx, hour, gen_disp, gens, loads):
     return {
         "gen_matched_mw": g_ok, "gen_unmatched_mw": g_miss,
         "load_matched_mw": l_ok, "load_unmatched_mw": l_miss,
+        "load_kept_export_mw": kept_export_mw,
         "gen_coverage": g_ok / (g_ok + g_miss) if (g_ok + g_miss) else 0.0,
         "load_coverage": l_ok / (l_ok + l_miss) if (l_ok + l_miss) else 0.0,
     }
