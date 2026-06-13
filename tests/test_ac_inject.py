@@ -27,12 +27,13 @@ def test_inject_and_aggregate_converges():
     net, ctx, bus_res, br_res, s = run_ac_modom(EXPORT, hour="h_19", root=str(ROOT))
 
     assert s["converged"], "el flujo AC debe converger con el despacho MODOM"
-    # cruce por for_name razonable (no perfecto: divergencias de convención de W-codes)
-    assert s["gen_coverage"] > 0.6
-    assert s["load_coverage"] > 0.6
+    # cruce por W-code (for_name + loc_name + Z→W de subestación). No es 100%:
+    # ~620 MW de carga no existen como nodos nombrados en este export.
+    assert s["gen_coverage"] > 0.9
+    assert s["load_coverage"] > 0.75
     # resultados agregados a las 717 barras MODOM, con una porción cruzada
     assert len(bus_res) == s["modom_buses_total"] == 717
-    assert s["modom_buses_with_v"] > 400
+    assert s["modom_buses_with_v"] > 500
     # tensiones físicas y ramas con W-codes en ambos extremos
     assert 0.7 < s["v_min"] < 1.05 and 0.95 < s["v_max"] < 1.25
     assert {"from_w", "to_w", "loading_percent"} <= set(br_res.columns)
