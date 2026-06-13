@@ -45,7 +45,9 @@ def build_from_digsilent(export_dir: Path):
     d = Path(export_dir)
     barras = _rd(d, "barras")
     lineas = _rd(d, "lineas")
-    elmtr2 = _rd(d / "todos_los_elementos", "ElmTr2") if (d / "todos_los_elementos").exists() else _rd(d, "ElmTr2")
+    # transformadores2.csv (nivel superior, columnas limpias barra_AT_id/barra_BT_id)
+    # es idéntico entre exports y trae el PATH de ambos terminales en el 100% de filas.
+    elmtr2 = _rd(d, "transformadores2")
     tipotr2 = _rd(d, "tipos_transformadores2")
     shunts = _rd(d, "shunts")
     gsinc = _rd(d, "generadores_sinc")
@@ -161,25 +163,27 @@ def build_from_digsilent(export_dir: Path):
             name=str(r.loc_name))
         n_lines += 1
 
-    # --- Transformadores (por subestación+nombre+tensión, tipo por typ_id) ---
+    # --- Transformadores (por PATH de terminal AT/BT; tipo por typ_id=loc_name) ---
     typ_by_path = {str(t["ruta"]): t for t in tipotr2.to_dict("records")} if len(tipotr2) else {}
     typ_by_name = {str(t["loc_name"]): t for t in tipotr2.to_dict("records")} if len(tipotr2) else {}
     n_traf = 0
     for r in elmtr2.to_dict("records"):
-        typ = typ_by_path.get(str(r.get("typ_id", "")))
+        typ = typ_by_name.get(str(r.get("typ_id", "")))
+        if typ is None:
+            typ = typ_by_path.get(str(r.get("typ_id", "")))
         if typ is None:
             typ = typ_by_name.get(str(r.get("typ_id", "")).split("\\")[-1].replace(".TypTr2", ""))
         if typ is None:
             continue
         uhv, ulv = _num(typ.get("U_AT_kV")), _num(typ.get("U_BT_kV"))
-        glat, glon = _num(r.get("GPSlat")), _num(r.get("GPSlon"))
+        nan = float("nan")
         # 1) por PATH del terminal (fiable, como las líneas); 2) fallback nombre/for/GPS
-        hv = bus_idx.get(str(r.get("barra(bushv)_id", "")))
+        hv = bus_idx.get(str(r.get("barra_AT_id", "")))
         if hv is None:
-            hv = trafo_bus(r.get("barra(bushv)", ""), r.get("barra(bushv)_for", ""), glat, glon, uhv)
-        lv = bus_idx.get(str(r.get("barra(buslv)_id", "")))
+            hv = trafo_bus(r.get("barra_AT", ""), r.get("barra_AT_for", ""), nan, nan, uhv)
+        lv = bus_idx.get(str(r.get("barra_BT_id", "")))
         if lv is None:
-            lv = trafo_bus(r.get("barra(buslv)", ""), r.get("barra(buslv)_for", ""), glat, glon, ulv)
+            lv = trafo_bus(r.get("barra_BT", ""), r.get("barra_BT_for", ""), nan, nan, ulv)
         if hv is None or lv is None or hv == lv:
             continue
         sn = _num(typ.get("S_nom_MVA"), 0.0)
@@ -225,7 +229,9 @@ def build_from_digsilent(export_dir: Path):
         b = bus_idx.get(str(getattr(r, "barra_con_id", "")))
         if b is None:
             continue
-        p = _num(getattr(r, "P_desp_MW", 0.0), 0.0)
+        # P_desp_MW es POR MÁQUINA -> multiplicar por el # de unidades de la planta
+        nu = max(int(_num(getattr(r, "num_unidades", 1), 1) or 1), 1)
+        p = _num(getattr(r, "P_desp_MW", 0.0), 0.0) * nu
         vm = _num(getattr(r, "U_consigna_pu", 1.0), 1.0)
         vm = vm if 0.9 <= vm <= 1.1 else 1.0
         a = agg.setdefault(b, {"p": 0.0, "vm": vm, "pmax": -1.0})
@@ -245,8 +251,9 @@ def build_from_digsilent(export_dir: Path):
         b = bus_idx.get(str(getattr(r, "barra_con_id", "")))
         if b is None:
             continue
-        pp.create_sgen(net, b, p_mw=_num(getattr(r, "P_desp_MW", 0.0), 0.0),
-                       q_mvar=_num(getattr(r, "Q_desp_Mvar", 0.0), 0.0), name=str(r.loc_name))
+        nu = max(int(_num(getattr(r, "num_unidades", 1), 1) or 1), 1)
+        pp.create_sgen(net, b, p_mw=_num(getattr(r, "P_desp_MW", 0.0), 0.0) * nu,
+                       q_mvar=_num(getattr(r, "Q_desp_Mvar", 0.0), 0.0) * nu, name=str(r.loc_name))
     if not slack_done and len(net.bus):
         # respaldo: slack en la barra de mayor tensión
         pp.create_ext_grid(net, int(net.bus.vn_kv.idxmax()), vm_pu=1.0, va_degree=0.0)

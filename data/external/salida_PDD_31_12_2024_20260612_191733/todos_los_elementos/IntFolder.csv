@@ -1,0 +1,69 @@
+﻿nombre,ruta
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Voltage Transducer and Compensation\vtc_IEEE_1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\vtc_IEEE_1.BlkDef\Used Macros
+TCCs,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Generic relays\F50N_F51N Neutral overcurrent.TypRelay\TCCs
+TCCs,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Generic relays\F50_F51  Phase overcurrent.TypRelay\TCCs
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Used Macros\Input Selector 2.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Used Macros\Input Selector 2.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Vtc\vtc_IEEE_1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_IEEET1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Pimentel 5\50DF-13.8KV_template_new R1_BB.IntFolder\Library\Modified 50SG template_R\UNITROL 1000 Modules Rev_R\exc_Exciter Machine.BlkDef\Used Macros
+Used Macros1,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Pimentel 5\50DF-13.8KV_template_new R1_BB.IntFolder\Library\Modified 50SG template_R\UNITROL 1000 Modules Rev_R\sup_Excitation Supplies.BlkDef\Used Macros1
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Pimentel 5\50DF-13.8KV_template_new R1_BB.IntFolder\Library\Modified 50SG template_R\UNITROL 1000 Modules Rev_R\sup_Excitation Supplies.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Pimentel 5\50DF-13.8KV_template_new R1_BB.IntFolder\Library\Modified 50SG template_R\UNITROL 1000 Modules Rev_R\OELUEL priority Frame.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LTOROS1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LTOROS2.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Aerodynamics Two-Dimensional.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Two Masses Type 3 and 4B.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Generator Set Type 3B.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Pitch Angle Control.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Used Macros\type 3 torque PI.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Current Limitation.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Q Control.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Q Limitation - QP and QU.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Protection.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Measurement.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Aerodynamics Two-Dimensional.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Two Masses Type 3 and 4B.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Generator Set Type 3B.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Pitch Angle Control.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Used Macros\type 3 torque PI.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Current Limitation.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Q Control.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Q Limitation - QP and QU.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Protection.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Measurement.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\vco_EXAC1.BlkDef\Used Macros
+Used Macros,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Used Macros
+Used Macros,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Used Macros

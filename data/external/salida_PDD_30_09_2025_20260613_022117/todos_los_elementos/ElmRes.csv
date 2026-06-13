@@ -1,0 +1,18 @@
+﻿loc_name,for_name,ruta
+DPLresults,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Impedance Loci.ComDpl\DPLresults.ElmRes
+All calculations,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\All calculations.ElmRes
+Cable Ampacity Results,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Cable Ampacity Results.ElmRes
+Distribution Factors Results (SYM),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Distribution Factors Results (SYM).ElmRes
+Frequency Response,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Frequency Response.ElmRes
+Modal/Eigenvalue Analysis(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Modal/Eigenvalue Analysis(1).ElmRes
+OPF (after optimisation),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\OPF (after optimisation).ElmRes
+OPF (before optimisation),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\OPF (before optimisation).ElmRes
+PTDF Results,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\PTDF Results.ElmRes
+PV Curves balanced,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\PV Curves balanced.ElmRes
+Power Restoration,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Power Restoration.ElmRes
+Protection (Audit),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Protection (Audit).ElmRes
+Protection (Coordination),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Protection (Coordination).ElmRes
+Protection (Overcurrent Settings),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Protection (Coordination).ElmRes\Protection (Overcurrent Settings).ElmRes
+Protection (Coordination),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Protection (Coordination).ElmRes\Protection (Coordination).ElmRes
+Protection (Topology),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Protection (Coordination).ElmRes\Protection (Topology).ElmRes
+Quasi-Dynamic Simulation AC,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Study Cases.IntPrjfolder\BASE.IntCase\Quasi-Dynamic Simulation AC.ElmRes

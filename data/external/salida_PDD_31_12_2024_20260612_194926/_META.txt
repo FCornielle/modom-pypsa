@@ -1,0 +1,6 @@
+Proyecto: PDD 31-12-2024
+Caso de estudio: BASE
+Escenario operativo (hora PDD): P24
+Fecha de extraccion: 2026-06-12T19:49:26.053160
+Flujo de carga: NO ejecutado (solo parametros de entrada)
+for_name = codigo MODOM (FK de cruce). Endpoints por for_name.
