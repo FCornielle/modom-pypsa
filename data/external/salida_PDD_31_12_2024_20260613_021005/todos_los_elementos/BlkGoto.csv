@@ -1,0 +1,17 @@
+﻿loc_name,for_name,ruta
+Goto,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Goto.BlkGoto
+Goto(1),,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Goto(1).BlkGoto
+Goto,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Goto.BlkGoto
+Goto(1),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Goto(1).BlkGoto
+Goto,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\Goto.BlkGoto
+Goto(1),,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\Goto(1).BlkGoto
+Goto,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Goto.BlkGoto
+Goto(1),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Goto(1).BlkGoto
+Goto(2),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Goto(2).BlkGoto
+Goto(3),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Goto(3).BlkGoto
+Goto,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Pitch Angle Control.BlkDef\Goto.BlkGoto
+Goto(1),,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Pitch Angle Control.BlkDef\Goto(1).BlkGoto
+freezeLVRT,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Q Control.BlkDef\freezeLVRT.BlkGoto
+Goto,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Pitch Angle Control.BlkDef\Goto.BlkGoto
+Goto(1),,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Pitch Angle Control.BlkDef\Goto(1).BlkGoto
+freezeLVRT,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Q Control.BlkDef\freezeLVRT.BlkGoto
