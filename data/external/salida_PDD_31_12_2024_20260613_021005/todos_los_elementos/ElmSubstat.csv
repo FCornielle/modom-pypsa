@@ -1,0 +1,212 @@
+﻿loc_name,for_name,ruta,cpZone,cpArea,cpGrid,GPSlat,GPSlon
+ZLRPUF,ZLRPUF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 69 kV.ElmNet\ZLRPUF.ElmSubstat,,ESTE,ESTE 69 kV,0.0,0.0
+ZHIGUF,ZHIGUF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 69 kV.ElmNet\ZHIGUF.ElmSubstat,,ESTE,ESTE 69 kV,0.0,0.0
+ZMPLAF,ZMPLAF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 69 kV.ElmNet\ZMPLAF.ElmSubstat,,CENTRAL,ESTE 69 kV,0.0,0.0
+ZMPSOK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 69 kV.ElmNet\Monte Plata Solar.ElmSite\ZMPSOK.ElmSubstat,,,ESTE 69 kV,0.0,0.0
+ZBVISF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 69 kV.ElmNet\ZBVISF.ElmSubstat,,,ESTE 69 kV,0.0,0.0
+ZCINAF,ZCINAF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZCINAF.ElmSubstat,SUR CERCANO,SUR,CENTRAL 69 kV,0.0,0.0
+ZDESPF,ZDESPF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZDESPF.ElmSubstat,,CENTRAL,CENTRAL 69 kV,0.0,0.0
+ZLCALF,ZLCALF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZLCALF.ElmSubstat,,ESTE,CENTRAL 69 kV,0.0,0.0
+ZEMARF,ZEMARF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZEMARF.ElmSubstat,,CENTRAL,CENTRAL 69 kV,0.0,0.0
+ZZAMEF,ZZAMEF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZZAMEF.ElmSubstat,,ESTE,CENTRAL 69 kV,0.0,0.0
+ZPAL1K,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\Diésel Palamara.ElmSite\ZPAL1K.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZPAL3K,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\Diésel Palamara.ElmSite\ZPAL3K.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZINCAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\INCA km 22.ElmSite\ZINCAF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZEMA3F,ZEMA3F,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\EDM 3.ElmSite\ZEMA3F.ElmSubstat,,ESTE,CENTRAL 69 kV,0.0,0.0
+ZCAPOF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZCAPOF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZINVIF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZINVIF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZKDMEF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZKDMEF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZLCUAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZLCUAF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZBAYOF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZBAYOF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZMLTPF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZMLTPF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZINCAK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZINCAK.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZGPALF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZGPALF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZLMINF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZLMINF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZTIMBF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 69 kV.ElmNet\ZTIMBF.ElmSubstat,,,CENTRAL 69 kV,0.0,0.0
+ZJSAUD,ZJSAUD,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Julio Sauri.ElmSite\ZJSAUD.ElmSubstat,SUR CERCANO,CENTRAL,Expansión 345 kV,18.520893011232026,-70.08980762375325
+ZNARAD,ZNARAD,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\El Naranjo.ElmSite\ZNARAD.ElmSubstat,CIBAO NORTE,NORTE,Expansión 345 kV,19.409115941595477,-70.75956408255294
+TER QUISQUEYA2,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Quisqueya.ElmSite\TER QUISQUEYA2.ElmSubstat,,,Expansión 345 kV,0.0,0.0
+QUISQUEYA 2,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Quisqueya.ElmSite\QUISQUEYA 2.ElmSubstat,,,Expansión 345 kV,18.493800839346175,-69.34882327746672
+TER QUISQUEYA1,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Quisqueya.ElmSite\TER QUISQUEYA1.ElmSubstat,,,Expansión 345 kV,0.0,0.0
+QUISQUEYA 1,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Quisqueya.ElmSite\QUISQUEYA 1.ElmSubstat,,,Expansión 345 kV,0.0,0.0
+ZPVDCD,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\PVDC.ElmSite\ZPVDCD.ElmSubstat,,,Expansión 345 kV,18.93484,-70.17128
+ZPCATD,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Punta Catalina.ElmSite\ZPCATD.ElmSubstat,SUR CERCANO,SUR,Expansión 345 kV,18.2355455119495,-70.23770122969977
+ZPCATE1,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Punta Catalina.ElmSite\ZPCATE1.ElmSubstat,,,Expansión 345 kV,18.235545512,-70.23770123
+ZBON3D,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Bonao 3.ElmSite\ZBON3D.ElmSubstat,,,Expansión 345 kV,18.911028,-70.36622
+ZBON3E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Bonao 3.ElmSite\ZBON3E.ElmSubstat,,,Expansión 345 kV,18.911028,-70.36622
+ZGUERD,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Guerra.ElmSite\ZGUERD.ElmSubstat,,,Expansión 345 kV,18.56793,-69.75944
+ZGUERE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\Expansión 345 kV.ElmNet\Guerra.ElmSite\ZGUERE.ElmSubstat,,,Expansión 345 kV,18.56793,-69.75944
+ZSESTE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\Sultana del Este.ElmSite\ZSESTE.ElmSubstat,,,ESTE 138 kV,18.449828191682773,-69.31808457881614
+ZLROME,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\La Romana.ElmSite\ZLROME.ElmSubstat,,,ESTE 138 kV,18.44568,-68.98377
+ZLROMF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\La Romana.ElmSite\ZLROMF.ElmSubstat,,,ESTE 138 kV,0.0,0.0
+ZSPM2E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\SPM 2.ElmSite\ZSPM2E.ElmSubstat,,,ESTE 138 kV,18.49333,-69.34357
+ZCEMEE,ZCEMEE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\CEMEX.ElmSite\ZCEMEE.ElmSubstat,,ESTE,ESTE 138 kV,18.5063,-69.3399
+ZCEMEK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\CEMEX.ElmSite\ZCEMEK.ElmSubstat,,,ESTE 138 kV,0.0,0.0
+ZLORIE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\Los Orígenes.ElmSite\ZLORIE.ElmSubstat,,,ESTE 138 kV,18.46753,-69.31901
+ZCLUIE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\ZCLUIE.ElmSubstat,,ESTE,ESTE 138 kV,18.499299521332816,-69.55557730830621
+ZSPBEE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\San Pedro Bio-Energy.ElmSite\ZSPBEE.ElmSubstat,,,ESTE 138 kV,18.466675234747598,-69.33169754203544
+ZSPBEK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\San Pedro Bio-Energy.ElmSite\ZSPBEK.ElmSubstat,,,ESTE 138 kV,0.0,0.0
+ZQUISD,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\ZQUISD.ElmSubstat,,,ESTE 138 kV,0.0,0.0
+ZSPMAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\San Pedro.ElmSite\ZSPMAE.ElmSubstat,,,ESTE 138 kV,18.462365019850107,-69.31459335543289
+ZSPMAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\San Pedro.ElmSite\ZSPMAF.ElmSubstat,,,ESTE 138 kV,0.0,0.0
+ZHMA2E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\Hato Mayor 2.ElmSite\ZHMA2E.ElmSubstat,,,ESTE 138 kV,18.767480268528367,-69.24734256863387
+WHMA2F,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\Hato Mayor 2.ElmSite\WHMA2F.ElmSubstat,,,ESTE 138 kV,0.0,0.0
+ZESOCE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\El Soco.ElmSite\ZESOCE.ElmSubstat,ESTE CERCANO,ESTE,ESTE 138 kV,18.5353191912569,-69.28506879115595
+ZESEIE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\ZESEIE.ElmSubstat,,,ESTE 138 kV,18.767132699326226,-69.04988536699331
+ZHIGUE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\ZHIGUE.ElmSubstat,,,ESTE 138 kV,18.62479760148785,-68.73578471262378
+ZJDOLE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\ZJDOLE.ElmSubstat,,,ESTE 138 kV,18.44211414100858,-69.42617330281509
+ZCUMAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\ESTE 138 kV.ElmNet\Cumayasa.ElmSite\ZCUMAE.ElmSubstat,,,ESTE 138 kV,18.46387,-69.05856
+ZZSANE,ZZSANE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZF Santiago.ElmSite\ZZSANE.ElmSubstat,,NORTE,NORTE 138 kV,19.479812827594593,-70.73567350239887
+ZZSANF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZF Santiago.ElmSite\ZZSANF.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZBON2E,ZBON2E,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Bonao 2.ElmSite\ZBON2E.ElmSubstat,,NORTE,NORTE 138 kV,18.90871,-70.36999
+ZMONCE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Monción.ElmSite\ZMONCE.ElmSubstat,,,NORTE 138 kV,19.426411024737227,-71.09016570480253
+ZPIMEE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Pimentel.ElmSite\ZPIMEE.ElmSubstat,,,NORTE 138 kV,19.203002752524238,-70.09254479383533
+ZPIMEK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Pimentel.ElmSite\ZPIMEK.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZCANAE1,ZCANAE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Canabacoa.ElmSite\ZCANAE1.ElmSubstat,,NORTE,NORTE 138 kV,0.0,0.0
+ZCANAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Canabacoa.ElmSite\ZCANAE.ElmSubstat,,,NORTE 138 kV,19.415692993316974,-70.64392421389377
+ZCANAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Canabacoa.ElmSite\ZCANAF.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZPPL2E,ZPPL2E,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Puerto Plata 2.ElmSite\ZPPL2E.ElmSubstat,,NORTE,NORTE 138 kV,19.795740997536157,-70.71942809942183
+ZPPL2F,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Puerto Plata 2.ElmSite\ZPPL2F.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZNIBAE,ZNIBAE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZNIBAE.ElmSubstat,,NORTE,NORTE 138 kV,19.44299096583496,-70.70314946039491
+ZNAG2E,ZNAG2E,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Nagua.ElmSite\ZNAG2E.ElmSubstat,,NORTE,NORTE 138 kV,19.360592913887878,-69.85353727987885
+ZNAG2F,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Nagua.ElmSite\ZNAG2F.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZLANGE,ZLANGE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\López Angostura.ElmSite\ZLANGE.ElmSubstat,,NORTE,NORTE 138 kV,19.334845620902342,-70.72970019106218
+ZFALCF,ZFALCF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Falcondo.ElmSite\ZFALCF.ElmSubstat,,NORTE,NORTE 138 kV,0.0,0.0
+ZFALCE,ZFALCE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Falcondo.ElmSite\ZFALCE.ElmSubstat,,NORTE,NORTE 138 kV,18.92869671631468,-70.36289198880432
+ZFALCK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Falcondo.ElmSite\ZFALCK.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZFALCK_B,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Falcondo.ElmSite\ZFALCK_B.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZSFELE(1),ZSFELE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZSFELE(1).ElmSubstat,,NORTE,NORTE 138 kV,0.0,0.0
+ZSANCE,ZSANCE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZSANCE.ElmSubstat,,NORTE,NORTE 138 kV,19.234328398739997,-69.61900371986877
+ZSAMAE,ZSAMAE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZSAMAE.ElmSubstat,,NORTE,NORTE 138 kV,19.209696552936016,-69.32443018693053
+ZSALCE,ZSALCE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZSALCE.ElmSubstat,,NORTE,NORTE 138 kV,19.349891622094226,-70.4227787997981
+ZTAVEE,ZTAVEE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Tavera.ElmSite\ZTAVEE.ElmSubstat,,,NORTE 138 kV,19.324524122922554,-70.73730054278778
+ZSAJOM,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\SAJOMA.ElmSite\ZSAJOM.ElmSubstat,,,NORTE 138 kV,19.441105341326,-70.8791794375
+ZGUAYE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Monte Cristi Solar.ElmSite\ZGUAYE.ElmSubstat,,,NORTE 138 kV,19.71001618487186,-71.38220871539606
+ZPFMSK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Monte Cristi Solar.ElmSite\ZPFMSK.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZACLAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Agua Clara.ElmSite\ZACLAE.ElmSubstat,,,NORTE 138 kV,19.692944532609104,-71.22122110262077
+ZGNLLE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Guanillo.ElmSite\ZGNLLE.ElmSubstat,,,NORTE 138 kV,19.79581,-71.31552
+ZSFMAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\SFM.ElmSite\ZSFMAE.ElmSubstat,,,NORTE 138 kV,19.27857819097985,-70.26604537402436
+ZSFMAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\SFM.ElmSite\ZSFMAF.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZMONTE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZMONTE.ElmSubstat,,,NORTE 138 kV,19.842442702923755,-71.62840345738749
+ZDAJAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZDAJAE.ElmSubstat,,,NORTE 138 kV,19.51681,-71.67091
+ZSRODE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZSRODE.ElmSubstat,,,NORTE 138 kV,19.48047688386591,-71.33120632165894
+ZVMAOE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZVMAOE.ElmSubstat,,,NORTE 138 kV,19.5628,-71.10309
+ZNAV2E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZNAV2E.ElmSubstat,,,NORTE 138 kV,19.56008913381315,-70.85936088092625
+ZLGALE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZLGALE.ElmSubstat,,,NORTE 138 kV,19.47303,-70.69493
+ZSFELE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZSFELE.ElmSubstat,,,NORTE 138 kV,0.0,0.0
+ZMOCAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZMOCAE.ElmSubstat,,,NORTE 138 kV,19.38576,-70.532
+ZLGUZE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Los Guzmancito.ElmSite\ZLGUZE.ElmSubstat,,,NORTE 138 kV,19.867348027237732,-70.81578285459594
+ZRSJUE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\ZRSJUE.ElmSubstat,,,NORTE 138 kV,19.6308,-70.06562
+ZMATRE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Matrisol.ElmSite\ZMATRE.ElmSubstat,,,NORTE 138 kV,19.53592,-70.00046
+ZESPEE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 138 kV.ElmNet\Esperanza.ElmSite\ZESPEE.ElmSubstat,,,NORTE 138 kV,19.581301228121,-70.95985247127
+ZSYEGF,ZSYEGF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\Sabana Yegua.ElmSite\ZSYEGF.ElmSubstat,,SUR,SUR 69 kV,0.0,0.0
+ZBMATF,ZBMATF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\ZBMATF.ElmSubstat,,SUR,SUR 69 kV,0.0,0.0
+ZSJUAF,ZSJUAF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\ZSJUAF.ElmSubstat,,SUR,SUR 69 kV,0.0,0.0
+ZSABAF,ZSABAF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\Sabaneta.ElmSite\ZSABAF.ElmSubstat,,SUR,SUR 69 kV,0.0,0.0
+ZCOCOF,ZCOCOF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\ZCOCOF.ElmSubstat,,SUR,SUR 69 kV,0.0,0.0
+ZMAGUF,ZMAGUF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\Magueyal.ElmSite\ZMAGUF.ElmSubstat,,SUR,SUR 69 kV,0.0,0.0
+ZVALTF,ZVALTF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\ZVALTF.ElmSubstat,,CENTRAL,SUR 69 kV,0.0,0.0
+ZRPETF,ZRPETF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\ZRPETF.ElmSubstat,,CENTRAL,SUR 69 kV,0.0,0.0
+ZLDAMK,ZLDAMK,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\Las Damas.ElmSite\ZLDAMK.ElmSubstat,,SUR,SUR 69 kV,0.0,0.0
+ZCCABF,ZCCABF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\ZCCABF.ElmSubstat,,SUR,SUR 69 kV,0.0,0.0
+ZDUVEF,ZDUVEF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\ZDUVEF.ElmSubstat,,SUR,SUR 69 kV,0.0,0.0
+ZBARAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\ZBARAF.ElmSubstat,,,SUR 69 kV,0.0,0.0
+ZSCANF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\Canoa Solar.ElmSite\ZSCANF.ElmSubstat,,,SUR 69 kV,0.0,0.0
+ZPIISF9,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 69 kV.ElmNet\ZPIISF9.ElmSubstat,,,SUR 69 kV,0.0,0.0
+ZKQAZF,ZKQAZE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\km 15 de Azua.ElmSite\ZKQAZF.ElmSubstat,,SUR,SUR 138 kV,0.0,0.0
+ZKQAZE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\km 15 de Azua.ElmSite\ZKQAZE.ElmSubstat,,,SUR 138 kV,18.46499,-70.86858
+ZHAINE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Haina.ElmSite\ZHAINE.ElmSubstat,,,SUR 138 kV,18.42411,-70.02093
+ZHAINF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Haina.ElmSite\ZHAINF.ElmSubstat,,,SUR 138 kV,0.0,0.0
+ZVALDE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Valdesia.ElmSite\ZVALDE.ElmSubstat,,,SUR 138 kV,18.391793074159892,-70.28233224054509
+ZBCARE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Barahona Carbón.ElmSite\ZBCARE.ElmSubstat,,,SUR 138 kV,18.22076145306474,-71.08660602778131
+ZJIGUE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Jiguey.ElmSite\ZJIGUE.ElmSubstat,,,SUR 138 kV,18.54544616548987,-70.37680798413237
+ZAGUAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Aguacate.ElmSite\ZAGUAE.ElmSubstat,,,SUR 138 kV,18.43724,-70.25769
+ZMRIOE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Monte Río.ElmSite\ZMRIOE.ElmSubstat,,,SUR 138 kV,0.0,0.0
+ZITABE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Itabo.ElmSite\ZITABE.ElmSubstat,,,SUR 138 kV,18.40660197377457,-70.02715813133645
+ZITAGK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Itabo TG.ElmSite\ZITAGK.ElmSubstat,,CENTRAL,SUR 138 kV,0.0,0.0
+ZITAGE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Itabo TG.ElmSite\ZITAGE.ElmSubstat,,,SUR 138 kV,18.40496152388753,-70.02759508063234
+ZLCOCK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Los Cocos.ElmSite\ZLCOCK.ElmSubstat,,,SUR 138 kV,0.0,0.0
+ZLCOCE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Los Cocos.ElmSite\ZLCOCE.ElmSubstat,,,SUR 138 kV,17.872847007421246,-71.28899530775352
+ZLARIK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Los Cocos.ElmSite\ZLARIK.ElmSubstat,,,SUR 138 kV,0.0,0.0
+ZPALOE,ZPALOE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Palomino.ElmSite\ZPALOE.ElmSubstat,,SUR,SUR 138 kV,18.92304,-71.01036
+ZGUANE,ZGUANE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\ZGUANE.ElmSubstat,,SUR,SUR 138 kV,0.0,0.0
+ZPAK2E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\POWERSHIP AZUA KPS 26.ElmSite\ZPAK2E.ElmSubstat,,,SUR 138 kV,18.34661,-70.83862
+ZPAK6E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\POWERSHIP AZUA KPS 60.ElmSite\ZPAK6E.ElmSubstat,,,SUR 138 kV,0.0,0.0
+ZPALEE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Palenque.ElmSite\ZPALEE.ElmSubstat,,,SUR 138 kV,18.27355,-70.14106
+ZSCNOE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\ZSCNOE.ElmSubstat,,,SUR 138 kV,18.42604441155111,-70.1288474161145
+ZCCA2E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Cruce de Cabral 2.ElmSite\ZCCA2E.ElmSubstat,,,SUR 138 kV,18.23679,-71.13304
+ZCCA2F,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Cruce de Cabral 2.ElmSite\ZCCA2F.ElmSubstat,,,SUR 138 kV,0.0,0.0
+ZSJU2E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\San Juan 2.ElmSite\ZSJU2E.ElmSubstat,,,SUR 138 kV,18.773010154674022,-71.20661341963933
+ZSJU2F,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\San Juan 2.ElmSite\ZSJU2F.ElmSubstat,,,SUR 138 kV,0.0,0.0
+ZPIZAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Pizarrete.ElmSite\ZPIZAE.ElmSubstat,,,SUR 138 kV,18.27278,-70.22911
+ZPIZAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Pizarrete.ElmSite\ZPIZAF.ElmSubstat,,,SUR 138 kV,0.0,0.0
+ZMTFNE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Matafongo.ElmSite\ZMTFNE.ElmSubstat,,,SUR 138 kV,18.25985401666541,-70.49442115291991
+ZBAYAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Bayasol.ElmSite\ZBAYAE.ElmSubstat,,,SUR 138 kV,18.330251854395385,-70.44122287832465
+ZGIRAK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Girasol.ElmSite\ZGIRAK.ElmSubstat,,,SUR 138 kV,0.0,0.0
+ZGIRAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Girasol.ElmSite\ZGIRAE.ElmSubstat,,,SUR 138 kV,18.32864771047832,-70.19813428732208
+ZSANTE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Santanasol.ElmSite\ZSANTE.ElmSubstat,,,SUR 138 kV,18.28102,-70.23042
+ZCALAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\SUR 138 kV.ElmNet\Calabaza.ElmSite\ZCALAE.ElmSubstat,,,SUR 138 kV,18.32322,-70.39777
+ZAHONF,ZAHONF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Arroyo Hondo.ElmSite\ZAHONF.ElmSubstat,DISTRITO NACIONAL,CENTRAL,CENTRAL 138 kV,0.0,0.0
+ZAHONE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Arroyo Hondo.ElmSite\ZAHONE.ElmSubstat,DISTRITO NACIONAL,CENTRAL,CENTRAL 138 kV,18.50143,-69.94542
+ZHERRE,ZHERRE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Herrera.ElmSite\ZHERRE.ElmSubstat,,CENTRAL,CENTRAL 138 kV,18.449647112744877,-69.98069016126469
+ZHNVAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Herrera.ElmSite\ZHNVAF.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZHNV3F,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Herrera.ElmSite\ZHNV3F.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZDJAOF,ZDJAOF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Dajao.ElmSite\ZDJAOF.ElmSubstat,,CENTRAL,CENTRAL 138 kV,0.0,0.0
+ZDJAOE,ZDJAOE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Dajao.ElmSite\ZDJAOE.ElmSubstat,SANTO DOMINGO,CENTRAL,CENTRAL 138 kV,18.58046,-69.85418
+ZBCHIE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Boca Chica.ElmSite\ZBCHIE.ElmSubstat,,,CENTRAL 138 kV,18.455501272098598,-69.62000633117623
+ZBCHIF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Boca Chica.ElmSite\ZBCHIF.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZEMBAE,ZEMBAE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZEMBAE.ElmSubstat,,CENTRAL,CENTRAL 138 kV,18.45408,-69.94698
+ZHNSAE,ZHNSAE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Hainamosa.ElmSite\ZHNSAE.ElmSubstat,,CENTRAL,CENTRAL 138 kV,18.53387,-69.82009
+ZVDUAE,ZVDUAE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Villa Duarte.ElmSite\ZVDUAE.ElmSubstat,SANTO DOMINGO,CENTRAL,CENTRAL 138 kV,18.48234,-69.857
+ZMATAE,ZMATAE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZMATAE.ElmSubstat,,CENTRAL,CENTRAL 138 kV,18.440939513542393,-69.94360783879787
+ZLMI6E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Los Mina 6.ElmSite\ZLMI6E.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZAANDE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\AES Andrés.ElmSite\ZAANDE.ElmSubstat,,,CENTRAL 138 kV,18.407578226434033,-69.63569062081207
+ZENADE,ZENADE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\AES Andrés.ElmSite\ZENADE.ElmSubstat,,,CENTRAL 138 kV,18.41012140885151,-69.63172509574056
+ZMETAE,ZMETAE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\METALDOM.ElmSite\ZMETAE.ElmSubstat,,CENTRAL,CENTRAL 138 kV,18.43918,-69.94632
+ZPARAE,ZPARAE,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZPARAE.ElmSubstat,,CENTRAL,CENTRAL 138 kV,18.48009,-69.94447
+ZTIM2F,ZTI12F,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Timbeque 2.ElmSite\ZTIM2F.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZTIM2E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Timbeque 2.ElmSite\ZTIM2E.ElmSubstat,,,CENTRAL 138 kV,18.48589,-69.88448
+ZLMI5E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Los Mina 5.ElmSite\ZLMI5E.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZPALAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Palamara.ElmSite\ZPALAE.ElmSubstat,SANTO DOMINGO,CENTRAL,CENTRAL 138 kV,18.55689,-70.01388
+ZPALAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Palamara.ElmSite\ZPALAF.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZEDM2K,ZEDM2K,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\EDM 2.ElmSite\ZEDM2K.ElmSubstat,,ESTE,CENTRAL 138 kV,0.0,0.0
+ZLMINE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZLMINE.ElmSubstat,SANTO DOMINGO,CENTRAL,CENTRAL 138 kV,18.50024,-69.86775
+ZLISAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZLISAE.ElmSubstat,,,CENTRAL 138 kV,18.507913958280717,-69.9188526062453
+ZLMI7E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Los Mina 7.ElmSite\ZLMI7E.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZIAANE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZIAANE.ElmSubstat,,,CENTRAL 138 kV,18.510721740233766,-69.6130089956112
+ZLPRAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZLPRAE.ElmSubstat,,,CENTRAL 138 kV,18.46895763295409,-69.95323991479252
+ZUASDE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZUASDE.ElmSubstat,,,CENTRAL 138 kV,18.457567719267857,-69.9239624098635
+ZEBRIE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZEBRIE.ElmSubstat,,,CENTRAL 138 kV,18.476069655889646,-69.78853526714038
+ZMETRE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Metropolitano.ElmSite\ZMETRE.ElmSubstat,,,CENTRAL 138 kV,18.47859840455392,-69.92040999999999
+WMETRF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\Metropolitano.ElmSite\WMETRF.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZVMELE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZVMELE.ElmSubstat,,,CENTRAL 138 kV,18.543698802866256,-69.93485921923103
+ZCNPEE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZCNPEE.ElmSubstat,,,CENTRAL 138 kV,18.47231983004501,-69.90078814635314
+ZSIBAE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\SIBA.ElmSite\ZSIBAE.ElmSubstat,,,CENTRAL 138 kV,18.45687,-69.62021
+ZLVICE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\La Victoria.ElmSite\ZLVICE.ElmSubstat,,,CENTRAL 138 kV,0.0,0.0
+ZMIRAS,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZMIRAS.ElmSubstat,,,CENTRAL 138 kV,18.56972,-69.71663
+ZWCAPI,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\CENTRAL 138 kV.ElmNet\ZWCAPI.ElmSubstat,,,CENTRAL 138 kV,18.65709,-69.6115
+ZECHIF,ZECHIF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZECHIF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZCODAF,ZCODAF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZCODAF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZPINAF,ZPINAF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Pinalito.ElmSite\ZPINAF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZRBLAF,ZRBLAF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Río Blanco.ElmSite\ZRBLAF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZABANF,ZABANF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZABANF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZRINCF,ZRINCF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Rincón.ElmSite\ZRINCF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZPAYIF,ZPAYIF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZPAYIF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZNAGUF,ZNAGUF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Nagua/Rosa Julia de la Cruz.ElmSite\ZNAGUF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZCONSF,ZCONSF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Constanza/El Salto.ElmSite\ZCONSF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZGVEGF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Diésel La Vega.ElmSite\ZGVEGF.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZLVEGK,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Diésel La Vega.ElmSite\ZLVEGK.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZBPERF,ZBPERF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Bonao PER/Anaiana Vargas.ElmSite\ZBPERF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZDRIOF,ZDRIOF,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZDRIOF.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZHAT2K,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Hatillo.ElmSite\ZHAT2K.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZHATIF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\Hatillo.ElmSite\ZHATIF.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZPPLAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZPPLAF.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZHAT2E,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZHAT2E.ElmSubstat,,NORTE,NORTE 69 kV,0.0,0.0
+ZLVEGF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZLVEGF.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZNAVAF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZNAVAF.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZPDORF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZPDORF.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZPIMEF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZPIMEF.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZIMB2F,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZIMB2F.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZCZFSF,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZCZFSF.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZPDORE,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZPDORE.ElmSubstat,,,NORTE 69 kV,0.0,0.0
+ZSOSU2,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Network Model.IntPrjfolder\Network Data.IntPrjfolder\NORTE 69 kV.ElmNet\ZSOSU2.ElmSubstat,,,NORTE 69 kV,0.0,0.0

@@ -1,0 +1,33 @@
+﻿loc_name,for_name,ruta,uline,sline,mlei,gline,tmax,rtemp
+Alumoweld,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\Alumoweld.TypCon,138.0,0.20000000298023224,Al,0.0,80.0,80.0
+4/0 ACSR - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\4/0 ACSR - 69 kV.TypCon,69.0,0.3569999933242798,Al,0.0,80.0,80.0
+2/0 AAAC - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\2/0 AAAC - 69 kV.TypCon,69.0,0.2849999964237213,Al,0.0,80.0,80.0
+2/0 CU - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\2/0 CU - 69 kV.TypCon,69.0,0.36000001430511475,Cu,0.0,80.0,80.0
+4/0 AAAC - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\4/0 AAAC - 69 kV.TypCon,69.0,0.3799999952316284,Al,0.0,80.0,80.0
+559.5 AAAC - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\559.5 AAAC - 69 kV.TypCon,69.0,0.6629999876022339,Al,0.0,80.0,80.0
+559.5 AAAC - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\559.5 AAAC - 138 kV.TypCon,138.0,0.6629999876022339,Al,0.0,80.0,80.0
+4/0 CU - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\4/0 CU - 69 kV.TypCon,69.0,0.47999998927116394,Cu,0.0,80.0,80.0
+477 ACSR - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\477 ACSR - 69 kV.TypCon,69.0,0.6589999794960022,Al,0.0,80.0,80.0
+559.5 AAAC/2C - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\559.5 AAAC/2C - 69 kV.TypCon,69.0,1.3259999752044678,Al,0.0,80.0,80.0
+450 ACAR - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\450 ACAR - 138 kV.TypCon,138.0,0.5680000185966492,Al,0.0,80.0,80.0
+ACCC GDANSK/2C - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\ACCC GDANSK/2C - 69 kV.TypCon,69.0,1.4199999570846558,Al,0.0,80.0,80.0
+559.5 AAAC/3C - 345 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\559.5 AAAC/3C - 345 kV.TypCon,345.0,1.9889999628067017,Al,0.0,80.0,80.0
+559.5 AAAC/2C - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\559.5 AAAC/2C - 138 kV.TypCon,138.0,1.3259999752044678,Al,0.0,80.0,80.0
+1200 AAAC - 230 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\1200 AAAC - 230 kV.TypCon,230.0,1.2000000476837158,Al,0.0,80.0,80.0
+477 ACSR - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\477 ACSR - 138 kV.TypCon,138.0,0.6589999794960022,Al,0.0,80.0,80.0
+900 ACSR - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\900 ACSR - 138 kV.TypCon,138.0,0.9610000252723694,Al,0.0,80.0,80.0
+4/0 ACSR - 34.5 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\4/0 ACSR - 34.5 kV.TypCon,34.5,0.3569999933242798,Al,0.0,80.0,80.0
+OPGW 24-48 Hilos,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\OPGW 24-48 Hilos.TypCon,138.0,0.20000000298023224,Al,0.0,80.0,80.0
+927.2 AAAC/2C - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\927.2 AAAC/2C - 138 kV.TypCon,138.0,1.8300000429153442,Al,0.0,75.0,80.0
+450 ACAR - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\450 ACAR - 69 kV.TypCon,69.0,0.5680000185966492,Al,0.0,80.0,80.0
+1/0 CU - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\1/0 CU - 69 kV.TypCon,69.0,0.3100000023841858,Cu,0.0,80.0,80.0
+477 ACSR/2C - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\477 ACSR/2C - 138 kV.TypCon,138.0,1.3179999589920044,Al,0.0,80.0,80.0
+927.2 AAAC/3C - 345 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\927.2 AAAC/3C - 345 kV.TypCon,345.0,2.7239999771118164,Al,0.0,80.0,80.0
+465.4 MCM/ 34.5 kV/ 2C,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\465.4 MCM/ 34.5 kV/ 2C.TypCon,34.5,1.1799999475479126,Al,0.0,75.0,75.0
+Teal 605 MCM,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\Teal 605 MCM.TypCon,138.0,0.8450000286102295,Al,0.0,75.0,80.0
+ACCC GDANSK/2C - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\ACCC GDANSK/2C - 138 kV.TypCon,138.0,2.194000005722046,Al,0.0,180.0,200.0
+652.4 AAAC/2C - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\652.4 AAAC/2C - 138 kV.TypCon,138.0,1.4600000381469727,Al,0.0,80.0,80.0
+559.5 AAAC/3C - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\559.5 AAAC/3C - 138 kV.TypCon,138.0,1.9889999628067017,Al,0.0,80.0,80.0
+927.2 AAAC/3C - 138 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\927.2 AAAC/3C - 138 kV.TypCon,138.0,2.744999885559082,Al,0.0,75.0,80.0
+2/0 ACSR - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\2/0 ACSR - 69 kV.TypCon,69.0,0.26499998569488525,Al,0.0,80.0,80.0
+559.5 AAAC 2C/F - 69 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Conductors\559.5 AAAC 2C/F - 69 kV.TypCon,69.0,1.3259999752044678,Al,0.0,80.0,80.0

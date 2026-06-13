@@ -173,8 +173,13 @@ def build_from_digsilent(export_dir: Path):
             continue
         uhv, ulv = _num(typ.get("U_AT_kV")), _num(typ.get("U_BT_kV"))
         glat, glon = _num(r.get("GPSlat")), _num(r.get("GPSlon"))
-        hv = trafo_bus(r.get("barra(bushv)", ""), r.get("barra(bushv)_for", ""), glat, glon, uhv)
-        lv = trafo_bus(r.get("barra(buslv)", ""), r.get("barra(buslv)_for", ""), glat, glon, ulv)
+        # 1) por PATH del terminal (fiable, como las líneas); 2) fallback nombre/for/GPS
+        hv = bus_idx.get(str(r.get("barra(bushv)_id", "")))
+        if hv is None:
+            hv = trafo_bus(r.get("barra(bushv)", ""), r.get("barra(bushv)_for", ""), glat, glon, uhv)
+        lv = bus_idx.get(str(r.get("barra(buslv)_id", "")))
+        if lv is None:
+            lv = trafo_bus(r.get("barra(buslv)", ""), r.get("barra(buslv)_for", ""), glat, glon, ulv)
         if hv is None or lv is None or hv == lv:
             continue
         sn = _num(typ.get("S_nom_MVA"), 0.0)

@@ -1,0 +1,2 @@
+﻿loc_name,for_name,ruta,U_kV,Inom_kA,aerea_cable,material,num_fases,seccion_mm2,R1_ohm_km,X1_ohm_km,B1_uS_km,C1_uF_km,G1_uS_km,R0_ohm_km,X0_ohm_km,B0_uS_km,Tmax_C,Tnom_C
+A-N2YSY 1x400 - 13.8 kV,,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Lines@Cables\A-N2YSY 1x400 - 13.8 kV.TypLne,13.800000190734863,0.6230000257492065,cab,Al,3,0.0,0.054999999701976776,0.12599985301494598,138.7319793701172,0.36799800395965576,0.0,1.0,1.2000000476837158,115.61000061035156,80.0,145.0
