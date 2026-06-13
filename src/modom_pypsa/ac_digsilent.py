@@ -94,32 +94,51 @@ def build_from_digsilent(export_dir: Path):
     root_bus: dict[str, int] = {}    # raíz -> índice
     for_by_bus: dict[int, str] = {}
     by_name: dict[str, list] = {}    # loc_name -> [(ruta, lat, lon, vn)] para trafos
+    bus_pos: dict[int, tuple] = {}   # bus -> (lat, lon, vn) para fallback GPS
     for r in barras.itertuples():
         ruta = str(r.ruta)
         vn = _num(r.U_nom_kV, 0.0) or 1.0
+        lat, lon = _num(r.GPS_lat), _num(r.GPS_lon)
         root = find(ruta)
         if root not in root_bus:
             root_bus[root] = pp.create_bus(net, vn_kv=vn, name=str(r.loc_name))
+            bus_pos[root_bus[root]] = (lat, lon, vn)
         bus_idx[ruta] = root_bus[root]
         fn = str(getattr(r, "for_name", "") or "").strip()
         if fn and fn.lower() != "nan":
             for_by_bus[root_bus[root]] = fn
-        by_name.setdefault(str(r.loc_name).strip(), []).append(
-            (ruta, _num(r.GPS_lat), _num(r.GPS_lon), vn))
+        by_name.setdefault(str(r.loc_name).strip(), []).append((ruta, lat, lon, vn))
 
-    def trafo_bus(name: str, glat: float, glon: float, kv: float):
-        cands = by_name.get(str(name).strip(), [])
-        if not cands:
-            return None
-        # EXIGE match de tensión (evita enlazar a barra de otro nivel) y luego GPS
+    # for_name -> bus (para enlace fiable de trafos por código MODOM)
+    forname_to_bus: dict[str, list] = {}
+    for bidx, fn in for_by_bus.items():
+        forname_to_bus.setdefault(fn, []).append(bidx)
+
+    def trafo_bus(name: str, fname: str, glat: float, glon: float, kv: float):
         tol = max(2.0, 0.1 * kv) if kv == kv else 1e9
-        ok = [c for c in cands if kv != kv or abs(c[3] - kv) <= tol]
-        if not ok:
-            return None  # mejor no enlazar que mal-enlazar a tensión equivocada
-        def dg(c):
-            _, la, lo, _vn = c
-            return ((la - glat) ** 2 + (lo - glon) ** 2) ** 0.5 if (la == la and glat == glat) else 9.9
-        return bus_idx.get(min(ok, key=dg)[0])
+        # 1) por for_name (código MODOM) con match de tensión
+        fn = str(fname or "").strip()
+        if fn and fn.lower() != "nan":
+            cb = [b for b in forname_to_bus.get(fn, [])
+                  if kv != kv or abs(float(net.bus.vn_kv[b]) - kv) <= tol]
+            if cb:
+                return cb[0]
+        # 2) por nombre + tensión + GPS más cercano
+        cands = [c for c in by_name.get(str(name).strip(), [])
+                 if kv != kv or abs(c[3] - kv) <= tol]
+        if cands:
+            def dg(c):
+                _, la, lo, _vn = c
+                return ((la - glat) ** 2 + (lo - glon) ** 2) ** 0.5 if (la == la and glat == glat) else 9.9
+            return bus_idx.get(min(cands, key=dg)[0])
+        # 3) último recurso: barra de esa tensión más cercana por GPS (nombre genérico)
+        if glat == glat and kv == kv:
+            near = [(b, (p[0] - glat) ** 2 + (p[1] - glon) ** 2)
+                    for b, p in bus_pos.items()
+                    if p[2] == p[2] and abs(p[2] - kv) <= tol and p[0] == p[0]]
+            if near:
+                return min(near, key=lambda t: t[1])[0]
+        return None
 
     # --- Líneas (por path) ---
     n_lines = 0
@@ -154,8 +173,8 @@ def build_from_digsilent(export_dir: Path):
             continue
         uhv, ulv = _num(typ.get("U_AT_kV")), _num(typ.get("U_BT_kV"))
         glat, glon = _num(r.get("GPSlat")), _num(r.get("GPSlon"))
-        hv = trafo_bus(r.get("barra(bushv)", ""), glat, glon, uhv)
-        lv = trafo_bus(r.get("barra(buslv)", ""), glat, glon, ulv)
+        hv = trafo_bus(r.get("barra(bushv)", ""), r.get("barra(bushv)_for", ""), glat, glon, uhv)
+        lv = trafo_bus(r.get("barra(buslv)", ""), r.get("barra(buslv)_for", ""), glat, glon, ulv)
         if hv is None or lv is None or hv == lv:
             continue
         sn = _num(typ.get("S_nom_MVA"), 0.0)
@@ -228,5 +247,5 @@ def build_from_digsilent(export_dir: Path):
         pp.create_ext_grid(net, int(net.bus.vn_kv.idxmax()), vm_pu=1.0, va_degree=0.0)
 
     ctx = {"for_by_bus": for_by_bus, "n_lines": n_lines, "n_traf": n_traf,
-           "n_sw": n_sw, "n_bus": len(net.bus)}
+           "n_sw": n_sw, "n_bus": len(net.bus), "bus_idx": bus_idx}
     return net, ctx
