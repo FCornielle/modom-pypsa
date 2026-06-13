@@ -94,7 +94,8 @@ def build_from_digsilent(export_dir: Path):
     # --- Un bus pandapower por nodo eléctrico (raíz) ---
     bus_idx: dict[str, int] = {}     # ruta -> índice de bus pandapower
     root_bus: dict[str, int] = {}    # raíz -> índice
-    for_by_bus: dict[int, str] = {}
+    for_by_bus: dict[int, str] = {}      # bus -> for_name primario (1º no vacío)
+    fors_by_bus: dict[int, set] = {}     # bus -> {TODOS los for_name fusionados}
     by_name: dict[str, list] = {}    # loc_name -> [(ruta, lat, lon, vn)] para trafos
     bus_pos: dict[int, tuple] = {}   # bus -> (lat, lon, vn) para fallback GPS
     for r in barras.itertuples():
@@ -105,16 +106,19 @@ def build_from_digsilent(export_dir: Path):
         if root not in root_bus:
             root_bus[root] = pp.create_bus(net, vn_kv=vn, name=str(r.loc_name))
             bus_pos[root_bus[root]] = (lat, lon, vn)
-        bus_idx[ruta] = root_bus[root]
+        b = root_bus[root]
+        bus_idx[ruta] = b
         fn = str(getattr(r, "for_name", "") or "").strip()
         if fn and fn.lower() != "nan":
-            for_by_bus[root_bus[root]] = fn
+            for_by_bus.setdefault(b, fn)            # primario
+            fors_by_bus.setdefault(b, set()).add(fn)  # la fusión puede juntar varios W
         by_name.setdefault(str(r.loc_name).strip(), []).append((ruta, lat, lon, vn))
 
-    # for_name -> bus (para enlace fiable de trafos por código MODOM)
+    # for_name -> bus (TODOS los W del nodo fusionado, no solo el primario)
     forname_to_bus: dict[str, list] = {}
-    for bidx, fn in for_by_bus.items():
-        forname_to_bus.setdefault(fn, []).append(bidx)
+    for bidx, fset in fors_by_bus.items():
+        for fn in fset:
+            forname_to_bus.setdefault(fn, []).append(bidx)
 
     def trafo_bus(name: str, fname: str, glat: float, glon: float, kv: float):
         tol = max(2.0, 0.1 * kv) if kv == kv else 1e9
@@ -258,6 +262,7 @@ def build_from_digsilent(export_dir: Path):
         # respaldo: slack en la barra de mayor tensión
         pp.create_ext_grid(net, int(net.bus.vn_kv.idxmax()), vm_pu=1.0, va_degree=0.0)
 
-    ctx = {"for_by_bus": for_by_bus, "n_lines": n_lines, "n_traf": n_traf,
+    ctx = {"for_by_bus": for_by_bus, "fors_by_bus": fors_by_bus,
+           "forname_to_bus": forname_to_bus, "n_lines": n_lines, "n_traf": n_traf,
            "n_sw": n_sw, "n_bus": len(net.bus), "bus_idx": bus_idx}
     return net, ctx
