@@ -19,11 +19,34 @@ propio del export. Los resultados se agregan a las barras MODOM por `for_name`
 from __future__ import annotations
 
 import math
+import re
 from pathlib import Path
 
 import pandas as pd
 
 F_HZ = 60.0
+_W_RE = re.compile(r"\b(W[A-Z0-9]{3,6})\b")
+
+
+def _wcodes_of_barra(loc_name: str, for_name: str, subestacion: str):
+    """W-codes que implica una barra del export, separados por fiabilidad.
+
+    Devuelve (fuertes, debiles). Fuertes = nivel terminal (`for_name` + W-codes
+    incrustados en `loc_name`, p.ej. `WLRPUF(3)`); débiles = nivel subestación
+    (Z-code `subestacion` → W intercambiando prefijo). Esto recupera barras MODOM
+    cuyo `for_name` viene vacío en el export.
+    """
+    strong: set[str] = set()
+    fn = str(for_name or "").strip()
+    if fn and fn.lower() != "nan" and fn.upper().startswith("W"):
+        strong.add(fn.upper())
+    ln = re.sub(r"\(\d+\)", "", str(loc_name or "").upper())
+    strong |= set(_W_RE.findall(ln))
+    weak: set[str] = set()
+    z = str(subestacion or "").strip().upper()
+    if z.startswith("Z") and len(z) > 1:
+        weak.add("W" + z[1:])
+    return strong, weak
 
 
 def _rd(d: Path, name: str) -> pd.DataFrame:
@@ -94,8 +117,9 @@ def build_from_digsilent(export_dir: Path):
     # --- Un bus pandapower por nodo eléctrico (raíz) ---
     bus_idx: dict[str, int] = {}     # ruta -> índice de bus pandapower
     root_bus: dict[str, int] = {}    # raíz -> índice
-    for_by_bus: dict[int, str] = {}      # bus -> for_name primario (1º no vacío)
-    fors_by_bus: dict[int, set] = {}     # bus -> {TODOS los for_name fusionados}
+    for_by_bus: dict[int, str] = {}      # bus -> W-code primario (fuerte)
+    fors_by_bus: dict[int, set] = {}     # bus -> {W fuertes: for_name + loc_name}
+    weak_by_bus: dict[int, set] = {}     # bus -> {W débiles: Z→W de subestación}
     by_name: dict[str, list] = {}    # loc_name -> [(ruta, lat, lon, vn)] para trafos
     bus_pos: dict[int, tuple] = {}   # bus -> (lat, lon, vn) para fallback GPS
     for r in barras.itertuples():
@@ -108,17 +132,26 @@ def build_from_digsilent(export_dir: Path):
             bus_pos[root_bus[root]] = (lat, lon, vn)
         b = root_bus[root]
         bus_idx[ruta] = b
-        fn = str(getattr(r, "for_name", "") or "").strip()
-        if fn and fn.lower() != "nan":
-            for_by_bus.setdefault(b, fn)            # primario
-            fors_by_bus.setdefault(b, set()).add(fn)  # la fusión puede juntar varios W
+        strong, weak = _wcodes_of_barra(
+            getattr(r, "loc_name", ""), getattr(r, "for_name", ""),
+            getattr(r, "subestacion", ""))
+        if strong:
+            for_by_bus.setdefault(b, sorted(strong)[0])  # primario = W fuerte
+        fors_by_bus.setdefault(b, set()).update(strong)   # fusión + loc_name
+        weak_by_bus.setdefault(b, set()).update(weak)     # nivel subestación (débil)
         by_name.setdefault(str(r.loc_name).strip(), []).append((ruta, lat, lon, vn))
 
-    # for_name -> bus (TODOS los W del nodo fusionado, no solo el primario)
+    # for_name -> bus: primero los W fuertes (terminal); los débiles (Z→W de
+    # subestación) sólo añaden destinos para W-codes que ningún fuerte cubrió.
     forname_to_bus: dict[str, list] = {}
     for bidx, fset in fors_by_bus.items():
         for fn in fset:
             forname_to_bus.setdefault(fn, []).append(bidx)
+    for bidx, wset in weak_by_bus.items():
+        for fn in wset:
+            if fn not in forname_to_bus:
+                forname_to_bus.setdefault(fn, []).append(bidx)
+                fors_by_bus.setdefault(bidx, set()).add(fn)
 
     def trafo_bus(name: str, fname: str, glat: float, glon: float, kv: float):
         tol = max(2.0, 0.1 * kv) if kv == kv else 1e9
