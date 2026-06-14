@@ -19,13 +19,12 @@
     <span class="tag">{{ 'convergió' if s.loss_factor_converged else 'tope de iteraciones' }}</span></div>
     {{ convergence|safe }}</div>
   <div class="card"><h3>Auditoría de iteraciones</h3>
-    <table class="tbl"><thead><tr><th>#</th><th>Δ factor</th><th>Pérdidas</th>
-      <th>Slack</th><th>&lt;0.9</th><th>Sobrecargas</th></tr></thead><tbody>
+    <table class="tbl"><thead><tr><th>#</th><th>Δ factor (máx)</th><th>Pérdidas (med)</th>
+      <th>Violaciones V</th><th>Sobrecargas</th></tr></thead><tbody>
       {% for it in iters %}<tr>
         <td>{{ it.iter }}</td><td class="num">{{ '%.5f'|format(it.loss_factor_delta) }}</td>
         <td class="num">{{ '%.1f'|format(it.losses_mw) }}</td>
-        <td class="num">{{ '%.0f'|format(it.slack_mw) }}</td>
-        <td class="num">{{ it.n_v_below_090 }}</td><td class="num">{{ it.n_overload }}</td>
+        <td class="num">{{ it.n_violations }}</td><td class="num">{{ it.n_overload }}</td>
       </tr>{% endfor %}
     </tbody></table>
   </div>
