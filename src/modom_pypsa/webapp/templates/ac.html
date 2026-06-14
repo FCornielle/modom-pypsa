@@ -40,8 +40,9 @@ hora (▶) · zoom con la rueda · leyenda con toggles.</p>
 </div>
 
 <div class="row cols-2">
-  <div class="card"><h3>Perfil de tensión (hora pico {{ peak }})</h3>{{ profile|safe }}</div>
-  <div class="card"><h3>Ramas más cargadas (hora pico {{ peak }})</h3>{{ loading|safe }}</div>
+  <div class="card"><h3>Perfil de tensión <span class="tag">sigue la hora del mapa</span></h3>{{ profile|safe }}</div>
+  <div class="card"><h3>Ramas más cargadas <span class="tag">sigue la hora del mapa</span></h3>{{ loading|safe }}</div>
 </div>
+{{ sync|safe }}
 {% endif %}
 {% endblock %}

@@ -86,6 +86,14 @@ def _div(fig, div_id: str | None = None, height: int = 320) -> str:
                        config={"displayModeBar": False, "responsive": True})
 
 
+def _hnum(h) -> int:
+    """'h_07' -> 7 (la hora como número para el eje, como antes)."""
+    try:
+        return int(str(h).replace("h_", ""))
+    except (TypeError, ValueError):
+        return 0
+
+
 def _empty(msg: str = "Sin datos") -> str:
     return f'<div class="chart-empty">{msg}</div>'
 
@@ -160,7 +168,8 @@ METRICS = {
 
 def network_map_div(values_by_hour: dict, branch_loading: pd.DataFrame | None,
                     metric: str = "tension", hours: list | None = None,
-                    init_hour: str | None = None, height: int = 620) -> str:
+                    init_hour: str | None = None, height: int = 620,
+                    div_id: str | None = None) -> str:
     """Mapa ANIMADO 24h: red por nivel de tensión (leyenda toggle) + barras coloreadas
     por la métrica elegida (tensión / costo marginal / Δ vs MODOM). Play + scroll-zoom."""
     import plotly.graph_objects as go
@@ -267,7 +276,7 @@ def network_map_div(values_by_hour: dict, branch_loading: pd.DataFrame | None,
                     transition=dict(duration=0))]),
                 dict(label="⏸", method="animate", args=[[None], dict(mode="immediate",
                     frame=dict(duration=0, redraw=False))])])])
-    return pio.to_html(fig, full_html=False, include_plotlyjs=False,
+    return pio.to_html(fig, full_html=False, include_plotlyjs=False, div_id=div_id,
                        config={"scrollZoom": True, "displaylogo": False, "responsive": True})
 
 
@@ -278,26 +287,26 @@ def bus_name(w: str) -> str:
 
 # ----------------------------------------------------------- auditoría: serie 24h
 def series_line_div(series, ylabel: str = "", sel_hour: str | None = None,
-                    color: str = ACCENT) -> str:
+                    color: str = ACCENT, div_id: str | None = None) -> str:
     """Gráfico de línea de una serie 24h [(hora, valor)] para la auditoría."""
     import plotly.graph_objects as go
 
     pts = [(h, v) for h, v in (series or []) if isinstance(v, (int, float))]
     if not pts:
         return _empty("Sin serie numérica")
-    xs = [h for h, _ in pts]
+    xs = [_hnum(h) for h, _ in pts]
     ys = [v for _, v in pts]
     fig = go.Figure(go.Scatter(x=xs, y=ys, mode="lines+markers",
                                line=dict(color=color, width=2.5),
                                marker=dict(size=6), fill="tozeroy",
                                fillcolor="rgba(37,99,235,.08)"))
-    if sel_hour in xs:
-        i = xs.index(sel_hour)
-        fig.add_trace(go.Scatter(x=[sel_hour], y=[ys[i]], mode="markers",
+    if sel_hour is not None and _hnum(sel_hour) in xs:
+        i = xs.index(_hnum(sel_hour))
+        fig.add_trace(go.Scatter(x=[xs[i]], y=[ys[i]], mode="markers",
                                  marker=dict(size=12, color=WARN), showlegend=False))
     fig.update_yaxes(title=ylabel, gridcolor=GRID)
-    fig.update_xaxes(gridcolor=GRID)
-    return _div(fig, height=280)
+    fig.update_xaxes(title="Hora", gridcolor=GRID, dtick=2)
+    return _div(fig, div_id=div_id, height=280)
 
 
 # ----------------------------------------------------------- AC: cargabilidad
@@ -319,6 +328,92 @@ def loading_bars_div(branch_loading: pd.DataFrame, hour: str | None = None,
     fig.update_xaxes(title="Cargabilidad %", gridcolor=GRID)
     fig.update_yaxes(automargin=True)
     return _div(fig, height=420)
+
+
+# --------------------------------------- AC animados (sincronizan con el mapa)
+def _anim_html(fig, div_id, height):
+    import plotly.io as pio
+
+    fig.update_layout(height=height, **_LAYOUT)
+    return pio.to_html(fig, full_html=False, include_plotlyjs=False, div_id=div_id,
+                       config={"displayModeBar": False, "responsive": True})
+
+
+def voltage_profile_anim_div(bus_voltages: pd.DataFrame, hours: list,
+                             init_hour: str, div_id: str) -> str:
+    """Perfil de tensión animado por hora (frames). Lo mueve el mapa vía JS."""
+    import plotly.graph_objects as go
+
+    if bus_voltages.empty or "hour" not in bus_voltages.columns:
+        return _empty()
+
+    def sorted_vals(h):
+        v = bus_voltages[bus_voltages.hour == h]["vm_pu"].dropna().sort_values()
+        return list(v)
+
+    def bar(h):
+        v = sorted_vals(h)
+        colors = [BAD if x < 0.9 or x > 1.1 else GOOD for x in v]
+        return go.Bar(x=list(range(len(v))), y=v, marker_color=colors)
+    fig = go.Figure(bar(init_hour))
+    fig.frames = [go.Frame(name=h, data=[bar(h)]) for h in hours]
+    fig.add_hline(y=0.9, line_dash="dot", line_color=BAD)
+    fig.add_hline(y=1.1, line_dash="dot", line_color=BAD)
+    fig.update_yaxes(title="V pu", range=[0.7, 1.15], gridcolor=GRID)
+    fig.update_xaxes(title="Barras (ordenadas por tensión)", showticklabels=False)
+    return _anim_html(fig, div_id, 300)
+
+
+def loading_bars_anim_div(branch_loading: pd.DataFrame, hours: list,
+                          init_hour: str, div_id: str, top: int = 15) -> str:
+    """Cargabilidad animada por hora de un set FIJO de ramas (top por carga máxima)."""
+    import plotly.graph_objects as go
+
+    if branch_loading.empty or "hour" not in branch_loading.columns:
+        return _empty()
+    peak = (branch_loading.groupby("name")["loading_percent"].max()
+            .sort_values(ascending=False).head(top).index.tolist())
+    peak = peak[::-1]                                  # menor arriba en barh
+    by_hour = {h: dict(zip(g["name"], g["loading_percent"]))
+               for h, g in branch_loading.groupby("hour")}
+
+    def xy(h):
+        vals = [by_hour.get(h, {}).get(n, 0.0) for n in peak]
+        colors = [BAD if v > 100 else WARN if v > 90 else ACCENT for v in vals]
+        return vals, colors
+
+    v0, c0 = xy(init_hour)
+    fig = go.Figure(go.Bar(x=v0, y=peak, orientation="h", marker_color=c0,
+                           text=[f"{v:.0f}%" for v in v0], textposition="auto"))
+    fig.frames = [go.Frame(name=h, data=[go.Bar(
+        x=xy(h)[0], marker=dict(color=xy(h)[1]),
+        text=[f"{v:.0f}%" for v in xy(h)[0]])]) for h in hours]
+    fig.update_xaxes(title="Cargabilidad %", gridcolor=GRID, range=[0, 160])
+    fig.update_yaxes(automargin=True)
+    return _anim_html(fig, div_id, 360)
+
+
+def sync_script(map_id: str, anim_targets: list, vline_targets: list) -> str:
+    """JS: los gráficos siguen la hora del mapa (play/slider). Anima los `anim_targets`
+    (bar charts con frames) y mueve una línea vertical en los `vline_targets` (series)."""
+    import json
+    return (
+        "<script>(function(){var M=document.getElementById(" + json.dumps(map_id) + ");"
+        "var A=" + json.dumps(anim_targets) + ",V=" + json.dumps(vline_targets) + ";"
+        "function hi(n){return parseInt(String(n).replace('h_',''));}"
+        "function go(name){var xi=hi(name);"
+        "A.forEach(function(id){var d=document.getElementById(id);"
+        "if(d&&d._fullLayout&&window.Plotly)Plotly.animate(d,[name],{mode:'immediate',"
+        "frame:{duration:0,redraw:true},transition:{duration:0}});});"
+        "V.forEach(function(id){var d=document.getElementById(id);"
+        "if(d&&d._fullLayout&&window.Plotly)Plotly.relayout(d,{shapes:[{type:'line',"
+        "xref:'x',yref:'paper',x0:xi,x1:xi,y0:0,y1:1,"
+        "line:{color:'#f59e0b',width:2,dash:'dot'}}]});});}"
+        "function attach(){if(!M||!M.on){setTimeout(attach,200);return;}"
+        "M.on('plotly_animatingframe',function(e){if(e&&e.frame&&e.frame.name!=null)go(e.frame.name);});"
+        "M.on('plotly_sliderchange',function(e){if(e&&e.step&&e.step.args&&e.step.args[0])go(e.step.args[0][0]);});}"
+        "if(document.readyState!=='loading')attach();else window.addEventListener('load',attach);"
+        "})();</script>")
 
 
 # ----------------------------------------------------------- AC: perfil de tensión

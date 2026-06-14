@@ -68,21 +68,23 @@ def dashboard(request: Request):
     ]
     base = charts.base_figures()
     # mapa de COSTO marginal por barra (animado 24h) — fiel al MODOM
-    cost_map = ""
+    cost_map, sync = "", ""
     if latest:
         br = da.run_csv(latest["run_id"], "ac_branch_loading.csv")
         vals, hours = _metric_values(latest["run_id"], "costo")
         if vals:
             cost_map = charts.network_map_div(
                 vals, br, metric="costo", hours=hours,
-                init_hour=(latest.get("summary") or {}).get("hour", "h_19"))
+                init_hour=(latest.get("summary") or {}).get("hour", "h_19"),
+                div_id="costmap")
+            sync = charts.sync_script("costmap", [], ["mccurve", "mix-div"])
     # costo marginal del sistema (MODOM) por hora — positivo a mediodía (no 0)
     mc = _modom_marginal_cost()
     mc_curve = charts.series_line_div([(h, v) for h, v in mc.items()],
-                                      ylabel="RD$/MWh", color="#b0683c")
+                                      ylabel="RD$/MWh", color="#b0683c", div_id="mccurve")
     return view("dashboard.html", ctx(
         request, active="dashboard", heading="Dashboard", kpis=kpis,
-        base=base, runs=runs[:6], cost_map=cost_map, mc_curve=mc_curve))
+        base=base, runs=runs[:6], cost_map=cost_map, mc_curve=mc_curve, sync=sync))
 
 
 # --------------------------------------------------------------- Corridas
@@ -220,13 +222,21 @@ def ac_page(request: Request, run: str | None = None, metric: str = "tension"):
     bus = da.run_csv(rid, "ac_bus_voltages.csv")
     br = da.run_csv(rid, "ac_branch_loading.csv")
     vals, hours = _metric_values(rid, metric)
-    nmap = charts.network_map_div(vals, br, metric=metric, hours=hours, init_hour=peak)
+    nmap = charts.network_map_div(vals, br, metric=metric, hours=hours,
+                                  init_hour=peak, div_id="acmap")
+    multi = "hour" in bus.columns and len(hours) > 1
+    if multi:
+        profile = charts.voltage_profile_anim_div(bus, hours, peak, "acprofile")
+        loading = charts.loading_bars_anim_div(br, hours, peak, "acloading")
+        sync = charts.sync_script("acmap", ["acprofile", "acloading"], [])
+    else:
+        profile = charts.voltage_profile_div(bus, peak)
+        loading = charts.loading_bars_div(br, peak)
+        sync = ""
     return view("ac.html", ctx(
         request, active="ac", heading="Verificación AC", run=r, runs=runs,
         summary=summ, fmt=_fmt, metric=metric, metric_labels=METRIC_LABELS,
-        peak=peak, nmap=nmap,
-        profile=charts.voltage_profile_div(bus, peak),
-        loading=charts.loading_bars_div(br, peak)))
+        peak=peak, nmap=nmap, profile=profile, loading=loading, sync=sync))
 
 
 # --------------------------------------------------------------- Auditoría
