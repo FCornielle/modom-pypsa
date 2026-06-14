@@ -1,0 +1,12 @@
+<div class="hd"><h3>{{ eq }}</h3><span class="tag">hora {{ sel_hour }}</span></div>
+{% if rows %}
+  {% for k,v in rows %}<div class="metric-row"><span class="k">{{ k }}</span><b>{{ v }}</b></div>{% endfor %}
+{% else %}
+  <div class="empty-state">Sin datos para este equipo en esta hora.</div>
+{% endif %}
+{% if series %}
+<h3 style="margin-top:18px">Serie 24 h</h3>
+<table class="tbl"><thead><tr><th>Hora</th><th class="right">Valor</th></tr></thead><tbody>
+  {% for h,v in series %}<tr class="{{ 'mono' }}"><td>{{ h }}</td><td class="num">{{ v }}</td></tr>{% endfor %}
+</tbody></table>
+{% endif %}

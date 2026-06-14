@@ -1,0 +1,258 @@
+"""Plataforma GridLab SENI — FastAPI + Jinja + HTMX.
+
+Páginas v1 (enfocado): Dashboard, Proyectos, Corridas (+ detalle), Verificación AC,
+Auditoría por equipo. El resto del menú queda "Próximamente". Lee corridas/proyectos
+del modelo de artefactos en disco (`data_access`) y los pinta con `charts`.
+
+Levantar:  uvicorn modom_pypsa.webapp.app:app --reload
+"""
+from __future__ import annotations
+
+import datetime as _dt
+from pathlib import Path
+
+import pandas as pd
+from fastapi import FastAPI, Form, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
+from . import charts
+from . import data_access as da
+
+BASE = Path(__file__).resolve().parent
+REPO_ROOT = BASE.parents[2]
+HOURS = [f"h_{i:02d}" for i in range(1, 25)]
+
+app = FastAPI(title="GridLab SENI")
+app.mount("/static", StaticFiles(directory=BASE / "static"), name="static")
+templates = Jinja2Templates(directory=str(BASE / "templates"))
+
+
+@app.on_event("startup")
+def _startup() -> None:
+    da.ensure_seed_runs()
+
+
+def ctx(request: Request, **kw) -> dict:
+    kw.setdefault("today", _dt.date.today().isoformat())
+    kw["request"] = request
+    return kw
+
+
+def view(name: str, context: dict):
+    """Render con la firma nueva de Starlette (request primero)."""
+    return templates.TemplateResponse(context["request"], name, context)
+
+
+def _fmt(v, unit="", dec=0):
+    if v is None or (isinstance(v, float) and v != v):
+        return "—"
+    return f"{v:,.{dec}f}{unit}"
+
+
+# --------------------------------------------------------------- Dashboard
+@app.get("/", response_class=HTMLResponse)
+def dashboard(request: Request):
+    runs = da.list_runs()
+    latest = runs[0] if runs else None
+    s = (latest or {}).get("summary", {})
+    kpis = [
+        ("⚡", _fmt(s.get("demand_mw"), " MW"), "Demanda AC", latest["label"] if latest else "—"),
+        ("◐", _fmt(s.get("losses_mw"), " MW", 1), "Pérdidas", "del flujo AC"),
+        ("▲", _fmt(s.get("v_max"), " pu", 3), "Tensión máx", "perfil AC"),
+        ("▼", _fmt(s.get("v_min"), " pu", 3), "Tensión mín", "perfil AC"),
+        ("◈", f"{s.get('modom_buses_with_v','—')}/{s.get('modom_buses_total','717')}",
+         "Barras con V", "agregadas a MODOM"),
+        ("⚠", str(s.get("n_v_below_090", 0)), "Barras < 0.9 pu", "violaciones"),
+    ]
+    base = charts.base_figures()
+    return view("dashboard.html", ctx(
+        request, active="dashboard", heading="Dashboard", kpis=kpis,
+        base=base, runs=runs[:6], counts=da.run_counts(),
+        donut=charts.run_status_donut_div(da.run_counts())))
+
+
+# --------------------------------------------------------------- Corridas
+@app.get("/runs", response_class=HTMLResponse)
+def runs_list(request: Request):
+    return view("runs.html", ctx(
+        request, active="runs", heading="Corridas",
+        runs=da.list_runs(), counts=da.run_counts()))
+
+
+@app.get("/runs/{run_id}", response_class=HTMLResponse)
+def run_detail(request: Request, run_id: str):
+    run = da.get_run(run_id)
+    if run is None:
+        return RedirectResponse("/runs", status_code=303)
+    iters = run.get("iterations", [])
+    bus = da.run_csv(run_id, "ac_bus_voltages.csv")
+    br = da.run_csv(run_id, "ac_branch_loading.csv")
+    hour = (run.get("summary") or {}).get("hour")
+    return view("run_detail.html", ctx(
+        request, active="runs", heading=run.get("label", run_id), run=run,
+        iters=iters, convergence=charts.convergence_div(iters),
+        vmap=charts.voltage_map_div(bus, hour), fmt=_fmt,
+        loading=charts.loading_bars_div(br, hour)))
+
+
+@app.post("/runs/new")
+def run_new(hour: str = Form("h_19"), max_iter: int = Form(6)):
+    from .iterative import run_iterative
+
+    m = run_iterative(hour=hour, max_iter=max_iter)
+    return RedirectResponse(f"/runs/{m['run_id']}", status_code=303)
+
+
+# --------------------------------------------------------------- Verificación AC
+def _ac_run(run_id: str | None):
+    if run_id:
+        return da.get_run(run_id)
+    return da.latest_run("iterative") or da.latest_run("ac_verify") or da.latest_run()
+
+
+@app.get("/ac", response_class=HTMLResponse)
+def ac_page(request: Request, run: str | None = None, hour: str = "h_19"):
+    r = _ac_run(run)
+    runs = [m for m in da.list_runs() if m.get("type") in ("iterative", "ac_verify")]
+    if r is None:
+        return view("ac.html", ctx(
+            request, active="ac", heading="Verificación AC", run=None, runs=runs))
+    rid = r["run_id"]
+    bus = da.run_csv(rid, "ac_bus_voltages.csv")
+    multi = "hour" in bus.columns
+    h = hour if multi else (r.get("summary") or {}).get("hour")
+    return view("ac.html", ctx(
+        request, active="ac", heading="Verificación AC", run=r, runs=runs,
+        hours=HOURS, sel_hour=h, multi=multi, summary=r.get("summary", {}), fmt=_fmt,
+        **_ac_charts(rid, h)))
+
+
+@app.get("/ac/charts", response_class=HTMLResponse)
+def ac_charts(request: Request, run: str, hour: str = "h_19"):
+    return view("partials/ac_charts.html", ctx(
+        request, **_ac_charts(run, hour)))
+
+
+def _ac_charts(run_id: str, hour: str | None) -> dict:
+    bus = da.run_csv(run_id, "ac_bus_voltages.csv")
+    br = da.run_csv(run_id, "ac_branch_loading.csv")
+    return {
+        "vmap": charts.voltage_map_div(bus, hour),
+        "profile": charts.voltage_profile_div(bus, hour),
+        "loading": charts.loading_bars_div(br, hour),
+    }
+
+
+# --------------------------------------------------------------- Auditoría
+def _load_dispatch() -> pd.DataFrame:
+    p = REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv"
+    return pd.read_csv(p, index_col=0) if p.exists() else pd.DataFrame()
+
+
+@app.get("/audit", response_class=HTMLResponse)
+def audit_page(request: Request, kind: str = "barra", eq: str | None = None,
+               hour: str = "h_19"):
+    items, _ = _audit_items(kind)
+    eq = eq or (items[0][0] if items else None)
+    return view("audit.html", ctx(
+        request, active="audit", heading="Auditoría por equipo", kind=kind,
+        items=items, eq=eq, hours=HOURS, sel_hour=hour,
+        panel=_audit_panel(kind, eq, hour)))
+
+
+@app.get("/audit/panel", response_class=HTMLResponse)
+def audit_panel(request: Request, kind: str, eq: str, hour: str = "h_19"):
+    return view("partials/audit_panel.html", ctx(
+        request, **_audit_panel(kind, eq, hour)))
+
+
+def _audit_items(kind: str):
+    r = da.latest_run("iterative") or da.latest_run("ac_verify")
+    if kind == "barra":
+        bus = da.run_csv(r["run_id"], "ac_bus_voltages.csv") if r else pd.DataFrame()
+        ids = sorted(bus["bus_id_modom"].dropna().unique()) if "bus_id_modom" in bus else []
+        return [(b, b) for b in ids], r
+    if kind in ("linea", "transformador"):
+        br = da.run_csv(r["run_id"], "ac_branch_loading.csv") if r else pd.DataFrame()
+        want = "line" if kind == "linea" else "trafo"
+        if "kind" in br.columns:
+            names = sorted(br[br["kind"] == want]["name"].dropna().unique())
+            return [(n, n) for n in names], r
+        return [], r
+    # generador
+    disp = _load_dispatch()
+    return [(g, g) for g in list(disp.columns)], r
+
+
+def _audit_panel(kind: str, eq: str | None, hour: str) -> dict:
+    r = da.latest_run("iterative") or da.latest_run("ac_verify")
+    rows, series, title = [], [], eq or "—"
+    if eq and r:
+        if kind == "barra":
+            bus = da.run_csv(r["run_id"], "ac_bus_voltages.csv")
+            sub = bus[bus["bus_id_modom"] == eq] if "bus_id_modom" in bus else pd.DataFrame()
+            if "hour" in sub.columns:
+                series = [(h, _round(v)) for h, v in zip(sub["hour"], sub["vm_pu"])]
+                cur = sub[sub["hour"] == hour]
+            else:
+                cur = sub
+            if len(cur):
+                row = cur.iloc[0]
+                rows = [("Tensión (pu)", _round(row.get("vm_pu"))),
+                        ("Ángulo (°)", _round(row.get("va_degree"), 2)),
+                        ("kV nominal", _round(row.get("vn_kv"), 1)),
+                        ("¿Cruzada?", "Sí" if row.get("matched") else "No")]
+        elif kind in ("linea", "transformador"):
+            br = da.run_csv(r["run_id"], "ac_branch_loading.csv")
+            sub = br[br["name"] == eq]
+            if "hour" in sub.columns:
+                series = [(h, _round(v, 1)) for h, v in zip(sub["hour"], sub["loading_percent"])]
+                cur = sub[sub["hour"] == hour]
+            else:
+                cur = sub
+            if len(cur):
+                row = cur.iloc[0]
+                rows = [("Cargabilidad (%)", _round(row.get("loading_percent"), 1)),
+                        ("P extremo (MW)", _round(row.get("p_from_mw"), 1)),
+                        ("Barra origen", row.get("from_w", "—")),
+                        ("Barra destino", row.get("to_w", "—"))]
+        else:  # generador
+            disp = _load_dispatch()
+            if eq in disp.columns:
+                series = [(h, _round(disp.at[h, eq], 1)) for h in disp.index]
+                if hour in disp.index:
+                    rows = [("Despacho (MW)", _round(disp.at[hour, eq], 1))]
+    return {"kind": kind, "eq": title, "rows": rows, "series": series, "sel_hour": hour}
+
+
+def _round(v, dec=3):
+    try:
+        f = float(v)
+        return round(f, dec) if f == f else "—"
+    except (TypeError, ValueError):
+        return "—"
+
+
+# --------------------------------------------------------------- Proyectos
+@app.get("/projects", response_class=HTMLResponse)
+def projects_page(request: Request):
+    return view("projects.html", ctx(
+        request, active="projects", heading="Proyectos",
+        projects=da.list_projects(), runs=da.list_runs()))
+
+
+@app.post("/projects")
+def project_create(name: str = Form(...), description: str = Form(""),
+                   considerations: str = Form(""), run_ids: list[str] = Form(default=[])):
+    da.save_project(name=name, description=description,
+                    considerations=considerations, run_ids=run_ids)
+    return RedirectResponse("/projects", status_code=303)
+
+
+# --------------------------------------------------------------- Próximamente
+@app.get("/coming/{name}", response_class=HTMLResponse)
+def coming(request: Request, name: str):
+    return view("coming_soon.html", ctx(
+        request, active="", heading=name.capitalize(), name=name.capitalize()))

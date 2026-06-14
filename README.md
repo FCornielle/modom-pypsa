@@ -617,6 +617,26 @@ With that setup, the current repository already gives you a reproducible base to
 - study dashboards
 - result maps
 
+## Plataforma web (GridLab SENI)
+
+App FastAPI + Jinja + HTMX que audita las corridas del modelo (Dashboard, Proyectos,
+Corridas, Verificación AC, Auditoría por equipo).
+
+```bash
+# instalar dependencias web (una vez)
+.venv/Scripts/python.exe -m pip install -e ".[web,pypsa,ac]"
+
+# (opcional) generar una corrida iterativa DC<->AC->MODOM
+.venv/Scripts/python.exe scripts/run_iterative.py --hour h_19
+
+# levantar la plataforma
+.venv/Scripts/python.exe -m uvicorn modom_pypsa.webapp.app:app --reload
+# abrir http://localhost:8000
+```
+
+Si no hay corridas, la plataforma envuelve automáticamente las salidas existentes
+(`data/processed/ac_modom`) como una corrida de verificación AC para no arrancar vacía.
+
 ## Disclaimer
 
 This repository is an engineering workflow under active development.
