@@ -169,7 +169,8 @@ METRICS = {
 def network_map_div(values_by_hour: dict, branch_loading: pd.DataFrame | None,
                     metric: str = "tension", hours: list | None = None,
                     init_hour: str | None = None, height: int = 620,
-                    div_id: str | None = None) -> str:
+                    div_id: str | None = None, cmin: float | None = None,
+                    cmax: float | None = None) -> str:
     """Mapa ANIMADO 24h: red por nivel de tensión (leyenda toggle) + barras coloreadas
     por la métrica elegida (tensión / costo marginal / Δ vs MODOM). Play + scroll-zoom."""
     import plotly.graph_objects as go
@@ -181,7 +182,11 @@ def network_map_div(values_by_hour: dict, branch_loading: pd.DataFrame | None,
     if not hours or not coords:
         return _empty("Sin datos para el mapa")
     init_hour = init_hour if init_hour in hours else hours[0]
-    m = METRICS.get(metric, METRICS["tension"])
+    m = dict(METRICS.get(metric, METRICS["tension"]))
+    if cmin is not None:
+        m["cmin"] = cmin
+    if cmax is not None:
+        m["cmax"] = cmax
 
     # congestión por hora (líneas ≥90%)
     cong = {h: set() for h in hours}
@@ -500,22 +505,30 @@ def modom_flows_anim_div(flows: pd.DataFrame, hours: list, init_hour: str,
     if not cap:
         return _empty("Sin ratings para calcular %")
     loadpct = flows[list(cap)].abs().div(pd.Series(cap)) * 100.0
-    peak = loadpct.max().sort_values(ascending=False).head(top).index.tolist()[::-1]
-    labels = [f"{bus_name(endpoints(c)[0])} → {bus_name(endpoints(c)[1])}" for c in peak]
+    lbl = {c: f"{bus_name(endpoints(c)[0])} → {bus_name(endpoints(c)[1])}" for c in cap}
 
-    def xy(h):
-        vals = [float(loadpct.at[h, c]) if h in loadpct.index else 0.0 for c in peak]
+    def frame_data(h):
+        """Top-15 ramas de ESA hora, de mayor a menor cargabilidad."""
+        row = loadpct.loc[h].sort_values(ascending=False).head(top) if h in loadpct.index \
+            else loadpct.iloc[0].head(top)
+        row = row.iloc[::-1]                            # mayor arriba en barh
+        labels = [lbl[c] for c in row.index]
+        vals = [float(v) for v in row.values]
         colors = [BAD if v > 100 else WARN if v > 90 else ACCENT for v in vals]
-        return vals, colors
-    v0, c0 = xy(init_hour)
-    fig = go.Figure(go.Bar(x=v0, y=labels, orientation="h", marker_color=c0,
+        return labels, vals, colors
+
+    y0, v0, c0 = frame_data(init_hour)
+    fig = go.Figure(go.Bar(x=v0, y=y0, orientation="h", marker_color=c0,
                            text=[f"{v:.0f}%" for v in v0], textposition="auto"))
-    fig.frames = [go.Frame(name=h, data=[go.Bar(
-        x=xy(h)[0], marker=dict(color=xy(h)[1]),
-        text=[f"{v:.0f}%" for v in xy(h)[0]])]) for h in hours]
+    frames = []
+    for h in hours:
+        y, v, c = frame_data(h)
+        frames.append(go.Frame(name=h, data=[go.Bar(
+            x=v, y=y, marker=dict(color=c), text=[f"{x:.0f}%" for x in v])]))
+    fig.frames = frames
     fig.update_xaxes(title="Cargabilidad %", showgrid=False, range=[0, 160])
     fig.update_yaxes(automargin=True)
-    return _anim_html(fig, div_id, 360)
+    return _anim_html(fig, div_id, 380)
 
 
 # ----------------------------------------------------- base MODOM: mezcla por tec

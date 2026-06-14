@@ -72,12 +72,16 @@ def _modom_cost_values() -> dict:
 
 
 def _cost_bus_options():
-    """(value, label) de barras para el selector, por nombre. Default: una de Palamara."""
+    """(value, label) de barras para el selector, por nombre. Default: barra de
+    referencia PALAMARA (no la generadora)."""
     g = charts._geometry()
     opts = sorted(((b, f"{g['names'].get(b, b)} ({b})") for b in g["coords"]),
                   key=lambda t: t[1])
-    default = next((b for b, _ in opts if "PALAMARA" in g["names"].get(b, "").upper()),
-                   opts[0][0] if opts else None)
+    nm = {b: g["names"].get(b, "").upper().strip() for b in g["coords"]}
+    default = (next((b for b in g["coords"] if nm[b] == "PALAMARA"), None)
+               or next((b for b, _ in opts
+                        if "PALAMARA" in nm[b] and "GENERAD" not in nm[b]), None)
+               or (opts[0][0] if opts else None))
     return opts, default
 
 
@@ -106,15 +110,23 @@ def modom_pdd(request: Request, cost_bus: str | None = None):
         ("Barras con tensión", str(len(_modom_voltage_values().get(peak, {}))), "resultado MODOM"),
         ("Hora pico", peak.replace("h_", ""), "máxima demanda"),
     ]
-    cost_map = charts.network_map_div(_modom_cost_values(), None, metric="costo",
-                                      hours=HOURS, init_hour=peak, div_id="costmap")
-    volt_map = charts.network_map_div(_modom_voltage_values(), None, metric="tension",
-                                      hours=HOURS, init_hour=peak, div_id="voltmap")
-    # curva de costo por BARRA (selector, default Palamara) = costo marginal × factor
+    # escala de color = mín/máx del DÍA (para que se note el cambio por hora)
+    cvals = _modom_cost_values()
+    callv = [v for h in cvals for v in cvals[h].values() if v == v]
+    cmin, cmax = (min(callv), max(callv)) if callv else (None, None)
+    vvals = _modom_voltage_values()
+    vallv = [v for h in vvals for v in vvals[h].values() if v == v]
+    vmin, vmax = (min(vallv), max(vallv)) if vallv else (None, None)
+    cost_map = charts.network_map_div(cvals, None, metric="costo", hours=HOURS,
+                                      init_hour=peak, div_id="costmap", cmin=cmin, cmax=cmax)
+    volt_map = charts.network_map_div(vvals, None, metric="tension", hours=HOURS,
+                                      init_hour=peak, div_id="voltmap", cmin=vmin, cmax=vmax)
+    # curva de costo por BARRA (selector, default barra de referencia Palamara)
     bus_opts, default_bus = _cost_bus_options()
     cost_bus = cost_bus or default_bus
     lf = _loss_factor_map()
-    factor = float(lf.get(cost_bus, 1.0) or 1.0)
+    _f = lf.get(cost_bus, 1.0)
+    factor = float(_f) if (_f == _f and _f) else 1.0   # NaN/0 -> 1.0 (sin pérdidas)
     mc_curve = charts.series_line_div(
         [(h, mc.get(h, 0.0) * factor) for h in HOURS], ylabel="RD$/MWh",
         color="#b0683c", div_id="mccurve", markers=False, grid=False)
