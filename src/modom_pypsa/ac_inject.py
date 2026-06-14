@@ -177,7 +177,7 @@ def aggregate_branches(net, ctx) -> pd.DataFrame:
     return pd.DataFrame(out)
 
 
-def run_ac_modom(export_dir, hour="h_19", root="."):
+def run_ac_modom(export_dir, hour="h_19", root=".", gen_disp=None):
     """Orquesta: build → inyecta despacho MODOM → poda islas → flujo AC → agrega.
 
     Devuelve (net, ctx, bus_results, branch_results, summary).
@@ -186,7 +186,9 @@ def run_ac_modom(export_dir, hour="h_19", root="."):
     import pandapower.topology as top
 
     root = Path(root)
-    gen_disp = pd.read_csv(root / DISPATCH_CSV, index_col=0)
+    # gen_disp por defecto = despacho del MODOM; el lazo iterativo pasa el de PyPSA.
+    if gen_disp is None:
+        gen_disp = pd.read_csv(root / DISPATCH_CSV, index_col=0)
     gens = pd.read_csv(root / GENERATORS_CSV)
     loads = pd.read_csv(root / LOADS_CSV)
     modom_bus_ids = pd.read_csv(root / BUSES_CSV).bus_id_modom.tolist()
