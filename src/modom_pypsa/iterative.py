@@ -181,6 +181,11 @@ def run_iterative(hour: str | None = None, hours: list[str] | None = None,
         _concat_hourly(last_br).to_csv(out / "ac_branch_loading.csv", index=False)
         # despacho 24h DC (PyPSA) por generador → para comparación DC vs AC
         n.generators_t.p.loc[hours].to_csv(out / "dispatch_dc.csv")
+        # precio nodal por hora (dual del balance) → métrica "costo marginal por barra"
+        try:
+            n.buses_t.marginal_price.loc[hours].round(2).to_csv(out / "nodal_prices.csv")
+        except Exception:  # noqa: BLE001
+            pass
         # resumen por hora
         pd.DataFrame([{"hour": h, **last_summ[h]} for h in hours]).to_csv(
             out / "summary_by_hour.csv", index=False)

@@ -115,37 +115,69 @@ def _ac_run(run_id: str | None):
     return da.latest_run("iterative") or da.latest_run("ac_verify") or da.latest_run()
 
 
+MODOM_V_CSV = REPO_ROOT / "data/processed/modom_results/modom_bus_voltage.csv"
+METRIC_LABELS = {"tension": "Tensión (pu)", "costo": "Costo marginal (RD$/MWh)",
+                 "delta_v": "Δ tensión vs MODOM (pu)"}
+
+
+def _metric_values(run_id: str, metric: str):
+    """Devuelve (values_by_hour {hora:{barra:valor}}, hours) para la métrica elegida."""
+    bus = da.run_csv(run_id, "ac_bus_voltages.csv")
+    if bus.empty:
+        return {}, []
+    hours = sorted(bus["hour"].unique()) if "hour" in bus.columns else \
+        [da.get_run(run_id).get("summary", {}).get("hour", "h_19")]
+    if "hour" not in bus.columns:
+        bus = bus.assign(hour=hours[0])
+
+    if metric == "costo":
+        np = da.run_csv(run_id, "nodal_prices.csv")
+        if np.empty:
+            return {}, hours
+        np = np.set_index(np.columns[0])
+        vals = {}
+        for h in hours:
+            if h in np.index:
+                row = np.loc[h]
+                vals[h] = {b: (min(max(float(v), 0), 9000)) for b, v in row.items()
+                           if pd.notna(v) and abs(float(v)) < 9e5}
+        return vals, hours
+    if metric == "delta_v" and MODOM_V_CSV.exists():
+        mv = pd.read_csv(MODOM_V_CSV, index_col=0)
+        vals = {}
+        for h in hours:
+            sub = bus[bus["hour"] == h]
+            row = mv.loc[h] if h in mv.index else None
+            vals[h] = {b: float(v) - float(row[b])
+                       for b, v in zip(sub["bus_id_modom"], sub["vm_pu"])
+                       if row is not None and b in row.index and pd.notna(row[b]) and pd.notna(v)}
+        return vals, hours
+    # tensión (por defecto)
+    vals = {h: {b: float(v) for b, v in zip(g["bus_id_modom"], g["vm_pu"]) if pd.notna(v)}
+            for h, g in bus.groupby("hour")}
+    return vals, hours
+
+
 @app.get("/ac", response_class=HTMLResponse)
-def ac_page(request: Request, run: str | None = None, hour: str = "h_19"):
+def ac_page(request: Request, run: str | None = None, metric: str = "tension"):
     r = _ac_run(run)
     runs = [m for m in da.list_runs() if m.get("type") in ("iterative", "ac_verify")]
     if r is None:
         return view("ac.html", ctx(
             request, active="ac", heading="Verificación AC", run=None, runs=runs))
     rid = r["run_id"]
+    summ = r.get("summary", {})
+    peak = summ.get("hour", "h_19")
     bus = da.run_csv(rid, "ac_bus_voltages.csv")
-    multi = "hour" in bus.columns
-    h = hour if multi else (r.get("summary") or {}).get("hour")
+    br = da.run_csv(rid, "ac_branch_loading.csv")
+    vals, hours = _metric_values(rid, metric)
+    nmap = charts.network_map_div(vals, br, metric=metric, hours=hours, init_hour=peak)
     return view("ac.html", ctx(
         request, active="ac", heading="Verificación AC", run=r, runs=runs,
-        hours=HOURS, sel_hour=h, multi=multi, summary=r.get("summary", {}), fmt=_fmt,
-        **_ac_charts(rid, h)))
-
-
-@app.get("/ac/charts", response_class=HTMLResponse)
-def ac_charts(request: Request, run: str, hour: str = "h_19"):
-    return view("partials/ac_charts.html", ctx(
-        request, **_ac_charts(run, hour)))
-
-
-def _ac_charts(run_id: str, hour: str | None) -> dict:
-    bus = da.run_csv(run_id, "ac_bus_voltages.csv")
-    br = da.run_csv(run_id, "ac_branch_loading.csv")
-    return {
-        "vmap": charts.voltage_map_div(bus, hour, branch_loading=br),
-        "profile": charts.voltage_profile_div(bus, hour),
-        "loading": charts.loading_bars_div(br, hour),
-    }
+        summary=summ, fmt=_fmt, metric=metric, metric_labels=METRIC_LABELS,
+        peak=peak, nmap=nmap,
+        profile=charts.voltage_profile_div(bus, peak),
+        loading=charts.loading_bars_div(br, peak)))
 
 
 # --------------------------------------------------------------- Auditoría

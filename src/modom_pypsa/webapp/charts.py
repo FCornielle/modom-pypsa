@@ -16,29 +16,31 @@ BUSES_CSV = REPO_ROOT / "data/processed/buses/buses.csv"
 LINES_CSV = REPO_ROOT / "data/processed/pypsa_branch_components/lines_v1.csv"
 TRAFOS_CSV = REPO_ROOT / "data/processed/pypsa_branch_components/transformers_v1.csv"
 
-# color de líneas por nivel de tensión (tenue, para que resalten las barras por V)
-VOLT_LINE = {345: "#7c3aed", 230: "#0ea5e9", 138: "#10b981", 69: "#f59e0b"}
+# niveles de tensión: etiqueta + color (para leyenda con toggles, como antes)
+VOLT_LEVELS = [(345, "LT 345 kV", "#7c3aed"), (230, "LT 230 kV", "#0ea5e9"),
+               (138, "LT 138 kV", "#10b981"), (69, "LT 69 kV", "#f59e0b")]
+VOLT_OTHER = ("LT otra", "#94a3b8")
 
 
-def _volt_color(kv) -> str:
+def _volt_bucket(kv):
     try:
         kv = float(kv)
     except (TypeError, ValueError):
-        return "#cbd5e1"
-    for std, col in VOLT_LINE.items():
-        if abs(kv - std) < 0.7:
-            return col
-    return "#cbd5e1"
+        return VOLT_OTHER
+    for std, lbl, col in VOLT_LEVELS:
+        if abs(kv - std) < 1.0:
+            return (lbl, col)
+    return VOLT_OTHER
 
 
 _GEO = {}
 
 
 def _geometry() -> dict:
-    """Coordenadas, nombres de barra y segmentos de línea (cacheado)."""
+    """Coordenadas, nombres, tensión por barra y segmentos de línea (cacheado)."""
     if _GEO:
         return _GEO
-    coords, names, segs = {}, {}, []
+    coords, names, bus_kv, segs = {}, {}, {}, []
     if COORDS_CSV.exists():
         c = pd.read_csv(COORDS_CSV)
         c = c[pd.to_numeric(c["lat"], errors="coerce").notna()]
@@ -48,6 +50,7 @@ def _geometry() -> dict:
         for r in b.itertuples():
             nm = str(getattr(r, "bus_name", "") or "").strip()
             names[str(r.bus_id_modom)] = nm if nm and nm.lower() != "nan" else str(r.bus_id_modom)
+            bus_kv[str(r.bus_id_modom)] = pd.to_numeric(getattr(r, "v_nom_kv", None), errors="coerce")
     frames = [p for p in (LINES_CSV, TRAFOS_CSV) if p.exists()]
     if frames:
         br = pd.concat([pd.read_csv(p) for p in frames], ignore_index=True)
@@ -55,8 +58,8 @@ def _geometry() -> dict:
             b0, b1 = str(r.bus0), str(r.bus1)
             if b0 in coords and b1 in coords:
                 kv = pd.to_numeric(getattr(r, "v_nom_bus0_kv", None), errors="coerce")
-                segs.append((coords[b0], coords[b1], _volt_color(kv), str(r.name)))
-    _GEO.update(coords=coords, names=names, segs=segs)
+                segs.append((coords[b0], coords[b1], _volt_bucket(kv), str(r.name)))
+    _GEO.update(coords=coords, names=names, bus_kv=bus_kv, segs=segs)
     return _GEO
 
 # Paleta GridLab (clara)
@@ -113,18 +116,18 @@ def voltage_map_div(bus_voltages: pd.DataFrame, hour: str | None = None,
         overloaded = set(bl[bl["loading_percent"] > 90]["name"]) if "name" in bl else set()
 
     fig = go.Figure()
-    # red de transmisión, agrupada por color (nivel de tensión)
-    by_col: dict[str, list] = {}
+    # red de transmisión, agrupada por nivel de tensión (leyenda con toggles)
+    by_lvl: dict[tuple, list] = {}
     red_lat, red_lon = [], []
-    for (a, b, col, name) in segs:
+    for (a, b, bucket, name) in segs:
         if name in overloaded:
             red_lat += [a[0], b[0], None]; red_lon += [a[1], b[1], None]
             continue
-        d = by_col.setdefault(col, [[], []])
+        d = by_lvl.setdefault(bucket, [[], []])
         d[0] += [a[0], b[0], None]; d[1] += [a[1], b[1], None]
-    for col, (la, lo) in by_col.items():
-        fig.add_trace(go.Scattermapbox(lat=la, lon=lo, mode="lines",
-            line=dict(width=1.4, color=col), hoverinfo="skip", showlegend=False))
+    for (lbl, col), (la, lo) in sorted(by_lvl.items(), key=lambda kv: kv[0][0]):
+        fig.add_trace(go.Scattermapbox(lat=la, lon=lo, mode="lines", name=lbl,
+            line=dict(width=1.6, color=col), hoverinfo="skip"))
     if red_lat:
         fig.add_trace(go.Scattermapbox(lat=red_lat, lon=red_lon, mode="lines",
             line=dict(width=3, color=BAD), name="≥90%", hoverinfo="skip"))
@@ -144,7 +147,128 @@ def voltage_map_div(bus_voltages: pd.DataFrame, hour: str | None = None,
                       margin=dict(l=0, r=0, t=0, b=0), height=height,
                       legend=dict(x=0, y=1, bgcolor="rgba(255,255,255,.7)"))
     return pio.to_html(fig, full_html=False, include_plotlyjs=False,
-                       config={"displayModeBar": False, "responsive": True})
+                       config={"scrollZoom": True, "displaylogo": False,
+                               "responsive": True})
+
+
+METRICS = {
+    "tension": dict(label="Tensión (pu)", scale="RdYlGn", cmin=0.90, cmax=1.10, dec=3),
+    "costo": dict(label="Costo marginal (RD$/MWh)", scale="Turbo", cmin=0, cmax=9000, dec=0),
+    "delta_v": dict(label="ΔV vs MODOM (pu)", scale="RdBu", cmin=-0.06, cmax=0.06, dec=3),
+}
+
+
+def network_map_div(values_by_hour: dict, branch_loading: pd.DataFrame | None,
+                    metric: str = "tension", hours: list | None = None,
+                    init_hour: str | None = None, height: int = 620) -> str:
+    """Mapa ANIMADO 24h: red por nivel de tensión (leyenda toggle) + barras coloreadas
+    por la métrica elegida (tensión / costo marginal / Δ vs MODOM). Play + scroll-zoom."""
+    import plotly.graph_objects as go
+    import plotly.io as pio
+
+    geo = _geometry()
+    coords, names, bus_kv, segs = geo["coords"], geo["names"], geo["bus_kv"], geo["segs"]
+    hours = hours or sorted(values_by_hour.keys())
+    if not hours or not coords:
+        return _empty("Sin datos para el mapa")
+    init_hour = init_hour if init_hour in hours else hours[0]
+    m = METRICS.get(metric, METRICS["tension"])
+
+    # congestión por hora (líneas ≥90%)
+    cong = {h: set() for h in hours}
+    if branch_loading is not None and not branch_loading.empty and "hour" in branch_loading.columns:
+        for h in hours:
+            sub = branch_loading[(branch_loading.hour == h) & (branch_loading.loading_percent > 90)]
+            cong[h] = set(sub["name"])
+
+    fig = go.Figure()
+    # --- líneas por nivel de tensión (estáticas, leyenda con toggle) ---
+    by_lvl: dict[tuple, list] = {}
+    seg_names: list = []
+    for (a, b, bucket, name) in segs:
+        d = by_lvl.setdefault(bucket, [[], []])
+        d[0] += [a[0], b[0], None]; d[1] += [a[1], b[1], None]
+        seg_names.append((bucket, a, b, name))
+    for (lbl, col), (la, lo) in sorted(by_lvl.items(), key=lambda kv: kv[0][0]):
+        fig.add_trace(go.Scattermapbox(lat=la, lon=lo, mode="lines", name=lbl,
+            line=dict(width=1.6, color=col), hoverinfo="skip"))
+    n_lines = len(fig.data)
+
+    # --- congestión (dinámica) ---
+    def cong_xy(h):
+        la, lo = [], []
+        for (_, a, b, name) in seg_names:
+            if name in cong[h]:
+                la += [a[0], b[0], None]; lo += [a[1], b[1], None]
+        return la, lo
+    cla, clo = cong_xy(init_hour)
+    fig.add_trace(go.Scattermapbox(lat=cla, lon=clo, mode="lines", name="≥90% carga",
+        line=dict(width=3.5, color=BAD), hoverinfo="skip"))
+    idx_cong = len(fig.data) - 1
+
+    # --- barras por nivel de tensión (marcadores, color = métrica) ---
+    buckets: dict[tuple, list] = {}
+    for b in coords:
+        buckets.setdefault(_volt_bucket(bus_kv.get(b)), []).append(b)
+    order = sorted(buckets.keys(), key=lambda k: k[0])
+
+    nan = float("nan")
+
+    def colors_text(bs, h):
+        vals = values_by_hour.get(h, {})
+        col, txt = [], []
+        for b in bs:
+            v = vals.get(b)
+            col.append(float(v) if isinstance(v, (int, float)) else nan)
+            vs = f"{v:.{m['dec']}f}" if isinstance(v, (int, float)) else "—"
+            txt.append(f"<b>{names.get(b, b)}</b><br>{b}<br>{m['label']}: {vs}")
+        return col, txt
+
+    bus_trace_idx = []
+    for bucket in order:
+        bs = buckets[bucket]
+        col, txt = colors_text(bs, init_hour)
+        fig.add_trace(go.Scattermapbox(
+            lat=[coords[b][0] for b in bs], lon=[coords[b][1] for b in bs],
+            mode="markers", name=f"Barras {bucket[0].split()[-2]} {bucket[0].split()[-1]}"
+                 if len(bucket[0].split()) >= 3 else f"Barras {bucket[0]}",
+            marker=dict(size=8, color=col, coloraxis="coloraxis"),
+            text=txt, hovertemplate="%{text}<extra></extra>", legendrank=2000 + bucket[0].__hash__() % 100))
+        bus_trace_idx.append(len(fig.data) - 1)
+
+    # --- frames por hora (actualizan congestión + colores/text de barras) ---
+    frames = []
+    for h in hours:
+        fdata = []
+        la, lo = cong_xy(h)
+        fdata.append(go.Scattermapbox(lat=la, lon=lo))
+        for bucket in order:
+            col, txt = colors_text(buckets[bucket], h)
+            fdata.append(go.Scattermapbox(marker=dict(color=col), text=txt))
+        frames.append(go.Frame(name=h, data=fdata, traces=[idx_cong] + bus_trace_idx))
+    fig.frames = frames
+
+    steps = [dict(method="animate", label=h.replace("h_", ""),
+                  args=[[h], dict(mode="immediate", frame=dict(duration=0, redraw=True),
+                                  transition=dict(duration=0))]) for h in hours]
+    fig.update_layout(
+        mapbox=dict(style="carto-positron", center=dict(lat=18.9, lon=-70.4), zoom=7),
+        margin=dict(l=0, r=0, t=0, b=0), height=height,
+        coloraxis=dict(colorscale=m["scale"], cmin=m["cmin"], cmax=m["cmax"],
+                       colorbar=dict(title=m["label"].split(" (")[0], thickness=13, len=0.6, x=0.99)),
+        legend=dict(x=0.01, y=0.99, bgcolor="rgba(255,255,255,.88)", bordercolor=GRID,
+                    borderwidth=1, font=dict(size=11)),
+        sliders=[dict(active=hours.index(init_hour), x=0.05, y=0, len=0.9,
+                      currentvalue=dict(prefix="Hora "), steps=steps)],
+        updatemenus=[dict(type="buttons", direction="left", x=0.0, y=0, xanchor="right",
+            yanchor="bottom", showactive=False, buttons=[
+                dict(label="▶", method="animate", args=[None, dict(
+                    frame=dict(duration=800, redraw=True), fromcurrent=True,
+                    transition=dict(duration=0))]),
+                dict(label="⏸", method="animate", args=[[None], dict(mode="immediate",
+                    frame=dict(duration=0, redraw=False))])])])
+    return pio.to_html(fig, full_html=False, include_plotlyjs=False,
+                       config={"scrollZoom": True, "displaylogo": False, "responsive": True})
 
 
 def bus_name(w: str) -> str:
