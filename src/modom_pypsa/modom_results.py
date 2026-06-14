@@ -100,6 +100,60 @@ def extract_bus_ens(reader: XlsmReader, n: int = N_PERIODS) -> pd.DataFrame:
     return pd.DataFrame(data, index=SNAPSHOT_IDS[:n])
 
 
+def _extract_wide_series(
+    reader: XlsmReader, sheet: str, key_aliases: set[str], n: int = N_PERIODS
+) -> pd.DataFrame:
+    """Hoja ancha clave→periodos: detecta la fila cabecera (la que tiene la celda "1")
+    y la columna clave (por alias de encabezado); devuelve DataFrame [snapshot x clave].
+
+    Se queda solo con claves tipo código (empiezan por W o G), descartando secciones.
+    """
+    m = reader.read_sheet_matrix(sheet)
+    hr = next(i for i, r in enumerate(m) if any(str(c).strip() == "1" for c in r))
+    head = m[hr]
+    pcol = next(c for c, v in enumerate(head) if str(v).strip() == "1")
+    kcol = 0
+    for c in range(pcol):
+        if str(head[c]).strip().upper() in key_aliases:
+            kcol = c
+            break
+    data: dict[str, list[float]] = {}
+    for row in m[hr + 1:]:
+        if kcol >= len(row):
+            continue
+        key = str(row[kcol]).strip()
+        if not key or key[0].upper() not in ("W", "G"):
+            continue
+        vals = [_to_float(row[c]) if c < len(row) else float("nan")
+                for c in range(pcol, pcol + n)]
+        if key in data:  # barra repetida (p.ej. varias cargas): sumar
+            data[key] = [(a if a == a else 0.0) + (b if b == b else 0.0)
+                         for a, b in zip(data[key], vals)]
+        else:
+            data[key] = vals
+    return pd.DataFrame(data, index=SNAPSHOT_IDS[:n])
+
+
+def extract_reactive_load(reader: XlsmReader, n: int = N_PERIODS) -> pd.DataFrame:
+    """Q de cargas MVAr por barra (Demanda Reactiva por cargas DEC; clave = BARRA/W-code)."""
+    return _extract_wide_series(reader, "Demanda Reactiva por cargas DEC", {"BARRA"}, n)
+
+
+def extract_reactive_gen(reader: XlsmReader, n: int = N_PERIODS) -> pd.DataFrame:
+    """Q de generadores MVAr (Despacho de Potencia Reactiva; clave = generator_id)."""
+    return _extract_wide_series(reader, "Despacho de Potencia Reactiva", {"GENERADOR"}, n)
+
+
+def extract_bus_voltage(reader: XlsmReader, n: int = N_PERIODS) -> pd.DataFrame:
+    """Tensión por barra en pu (Voltaje por barras; clave = código W)."""
+    return _extract_wide_series(reader, "Voltaje por barras", {"BARRAS", "BARRA"}, n)
+
+
+def extract_shunt_capacitors(reader: XlsmReader, n: int = N_PERIODS) -> pd.DataFrame:
+    """Capacitores shunt MVAr por barra (CAPACITORES; clave = barra)."""
+    return _extract_wide_series(reader, "CAPACITORES", {"BARRA", "BARRAS"}, n)
+
+
 def extract_nodal_factors(reader: XlsmReader) -> pd.DataFrame:
     """Factores de nodo del MODOM por barra (pérdidas marginales / pricing).
 
@@ -143,6 +197,10 @@ def export_modom_results(
     flows = extract_branch_flows(reader, n)
     ens = extract_bus_ens(reader, n)
     factors = extract_nodal_factors(reader)
+    qload = extract_reactive_load(reader, n)
+    qgen = extract_reactive_gen(reader, n)
+    vbus = extract_bus_voltage(reader, n)
+    shunt = extract_shunt_capacitors(reader, n)
 
     outdir = data_dir / "modom_results"
     outdir.mkdir(parents=True, exist_ok=True)
@@ -150,6 +208,10 @@ def export_modom_results(
     flows.to_csv(outdir / "modom_branch_flows.csv")
     ens.to_csv(outdir / "modom_bus_ens.csv")
     factors.to_csv(outdir / "nodal_factors.csv", index_label="bus_id_modom")
+    qload.to_csv(outdir / "modom_reactive_load.csv")
+    qgen.to_csv(outdir / "modom_reactive_gen.csv")
+    vbus.to_csv(outdir / "modom_bus_voltage.csv")
+    shunt.to_csv(outdir / "modom_shunt_capacitors.csv")
 
     return {
         "outdir": str(outdir),
@@ -159,4 +221,8 @@ def export_modom_results(
         "ens_buses": ens.shape[1],
         "ens_total_mwh": round(float(ens.to_numpy(dtype=float).sum()), 3),
         "nodal_factors_retiro": int(factors["factor_retiro"].notna().sum()),
+        "reactive_load_buses": qload.shape[1],
+        "reactive_gen_units": qgen.shape[1],
+        "voltage_buses": vbus.shape[1],
+        "shunt_buses": shunt.shape[1],
     }

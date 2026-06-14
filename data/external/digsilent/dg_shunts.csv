@@ -1,0 +1,18 @@
+bus,q_mvar,name,kind
+WFALCK_B,-24.95108,34.5 kV Capacitor 1 FALCONDO,capacitor
+WFALCK_B,-14.98443,34.5 kV Capacitor 2 FALCONDO,capacitor
+WGIRAK,-10.0,34.5 kV Capacitor Girasol,capacitor
+WCANAF,-15.6,69 kV Capacitor 1 Canabacoa,capacitor
+WZSANF,-9.6,69 kV Capacitor 1 ZF Santiago,capacitor
+WCANAF,-20.0,69 kV Capacitor 2 Canabacoa,capacitor
+WZSANF,-20.0,69 kV Capacitor 2 ZF Santiago,capacitor
+WABANF,-10.0,69 kV Capacitor Abanico Per,capacitor
+WAHONF,-20.0,69 kV Capacitor Arroyo Hondo,capacitor
+WCOCOF,-20.0,69 kV Capacitor Cruce de Ocoa,capacitor
+WHAINF,-40.0,69 kV Capacitor Haina,capacitor
+WHNSAE,-40.0,69 kV Capacitor Hainamosa,capacitor
+WHNVAF,-20.0,69 kV Capacitor Herrera Nueva,capacitor
+WPAYIF,-10.0,69 kV Capacitor Payita,capacitor
+WPIMEF,-9.74,69 kV Capacitor Pimentel,capacitor
+WPPL2F,-40.0,69 kV Capacitor Puerto Plata 2,capacitor
+WSPMAF,-20.0,69 kV Capacitor SPM,capacitor

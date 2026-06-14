@@ -1,0 +1,100 @@
+﻿clase,descripcion,cantidad,archivo
+StaCubic,Cubicle,11794,todos_los_elementos/StaCubic.csv
+ElmTerm,Terminal,4992,todos_los_elementos/ElmTerm.csv
+ElmCoup,Breaker/Switch,4652,todos_los_elementos/ElmCoup.csv
+RelLogdip,Logic/DIP,2854,todos_los_elementos/RelLogdip.csv
+BlkSig,Signal,2853,todos_los_elementos/BlkSig.csv
+RelIoc,Definite Time-Overcurrent,2380,todos_los_elementos/RelIoc.csv
+RelTimer,Timer,2301,todos_los_elementos/RelTimer.csv
+RelUlim,Voltage Protection,2211,todos_los_elementos/RelUlim.csv
+RelFrq,Frequency Protection,1663,todos_los_elementos/RelFrq.csv
+RelToc,Inverse Time-Overcurrent,1350,todos_los_elementos/RelToc.csv
+RelDispoly,Distance Polygon,1205,todos_los_elementos/RelDispoly.csv
+RelMeasure,Measurement,1175,todos_los_elementos/RelMeasure.csv
+ElmRelay,Relay,1114,todos_los_elementos/ElmRelay.csv
+RelDismho,Distance Mho,897,todos_los_elementos/RelDismho.csv
+RelFdetect,Starting/Fault Detector,849,todos_los_elementos/RelFdetect.csv
+BlkRef,Block Reference,792,todos_los_elementos/BlkRef.csv
+BlkDef,DSL Model Type,760,todos_los_elementos/BlkDef.csv
+ElmLne,Line,742,todos_los_elementos/ElmLne.csv
+RelLogic,Logic,667,todos_los_elementos/RelLogic.csv
+StaSwitch,Switch,663,todos_los_elementos/StaSwitch.csv
+ElmDsl,DSL Model,500,todos_los_elementos/ElmDsl.csv
+RelDir,Direction Determination,488,todos_los_elementos/RelDir.csv
+RelZpol,Distance Polarising,471,todos_los_elementos/RelZpol.csv
+RelLslogic,Load Shedding Logic,436,todos_los_elementos/RelLslogic.csv
+ElmLod,General Load,422,todos_los_elementos/ElmLod.csv
+BlkSum,Summation Point,284,todos_los_elementos/BlkSum.csv
+BlkSlot,Slot,279,todos_los_elementos/BlkSlot.csv
+RelFmeas,Frequency Measurement,257,todos_los_elementos/RelFmeas.csv
+RelChar,Common Time Characteristic,225,todos_los_elementos/RelChar.csv
+ElmSubstat,Substation,211,todos_los_elementos/ElmSubstat.csv
+RelDisloadenc,Distance Load Encroachment,202,todos_los_elementos/RelDisloadenc.csv
+StaVt,Voltage Transformer,169,todos_los_elementos/StaVt.csv
+RelDisdir,Distance Direction Determination,167,todos_los_elementos/RelDisdir.csv
+ElmTr2,2-Winding Transformer,165,todos_los_elementos/ElmTr2.csv
+RelRecl,Automatic Recloser,156,todos_los_elementos/RelRecl.csv
+ElmComp,Composite Model,152,todos_los_elementos/ElmComp.csv
+StaCt,Current Transformer,133,todos_los_elementos/StaCt.csv
+TypTr2,2-Winding Transformer Type,131,todos_los_elementos/TypTr2.csv
+RelCtadapt,CT Adapter,130,todos_los_elementos/RelCtadapt.csv
+RelBiasidiff,Differential Protection,113,todos_los_elementos/RelBiasidiff.csv
+ElmSym,Synchronous Machine,105,todos_los_elementos/ElmSym.csv
+ElmTow,Line Couplings,102,todos_los_elementos/ElmTow.csv
+ElmSite,Site,99,todos_los_elementos/ElmSite.csv
+RelDispspoly,Distance Power Swing,95,todos_los_elementos/RelDispspoly.csv
+RelFdetsie,Siemens Starting,90,todos_los_elementos/RelFdetsie.csv
+ElmBmu,Virtual Power Plant,79,todos_los_elementos/ElmBmu.csv
+IntMat,Matrix,79,todos_los_elementos/IntMat.csv
+StaVmea,Voltage Measurement,76,todos_los_elementos/StaVmea.csv
+TypTow,Tower Type,73,todos_los_elementos/TypTow.csv
+IntFolder,Folder,68,todos_los_elementos/IntFolder.csv
+BlkMul,Multiplier,67,todos_los_elementos/BlkMul.csv
+TypChatoc,I-t Characteristic,51,todos_los_elementos/TypChatoc.csv
+RelFdetabb,ABB Starting,42,todos_los_elementos/RelFdetabb.csv
+StaPqmea,PQ Measurement,39,todos_los_elementos/StaPqmea.csv
+ElmGenstat,Static Generator,37,todos_los_elementos/ElmGenstat.csv
+ElmPhi__pll,Phase Measurement Device PLL - old,37,todos_los_elementos/ElmPhi__pll.csv
+TypSym,Synchronous Machine Type,37,todos_los_elementos/TypSym.csv
+RelSeldir,SEL Direction Determination,33,todos_los_elementos/RelSeldir.csv
+TypCon,Conductor Type,32,todos_los_elementos/TypCon.csv
+TypFrq,Frequency Protection Type,30,todos_los_elementos/TypFrq.csv
+ElmShnt,Shunt/Filter,29,todos_los_elementos/ElmShnt.csv
+BlkDiv,Divisor,25,todos_los_elementos/BlkDiv.csv
+BlkFrom,From,22,todos_los_elementos/BlkFrom.csv
+BlkSwt,Switch for Block Diagrams,21,todos_los_elementos/BlkSwt.csv
+TypBar,Busbar Type,19,todos_los_elementos/TypBar.csv
+ElmRes,Results,17,todos_los_elementos/ElmRes.csv
+TypCt,Current Transformer Type,17,todos_los_elementos/TypCt.csv
+BlkGoto,Goto,16,todos_los_elementos/BlkGoto.csv
+TypLogic,Logic Type,15,todos_los_elementos/TypLogic.csv
+ElmStactrl,Station Control,14,todos_los_elementos/ElmStactrl.csv
+ElmOwner,Owner,12,todos_los_elementos/ElmOwner.csv
+ElmNet,Grid,11,todos_los_elementos/ElmNet.csv
+ElmZone,Zone,11,todos_los_elementos/ElmZone.csv
+StaImea,Current Measurement,9,todos_los_elementos/StaImea.csv
+TypVt,Voltage Transformer Type,8,todos_los_elementos/TypVt.csv
+ElmBoundary,Boundary,7,todos_los_elementos/ElmBoundary.csv
+IntQlim,Capability Curve,7,todos_los_elementos/IntQlim.csv
+TypRelay,Relay Type,6,todos_los_elementos/TypRelay.csv
+ElmArea,Area,4,todos_los_elementos/ElmArea.csv
+TypFmeas,Frequency Measurement Type,4,todos_los_elementos/TypFmeas.csv
+TypIoc,Definite Time-Overcurrent Type,4,todos_los_elementos/TypIoc.csv
+TypVtsec,Sec. Voltage Transformer Type,4,todos_los_elementos/TypVtsec.csv
+ElmTr3,3-Winding Transformer,3,todos_los_elementos/ElmTr3.csv
+StaVtsec,Sec. Voltage Transformer,3,todos_los_elementos/StaVtsec.csv
+TypToc,Inverse Time-Overcurrent Type,3,todos_los_elementos/TypToc.csv
+ChaVec,Parameter Characteristic - Vector,2,todos_los_elementos/ChaVec.csv
+ElmFile,Measurement File,2,todos_los_elementos/ElmFile.csv
+ElmSvs,Static Var System,2,todos_los_elementos/ElmSvs.csv
+TypCab,Single Core Cable Type,2,todos_los_elementos/TypCab.csv
+TypCabsys,Cable Definition,2,todos_los_elementos/TypCabsys.csv
+TypLod,General Load Type,2,todos_los_elementos/TypLod.csv
+TypLogdip,Logic/DIP Type,2,todos_los_elementos/TypLogdip.csv
+TypMeasure,Measurement Type,2,todos_los_elementos/TypMeasure.csv
+TypSwitch,Switch Type,2,todos_los_elementos/TypSwitch.csv
+IntThrating,Thermal Ratings,1,todos_los_elementos/IntThrating.csv
+TriFreq,Frequency Scale,1,todos_los_elementos/TriFreq.csv
+TypLne,Line Type,1,todos_los_elementos/TypLne.csv
+TypTr3,3-Winding Transformer Type,1,todos_los_elementos/TypTr3.csv
+TypUlim,Voltage Protection Type,1,todos_los_elementos/TypUlim.csv

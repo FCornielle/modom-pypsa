@@ -1,0 +1,7 @@
+﻿loc_name,for_name,ruta,typ_id
+Freq. 6 Steps,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Freq. 6 Steps.TypRelay,Freq. 6 Steps
+EDAC_Cargas_dF/dt,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\EDAC_Cargas_dF/dt.TypRelay,EDAC CARGAS dF/dt
+F50N_F51N Neutral overcurrent,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Generic relays\F50N_F51N Neutral overcurrent.TypRelay,F50N_F51N
+F50_F51  Phase overcurrent,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Generic relays\F50_F51  Phase overcurrent.TypRelay,F50_F51
+Frq-U</f<,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Frq-U</f<.TypRelay,
+Frq f>/dfdt,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Frq f>/dfdt.TypRelay,Frequency f>/dfdt

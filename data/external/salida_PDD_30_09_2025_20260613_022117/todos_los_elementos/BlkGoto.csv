@@ -1,0 +1,13 @@
+﻿loc_name,for_name,ruta
+Goto,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Goto.BlkGoto
+Goto(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Goto(1).BlkGoto
+Goto,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Goto.BlkGoto
+Goto(1),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Goto(1).BlkGoto
+Goto,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\Goto.BlkGoto
+Goto(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\Goto(1).BlkGoto
+Goto,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Goto.BlkGoto
+Goto(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Goto(1).BlkGoto
+Goto,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Goto.BlkGoto
+Goto(1),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Goto(1).BlkGoto
+Goto(2),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Goto(2).BlkGoto
+Goto(3),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Goto(3).BlkGoto

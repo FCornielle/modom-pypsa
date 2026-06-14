@@ -35,3 +35,6 @@ logs/
 # Generated dashboard (rebuilt with scripts/build_dashboard.py; not versioned to
 # avoid merge conflicts on this large, regenerable artifact)
 results/dashboard/seni_dashboard.html
+
+# DIgSILENT native project (binary, ~23MB - not versioned)
+*.pfd

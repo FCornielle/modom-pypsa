@@ -1,0 +1,68 @@
+﻿nombre,ruta
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Multiplier(1).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Multiplier(1).BlkMul
+Multiplier,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Multiplier.BlkMul
+Multiplier(1),\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Multiplier(1).BlkMul
+Multiplier,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Multiplier.BlkMul
+Multiplier,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Multiplier.BlkMul
+Multiplier(1),\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Multiplier(1).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Multiplier(1).BlkMul
+Multiplier(4),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Multiplier(4).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Multiplier(1).BlkMul
+Multiplier(4),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Multiplier(4).BlkMul
+Multiplier,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Multiplier.BlkMul
+Multiplier(1),\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Multiplier(1).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Multiplier(1).BlkMul
+Multiplier(4),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Multiplier(4).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA1.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA1.BlkDef\Multiplier(1).BlkMul
+Multiplier(4),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA1.BlkDef\Multiplier(4).BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Pimentel 5\50DF-13.8KV_template_new R1_BB.IntFolder\Library\Modified 50SG template_R\UNITROL 1000 Modules Rev_R\exc_Exciter Machine.BlkDef\Multiplier(1).BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Pimentel 5\50DF-13.8KV_template_new R1_BB.IntFolder\Library\Modified 50SG template_R\UNITROL 1000 Modules Rev_R\sup_Excitation Supplies.BlkDef\Multiplier(1).BlkMul
+Multiplier(4),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Pimentel 5\50DF-13.8KV_template_new R1_BB.IntFolder\Library\Modified 50SG template_R\UNITROL 1000 Modules Rev_R\sup_Excitation Supplies.BlkDef\Multiplier(4).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Pimentel 5\50DF-13.8KV_template_new R1_BB.IntFolder\Library\Modified 50SG template_R\UNITROL 1000 Modules Rev_R\sup_Excitation Supplies.BlkDef\Multiplier.BlkMul
+Multiplier(3),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Pimentel 5\50DF-13.8KV_template_new R1_BB.IntFolder\Library\Modified 50SG template_R\UNITROL 1000 Modules Rev_R\sup_Excitation Supplies.BlkDef\Multiplier(3).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LTOROS1.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LTOROS1.BlkDef\Multiplier(1).BlkMul
+Multiplier(4),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LTOROS1.BlkDef\Multiplier(4).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LTOROS2.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LTOROS2.BlkDef\Multiplier(1).BlkMul
+Multiplier(4),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LTOROS2.BlkDef\Multiplier(4).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Multiplier(1).BlkMul
+Multiplier(4),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Multiplier(4).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Multiplier(1).BlkMul
+Multiplier(4),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Multiplier(4).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\avr_Reivax_RTVX_100.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Aerodynamics Two-Dimensional.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Generator Set Type 3B.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Generator Set Type 3B.BlkDef\Multiplier(1).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Multiplier(1).BlkMul
+Multiplier(2),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Multiplier(2).BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Current Limitation.BlkDef\Multiplier(1).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\2MW_plant\Library\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Q Control.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Aerodynamics Two-Dimensional.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Generator Set Type 3B.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Generator Set Type 3B.BlkDef\Multiplier(1).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Multiplier(1).BlkMul
+Multiplier(2),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\P Control Type 3.BlkDef\Multiplier(2).BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Current Limitation.BlkDef\Multiplier(1).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Matafongo 1 y 2\5.2MW_plant.IntFolder\Library\DIgSILENT Library\Dynamic Models\Inverter Based Resources/Storage\Wind Turbines IEC 61400-27-1\Q Control.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\vco_EXAC1.BlkDef\Multiplier.BlkMul
+Multiplier(2),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Multiplier(2).BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\RPC.BlkDef\Multiplier.BlkMul
+Multiplier,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Multiplier.BlkMul
+Multiplier(1),\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Multiplier(1).BlkMul

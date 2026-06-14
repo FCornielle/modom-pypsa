@@ -1,0 +1,740 @@
+﻿loc_name,for_name,ruta,outserv,cpZone,cpArea,cpGrid,cpSubstat,typ_id
+Block Reference,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Bloque 4,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Bloque 4.BlkRef,0,,,,,K
+Block Reference(1),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Block Reference(1).BlkRef,0,,,,,{K/(1+sT)}
+Block Reference(5),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Bloque 1,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Bloque 1.BlkRef,0,,,,,K/s
+Block Reference(4),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Block Reference(4).BlkRef,0,,,,,{1/sT
+Block Reference(6),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Block Reference(6).BlkRef,0,,,,,Se(Efd)
+Block Reference(2),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Block Reference(2).BlkRef,0,,,,,sK/(1+sT)
+Block Reference(3),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESAC8B.BlkDef\Block Reference(3).BlkRef,0,,,,,bias
+{K(1+sT4)/(1+sT5)},,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\{K(1+sT4)/(1+sT5)}.BlkRef,0,,,,,{K(1+sT4)/(1+sT5)/(1+sT6)/s}
+1/(1+sTd),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\1/(1+sTd).BlkRef,0,,,,,Delay_no_inc
+Droop,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\Droop.BlkRef,0,,,,,K
+1/(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\1/(2).BlkRef,0,,,,,1/(1+sT)
+((1+sT3+ssT7)/(1+sT1+ssT2T1)),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\((1+sT3+ssT7)/(1+sT1+ssT2T1)).BlkRef,0,,,,,(1+sT3)/(1+sT1+ssT1T2)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\Block Reference.BlkRef,0,,,,,Const
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\Block Reference(1).BlkRef,0,,,,,P_base
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\Block Reference(2).BlkRef,0,,,,,Const
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_DEGOV1.BlkDef\Block Reference(4).BlkRef,0,,,,,Pt/Pturb
+Const,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Const.BlkRef,0,,,,,Const
+Kg/(1+sTg),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Kg/(1+sTg).BlkRef,0,,,,,Kg/(1+sTg)
+HVgate,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\HVgate.BlkRef,0,,,,,HVgate
+Kci,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Kci.BlkRef,0,,,,,Kci
+Kff,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Kff.BlkRef,0,,,,,Kff
+Klr,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Klr.BlkRef,0,,,,,Klr
+Km,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Km.BlkRef,0,,,,,Km
+LVgate,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\LVgate.BlkRef,0,,,,,LVgate
+Limit,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Limit.BlkRef,0,,,,,Limit
+Limits,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Limits.BlkRef,0,,,,,Limits
+OEL_Router,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\OEL_Router.BlkRef,0,,,,,OEL_Router
+Term Fed,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\Term Fed.BlkRef,0,,,,,Term. Fed
+[Kpa + Kia/s],,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Excitation Systems\exc_IEEE_ST6B.BlkDef\[Kpa + Kia/s].BlkRef,0,,,,,[Kpa + Kia/s]
+(1+sTc)/(1+sTb),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\(1+sTc)/(1+sTb).BlkRef,0,,,,,(1+sTc)/(1+sTb)
+(1+sTsa)/(1+sTsb),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\(1+sTsa)/(1+sTsb).BlkRef,0,,,,,(1+sTsa)/(1+sTsb)
+1/(1+sTfload),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\1/(1+sTfload).BlkRef,0,,,,,1/(1+sTfload)
+1/(1+sTpelec),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\1/(1+sTpelec).BlkRef,0,,,,,1/(1+sTpelec)
+1/Kturb,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\1/Kturb.BlkRef,0,,,,,1/Kturb
+1/s,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\1/s.BlkRef,0,,,,,1/s
+1/s(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\1/s(1).BlkRef,0,,,,,1/s
+1/z,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\1/z.BlkRef,0,,,,,1/z
+Const_Aset,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Const_Aset.BlkRef,0,,,,,Const
+Const_Ldref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Const_Ldref.BlkRef,0,,,,,Const
+Const_Wfnl,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Const_Wfnl.BlkRef,0,,,,,Const
+Const_Wfnl(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Const_Wfnl(1).BlkRef,0,,,,,Const
+Damping,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Damping.BlkRef,0,,,,,Damping
+Input,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Input.BlkRef,0,,,,,Input
+Ka dt,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Ka dt.BlkRef,0,,,,,Ka dt
+Kigov/Kpgov,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Kigov/Kpgov.BlkRef,0,,,,,Kigov/Kpgov
+Kiload/Kpload,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Kiload/Kpload.BlkRef,0,,,,,Kiload/Kpload
+Kimw/s,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Kimw/s.BlkRef,0,,,,,Kimw/s
+Kpgov,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Kpgov.BlkRef,0,,,,,Kpgov
+Kpload,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Kpload.BlkRef,0,,,,,Kpload
+Kturb,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Kturb.BlkRef,0,,,,,Kturb
+LVgate,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\LVgate.BlkRef,0,,,,,LVgate
+Limits,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Limits.BlkRef,0,,,,,Limits
+Output,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Output.BlkRef,0,,,,,Output
+Selector,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Selector.BlkRef,0,,,,,Selector
+R,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\R.BlkRef,0,,,,,R
+RRate and Limiter,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\RRate and Limiter.BlkRef,0,,,,,RRate and Limiter
+Sel,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\Sel.BlkRef,0,,,,,Sel
+[Db],,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\[Db].BlkRef,0,,,,,[Db]
+e^sT,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\e^sT.BlkRef,0,,,,,e^sT
+{1/(1+sTact)},,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\{1/(1+sTact)}.BlkRef,0,,,,,{1/(1+sTact)}
+sK/(1+sT),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\sK/(1+sT).BlkRef,0,,,,,sK/(1+sT)
+s/(1+sT),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Governors and Turbines/Engines\gov_IEEE_GGOV1.BlkDef\s/(1+sT).BlkRef,0,,,,,s/(1+sT)
+Fb,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Fb.BlkRef,0,,,,,K
+DBand,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\DBand.BlkRef,0,,,,,DBand
+1/(1+sTpelec),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\1/(1+sTpelec).BlkRef,0,,,,,1/(1+sTpelec)
+[Ki/s],,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\[Ki/s].BlkRef,0,,,,,[Ki/s]
+Kp,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Kp.BlkRef,0,,,,,K
+Limits,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Limits.BlkRef,0,,,,,+-Limits
+1/(1+sTf),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\1/(1+sTf).BlkRef,0,,,,,1/(1+sT)
+Input,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Tlc\tlc_IEEE_LCFB1.BlkDef\Input.BlkRef,0,,,,,Input
+1/(1+sT),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Voltage Transducer and Compensation\vtc_IEEE_1.BlkDef\1/(1+sT).BlkRef,0,,,,,1/(1+sT)
+mod( (Vt) + (Rc+jXc)(It) ),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 GT\DIgSILENT Library\Dynamic Models\IEEE\Voltage Transducer and Compensation\vtc_IEEE_1.BlkDef\mod( (Vt) + (Rc+jXc)(It) ).BlkRef,0,,,,,mod( (Vt) + (Rc+jXc).(It) )
+Const,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Const.BlkRef,0,,,,,Const
+Kg/(1+sTg),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Kg/(1+sTg).BlkRef,0,,,,,Kg/(1+sTg)
+HVgate,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\HVgate.BlkRef,0,,,,,HVgate
+Kci,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Kci.BlkRef,0,,,,,Kci
+Kff,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Kff.BlkRef,0,,,,,Kff
+Klr,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Klr.BlkRef,0,,,,,Klr
+Km,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Km.BlkRef,0,,,,,Km
+LVgate,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\LVgate.BlkRef,0,,,,,LVgate
+Limit,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Limit.BlkRef,0,,,,,Limit
+Limits,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Limits.BlkRef,0,,,,,Limits
+OEL_Router,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\OEL_Router.BlkRef,0,,,,,OEL_Router
+Term Fed,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\Term Fed.BlkRef,0,,,,,Term. Fed
+[Kpa + Kia/s],,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\exc_IEEE_ST6B.BlkDef\[Kpa + Kia/s].BlkRef,0,,,,,[Kpa + Kia/s]
+(1+sT2)/(1+sT3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\(1+sT2)/(1+sT3).BlkRef,0,,,,,(1+sT2)/(1+sT3)
+1/(1+sT1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\1/(1+sT1).BlkRef,0,,,,,1/(1+sT1)
+1/R,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\1/R.BlkRef,0,,,,,1/R
+Dt,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\Dt.BlkRef,0,,,,,Dt
+Output,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\gov_IEEE_TGOV1.BlkDef\Output.BlkRef,0,,,,,Output
+1/(1+sT),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\vtc_IEEE_1.BlkDef\1/(1+sT).BlkRef,0,,,,,1/(1+sT)
+mod( (Vt) + (Rc+jXc)(It) ),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\EDM 3 TV\User Defined Models\vtc_IEEE_1.BlkDef\mod( (Vt) + (Rc+jXc)(It) ).BlkRef,0,,,,,mod( (Vt) + (Rc+jXc).(It) )
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Block Reference(1).BlkRef,0,,,,,{K/(1+sT)}
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Block Reference(2).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Block Reference(3).BlkRef,0,,,,,sTb/(1+sTa)
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Block Reference(4).BlkRef,0,,,,,{1/sT
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Block Reference(6).BlkRef,0,,,,,Se(Efd)
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Block Reference(7).BlkRef,0,,,,,bias
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\avr_ESAC5A.BlkDef\Block Reference(8).BlkRef,0,,,,,K
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference.BlkRef,0,,,,,(Ldref/Kturb+Wfnl)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(1).BlkRef,0,,,,,K
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(10).BlkRef,0,,,,,1/(1+sT)
+Block Reference(11),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(11).BlkRef,0,,,,,Const
+Block Reference(12),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(12).BlkRef,0,,,,,K
+Block Reference(13),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(13).BlkRef,0,,,,,Deadband_Offset_Lim
+Block Reference(14),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(14).BlkRef,0,,,,,K
+Block Reference(15),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(15).BlkRef,0,,,,,K/s
+Block Reference(16),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(16).BlkRef,0,,,,,sK/(1+sT)
+Block Reference(17),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(17).BlkRef,0,,,,,LVgate
+Block Reference(18),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(18).BlkRef,0,,,,,{{1/(1+sT)}}
+Block Reference(19),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(19).BlkRef,0,,,,,P_base
+Block Reference(20),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(20).BlkRef,0,,,,,Damping
+Block Reference(21),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(21).BlkRef,0,,,,,Sel
+Block Reference(22),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(22).BlkRef,0,,,,,K
+Block Reference(23),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(23).BlkRef,0,,,,,Delay
+Block Reference(24),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(24).BlkRef,0,,,,,Pt/Pturb
+Block Reference(25),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(25).BlkRef,0,,,,,(1+sTn)/(1+sTd)
+Block Reference(26),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(26).BlkRef,0,,,,,Const
+Block Reference(27),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(27).BlkRef,0,,,,,fix delay
+Block Reference(28),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(28).BlkRef,0,,,,,{K/s
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(3).BlkRef,0,,,,,Lim <max
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(4).BlkRef,0,,,,,1/(1+sT)_w/rate limit
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(5).BlkRef,0,,,,,(1+sTa)/(1+sTb)
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(6).BlkRef,0,,,,,K x delta
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(7).BlkRef,0,,,,,Selector
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(8).BlkRef,0,,,,,s/(1+sT)
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Quisqueya 2\gov_GGOV1.BlkDef\Block Reference(9).BlkRef,0,,,,,K/s
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(1).BlkRef,0,,,,,sT/(1+sT)
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(5).BlkRef,0,,,,,sT/(1+sT)
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(8).BlkRef,0,,,,,sT/(1+sT)
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(9).BlkRef,0,,,,,sT/(1+sT)
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(10).BlkRef,0,,,,,K/(1+sT)
+Block Reference(11),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(11).BlkRef,0,,,,,K
+Block Reference(17),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(17).BlkRef,0,,,,,K
+Block Reference(18),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(18).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(19),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(19).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(20),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(20).BlkRef,0,,,,,Limiter
+Block Reference(22),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference(22).BlkRef,0,,,,,LeadLags
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Block Reference.BlkRef,0,,,,,Input Selector 2
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Used Macros\Input Selector 2.BlkDef\Block Reference(2).BlkRef,0,,,,,Input Selector 6 Dual
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Used Macros\Input Selector 2.BlkDef\Block Reference(6).BlkRef,0,,,,,Ks
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Used Macros\Input Selector 2.BlkDef\Block Reference(4).BlkRef,0,,,,,Accel. Power
+Block Reference(21),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models_V15\pss_PSS2A.BlkDef\Used Macros\Input Selector 2.BlkDef\Block Reference(21).BlkRef,0,,,,,PB
+Block Reference,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(10),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(10).BlkRef,0,,,,,Limiter
+Block Reference(9),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(9).BlkRef,0,,,,,Power Components
+Block Reference(5),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(5).BlkRef,0,,,,,Fex(In)
+Block Reference(1),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(1).BlkRef,0,,,,,{Kp+Ki/s}
+Block Reference(6),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(6).BlkRef,0,,,,,{Kp+Ki/s}
+Block Reference(2),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(2).BlkRef,0,,,,,1/(1+sT)
+Block Reference(4),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(4).BlkRef,0,,,,,LVgate
+Block Reference(3),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(3).BlkRef,0,,,,,K
+Block Reference(7),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(7).BlkRef,0,,,,,Delay
+Block Reference(8),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ESST4B.BlkDef\Block Reference(8).BlkRef,0,,,,,bias
+Block Reference(9),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(9).BlkRef,0,,,,,K
+Block Reference(10),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(10).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(2),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(2).BlkRef,0,,,,,1/K
+Block Reference(3),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(3).BlkRef,0,,,,,Limiter
+Block Reference(4),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(4).BlkRef,0,,,,,{1/s}
+Block Reference(11),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(11).BlkRef,0,,,,,K
+Block Reference(12),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(12).BlkRef,0,,,,,K
+Block Reference(6),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(6).BlkRef,0,,,,,1/(1+sT)
+Block Reference(13),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(13).BlkRef,0,,,,,K
+Block Reference(14),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(14).BlkRef,0,,,,,K
+Block Reference(7),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(15),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(15).BlkRef,0,,,,,K
+Block Reference(16),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(16).BlkRef,0,,,,,K
+Block Reference(5),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(5).BlkRef,0,,,,,1/(1+sT)
+Block Reference(8),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(8).BlkRef,0,,,,,1/(1+sT)
+Block Reference(17),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(17).BlkRef,0,,,,,K
+Block Reference(18),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(18).BlkRef,0,,,,,K
+Block Reference(19),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(19).BlkRef,0,,,,,Pt/Pturb
+Block Reference(20),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEEEG1.BlkDef\Block Reference(20).BlkRef,0,,,,,Pt/Pturb x L1
+Block Reference(1),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(1).BlkRef,0,,,,,sT/(1+sT)
+Block Reference(5),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(5).BlkRef,0,,,,,sT/(1+sT)
+Block Reference(7),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(8),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(8).BlkRef,0,,,,,sT/(1+sT)
+Block Reference(9),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(9).BlkRef,0,,,,,sT/(1+sT)
+Block Reference(10),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(10).BlkRef,0,,,,,K/(1+sT)
+Block Reference(11),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(11).BlkRef,0,,,,,K
+Block Reference(17),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(17).BlkRef,0,,,,,K
+Block Reference(18),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(18).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(19),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(19).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(20),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(20).BlkRef,0,,,,,Limiter
+Block Reference(22),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(22).BlkRef,0,,,,,LeadLags
+Block Reference,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference.BlkRef,0,,,,,Input Selector 2
+Block Reference(2),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Used Macros\Input Selector 2.BlkDef\Block Reference(2).BlkRef,0,,,,,Input Selector 6 Dual
+Block Reference(6),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Used Macros\Input Selector 2.BlkDef\Block Reference(6).BlkRef,0,,,,,Ks
+Block Reference(4),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Used Macros\Input Selector 2.BlkDef\Block Reference(4).BlkRef,0,,,,,Accel. Power
+Block Reference(21),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Used Macros\Input Selector 2.BlkDef\Block Reference(21).BlkRef,0,,,,,PB
+Block Reference(2),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(2).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(3),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(3).BlkRef,0,,,,,Limiter
+Block Reference(4),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\pss_PSS2B.BlkDef\Block Reference(4).BlkRef,0,,,,,Limiter
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Block Reference.BlkRef,0,,,,,1/K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Block Reference(3).BlkRef,0,,,,,{1/(1+sT)}
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Block Reference(8).BlkRef,0,,,,,1/(1+sT)
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Block Reference(9).BlkRef,0,,,,,1/(1+sT)
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Block Reference(5).BlkRef,0,,,,,Const
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Block Reference(6).BlkRef,0,,,,,K
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Block Reference(1).BlkRef,0,,,,,LVgate
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_GAST.BlkDef\Block Reference(4).BlkRef,0,,,,,Pt/Pturb
+Block Reference,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(1),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(1).BlkRef,0,,,,,HVgate
+Block Reference(2),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(2).BlkRef,0,,,,,Router
+Block Reference(3),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(3).BlkRef,0,,,,,[Kp+sKd/(1+sTd)+Ki/s]
+Block Reference(4),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(4).BlkRef,0,,,,,Const
+Block Reference(5),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Block Reference(6),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(6).BlkRef,0,,,,,K
+Block Reference(8),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(8).BlkRef,0,,,,,K
+Block Reference(9),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(9).BlkRef,0,,,,,K
+Block Reference(7),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(7).BlkRef,0,,,,,Low Limit
+Block Reference(10),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(10).BlkRef,0,,,,,Limits
+Block Reference(11),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(11).BlkRef,0,,,,,LVgate
+Block Reference(12),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(12).BlkRef,0,,,,,K/(1+sT).
+Block Reference(13),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(13).BlkRef,0,,,,,TF selector
+Block Reference(14),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\avr_ST6B_IEEE.BlkDef\Block Reference(14).BlkRef,0,,,,,Bias
+(1+sTc)/(1+sTb),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\(1+sTc)/(1+sTb).BlkRef,0,,,,,(1+sTc)/(1+sTb)
+(1+sTsa)/(1+sTsb),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\(1+sTsa)/(1+sTsb).BlkRef,0,,,,,(1+sTsa)/(1+sTsb)
+1/(1+sTfload),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\1/(1+sTfload).BlkRef,0,,,,,1/(1+sTfload)
+1/(1+sTpelec),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\1/(1+sTpelec).BlkRef,0,,,,,1/(1+sTpelec)
+1/s,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\1/s.BlkRef,0,,,,,1/s
+1/z,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\1/z.BlkRef,0,,,,,1/z
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Block Reference.BlkRef,0,,,,,1/Kturb
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Block Reference(1).BlkRef,0,,,,,[Kiload/s]
+Const_Aset,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Const_Aset.BlkRef,0,,,,,Const
+Const_Ldref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Const_Ldref.BlkRef,0,,,,,Const
+Const_Wfnl,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Const_Wfnl.BlkRef,0,,,,,Const
+Const_Wfnl(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Const_Wfnl(1).BlkRef,0,,,,,Const
+Damping,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Damping.BlkRef,0,,,,,Damping
+Input,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Input.BlkRef,0,,,,,Input
+Ka dt,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Ka dt.BlkRef,0,,,,,Ka dt
+Kigov/Kpgov,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Kigov/Kpgov.BlkRef,0,,,,,Kigov/Kpgov
+Kimw/s,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Kimw/s.BlkRef,0,,,,,Kimw/s
+Kpgov,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Kpgov.BlkRef,0,,,,,Kpgov
+Kpload,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Kpload.BlkRef,0,,,,,Kpload
+Kturb,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Kturb.BlkRef,0,,,,,Kturb
+LVgate,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\LVgate.BlkRef,0,,,,,LVgate
+Limits,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Limits.BlkRef,0,,,,,Limits
+Output,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Output.BlkRef,0,,,,,Output
+Selector,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Selector.BlkRef,0,,,,,Selector
+R,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\R.BlkRef,0,,,,,R
+RRate and Limiter,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\RRate and Limiter.BlkRef,0,,,,,RR_L
+Sel,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\Sel.BlkRef,0,,,,,Sel
+[Db],,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\[Db].BlkRef,0,,,,,[Db]
+s/(1+sT),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\s/(1+sT).BlkRef,0,,,,,s/(1+sTa)
+e^sT,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\e^sT.BlkRef,0,,,,,e^sT
+{1/(1+sTact)},,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\{1/(1+sTact)}.BlkRef,0,,,,,{1/(1+sTact)}
+sK/(1+sT),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Governors and Turbines/Engines\gov_PSSE_GGOV1.BlkDef\sK/(1+sT).BlkRef,0,,,,,sK/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Voltage Transducer and Compensation\drp_PSSE_COMP.BlkDef\Block Reference.BlkRef,0,,,,,mod( Vt + jXe.It))
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Voltage Transducer and Compensation\drp_PSSE_COMP.BlkDef\Block Reference(1).BlkRef,0,,,,,1/(1+sTr)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference.BlkRef,0,,,,,[Kpr+Kir/s+sKdr/(1+sTdr)]
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(1).BlkRef,0,,,,,[Kpa+Kia/s]
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(10).BlkRef,0,,,,,Kf2
+Block Reference(11),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(11).BlkRef,0,,,,,Fex(In)
+Block Reference(12),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(12).BlkRef,0,,,,,Kf1
+Block Reference(13),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(13).BlkRef,0,,,,,sKf3/(1+sTf)
+Block Reference(14),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(14).BlkRef,0,,,,,1/(1+sT)
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(2).BlkRef,0,,,,,Lim
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(3).BlkRef,0,,,,,Term. Fed
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(4).BlkRef,0,,,,,(Vfe_max-KdIfd)/(Ke+Se(Ve))
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(5).BlkRef,0,,,,,[1/sTe]
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(6).BlkRef,0,,,,,Kd
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(7).BlkRef,0,,,,,Ke
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(8).BlkRef,0,,,,,Se(Ve)
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Excitation Systems\exc_PSSE_AC7B.BlkDef\Block Reference(9).BlkRef,0,,,,,Kc(Ifd/Ve)
+(1+sT1)/(1+sT2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\(1+sT1)/(1+sT2).BlkRef,0,,,,,(1+sT1)/(1+sT2)
+(1+sT10)/(1+sT11),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\(1+sT10)/(1+sT11).BlkRef,0,,,,,(1+sT10)/(1+sT11)
+(1+sT12)/(1+sT13),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\(1+sT12)/(1+sT13).BlkRef,0,,,,,(1+sT12)/(1+sT13)
+(1+sT3)/(1+sT4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\(1+sT3)/(1+sT4).BlkRef,0,,,,,(1+sT3)/(1+sT4)
+1/(1+sT6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\1/(1+sT6).BlkRef,0,,,,,1/(1+sT6)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Block Reference.BlkRef,0,,,,,Input
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Used Macros\Input.BlkDef\Block Reference.BlkRef,0,,,,,Load_ang
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Used Macros\Input.BlkDef\Block Reference(2).BlkRef,0,,,,,Input Selector
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Used Macros\Input.BlkDef\Block Reference(3).BlkRef,0,,,,,s/(1+sT)
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Used Macros\Input.BlkDef\Block Reference(4).BlkRef,0,,,,,fe or w
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Used Macros\Input.BlkDef\Block Reference(6).BlkRef,0,,,,,s
+Ks1,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Ks1.BlkRef,0,,,,,Ks1
+Ks2/(1+sT7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Ks2/(1+sT7).BlkRef,0,,,,,Ks2/(1+sT7)
+Ks3,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Ks3.BlkRef,0,,,,,Ks3
+LeadLags,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\LeadLags.BlkRef,0,,,,,LeadLags
+Limiter,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Limiter.BlkRef,0,,,,,Limiter
+Limiter_1,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Limiter_1.BlkRef,0,,,,,Limiter
+Limiter_2,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\Limiter_2.BlkRef,0,,,,,Limiter
+PSS ouput logic,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\PSS ouput logic.BlkRef,0,,,,,PSS output logic
+sTw1/(1+sTw1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\sTw1/(1+sTw1).BlkRef,0,,,,,sTw1/(1+sTw1)
+sTw3/(1+sTw3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\sTw3/(1+sTw3).BlkRef,0,,,,,sTw3/(1+sTw3)
+sTw2/(1+sTw2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\sTw2/(1+sTw2).BlkRef,0,,,,,sTw2/(1+sTw2)
+sTw4/(1+sTw4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\ENERGAS 4 TG\DIgSILENT Library\Dynamic Models\Synchronous Generator Power Plants\PSS/E compatible\Power System Stabilizers\pss_PSSE_PSS2C.BlkDef\sTw4/(1+sTw4).BlkRef,0,,,,,sTw4/(1+sTw4)
+((1+sT3+ssT7)/(1+sT1+ssT2T1)),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\((1+sT3+ssT7)/(1+sT1+ssT2T1)).BlkRef,0,,,,,(1+sT3)/(1+sT1+ssT1T2)
+1/(1+sTd),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\1/(1+sTd).BlkRef,0,,,,,Delay_no_inc
+1/(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\1/(2).BlkRef,0,,,,,1/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\Block Reference.BlkRef,0,,,,,Const
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\Block Reference(1).BlkRef,0,,,,,P_base
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\Block Reference(2).BlkRef,0,,,,,Const
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\Block Reference(4).BlkRef,0,,,,,Pt/Pturb
+Droop,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\Droop.BlkRef,0,,,,,K
+{K(1+sT4)/(1+sT5)},,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_BERSAL.BlkDef\{K(1+sT4)/(1+sT5)}.BlkRef,0,,,,,{K(1+sT4)/(1+sT5)/(1+sT6)/s}
+((1+sT3+ssT7)/(1+sT1+ssT2T1)),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\((1+sT3+ssT7)/(1+sT1+ssT2T1)).BlkRef,0,,,,,(1+sT3)/(1+sT1+ssT1T2)
+1/(1+sTd),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\1/(1+sTd).BlkRef,0,,,,,Delay_no_inc
+1/(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\1/(2).BlkRef,0,,,,,1/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\Block Reference.BlkRef,0,,,,,Const
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\Block Reference(1).BlkRef,0,,,,,P_base
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\Block Reference(2).BlkRef,0,,,,,Const
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\Block Reference(4).BlkRef,0,,,,,Pt/Pturb
+Droop,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\Droop.BlkRef,0,,,,,K
+{K(1+sT4)/(1+sT5)},,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_LOPP.BlkDef\{K(1+sT4)/(1+sT5)}.BlkRef,0,,,,,{K(1+sT4)/(1+sT5)/(1+sT6)/s}
+[Kpr+Kir/s+sKdr/(1+sTdr)],,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\[Kpr+Kir/s+sKdr/(1+sTdr)].BlkRef,0,,,,,[Kpr+Kir/s+sKdr/(1+sTdr)]
+[Kpa+Kia/s],,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\[Kpa+Kia/s].BlkRef,0,,,,,[Kpa+Kia/s]
+Term Fed,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Term Fed.BlkRef,0,,,,,Term. Fed
+Lim,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Lim.BlkRef,0,,,,,Lim
+Kf1,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Kf1.BlkRef,0,,,,,Kf1
+Kf2,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Kf2.BlkRef,0,,,,,Kf2
+sKf3/(1+sTf),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\sKf3/(1+sTf).BlkRef,0,,,,,sKf3/(1+sTf)
+Kc(Ifd/Ve),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Kc(Ifd/Ve).BlkRef,0,,,,,Kc(Ifd/Ve)
+Kd,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Kd.BlkRef,0,,,,,Kd
+Ke,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Ke.BlkRef,0,,,,,Ke
+[1/sTe],,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\[1/sTe].BlkRef,0,,,,,[1/sTe]
+(Vfe_max-KdIfd)/(Ke+Se(Ve)),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\(Vfe_max-KdIfd)/(Ke+Se(Ve)).BlkRef,0,,,,,(Vfe_max-KdIfd)/(Ke+Se(Ve))
+Se(Ve),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Se(Ve).BlkRef,0,,,,,Se(Ve)
+Fex(In),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Exc\exc_IEEE_AC7B.BlkDef\Fex(In).BlkRef,0,,,,,Fex(In)
+1/(1+sT4),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\1/(1+sT4).BlkRef,0,,,,,1/(1+sT4)
+1/(1+sT5),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\1/(1+sT5).BlkRef,0,,,,,1/(1+sT5)
+1/(1+sT6),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\1/(1+sT6).BlkRef,0,,,,,1/(1+sT6)
+1/(1+sT7),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\1/(1+sT7).BlkRef,0,,,,,1/(1+sT7)
+1/T3,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\1/T3.BlkRef,0,,,,,1/T3
+Adapt,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Adapt.BlkRef,0,,,,,Adapt
+DB,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\DB.BlkRef,0,,,,,DB
+K(1+sT2)/(1+sT1),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\K(1+sT2)/(1+sT1).BlkRef,0,,,,,K(1+sT2)/(1+sT1)
+K1,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\K1.BlkRef,0,,,,,K1
+K2,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\K2.BlkRef,0,,,,,K2
+K3,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\K3.BlkRef,0,,,,,K3
+K4,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\K4.BlkRef,0,,,,,K4
+K5,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\K5.BlkRef,0,,,,,K5
+K6,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\K6.BlkRef,0,,,,,K6
+K7,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\K7.BlkRef,0,,,,,K7
+K8,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\K8.BlkRef,0,,,,,K8
+Limit,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Limit.BlkRef,0,,,,,Limit
+Output,,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\Output.BlkRef,0,,,,,Output
+[1/s],,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Gov\gov_IEEE_IEEEG1.BlkDef\[1/s].BlkRef,0,,,,,[1/s]
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sTd)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(1).BlkRef,0,,,,,1/sT1
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(10).BlkRef,0,,,,,K2
+Block Reference(11),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(11).BlkRef,0,,,,,K3
+Block Reference(12),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(12).BlkRef,0,,,,,K4
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(3).BlkRef,0,,,,,1/sT2
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(4).BlkRef,0,,,,,1/sT3
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(5).BlkRef,0,,,,,1/sT4
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(6).BlkRef,0,,,,,MVA/MW
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(7).BlkRef,0,,,,,Limiter
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(8).BlkRef,0,,,,,K0
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\San Pedro Bio Energy\Pss_PSSSH_SPBIOE.BlkDef\Block Reference(9).BlkRef,0,,,,,K1
+mod( (Vt) + (Rc+jXc)(It) ),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Vtc\vtc_IEEE_1.BlkDef\mod( (Vt) + (Rc+jXc)(It) ).BlkRef,0,,,,,mod( (Vt) + (Rc+jXc).(It) )
+1/(1+sT),,\Lib.IntLibrary\Dynamics\SymPlant\IEEE\Vtc\vtc_IEEE_1.BlkDef\1/(1+sT).BlkRef,0,,,,,1/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_IEEET1.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT) or 1
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_IEEET1.BlkDef\Block Reference(1).BlkRef,0,,,,,bias
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_IEEET1.BlkDef\Block Reference(2).BlkRef,0,,,,,_{K/(1+sT)}_
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_IEEET1.BlkDef\Block Reference(3).BlkRef,0,,,,,1/(K+sT)
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_IEEET1.BlkDef\Block Reference(4).BlkRef,0,,,,,sK/(1+sT)
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_IEEET1.BlkDef\Block Reference(5).BlkRef,0,,,,,Se(efd)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference.BlkRef,0,,,,,1/sT
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference(1).BlkRef,0,,,,,Const
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference(10).BlkRef,0,,,,,(1/(1+sT))
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference(3).BlkRef,0,,,,,Turb
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference(4).BlkRef,0,,,,,One
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference(8).BlkRef,0,,,,,{(1+Ts)/ksT}
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION1.BlkDef\Block Reference(9).BlkRef,0,,,,,K
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference.BlkRef,0,,,,,1/sT
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference(1).BlkRef,0,,,,,Const
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference(10).BlkRef,0,,,,,(1/(1+sT))
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference(3).BlkRef,0,,,,,Turb
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference(4).BlkRef,0,,,,,One
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference(8).BlkRef,0,,,,,{(1+Ts)/ksT}
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_MONCION2.BlkDef\Block Reference(9).BlkRef,0,,,,,K
+((1+sT3+ssT7)/(1+sT1+ssT2T1)),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\((1+sT3+ssT7)/(1+sT1+ssT2T1)).BlkRef,0,,,,,(1+sT3)/(1+sT1+ssT1T2)
+1/(1+sTd),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\1/(1+sTd).BlkRef,0,,,,,Delay_no_inc
+1/(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\1/(2).BlkRef,0,,,,,1/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\Block Reference.BlkRef,0,,,,,Const
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\Block Reference(1).BlkRef,0,,,,,P_base
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\Block Reference(2).BlkRef,0,,,,,Const
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\Block Reference(4).BlkRef,0,,,,,Pt/Pturb
+Droop,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\Droop.BlkRef,0,,,,,K
+{K(1+sT4)/(1+sT5)},,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME1.BlkDef\{K(1+sT4)/(1+sT5)}.BlkRef,0,,,,,{K(1+sT4)/(1+sT5)/(1+sT6)/s}
+((1+sT3+ssT7)/(1+sT1+ssT2T1)),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\((1+sT3+ssT7)/(1+sT1+ssT2T1)).BlkRef,0,,,,,(1+sT3)/(1+sT1+ssT1T2)
+1/(1+sTd),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\1/(1+sTd).BlkRef,0,,,,,Delay_no_inc
+1/(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\1/(2).BlkRef,0,,,,,1/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\Block Reference.BlkRef,0,,,,,Const
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\Block Reference(1).BlkRef,0,,,,,P_base
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\Block Reference(2).BlkRef,0,,,,,Const
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\Block Reference(4).BlkRef,0,,,,,Pt/Pturb
+Droop,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\Droop.BlkRef,0,,,,,K
+{K(1+sT4)/(1+sT5)},,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_PIME2.BlkDef\{K(1+sT4)/(1+sT5)}.BlkRef,0,,,,,{K(1+sT4)/(1+sT5)/(1+sT6)/s}
+Block Reference,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference.BlkRef,0,,,,,(Ldref/Kturb+Wfnl)
+Block Reference(1),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(1).BlkRef,0,,,,,K
+Block Reference(3),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(3).BlkRef,0,,,,,Lim <max
+Block Reference(4),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(4).BlkRef,0,,,,,1/(1+sT)_w/rate limit
+Block Reference(5),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(5).BlkRef,0,,,,,(1+sTa)/(1+sTb)
+Block Reference(6),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(6).BlkRef,0,,,,,K x delta
+Block Reference(8),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(8).BlkRef,0,,,,,s/(1+sT)
+Block Reference(9),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(9).BlkRef,0,,,,,K/s
+Block Reference(10),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(10).BlkRef,0,,,,,1/(1+sT)
+Block Reference(7),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(7).BlkRef,0,,,,,Selector
+Block Reference(11),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(11).BlkRef,0,,,,,Const
+Block Reference(12),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(12).BlkRef,0,,,,,K
+Block Reference(13),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(13).BlkRef,0,,,,,Deadband_Offset_Lim
+Block Reference(14),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(14).BlkRef,0,,,,,K
+Block Reference(15),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(15).BlkRef,0,,,,,K/s
+Block Reference(16),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(16).BlkRef,0,,,,,sK/(1+sT)
+Block Reference(17),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(17).BlkRef,0,,,,,LVgate
+Block Reference(18),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(18).BlkRef,0,,,,,{{1/(1+sT)}}
+Block Reference(19),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(19).BlkRef,0,,,,,P_base
+Block Reference(20),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(20).BlkRef,0,,,,,Damping
+Block Reference(21),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(21).BlkRef,0,,,,,Sel
+Block Reference(22),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(22).BlkRef,0,,,,,K
+Block Reference(23),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(23).BlkRef,0,,,,,Delay
+Block Reference(24),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(24).BlkRef,0,,,,,Pt/Pturb
+Block Reference(25),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(25).BlkRef,0,,,,,(1+sTn)/(1+sTd)
+Block Reference(26),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(26).BlkRef,0,,,,,Const
+Block Reference(27),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(27).BlkRef,0,,,,,fix delay
+Block Reference(28),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_GGOV1.BlkDef\Block Reference(28).BlkRef,0,,,,,{K/s
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference(8).BlkRef,0,,,,,{(1+Ts)/ksT}
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference(10).BlkRef,0,,,,,(1/(1+sT))
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference.BlkRef,0,,,,,1/sT
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference(3).BlkRef,0,,,,,Turb
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference(1).BlkRef,0,,,,,Const
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference(4).BlkRef,0,,,,,One
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_HYGOV.BlkDef\Block Reference(9).BlkRef,0,,,,,K
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference.BlkRef,0,,,,,1/sT
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference(1).BlkRef,0,,,,,Const
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference(10).BlkRef,0,,,,,(1/(1+sT))
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference(3).BlkRef,0,,,,,Turb
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference(4).BlkRef,0,,,,,One
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference(8).BlkRef,0,,,,,{(1+Ts)/ksT}
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_TAVERA2.BlkDef\Block Reference(9).BlkRef,0,,,,,K
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference(1).BlkRef,0,,,,,bias
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference(10).BlkRef,0,,,,,_Fex_
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference(2).BlkRef,0,,,,,_(1+sTb)/(1+sTa)_
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference(3).BlkRef,0,,,,,_{K/(1+sT)}_
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference(4).BlkRef,0,,,,,[1/sT
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference(5).BlkRef,0,,,,,reset
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference(6).BlkRef,0,,,,,Se(efd)+Ke
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference(8).BlkRef,0,,,,,K
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Hi\vco_EXAC1.BlkDef\Block Reference(9).BlkRef,0,,,,,sK/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference.BlkRef,0,,,,,1/sT
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference(1).BlkRef,0,,,,,Const
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference(10).BlkRef,0,,,,,(1/(1+sT))
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference(3).BlkRef,0,,,,,Turb
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference(4).BlkRef,0,,,,,One
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference(8).BlkRef,0,,,,,{(1+Ts)/ksT}
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_LDAMAS.BlkDef\Block Reference(9).BlkRef,0,,,,,K
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference(1).BlkRef,0,,,,,bias
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference(10).BlkRef,0,,,,,_Fex_
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference(2).BlkRef,0,,,,,_(1+sTb)/(1+sTa)_
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference(3).BlkRef,0,,,,,_{K/(1+sT)}_
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference(4).BlkRef,0,,,,,[1/sT
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference(5).BlkRef,0,,,,,reset
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference(6).BlkRef,0,,,,,Se(efd)+Ke
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference(8).BlkRef,0,,,,,K
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Avr_Mot\vco_EXAC1.BlkDef\Block Reference(9).BlkRef,0,,,,,sK/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_TGOV1.BlkDef\Block Reference.BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_TGOV1.BlkDef\Block Reference(1).BlkRef,0,,,,,K
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_TGOV1.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_TGOV1.BlkDef\Block Reference(4).BlkRef,0,,,,,1/K
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_TGOV1.BlkDef\Block Reference(5).BlkRef,0,,,,,{1/(1+sT)}
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\gov_TGOV1.BlkDef\Block Reference(3).BlkRef,0,,,,,Turb
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference.BlkRef,0,,,,,1/sT
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference(1).BlkRef,0,,,,,Const
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference(10).BlkRef,0,,,,,(1/(1+sT))
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference(3).BlkRef,0,,,,,Turb
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference(4).BlkRef,0,,,,,One
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference(8).BlkRef,0,,,,,{(1+Ts)/ksT}
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY2.BlkDef\Block Reference(9).BlkRef,0,,,,,K
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference.BlkRef,0,,,,,1/sT
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference(1).BlkRef,0,,,,,Const
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference(10).BlkRef,0,,,,,(1/(1+sT))
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference(3).BlkRef,0,,,,,Turb
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference(4).BlkRef,0,,,,,One
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference(5).BlkRef,0,,,,,K
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference(7).BlkRef,0,,,,,1/(1+sT)
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference(8).BlkRef,0,,,,,{(1+Ts)/ksT}
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Hidro_Gov\gov_HYGOV_JIGUEY1.BlkDef\Block Reference(9).BlkRef,0,,,,,K
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference.BlkRef,0,,,,,Deadband_Offset
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(1).BlkRef,0,,,,,(A0+sA1+ssA2)/(B0+sB1+ssB2)_
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(10).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(11),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(11).BlkRef,0,,,,,K
+Block Reference(12),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(12).BlkRef,0,,,,,Limiter
+Block Reference(13),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(13).BlkRef,0,,,,,{1/s}
+Block Reference(14),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(14).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(17),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(17).BlkRef,0,,,,,Limiter
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(3).BlkRef,0,,,,,sK/(1+sT)
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(4).BlkRef,0,,,,,1/(1+sT)
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(5).BlkRef,0,,,,,(A0+sA1+ssA2)/(B0+sB1+ssB2)_
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(6).BlkRef,0,,,,,{K/s}
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(7).BlkRef,0,,,,,K
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(8).BlkRef,0,,,,,1/(1+sT)
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\pcu_Reivax_RTVX100.BlkDef\Block Reference(9).BlkRef,0,,,,,{K/s}
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\avr_Reivax_RTVX_100.BlkDef\Block Reference.BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\avr_Reivax_RTVX_100.BlkDef\Block Reference(1).BlkRef,0,,,,,K
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\avr_Reivax_RTVX_100.BlkDef\Block Reference(2).BlkRef,0,,,,,Limiter
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\Aguacate\avr_Reivax_RTVX_100.BlkDef\Block Reference(3).BlkRef,0,,,,,K
+5,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\5.BlkRef,0,,,,,Travelling Wave
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\Block Reference(1).BlkRef,0,,,,,ValveChar
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Aguacate PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\Block Reference(3).BlkRef,0,,,,,Francis Turbine
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference.BlkRef,0,,,,,Deadband_Offset
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(1).BlkRef,0,,,,,1/K
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(10).BlkRef,0,,,,,1/(1+sT)
+Block Reference(11),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(11).BlkRef,0,,,,,K
+Block Reference(12),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(12).BlkRef,0,,,,,1/(1+sT)
+Block Reference(13),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(13).BlkRef,0,,,,,{1/s}
+Block Reference(17),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(17).BlkRef,0,,,,,Limiter
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(4).BlkRef,0,,,,,1/(1+sT)
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(5).BlkRef,0,,,,,sK/(1+sT)
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(8).BlkRef,0,,,,,1/(1+sT)
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\pcu_VOITH SIEMENS.BlkDef\Block Reference(9).BlkRef,0,,,,,1/sT
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Block Reference.BlkRef,0,,,,,[1/sT]
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Block Reference(1).BlkRef,0,,,,,K/(1+sT)
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Block Reference(2).BlkRef,0,,,,,Limit
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Block Reference(3).BlkRef,0,,,,,(1/(1+sT))
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Block Reference(4).BlkRef,0,,,,,(1/(1+sT))
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Block Reference(5).BlkRef,0,,,,,K_lim
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Block Reference(6).BlkRef,0,,,,,Const
+Gain,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Gain.BlkRef,0,,,,,K
+Gain(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\Palomino\vco_Unitrol F.BlkDef\Gain(1).BlkRef,0,,,,,K
+5,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\5.BlkRef,0,,,,,Travelling Wave
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\Block Reference(1).BlkRef,0,,,,,ValveChar
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Palomino PIPAC\User Defined Models\pmu_TrWHydroFrancis.BlkDef\Block Reference(3).BlkRef,0,,,,,Francis Turbine
+((1+sT3+ssT7)/(1+sT1+ssT2T1)),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\((1+sT3+ssT7)/(1+sT1+ssT2T1)).BlkRef,0,,,,,(1+sT3)/(1+sT1+ssT1T2)
+1/(1+sTd),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\1/(1+sTd).BlkRef,0,,,,,Delay_no_inc
+1/(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\1/(2).BlkRef,0,,,,,1/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\Block Reference.BlkRef,0,,,,,Const
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\Block Reference(1).BlkRef,0,,,,,P_base
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\Block Reference(2).BlkRef,0,,,,,Const
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\Block Reference(4).BlkRef,0,,,,,Pt/Pturb
+Droop,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\Droop.BlkRef,0,,,,,K
+{K(1+sT4)/(1+sT5)},,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_Mot\gov_DEGOV1_CEPP1.BlkDef\{K(1+sT4)/(1+sT5)}.BlkRef,0,,,,,{K(1+sT4)/(1+sT5)/(1+sT6)/s}
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Block Reference(5).BlkRef,0,,,,,Const
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Block Reference.BlkRef,0,,,,,1/K
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Block Reference(1).BlkRef,0,,,,,LVgate
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Block Reference(2).BlkRef,0,,,,,K
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Block Reference(3).BlkRef,0,,,,,{1/(1+sT)}
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Block Reference(6).BlkRef,0,,,,,K
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Block Reference(7).BlkRef,0,,,,,Turb
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Block Reference(8).BlkRef,0,,,,,1/(1+sT)
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\Gov_LosMina\gov_GAST.BlkDef\Block Reference(9).BlkRef,0,,,,,1/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference.BlkRef,0,,,,,DBand
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(1).BlkRef,0,,,,,sT/(1+sT)
+Block Reference(11),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(11).BlkRef,0,,,,,Ks
+Block Reference(12),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(12).BlkRef,0,,,,,RampRateRegulator
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(2).BlkRef,0,,,,,1/(1+sT)
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(3).BlkRef,0,,,,,K1/K2
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(4).BlkRef,0,,,,,RampRateRegulator
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(5).BlkRef,0,,,,,ROCOF logic
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(6).BlkRef,0,,,,,0
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(7).BlkRef,0,,,,,logic and
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(8).BlkRef,0,,,,,logic not
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\APC.BlkDef\Block Reference(9).BlkRef,0,,,,,logic or
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\Control Flags.BlkDef\Block Reference.BlkRef,0,,,,,Const
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\Control Flags.BlkDef\Block Reference(1).BlkRef,0,,,,,Const
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\Control Flags.BlkDef\Block Reference(2).BlkRef,0,,,,,Const
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\Control Flags.BlkDef\Block Reference(3).BlkRef,0,,,,,Const
+Block Reference(21),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Block Reference(21).BlkRef,0,,,,,1/(1+sT)
+Block Reference(22),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Block Reference(22).BlkRef,0,,,,,+-Limits
+Block Reference(23),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Block Reference(23).BlkRef,0,,,,,Const
+Block Reference(24),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Block Reference(24).BlkRef,0,,,,,Const
+Block Reference(26),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Block Reference(26).BlkRef,0,,,,,Energy Calculation
+Block Reference(27),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Block Reference(27).BlkRef,0,,,,,BOE
+Block Reference(28),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Block Reference(28).BlkRef,0,,,,,BIE
+Block Reference(30),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Block Reference(30).BlkRef,0,,,,,SOClimits
+Block Reference(32),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\Block Reference(32).BlkRef,0,,,,,K
+IacmaxVac,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\BSM.BlkDef\IacmaxVac.BlkRef,0,,,,,+-Limits
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\RPC.BlkDef\Block Reference.BlkRef,0,,,,,1
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\RPC.BlkDef\Block Reference(1).BlkRef,0,,,,,Qlimiter
+Block Reference(12),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\RPC.BlkDef\Block Reference(12).BlkRef,0,,,,,[Kp+Ki/s]
+Block Reference(14),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\RPC.BlkDef\Block Reference(14).BlkRef,0,,,,,Limits
+Block Reference(15),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\RPC.BlkDef\Block Reference(15).BlkRef,0,,,,,tan()
+Block Reference(16),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\RPC.BlkDef\Block Reference(16).BlkRef,0,,,,,acos()
+Block Reference(17),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\RPC.BlkDef\Block Reference(17).BlkRef,0,,,,,K
+Block Reference(18),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\BESS EDM 4\User Defined Models\BESS\User Defined Models\Bess Itabo\RPC.BlkDef\Block Reference(18).BlkRef,0,,,,,Kp+Ki/s
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference(1).BlkRef,0,,,,,bias
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference(10).BlkRef,0,,,,,Fex
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference(2).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference(3).BlkRef,0,,,,,{K/(1+sT)}
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference(4).BlkRef,0,,,,,{1/sT
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference(6).BlkRef,0,,,,,Se(Efd)
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference(7).BlkRef,0,,,,,K
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference(8).BlkRef,0,,,,,K
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\AES Andres\avr_EXAC1.BlkDef\Block Reference(9).BlkRef,0,,,,,sK/(1+sT)
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Block Reference.BlkRef,0,,,,,1/(2)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Block Reference(1).BlkRef,0,,,,,K(1)
+Tcref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Tcref.BlkRef,0,,,,,Const
+Temperature Control,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Temperature Control.BlkRef,0,,,,,(1+sTb)/sTa}
+Min,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Min.BlkRef,0,,,,,MIN
+Thermocouple,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Thermocouple.BlkRef,0,,,,,(1/(1+sT))
+Radiation Shield,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Radiation Shield.BlkRef,0,,,,,K4 + K5/(1+sT3)
+Turbine f1,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Turbine f1.BlkRef,0,,,,,F1
+Turbine Exhaust,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Turbine Exhaust.BlkRef,0,,,,,Delay_no_inc
+Combustor,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Combustor.BlkRef,0,,,,,Delay_no_inc
+Normalization,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Normalization.BlkRef,0,,,,,PtdbPg
+Wref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Wref.BlkRef,0,,,,,
+Turbine,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Turbine.BlkRef,0,,,,,F2
+GT Turbine Delay,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\GT Turbine Delay.BlkRef,0,,,,,(1/(1+sT))
+Kfactor,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Kfactor.BlkRef,0,,,,,K
+Fuel System,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Fuel System.BlkRef,0,,,,,1/(1+sT)
+Valve Positioner,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Valve Positioner.BlkRef,0,,,,,Valve_pos
+K_six,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\K_six.BlkRef,0,,,,,Const
+Fuel Control,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Fuel Control.BlkRef,0,,,,,Delay_no_inc
+Fuel Gain,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Fuel Gain.BlkRef,0,,,,,K
+Speed Governor,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_GASTWD.BlkDef\Speed Governor.BlkRef,0,,,,,min_PID_max
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Block Reference(5).BlkRef,0,,,,,1-K
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Block Reference(4).BlkRef,0,,,,,1/(1+sT)
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Block Reference(3).BlkRef,0,,,,,Limiter
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Block Reference.BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Block Reference(8).BlkRef,0,,,,,Setpoint
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Block Reference(7).BlkRef,0,,,,,(K/(1+sT))
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Block Reference(6).BlkRef,0,,,,,(K/(1+sT))
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Block Reference(1).BlkRef,0,,,,,K/(1+sT)
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Models\IEEE\Models\pcu_IEESGO.BlkDef\Block Reference(2).BlkRef,0,,,,,1-K
+Block Reference,,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Block Reference.BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(1),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Block Reference(1).BlkRef,0,,,,,K/(1+sT)
+Block Reference(3),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Block Reference(3).BlkRef,0,,,,,Limiter
+Block Reference(4),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Block Reference(4).BlkRef,0,,,,,1/(1+sT)
+Block Reference(5),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Block Reference(5).BlkRef,0,,,,,1-K
+Block Reference(6),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Block Reference(6).BlkRef,0,,,,,_K/(1+sT)_
+Block Reference(7),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Block Reference(7).BlkRef,0,,,,,_K/(1+sT)_
+Block Reference(2),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Block Reference(2).BlkRef,0,,,,,1-K
+Block Reference(9),,\Lib.IntLibrary\Dynamics\Arch\PF 2022 Models\DynPsse\gov_IEESGO.BlkDef\Block Reference(9).BlkRef,0,,,,,Pt/Pturb
+Combustor,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Combustor.BlkRef,0,,,,,Delay_no_inc
+Fuel Control,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Fuel Control.BlkRef,0,,,,,Delay_no_inc
+Fuel Gain,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Fuel Gain.BlkRef,0,,,,,K
+Fuel System,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Fuel System.BlkRef,0,,,,,1/(1+sT)
+GT Turbine Delay,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\GT Turbine Delay.BlkRef,0,,,,,(1/(1+sT))
+K_six,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\K_six.BlkRef,0,,,,,Const
+Kfactor,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Kfactor.BlkRef,0,,,,,K
+Min,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Min.BlkRef,0,,,,,MIN
+Normalization,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Normalization.BlkRef,0,,,,,PtdbPg
+Pref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Pref.BlkRef,0,,,,,
+Radiation Shield,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Radiation Shield.BlkRef,0,,,,,K4 + K5/(1+sT3)
+Speed Governor,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Speed Governor.BlkRef,0,,,,,GTc
+Tcref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Tcref.BlkRef,0,,,,,Const_1
+Temperature Control,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Temperature Control.BlkRef,0,,,,,(1+sTb)/sTa}
+Thermocouple,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Thermocouple.BlkRef,0,,,,,(1/(1+sT))
+Turbine,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Turbine.BlkRef,0,,,,,F2
+Turbine Exhaust,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Turbine Exhaust.BlkRef,0,,,,,Delay_no_inc
+Turbine f1,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Turbine f1.BlkRef,0,,,,,F1
+Valve Positioner,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Valve Positioner.BlkRef,0,,,,,Valve_pos
+Wref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\pcu_GAST2A.BlkDef\Wref.BlkRef,0,,,,,
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(1).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(2).BlkRef,0,,,,,_{K/(1+sT)}_
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(3).BlkRef,0,,,,,[1/sT
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(4).BlkRef,0,,,,,bias
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(5).BlkRef,0,,,,,reset
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(6).BlkRef,0,,,,,sK/(1+sT)
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(7).BlkRef,0,,,,,Se(efd)+Ke
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(8).BlkRef,0,,,,,K
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 2\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(9).BlkRef,0,,,,,_Fex_
+Combustor,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Combustor.BlkRef,0,,,,,Delay_no_inc
+Fuel Control,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Fuel Control.BlkRef,0,,,,,Delay_no_inc
+Fuel Gain,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Fuel Gain.BlkRef,0,,,,,K
+Fuel System,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Fuel System.BlkRef,0,,,,,1/(1+sT)
+GT Turbine Delay,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\GT Turbine Delay.BlkRef,0,,,,,(1/(1+sT))
+K_six,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\K_six.BlkRef,0,,,,,Const
+Kfactor,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Kfactor.BlkRef,0,,,,,K
+Min,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Min.BlkRef,0,,,,,MIN
+Normalization,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Normalization.BlkRef,0,,,,,PtdbPg
+Pref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Pref.BlkRef,0,,,,,
+Radiation Shield,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Radiation Shield.BlkRef,0,,,,,K4 + K5/(1+sT3)
+Speed Governor,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Speed Governor.BlkRef,0,,,,,GTc
+Tcref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Tcref.BlkRef,0,,,,,Const_1
+Temperature Control,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Temperature Control.BlkRef,0,,,,,(1+sTb)/sTa}
+Thermocouple,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Thermocouple.BlkRef,0,,,,,(1/(1+sT))
+Turbine,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Turbine.BlkRef,0,,,,,F2
+Turbine Exhaust,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Turbine Exhaust.BlkRef,0,,,,,Delay_no_inc
+Turbine f1,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Turbine f1.BlkRef,0,,,,,F1
+Valve Positioner,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Valve Positioner.BlkRef,0,,,,,Valve_pos
+Wref,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\pcu_GAST2A.BlkDef\Wref.BlkRef,0,,,,,
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(1).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(2).BlkRef,0,,,,,_{K/(1+sT)}_
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(3).BlkRef,0,,,,,[1/sT
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(4).BlkRef,0,,,,,bias
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(5).BlkRef,0,,,,,reset
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(6).BlkRef,0,,,,,sK/(1+sT)
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(7).BlkRef,0,,,,,Se(efd)+Ke
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(8).BlkRef,0,,,,,K
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\User Defined Models.IntPrjfolder\SIBA 16.7 MVA.IntFolder\IEEE\Models\vco_EXAC1A.BlkDef\Block Reference(9).BlkRef,0,,,,,_Fex_
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Block Reference(2).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Block Reference(3).BlkRef,0,,,,,{K/(1+sT)}
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Block Reference(4).BlkRef,0,,,,,{1/sT
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Block Reference(9).BlkRef,0,,,,,sK/(1+sT)
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Block Reference(10).BlkRef,0,,,,,Fex
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Block Reference(8).BlkRef,0,,,,,K
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Block Reference(6).BlkRef,0,,,,,Se(Efd)
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC1.BlkDef\Block Reference(7).BlkRef,0,,,,,K
+Block Reference,,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference.BlkRef,0,,,,,1/(1+sT)
+Block Reference(1),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(1).BlkRef,0,,,,,(1+sTb)/(1+sTa)
+Block Reference(15),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(15).BlkRef,0,,,,,{K/(1+sT)}
+Block Reference(3),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(3).BlkRef,0,,,,,{1/sT
+Block Reference(4),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(4).BlkRef,0,,,,,K
+Block Reference(8),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(8).BlkRef,0,,,,,K
+Block Reference(7),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(7).BlkRef,0,,,,,Vn(Efd)
+Block Reference(11),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(11).BlkRef,0,,,,,(Fex)
+Block Reference(10),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(10).BlkRef,0,,,,,K
+Block Reference(9),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(9).BlkRef,0,,,,,Se(Efd)
+Block Reference(14),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(14).BlkRef,0,,,,,Const
+Block Reference(6),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(6).BlkRef,0,,,,,s/(1+sT)
+Block Reference(5),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(5).BlkRef,0,,,,,HVgate
+Block Reference(2),,\VM-PF.IntUser\PDD 30-09-2025.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Standard Models\avr_EXAC3.BlkDef\Block Reference(2).BlkRef,0,,,,,K

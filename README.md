@@ -338,6 +338,10 @@ You can either:
 
 ### Fuentes necesarias
 
+> 📚 **Guía única y homologada de todas las fuentes** (formato consistente para el
+> agente: origen · cadencia · dónde guardar · qué alimenta · extractor · llaves):
+> [`docs/fuentes_datos.md`](./docs/fuentes_datos.md). La tabla de abajo es el resumen.
+
 | # | Fuente | De dónde sale | Dónde colocarla | Alimenta | ¿Requerida? |
 |---|--------|---------------|-----------------|----------|-------------|
 | 1 | **Caso MODOM** (`.xlsm`) | Workbook diario del SENI (PowerFactory/DIgSILENT) | `data/raw/` | Toda la capa canónica, el despacho y la red PyPSA | **Sí** (núcleo) |
@@ -345,8 +349,11 @@ You can either:
 | 3 | **PDF de transacciones económicas** (`OC-GC-07-IMTE-*.pdf`) | Informe mensual del OC | (opcional) `data/external/` | **Auxiliar**: puente `PUNTO → ID SMC → barra` (Tabla 19) para validar/ampliar el cruce de coordenadas | No (validación) |
 | 4 | **Unifilar del SENI** (`*UNIFILAR SENI*.pdf`) | Diagrama unifilar mensual del OC | (opcional) `data/external/` | **Combustible por central** (ya usado para clasificar la mezcla); a futuro: impedancias de transformadores (Ucc%+MVA) y líneas (longitud+conductor) | Parcial (mejora fidelidad) |
 | 5 | **Plano geográfico de transmisión** (`*Plano*Lineas*.pdf`) | Plano mensual del OC (vectorial) | `data/` | **Rescata coordenadas** de barras que el cruce SMC no ubicó (las "en el mar"): georreferenciación por IDW local anclada en las barras con coords reales | Parcial (mejora el mapa) |
+| 6 | **Programación del SENI** (PDD diario / PSD semanal / VEROPE) | Página del OC [Operación → Programación del SENI](https://www.oc.do/Informes/Operación-del-SENI/Programación-del-SENI) | `data/external/programacion_seni/{diaria,semanal,verope}/` | **CVP declarado + combustible oficial** (VEROPE), **caso operativo diario** y validación (PDD), **niveles de embalse** (PSD). Feed que mantiene la plataforma al día | Parcial (fidelidad + plataforma) |
+| 7 | **Export de DIgSILENT** (`*.xlsx` de elementos) | PowerFactory del OC (pedir export) | `data/external/digsilent/` | Datos **reactivos de red**: R/X+carga de línea, shunts, OLTC, Q de generadores → desbloquea el **flujo AC**. El export 2023 cubre solo 114/592 líneas; falta el completo y vigente | No (requerido solo para AC) |
 
-> Las fuentes 3–5 son **publicaciones mensuales del OC**, igual que el caso MODOM.
+> Las fuentes 3–5 son **publicaciones mensuales del OC**; la **6** es **diaria/semanal**
+> (ver [`docs/oc_programacion_seni.md`](./docs/oc_programacion_seni.md)).
 > La 4 (unifilar) ya alimenta la clasificación de combustible del dashboard (sus
 > impedancias son mejora futura); la 5 (plano) ya rescata ~40 barras sin coordenada
 > real. El plano es **semi-esquemático** (no proyección exacta): se ancla en las

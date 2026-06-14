@@ -12,6 +12,7 @@ dependencies = []
 
 [project.optional-dependencies]
 pypsa = ["pypsa>=0.28", "pandas>=2.0", "highspy>=1.7"]
+ac = ["pandapower>=3.0", "pandas>=2.0"]
 dashboard = ["dash>=2.15", "plotly>=5.20", "pandas>=2.0"]
 scrape = ["playwright>=1.40", "pdfplumber>=0.11"]
 dev = ["pytest>=8.0"]

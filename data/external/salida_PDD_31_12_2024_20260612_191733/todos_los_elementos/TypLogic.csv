@@ -1,0 +1,16 @@
+﻿nombre,ruta
+1 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Freq. 6 Steps.TypRelay\1 Logic.TypLogic
+2 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Freq. 6 Steps.TypRelay\2 Logic.TypLogic
+3 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Freq. 6 Steps.TypRelay\3 Logic.TypLogic
+4 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Freq. 6 Steps.TypRelay\4 Logic.TypLogic
+5 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Freq. 6 Steps.TypRelay\5 Logic.TypLogic
+6 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Freq. 6 Steps.TypRelay\6 Logic.TypLogic
+0 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\EDAC_Cargas_dF/dt.TypRelay\0 Logic.TypLogic
+1 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\EDAC_Cargas_dF/dt.TypRelay\1 Logic.TypLogic
+2 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\EDAC_Cargas_dF/dt.TypRelay\2 Logic.TypLogic
+3 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\EDAC_Cargas_dF/dt.TypRelay\3 Logic.TypLogic
+4 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\EDAC_Cargas_dF/dt.TypRelay\4 Logic.TypLogic
+5 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\EDAC_Cargas_dF/dt.TypRelay\5 Logic.TypLogic
+6 Logic,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\EDAC_Cargas_dF/dt.TypRelay\6 Logic.TypLogic
+Logic Type,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Frq-U</f<.TypRelay\Logic Type.TypLogic
+Logic Type,\VM-PF.IntUser\PDD 31-12-2024.IntPrj\Library.IntPrjfolder\Equipment Type Library.IntPrjfolder\Relay\Frequency\Frq f>/dfdt.TypRelay\Logic Type.TypLogic
