@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}GridLab SENI{% endblock %}</title>
+  <link rel="stylesheet" href="/static/gridlab.css">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <div class="logo">⚡</div>
+      <div><b>GridLab</b><small>SENI · MODOM Intelligence</small></div>
+    </div>
+    <nav class="nav">
+      <div class="sec">Análisis</div>
+      <a href="/" class="{{ 'active' if active=='dashboard' }}"><span class="ic">▦</span>Dashboard</a>
+      <a href="/projects" class="{{ 'active' if active=='projects' }}"><span class="ic">▤</span>Proyectos</a>
+      <a href="/runs" class="{{ 'active' if active=='runs' }}"><span class="ic">▶</span>Corridas</a>
+      <a href="/ac" class="{{ 'active' if active=='ac' }}"><span class="ic">◈</span>Verificación AC</a>
+      <a href="/audit" class="{{ 'active' if active=='audit' }}"><span class="ic">🔍</span>Auditoría</a>
+      <div class="sec">Datos</div>
+      <a href="/coming/datasets"><span class="ic">▥</span>Datasets<span class="soon">Pronto</span></a>
+      <a href="/coming/reports"><span class="ic">▧</span>Reportes<span class="soon">Pronto</span></a>
+      <a href="/coming/alerts"><span class="ic">◆</span>Alertas<span class="soon">Pronto</span></a>
+      <div class="sec">Plataforma</div>
+      <a href="/coming/settings"><span class="ic">⚙</span>Ajustes<span class="soon">Pronto</span></a>
+      <a href="/coming/users"><span class="ic">◉</span>Usuarios<span class="soon">Pronto</span></a>
+      <a href="/coming/api"><span class="ic">⟐</span>API & Integraciones<span class="soon">Pronto</span></a>
+    </nav>
+    <div class="sidefoot">
+      <div class="status-mini"><span class="dot">●</span> Estado del sistema<br>
+        <small>Pipeline operativo</small></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <h1>{% block heading %}{{ heading|default('Dashboard') }}{% endblock %}</h1>
+      <input class="search" placeholder="Buscar corridas, proyectos, equipos…">
+      <span class="sp"></span>
+      <span class="chip">🇩🇴 SENI</span>
+      <span class="chip">{{ today }}</span>
+      <div class="avatar">FC</div>
+    </header>
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+</body>
+</html>

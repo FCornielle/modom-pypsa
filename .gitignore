@@ -38,3 +38,7 @@ results/dashboard/seni_dashboard.html
 
 # DIgSILENT native project (binary, ~23MB - not versioned)
 *.pfd
+
+# corridas y proyectos generados por la plataforma
+results/runs/
+results/projects/

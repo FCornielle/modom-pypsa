@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Auditoría · GridLab SENI{% endblock %}
+{% block content %}
+<p class="page-sub">Audita individualmente cualquier equipo: datos estáticos y resultados
+por hora (despacho y flujo AC).</p>
+
+<div class="card" style="margin-bottom:16px">
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+    {% for k,lbl in [('barra','Barra'),('linea','Línea'),('transformador','Transformador'),('generador','Generador')] %}
+      <a class="pill {{ 'info' if kind==k else 'muted' }}" href="/audit?kind={{ k }}"
+         style="padding:6px 14px">{{ lbl }}</a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="row cols-3">
+  <div class="card">
+    <div class="field"><label>Equipo ({{ kind }})</label>
+      <select id="eq-sel" hx-get="/audit/panel" hx-target="#audit-panel" hx-include="#hr-sel"
+              name="eq" hx-vals='{"kind":"{{ kind }}"}'>
+        {% for v,lbl in items %}<option value="{{ v }}" {{ 'selected' if v==eq }}>{{ lbl }}</option>{% endfor %}
+      </select></div>
+    <div class="field"><label>Hora</label>
+      <select id="hr-sel" hx-get="/audit/panel" hx-target="#audit-panel" hx-include="#eq-sel"
+              name="hour" hx-vals='{"kind":"{{ kind }}"}'>
+        {% for h in hours %}<option value="{{ h }}" {{ 'selected' if h==sel_hour }}>{{ h }}</option>{% endfor %}
+      </select></div>
+    <p class="muted" style="font-size:12px">{{ items|length }} equipos disponibles.</p>
+  </div>
+  <div class="card span-2" id="audit-panel">
+    {% include "partials/audit_panel.html" %}
+  </div>
+</div>
+{% endblock %}

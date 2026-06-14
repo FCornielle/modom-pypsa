@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Verificación AC · GridLab SENI{% endblock %}
+{% block content %}
+<p class="page-sub">Flujo de potencia AC sobre la red real DIgSILENT, con nuestro despacho
+inyectado por <code>for_name</code> y agregado a las 717 barras MODOM.</p>
+
+{% if not run %}
+  <div class="card"><div class="empty-state">No hay corridas AC. Lanza una en
+    <a href="/runs">Corridas</a>.</div></div>
+{% else %}
+{% set s = summary %}
+<div class="row cols-2" style="margin-bottom:16px">
+  <div class="card" style="display:flex;gap:18px;align-items:center;justify-content:space-between">
+    <div><div class="muted">Corrida</div><b>{{ run.label }}</b>
+      <div class="muted mono">{{ run.run_id }}</div></div>
+    <form method="get" action="/ac" style="display:flex;gap:8px">
+      <select name="run" onchange="this.form.submit()">
+        {% for r in runs %}<option value="{{ r.run_id }}" {{ 'selected' if r.run_id==run.run_id }}>
+          {{ r.label }}</option>{% endfor %}
+      </select></form>
+  </div>
+  <div class="card row cols-4" style="gap:10px">
+    <div class="kpi"><div class="l">Demanda</div><div class="v">{{ fmt(s.demand_mw,'',0) }}</div></div>
+    <div class="kpi"><div class="l">Pérdidas</div><div class="v">{{ fmt(s.losses_mw,'',1) }}</div></div>
+    <div class="kpi"><div class="l">&lt;0.9 pu</div><div class="v">{{ s.n_v_below_090 or 0 }}</div></div>
+    <div class="kpi"><div class="l">Barras V</div><div class="v">{{ s.modom_buses_with_v or '—' }}</div></div>
+  </div>
+</div>
+
+{% if multi %}
+<div class="card" style="margin-bottom:16px">
+  <div class="slider">
+    <span class="h">Hora <b id="hlab">{{ sel_hour }}</b></span>
+    <input type="range" min="1" max="24" value="{{ sel_hour[2:]|int }}"
+      hx-get="/ac/charts" hx-target="#ac-charts" hx-trigger="input changed delay:150ms"
+      hx-include="this" name="hour-num"
+      oninput="document.getElementById('hlab').textContent='h_'+String(this.value).padStart(2,'0');
+               this.setAttribute('hx-vals', JSON.stringify({run:'{{ run.run_id }}',hour:'h_'+String(this.value).padStart(2,'0')}));"
+      hx-vals='{"run":"{{ run.run_id }}","hour":"{{ sel_hour }}"}'>
+  </div>
+</div>
+{% endif %}
+
+<div id="ac-charts">
+  {% include "partials/ac_charts.html" %}
+</div>
+{% endif %}
+{% endblock %}

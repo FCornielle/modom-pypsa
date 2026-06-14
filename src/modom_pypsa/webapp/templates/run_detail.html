@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ run.label }} · GridLab SENI{% endblock %}
+{% block content %}
+{% set s = run.summary or {} %}
+<p class="page-sub">{{ run.run_id }} ·
+  {% if run.status=='completed' %}<span class="pill ok">Completada</span>
+  {% else %}<span class="pill warn">{{ run.status }}</span>{% endif %}
+  · {{ run.started[:16]|replace('T',' ') }} · {{ '%.0fs'|format(run.duration_s) }}</p>
+
+<div class="row cols-4" style="margin-bottom:16px">
+  <div class="card kpi"><div class="l">Pérdidas AC</div><div class="v">{{ fmt(s.losses_mw,' MW',1) }}</div></div>
+  <div class="card kpi"><div class="l">Slack (Punta Catalina)</div><div class="v">{{ fmt(s.slack_mw,' MW',0) }}</div></div>
+  <div class="card kpi"><div class="l">Tensión mín–máx</div><div class="v">{{ fmt(s.v_min,'',3) }}–{{ fmt(s.v_max,'',3) }}</div></div>
+  <div class="card kpi"><div class="l">Iteraciones</div><div class="v">{{ s.n_iterations or '—' }}</div></div>
+</div>
+
+<div class="row cols-2" style="margin-bottom:16px">
+  <div class="card"><div class="hd"><h3>Convergencia del lazo</h3>
+    <span class="tag">{{ 'convergió' if s.loss_factor_converged else 'tope de iteraciones' }}</span></div>
+    {{ convergence|safe }}</div>
+  <div class="card"><h3>Auditoría de iteraciones</h3>
+    <table class="tbl"><thead><tr><th>#</th><th>Δ factor</th><th>Pérdidas</th>
+      <th>Slack</th><th>&lt;0.9</th><th>Sobrecargas</th></tr></thead><tbody>
+      {% for it in iters %}<tr>
+        <td>{{ it.iter }}</td><td class="num">{{ '%.5f'|format(it.loss_factor_delta) }}</td>
+        <td class="num">{{ '%.1f'|format(it.losses_mw) }}</td>
+        <td class="num">{{ '%.0f'|format(it.slack_mw) }}</td>
+        <td class="num">{{ it.n_v_below_090 }}</td><td class="num">{{ it.n_overload }}</td>
+      </tr>{% endfor %}
+    </tbody></table>
+  </div>
+</div>
+
+<div class="row cols-2">
+  <div class="card"><h3>Mapa de tensión (hora {{ s.hour }})</h3>{{ vmap|safe }}</div>
+  <div class="card"><h3>Ramas más cargadas</h3>{{ loading|safe }}</div>
+</div>
+{% endblock %}
