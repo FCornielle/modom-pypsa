@@ -14,33 +14,33 @@
   {% endfor %}
 </div>
 
-<div class="row cols-3" style="margin-bottom:16px">
-  <div class="card span-2">
-    <div class="hd"><h3>Mezcla de generación (caso base)</h3><span class="tag">por hora</span></div>
-    {{ base.mix|safe if base.mix else '<div class="chart-empty">Corre el caso base PyPSA</div>' }}
-  </div>
-  <div class="card">
-    <div class="hd"><h3>Estado de corridas</h3><a class="tag" href="/runs">ver todas</a></div>
-    {{ donut|safe }}
-  </div>
-</div>
-
 {% if cost_map %}
 <div class="card" style="margin-bottom:16px">
   <div class="hd"><h3>Costo marginal por barra (RD$/MWh) — fiel al MODOM</h3>
     <span class="tag">animado 24 h · costo MODOM × factor de nodo</span></div>
   <p class="muted" style="margin:0 0 8px;font-size:12.5px">Evalúa el costo por barra y por
-  hora (▶ para animar). Ver <a href="/metodologia">Metodología</a> para por qué el costo
-  no cae a 0 a mediodía pese al solar.</p>
+  hora (▶ para animar, rueda para zoom). Ver <a href="/metodologia">Metodología</a> para
+  por qué el costo no cae a 0 a mediodía pese al solar.</p>
   {{ cost_map|safe }}
 </div>
 {% endif %}
 
 <div class="row cols-2" style="margin-bottom:16px">
-  <div class="card"><h3>Costo marginal · barra de referencia (LP energético)</h3>
-    {{ base.price|safe if base.price else '<div class="chart-empty">Sin datos</div>' }}</div>
+  <div class="card">
+    <div class="hd"><h3>Mezcla de generación (caso base)</h3><span class="tag">por hora</span></div>
+    {{ base.mix|safe if base.mix else '<div class="chart-empty">Corre el caso base PyPSA</div>' }}
+  </div>
   <div class="card"><h3>Líneas más cargadas</h3>
     {{ base.cong|safe if base.cong else '<div class="chart-empty">Sin datos</div>' }}</div>
+</div>
+
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Costo marginal del sistema (MODOM)</h3>
+    <span class="tag">se mantiene alto a mediodía</span></div>
+  <p class="muted" style="margin:0 0 8px;font-size:12.5px">CVP de la unidad síncrona
+  marginal del despacho MODOM. No cae a 0 al mediodía: la térmica sigue marginal por
+  regulación de frecuencia (la PV no la provee).</p>
+  {{ mc_curve|safe }}
 </div>
 
 <div class="card">

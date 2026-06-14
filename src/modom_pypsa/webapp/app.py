@@ -76,10 +76,13 @@ def dashboard(request: Request):
             cost_map = charts.network_map_div(
                 vals, br, metric="costo", hours=hours,
                 init_hour=(latest.get("summary") or {}).get("hour", "h_19"))
+    # costo marginal del sistema (MODOM) por hora — positivo a mediodía (no 0)
+    mc = _modom_marginal_cost()
+    mc_curve = charts.series_line_div([(h, v) for h, v in mc.items()],
+                                      ylabel="RD$/MWh", color="#b0683c")
     return view("dashboard.html", ctx(
         request, active="dashboard", heading="Dashboard", kpis=kpis,
-        base=base, runs=runs[:6], counts=da.run_counts(), cost_map=cost_map,
-        donut=charts.run_status_donut_div(da.run_counts())))
+        base=base, runs=runs[:6], cost_map=cost_map, mc_curve=mc_curve))
 
 
 # --------------------------------------------------------------- Corridas
