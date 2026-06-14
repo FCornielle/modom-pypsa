@@ -25,8 +25,19 @@
   </div>
 </div>
 
+{% if cost_map %}
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Costo marginal por barra (RD$/MWh) — fiel al MODOM</h3>
+    <span class="tag">animado 24 h · costo MODOM × factor de nodo</span></div>
+  <p class="muted" style="margin:0 0 8px;font-size:12.5px">Evalúa el costo por barra y por
+  hora (▶ para animar). Ver <a href="/metodologia">Metodología</a> para por qué el costo
+  no cae a 0 a mediodía pese al solar.</p>
+  {{ cost_map|safe }}
+</div>
+{% endif %}
+
 <div class="row cols-2" style="margin-bottom:16px">
-  <div class="card"><h3>Costo marginal · barra de referencia</h3>
+  <div class="card"><h3>Costo marginal · barra de referencia (LP energético)</h3>
     {{ base.price|safe if base.price else '<div class="chart-empty">Sin datos</div>' }}</div>
   <div class="card"><h3>Líneas más cargadas</h3>
     {{ base.cong|safe if base.cong else '<div class="chart-empty">Sin datos</div>' }}</div>

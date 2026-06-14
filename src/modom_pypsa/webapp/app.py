@@ -67,9 +67,18 @@ def dashboard(request: Request):
         ("⚠", str(s.get("n_v_below_090", 0)), "Barras < 0.9 pu", "violaciones"),
     ]
     base = charts.base_figures()
+    # mapa de COSTO marginal por barra (animado 24h) — fiel al MODOM
+    cost_map = ""
+    if latest:
+        br = da.run_csv(latest["run_id"], "ac_branch_loading.csv")
+        vals, hours = _metric_values(latest["run_id"], "costo")
+        if vals:
+            cost_map = charts.network_map_div(
+                vals, br, metric="costo", hours=hours,
+                init_hour=(latest.get("summary") or {}).get("hour", "h_19"))
     return view("dashboard.html", ctx(
         request, active="dashboard", heading="Dashboard", kpis=kpis,
-        base=base, runs=runs[:6], counts=da.run_counts(),
+        base=base, runs=runs[:6], counts=da.run_counts(), cost_map=cost_map,
         donut=charts.run_status_donut_div(da.run_counts())))
 
 
@@ -116,8 +125,44 @@ def _ac_run(run_id: str | None):
 
 
 MODOM_V_CSV = REPO_ROOT / "data/processed/modom_results/modom_bus_voltage.csv"
-METRIC_LABELS = {"tension": "Tensión (pu)", "costo": "Costo marginal (RD$/MWh)",
+MODOM_DISP_CSV = REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv"
+NODAL_FACTORS_CSV = REPO_ROOT / "data/processed/modom_results/nodal_factors.csv"
+GENERATORS_CSV2 = REPO_ROOT / "data/processed/generators/generators.csv"
+METRIC_LABELS = {"tension": "Tensión (pu)", "costo": "Costo marginal MODOM (RD$/MWh)",
                  "delta_v": "Δ tensión vs MODOM (pu)"}
+_MODOM_MC = {}
+
+
+def _modom_marginal_cost() -> dict:
+    """Costo marginal del sistema por hora desde el despacho MODOM (CVP de la unidad
+    flexible más cara: 0 < despacho < Pmax). Es la base del precio fiel al MODOM."""
+    if _MODOM_MC:
+        return _MODOM_MC
+    if not (MODOM_DISP_CSV.exists() and GENERATORS_CSV2.exists()):
+        return {}
+    disp = pd.read_csv(MODOM_DISP_CSV, index_col=0)
+    g = pd.read_csv(GENERATORS_CSV2)
+    pmax = dict(zip(g.generator_id, pd.to_numeric(g.effective_pmax_mw, errors="coerce")))
+    cvp = {}
+    for _, r in g.iterrows():
+        c = pd.to_numeric(r.get("effective_cvp"), errors="coerce")
+        if pd.isna(c):
+            c = pd.to_numeric(r.get("cvp"), errors="coerce")
+        if pd.notna(c) and 0 < float(c) < 50000:   # excluye costos de respaldo
+            cvp[r.generator_id] = float(c)
+    for h in disp.index:
+        prices = [cvp[gid] for gid in disp.columns
+                  if gid in cvp and gid in pmax
+                  and 1e-3 < float(disp.at[h, gid]) < float(pmax[gid]) - 1e-3]
+        _MODOM_MC[h] = max(prices) if prices else 0.0
+    return _MODOM_MC
+
+
+def _loss_factor_map() -> dict:
+    if not NODAL_FACTORS_CSV.exists():
+        return {}
+    nf = pd.read_csv(NODAL_FACTORS_CSV)
+    return dict(zip(nf.bus_id_modom, pd.to_numeric(nf.get("factor_retiro"), errors="coerce")))
 
 
 def _metric_values(run_id: str, metric: str):
@@ -131,16 +176,17 @@ def _metric_values(run_id: str, metric: str):
         bus = bus.assign(hour=hours[0])
 
     if metric == "costo":
-        np = da.run_csv(run_id, "nodal_prices.csv")
-        if np.empty:
-            return {}, hours
-        np = np.set_index(np.columns[0])
+        # Costo por barra FIEL AL MODOM = costo marginal del sistema (despacho MODOM)
+        # × factor de nodo (pérdidas) de la barra. Es la estructura de precios del MODOM
+        # y evita el 0 de mediodía del LP energético (excedente VRE gratis).
+        mc = _modom_marginal_cost()
+        lf = _loss_factor_map()
+        buses = [b for b in bus["bus_id_modom"].unique()]
         vals = {}
         for h in hours:
-            if h in np.index:
-                row = np.loc[h]
-                vals[h] = {b: (min(max(float(v), 0), 9000)) for b, v in row.items()
-                           if pd.notna(v) and abs(float(v)) < 9e5}
+            base = mc.get(h, 0.0)
+            vals[h] = {b: base * float(lf.get(b, 1.0) or 1.0) for b in buses
+                       if lf.get(b, 1.0) == lf.get(b, 1.0)}
         return vals, hours
     if metric == "delta_v" and MODOM_V_CSV.exists():
         mv = pd.read_csv(MODOM_V_CSV, index_col=0)
@@ -290,6 +336,14 @@ def project_create(name: str = Form(...), description: str = Form(""),
     da.save_project(name=name, description=description,
                     considerations=considerations, run_ids=run_ids)
     return RedirectResponse("/projects", status_code=303)
+
+
+# --------------------------------------------------------------- Metodología
+@app.get("/metodologia", response_class=HTMLResponse)
+def metodologia(request: Request):
+    return view("metodologia.html", ctx(
+        request, active="metodologia", heading="Metodología y supuestos",
+        modom_mix=charts.modom_mix_div()))
 
 
 # --------------------------------------------------------------- Próximamente

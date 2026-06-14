@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Metodología · GridLab SENI{% endblock %}
+{% block content %}
+<p class="page-sub">Qué considera el MODOM (modelo oficial del OC: GAMS + DIgSILENT) y qué
+reproduce nuestro modelo. Transparencia para no leer mal los resultados.</p>
+
+<div class="card" style="margin-bottom:16px;border-left:3px solid var(--warn)">
+  <h3>⚠ El sistema NO funciona solo con renovables</h3>
+  <p style="font-size:13.5px;margin:0">A mediodía el solar es abundante, pero la red
+  necesita <b>generación síncrona</b> (térmica/hidro) encendida para <b>regulación de
+  frecuencia e inercia</b> — la fotovoltaica no las provee. Por eso, aunque el
+  <b>precio de energía</b> de un modelo puramente energético colapsaría a ~0 a mediodía
+  (excedente de VRE gratis), el <b>costo marginal real del MODOM se mantiene alto</b>
+  (la unidad térmica marginal sigue fijando el precio). El mapa de <b>Costo marginal
+  MODOM</b> usa esa lógica: costo marginal del despacho MODOM × factor de nodo por barra.</p>
+</div>
+
+<div class="card" style="margin-bottom:16px">
+  <h3>Consideraciones del modelo</h3>
+  <table class="tbl">
+    <thead><tr><th>Aspecto</th><th>MODOM (OC)</th><th>Nuestro modelo</th></tr></thead>
+    <tbody>
+    <tr><td><b>Despacho económico</b></td><td>UC + despacho (GAMS), por mérito de CVP</td>
+      <td>LP de despacho (PyPSA) dentro del <b>commitment del MODOM</b></td></tr>
+    <tr><td><b>Unit commitment</b></td><td>Decide encendido/apagado con contratos,
+      reservas, seguridad</td><td>Se <b>toma del despacho MODOM</b> (S_DESPACHOM); no se
+      re-decide</td></tr>
+    <tr><td><b>Regulación de frecuencia / reservas</b></td>
+      <td>Co-optimiza reservas; mínimo síncrono por inercia</td>
+      <td>Restricción opcional de <b>mínimo síncrono</b>; el costo se refleja vía el
+      piso de regulación en el precio</td></tr>
+    <tr><td><b>Costos (CVP)</b></td><td>CVP declarados (VEROPE) + combustible</td>
+      <td>CVP declarado VEROPE con override; si falta, efectivo del MODOM</td></tr>
+    <tr><td><b>Pérdidas / factores de nodo</b></td><td>PowerFactory calcula factores
+      marginales; GAMS los consume</td><td>Consumimos los <b>factores de nodo del MODOM</b>
+      y los re-estimamos en el lazo DC↔AC</td></tr>
+    <tr><td><b>Red</b></td><td>DC (reactancias + factores + flowgates) en GAMS; AC en
+      DIgSILENT</td><td>DC en PyPSA + <b>AC en pandapower</b> sobre la red real DIgSILENT</td></tr>
+    <tr><td><b>Seguridad N-1</b></td><td>Contingencias y flowgates</td>
+      <td>Pendiente (roadmap)</td></tr>
+    <tr><td><b>Precio nodal</b></td><td>Costo marginal × factor de nodo</td>
+      <td>Igual estructura: <b>costo marginal MODOM × factor de nodo</b> por barra</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <div class="hd"><h3>Base MODOM — despacho por tecnología (24 h)</h3>
+    <span class="tag">resultado oficial de referencia</span></div>
+  <p class="muted" style="margin:0 0 8px;font-size:12.5px">La térmica/hidro corre todo el
+  día (incluido el mediodía solar): evidencia de que el sistema no opera solo con VRE.</p>
+  {{ modom_mix|safe }}
+</div>
+{% endblock %}

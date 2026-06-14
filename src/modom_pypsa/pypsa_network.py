@@ -62,7 +62,8 @@ def resolve_paths(data_dir: Path) -> dict[str, Path]:
 
 
 def build_network(
-    data_dir: Path = DEFAULT_DATA_DIR, use_modom_commitment: bool = True
+    data_dir: Path = DEFAULT_DATA_DIR, use_modom_commitment: bool = True,
+    min_sync_fraction: float = 0.0,
 ):
     """Arma la red PyPSA desde las tablas canónicas. Devuelve un `pypsa.Network`.
 
@@ -303,8 +304,15 @@ def build_network(
             carrier="dump",
         )
 
+    # Generación SÍNCRONA (térmica/hidro) vs VRE: la PV/eólica no aporta regulación
+    # de frecuencia ni inercia. `min_sync_fraction` exige que un mínimo de la demanda
+    # sea cubierto por máquinas síncronas (ver solve_network) -> precios fieles al MODOM.
+    real_mask = ~n.generators.carrier.isin(["unserved", "dump"])
+    n.generators["is_synchronous"] = real_mask & ~n.generators.index.isin(vre_ids)
+
     n.meta = {
         "model": "linear_lopf_v2_modom_commitment" if committed_units else "linear_lopf_v1",
+        "min_sync_fraction": float(min_sync_fraction),
         "per_unit_base_note": "v_nom=1.0 en todas las barras; impedancias en por-unidad de MODOM.",
         "counts": {
             "buses": int(len(n.buses)),
@@ -329,9 +337,70 @@ def build_network(
     return n
 
 
+def _min_sync_constraint(n, snapshots):
+    """Exige sum(generación síncrona) >= min_sync_fraction × demanda por hora.
+
+    Codifica la regulación de frecuencia/inercia: la PV no la provee, así que un
+    mínimo de la demanda debe venir de máquinas síncronas (térmica/hidro). Evita el
+    artefacto de precio 0 a mediodía (donde el solar gratis quedaba marginal) y deja
+    una unidad térmica fijando el precio nodal, como en el MODOM.
+    """
+    import xarray as xr
+
+    frac = float(n.meta.get("min_sync_fraction", 0.0) or 0.0)
+    if frac <= 0 or "is_synchronous" not in n.generators.columns:
+        return
+    sync = list(n.generators.index[n.generators["is_synchronous"]])
+    pvar = n.model["Generator-p"]
+    avail = [g for g in sync if g in pvar.coords["name"].values]
+    if not avail:
+        return
+    lhs = pvar.sel(name=avail).sum("name")
+    demand = n.loads_t.p_set.sum(axis=1).reindex(snapshots).fillna(0.0)
+    rhs = xr.DataArray(frac * demand.values, coords=[("snapshot", list(snapshots))])
+    n.model.add_constraints(lhs >= rhs, name="min_synchronous")
+
+
 def solve_network(n, solver_name: str = "highs"):
-    n.optimize(solver_name=solver_name)
+    n.optimize(solver_name=solver_name, extra_functionality=_min_sync_constraint)
     return n
+
+
+def regulation_floor(n) -> pd.Series:
+    """CVP de la unidad SÍNCRONA marginal encendida cada hora (piso de precio).
+
+    Cuando hay excedente de VRE, el precio de energía colapsa a ~0 porque el solar
+    gratis queda marginal; pero el sistema DEBE mantener térmica/hidro encendida para
+    regulación de frecuencia (la PV no la da). El costo real lo fija esa unidad
+    síncrona marginal — su CVP es el piso del precio, como en el MODOM.
+    """
+    if "is_synchronous" not in n.generators.columns:
+        return pd.Series(0.0, index=n.snapshots)
+    sync = n.generators.index[n.generators["is_synchronous"]]
+    sync = [g for g in sync if g in n.generators_t.p.columns]
+    if not sync:
+        return pd.Series(0.0, index=n.snapshots)
+    p = n.generators_t.p[sync]
+    mc = n.generators.loc[sync, "marginal_cost"]
+    floor = {}
+    for h in n.snapshots:
+        on = p.loc[h] > 1e-3
+        floor[h] = float(mc[on.values].max()) if on.any() else 0.0
+    return pd.Series(floor)
+
+
+def effective_nodal_prices(n) -> pd.DataFrame:
+    """Precio nodal de energía ELEVADO al piso de regulación por hora (RD$/MWh).
+
+    Conserva la variación locacional (pérdidas/congestión) donde supera el piso; las
+    barras con precio ~0 por excedente VRE suben al CVP síncrono marginal. Las barras
+    con energía no suministrada quedan en su precio de escasez alto.
+    """
+    mp = n.buses_t.marginal_price.copy()
+    floor = regulation_floor(n)
+    for h in mp.index:
+        mp.loc[h] = mp.loc[h].clip(lower=float(floor.get(h, 0.0)))
+    return mp
 
 
 def summarize(n) -> dict[str, object]:

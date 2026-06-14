@@ -153,7 +153,7 @@ def voltage_map_div(bus_voltages: pd.DataFrame, hour: str | None = None,
 
 METRICS = {
     "tension": dict(label="Tensión (pu)", scale="RdYlGn", cmin=0.90, cmax=1.10, dec=3),
-    "costo": dict(label="Costo marginal (RD$/MWh)", scale="Turbo", cmin=0, cmax=9000, dec=0),
+    "costo": dict(label="Costo marginal MODOM (RD$/MWh)", scale="Turbo", cmin=7000, cmax=11500, dec=0),
     "delta_v": dict(label="ΔV vs MODOM (pu)", scale="RdBu", cmin=-0.06, cmax=0.06, dec=3),
 }
 
@@ -362,6 +362,49 @@ def convergence_div(iterations: list[dict]) -> str:
     fig.update_yaxes(title="Pérdidas MW", secondary_y=True)
     fig.update_layout(legend=dict(orientation="h", y=1.12))
     return _div(fig, height=300)
+
+
+# ----------------------------------------------------- base MODOM: mezcla por tec
+def modom_mix_div() -> str:
+    """Despacho MODOM por tecnología (24h) — la base: muestra que la térmica/hidro
+    corre todo el día (no solo renovables), por regulación de frecuencia."""
+    import plotly.graph_objects as go
+
+    disp_p = REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv"
+    gen_p = REPO_ROOT / "data/processed/generators/generators.csv"
+    if not (disp_p.exists() and gen_p.exists()):
+        return _empty("Sin despacho MODOM")
+    disp = pd.read_csv(disp_p, index_col=0)
+    g = pd.read_csv(gen_p)
+    tech = dict(zip(g.generator_id, g.technology_group.astype(str)))
+
+    def grp(t):
+        t = t.lower()
+        if "solar" in t or "fotovolt" in t or "pv" in t:
+            return "Solar"
+        if "eol" in t or "wind" in t:
+            return "Eólica"
+        if "hidro" in t or "hydro" in t:
+            return "Hidro"
+        if "bcs" in t or "bater" in t or "storage" in t:
+            return "Almacenamiento"
+        return "Térmica"
+    cols = {}
+    for gid in disp.columns:
+        cols.setdefault(grp(tech.get(gid, "")), []).append(gid)
+    palette = {"Térmica": "#6b7280", "Hidro": "#3b9ae1", "Solar": "#f4c430",
+               "Eólica": "#33c9b8", "Almacenamiento": "#9b7fd4"}
+    fig = go.Figure()
+    for name in ["Térmica", "Hidro", "Solar", "Eólica", "Almacenamiento"]:
+        if name in cols:
+            s = disp[cols[name]].sum(axis=1)
+            fig.add_trace(go.Scatter(x=list(disp.index), y=s, name=name, stackgroup="m",
+                                     line=dict(width=0.5, color=palette[name]),
+                                     fillcolor=palette[name]))
+    fig.update_yaxes(title="MW", gridcolor=GRID)
+    fig.update_xaxes(gridcolor=GRID)
+    fig.update_layout(legend=dict(orientation="h", y=1.1))
+    return _div(fig, height=320)
 
 
 # ----------------------------------------------------- comparación DC vs AC (24h)
