@@ -12,6 +12,52 @@ import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 COORDS_CSV = REPO_ROOT / "data/external/buses_with_coords.csv"
+BUSES_CSV = REPO_ROOT / "data/processed/buses/buses.csv"
+LINES_CSV = REPO_ROOT / "data/processed/pypsa_branch_components/lines_v1.csv"
+TRAFOS_CSV = REPO_ROOT / "data/processed/pypsa_branch_components/transformers_v1.csv"
+
+# color de líneas por nivel de tensión (tenue, para que resalten las barras por V)
+VOLT_LINE = {345: "#7c3aed", 230: "#0ea5e9", 138: "#10b981", 69: "#f59e0b"}
+
+
+def _volt_color(kv) -> str:
+    try:
+        kv = float(kv)
+    except (TypeError, ValueError):
+        return "#cbd5e1"
+    for std, col in VOLT_LINE.items():
+        if abs(kv - std) < 0.7:
+            return col
+    return "#cbd5e1"
+
+
+_GEO = {}
+
+
+def _geometry() -> dict:
+    """Coordenadas, nombres de barra y segmentos de línea (cacheado)."""
+    if _GEO:
+        return _GEO
+    coords, names, segs = {}, {}, []
+    if COORDS_CSV.exists():
+        c = pd.read_csv(COORDS_CSV)
+        c = c[pd.to_numeric(c["lat"], errors="coerce").notna()]
+        coords = {str(r.bus_id_modom): (float(r.lat), float(r.lon)) for r in c.itertuples()}
+    if BUSES_CSV.exists():
+        b = pd.read_csv(BUSES_CSV)
+        for r in b.itertuples():
+            nm = str(getattr(r, "bus_name", "") or "").strip()
+            names[str(r.bus_id_modom)] = nm if nm and nm.lower() != "nan" else str(r.bus_id_modom)
+    frames = [p for p in (LINES_CSV, TRAFOS_CSV) if p.exists()]
+    if frames:
+        br = pd.concat([pd.read_csv(p) for p in frames], ignore_index=True)
+        for r in br.itertuples():
+            b0, b1 = str(r.bus0), str(r.bus1)
+            if b0 in coords and b1 in coords:
+                kv = pd.to_numeric(getattr(r, "v_nom_bus0_kv", None), errors="coerce")
+                segs.append((coords[b0], coords[b1], _volt_color(kv), str(r.name)))
+    _GEO.update(coords=coords, names=names, segs=segs)
+    return _GEO
 
 # Paleta GridLab (clara)
 ACCENT = "#2563EB"
@@ -42,33 +88,92 @@ def _empty(msg: str = "Sin datos") -> str:
 
 
 # ----------------------------------------------------------- AC: mapa de tensión
-def voltage_map_div(bus_voltages: pd.DataFrame, hour: str | None = None) -> str:
+def voltage_map_div(bus_voltages: pd.DataFrame, hour: str | None = None,
+                    branch_loading: pd.DataFrame | None = None,
+                    height: int = 460) -> str:
+    """Mapa: red de transmisión (líneas por nivel de tensión) + barras por V (nombres)."""
     import plotly.graph_objects as go
+    import plotly.io as pio
 
-    if bus_voltages.empty or not COORDS_CSV.exists():
+    geo = _geometry()
+    if bus_voltages.empty or not geo["coords"]:
         return _empty("Sin tensiones / coordenadas")
     df = bus_voltages.copy()
     if hour and "hour" in df.columns:
         df = df[df["hour"] == hour]
     df = df[df["vm_pu"].notna()]
-    coords = pd.read_csv(COORDS_CSV)
-    coords = coords[["bus_id_modom", "lat", "lon"]].dropna()
-    df = df.merge(coords, on="bus_id_modom", how="inner")
-    if df.empty:
-        return _empty("Sin barras geolocalizadas con tensión")
-    fig = go.Figure(go.Scattermapbox(
-        lat=df["lat"], lon=df["lon"], mode="markers",
-        marker=dict(size=9, color=df["vm_pu"], colorscale="RdYlGn",
-                    cmin=0.90, cmax=1.10, showscale=True,
-                    colorbar=dict(title="V pu", thickness=12)),
-        text=[f"{b}<br>{v:.3f} pu" for b, v in zip(df["bus_id_modom"], df["vm_pu"])],
-        hoverinfo="text"))
+    coords, names, segs = geo["coords"], geo["names"], geo["segs"]
+
+    # líneas sobrecargadas de ESTA hora (rojo)
+    overloaded = set()
+    if branch_loading is not None and not branch_loading.empty:
+        bl = branch_loading
+        if hour and "hour" in bl.columns:
+            bl = bl[bl["hour"] == hour]
+        overloaded = set(bl[bl["loading_percent"] > 90]["name"]) if "name" in bl else set()
+
+    fig = go.Figure()
+    # red de transmisión, agrupada por color (nivel de tensión)
+    by_col: dict[str, list] = {}
+    red_lat, red_lon = [], []
+    for (a, b, col, name) in segs:
+        if name in overloaded:
+            red_lat += [a[0], b[0], None]; red_lon += [a[1], b[1], None]
+            continue
+        d = by_col.setdefault(col, [[], []])
+        d[0] += [a[0], b[0], None]; d[1] += [a[1], b[1], None]
+    for col, (la, lo) in by_col.items():
+        fig.add_trace(go.Scattermapbox(lat=la, lon=lo, mode="lines",
+            line=dict(width=1.4, color=col), hoverinfo="skip", showlegend=False))
+    if red_lat:
+        fig.add_trace(go.Scattermapbox(lat=red_lat, lon=red_lon, mode="lines",
+            line=dict(width=3, color=BAD), name="≥90%", hoverinfo="skip"))
+
+    # barras coloreadas por tensión, con NOMBRE en el hover
+    lat = [coords[str(b)][0] for b in df["bus_id_modom"] if str(b) in coords]
+    lon = [coords[str(b)][1] for b in df["bus_id_modom"] if str(b) in coords]
+    vv = [v for b, v in zip(df["bus_id_modom"], df["vm_pu"]) if str(b) in coords]
+    txt = [f"<b>{names.get(str(b), b)}</b><br>{b} · {v:.3f} pu"
+           for b, v in zip(df["bus_id_modom"], df["vm_pu"]) if str(b) in coords]
+    fig.add_trace(go.Scattermapbox(lat=lat, lon=lon, mode="markers",
+        marker=dict(size=8, color=vv, colorscale="RdYlGn", cmin=0.90, cmax=1.10,
+                    showscale=True, colorbar=dict(title="V pu", thickness=12)),
+        text=txt, hoverinfo="text", showlegend=False))
     fig.update_layout(mapbox=dict(style="carto-positron",
-                                  center=dict(lat=18.8, lon=-70.2), zoom=7),
-                      margin=dict(l=0, r=0, t=0, b=0), height=420)
-    import plotly.io as pio
+                                  center=dict(lat=18.9, lon=-70.4), zoom=7.2),
+                      margin=dict(l=0, r=0, t=0, b=0), height=height,
+                      legend=dict(x=0, y=1, bgcolor="rgba(255,255,255,.7)"))
     return pio.to_html(fig, full_html=False, include_plotlyjs=False,
                        config={"displayModeBar": False, "responsive": True})
+
+
+def bus_name(w: str) -> str:
+    """Nombre legible de una barra MODOM (W-code -> nombre)."""
+    return _geometry()["names"].get(str(w), str(w))
+
+
+# ----------------------------------------------------------- auditoría: serie 24h
+def series_line_div(series, ylabel: str = "", sel_hour: str | None = None,
+                    color: str = ACCENT) -> str:
+    """Gráfico de línea de una serie 24h [(hora, valor)] para la auditoría."""
+    import plotly.graph_objects as go
+
+    pts = [(h, v) for h, v in (series or []) if isinstance(v, (int, float))]
+    if not pts:
+        return _empty("Sin serie numérica")
+    xs = [h for h, _ in pts]
+    ys = [v for _, v in pts]
+    fig = go.Figure(go.Scatter(x=xs, y=ys, mode="lines+markers",
+                               line=dict(color=color, width=2.5),
+                               marker=dict(size=6), fill="tozeroy",
+                               fillcolor="rgba(37,99,235,.08)"))
+    if sel_hour in xs:
+        i = xs.index(sel_hour)
+        fig.add_trace(go.Scatter(x=[sel_hour], y=[ys[i]], mode="markers",
+                                 marker=dict(size=12, color=WARN), showlegend=False))
+    fig.update_yaxes(title=ylabel, gridcolor=GRID)
+    fig.update_xaxes(gridcolor=GRID)
+    return _div(fig, height=280)
 
 
 # ----------------------------------------------------------- AC: cargabilidad
@@ -131,6 +236,30 @@ def convergence_div(iterations: list[dict]) -> str:
     fig.update_xaxes(title="Iteración", dtick=1, gridcolor=GRID)
     fig.update_yaxes(title="Δ factor (log)", type="log", secondary_y=False, gridcolor=GRID)
     fig.update_yaxes(title="Pérdidas MW", secondary_y=True)
+    fig.update_layout(legend=dict(orientation="h", y=1.12))
+    return _div(fig, height=300)
+
+
+# ----------------------------------------------------- comparación DC vs AC (24h)
+def dc_vs_ac_div(summary_by_hour: pd.DataFrame) -> str:
+    """Demanda vs generación AC y pérdidas por hora (la corrección que aporta la AC)."""
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
+
+    if summary_by_hour.empty or "hour" not in summary_by_hour.columns:
+        return _empty("Sin resumen por hora")
+    d = summary_by_hour.sort_values("hour")
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    fig.add_trace(go.Scatter(x=d["hour"], y=d.get("demand_mw"), name="Demanda (DC)",
+                             line=dict(color=ACCENT, width=2)), secondary_y=False)
+    if "gen_mw" in d:
+        fig.add_trace(go.Scatter(x=d["hour"], y=d["gen_mw"], name="Generación (AC)",
+                                 line=dict(color=GOOD, width=2, dash="dot")), secondary_y=False)
+    fig.add_trace(go.Bar(x=d["hour"], y=d.get("losses_mw"), name="Pérdidas AC",
+                         marker_color="rgba(245,158,11,.55)"), secondary_y=True)
+    fig.update_yaxes(title="MW", secondary_y=False, gridcolor=GRID)
+    fig.update_yaxes(title="Pérdidas MW", secondary_y=True)
+    fig.update_xaxes(gridcolor=GRID)
     fig.update_layout(legend=dict(orientation="h", y=1.12))
     return _div(fig, height=300)
 

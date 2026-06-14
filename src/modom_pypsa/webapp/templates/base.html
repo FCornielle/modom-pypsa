@@ -15,21 +15,24 @@
       <div class="logo">⚡</div>
       <div><b>GridLab</b><small>SENI · MODOM Intelligence</small></div>
     </div>
+    {% macro ic(inner) %}<svg class="ic" width="18" height="18" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">{{ inner|safe }}</svg>{% endmacro %}
     <nav class="nav">
       <div class="sec">Análisis</div>
-      <a href="/" class="{{ 'active' if active=='dashboard' }}"><span class="ic">▦</span>Dashboard</a>
-      <a href="/projects" class="{{ 'active' if active=='projects' }}"><span class="ic">▤</span>Proyectos</a>
-      <a href="/runs" class="{{ 'active' if active=='runs' }}"><span class="ic">▶</span>Corridas</a>
-      <a href="/ac" class="{{ 'active' if active=='ac' }}"><span class="ic">◈</span>Verificación AC</a>
-      <a href="/audit" class="{{ 'active' if active=='audit' }}"><span class="ic">🔍</span>Auditoría</a>
+      <a href="/" class="{{ 'active' if active=='dashboard' }}">{{ ic('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>') }}Dashboard</a>
+      <a href="/projects" class="{{ 'active' if active=='projects' }}">{{ ic('<path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9l-.8-1.2A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>') }}Proyectos</a>
+      <a href="/runs" class="{{ 'active' if active=='runs' }}">{{ ic('<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>') }}Corridas</a>
+      <a href="/ac" class="{{ 'active' if active=='ac' }}">{{ ic('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>') }}Verificación AC</a>
+      <a href="/audit" class="{{ 'active' if active=='audit' }}">{{ ic('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>') }}Auditoría</a>
       <div class="sec">Datos</div>
-      <a href="/coming/datasets"><span class="ic">▥</span>Datasets<span class="soon">Pronto</span></a>
-      <a href="/coming/reports"><span class="ic">▧</span>Reportes<span class="soon">Pronto</span></a>
-      <a href="/coming/alerts"><span class="ic">◆</span>Alertas<span class="soon">Pronto</span></a>
+      <a href="/coming/datasets">{{ ic('<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>') }}Datasets<span class="soon">Pronto</span></a>
+      <a href="/coming/reports">{{ ic('<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v5h5"/><path d="M16 13H8"/><path d="M16 17H8"/>') }}Reportes<span class="soon">Pronto</span></a>
+      <a href="/coming/alerts">{{ ic('<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>') }}Alertas<span class="soon">Pronto</span></a>
       <div class="sec">Plataforma</div>
-      <a href="/coming/settings"><span class="ic">⚙</span>Ajustes<span class="soon">Pronto</span></a>
-      <a href="/coming/users"><span class="ic">◉</span>Usuarios<span class="soon">Pronto</span></a>
-      <a href="/coming/api"><span class="ic">⟐</span>API & Integraciones<span class="soon">Pronto</span></a>
+      <a href="/coming/settings">{{ ic('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.81 1.17V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15H4.5a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 6 9.4l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 11 4.6V4.5a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 18 6l.06-.06a2 2 0 1 1 2.83 2.83L20.83 9A1.65 1.65 0 0 0 21 11h-.09Z"/>') }}Ajustes<span class="soon">Pronto</span></a>
+      <a href="/coming/users">{{ ic('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>') }}Usuarios<span class="soon">Pronto</span></a>
+      <a href="/coming/api">{{ ic('<path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/>') }}API<span class="soon">Pronto</span></a>
     </nav>
     <div class="sidefoot">
       <div class="status-mini"><span class="dot">●</span> Estado del sistema<br>

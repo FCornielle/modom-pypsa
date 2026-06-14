@@ -48,6 +48,7 @@ def test_iterative_converges_and_records():
     # Δfactor decreciente hacia el final (el lazo se estabiliza)
     assert its[-1]["loss_factor_delta"] <= its[0]["loss_factor_delta"] + 1e-9
     # registra violaciones y pérdidas para auditar
-    assert "n_v_below_090" in its[-1] and "losses_mw" in its[-1]
+    assert "n_violations" in its[-1] and "losses_mw" in its[-1]
     assert m["summary"]["converged"]  # la AC final converge
     assert m["type"] == "iterative"
+    assert m["summary"]["n_hours"] >= 1

@@ -61,6 +61,16 @@ def _apply_factors(n, base_load: pd.DataFrame, factors: pd.Series) -> None:
     n.loads_t.p_set = p_set
 
 
+def _apply_factors_hour(n, base_load: pd.DataFrame, factors: pd.Series, hour: str) -> None:
+    """Fija n.loads_t.p_set de UNA hora = demanda base × factor por barra (W)."""
+    bus_of = dict(zip(n.loads.index, n.loads.bus))
+    for name in n.loads_t.p_set.columns:
+        w = bus_of.get(name)
+        if w is None or w not in base_load.columns:
+            continue
+        n.loads_t.p_set.at[hour, name] = float(base_load.at[hour, w]) * float(factors.get(w, 1.0))
+
+
 def _count_overloads(net, thr: float = 100.0) -> int:
     n = 0
     if len(net.res_line):
@@ -70,81 +80,92 @@ def _count_overloads(net, thr: float = 100.0) -> int:
     return n
 
 
-def run_iterative(hour: str = "h_19", max_iter: int = 8, tol: float = 1e-3,
-                  damping: float = 0.5, export_dir: Path | str = DEFAULT_EXPORT,
+ALL_HOURS = [f"h_{i:02d}" for i in range(1, 25)]
+
+
+def run_iterative(hour: str | None = None, hours: list[str] | None = None,
+                  max_iter: int = 6, tol: float = 1e-3, damping: float = 0.5,
+                  export_dir: Path | str = DEFAULT_EXPORT,
                   root: Path | str = REPO_ROOT, project_id: str | None = None,
                   write: bool = True) -> dict:
-    """Corre el lazo DC↔AC para una hora. Devuelve el manifest de la corrida."""
+    """Corre el lazo DC↔AC→MODOM para 24 h (o un subconjunto). Una corrida = N horas.
+
+    Lazo externo de factores (matriz hora×barra): aplica factores a la demanda, resuelve
+    PyPSA una vez (24 h), verifica AC por hora, re-estima factores y repite hasta que
+    el máximo Δfactor entre todas las horas < tol. Guarda resultados AC por hora.
+    """
     from .pypsa_network import build_network, solve_network
     from .ac_inject import run_ac_modom
 
     root = Path(root)
     export_dir = Path(export_dir)
+    hours = hours or ([hour] if hour else ALL_HOURS)
     started = datetime.now(timezone.utc)
     t0 = time.time()
 
-    n = build_network(use_modom_commitment=True)        # topología + commitment MODOM
-    base_load = _base_load_by_hour(root)                 # demanda sin factor
-    base_h = base_load.loc[hour] if hour in base_load.index else pd.Series(dtype=float)
-
-    factors = _seed_factors(root)                        # semilla = factores MODOM
-    if factors.empty:
-        factors = pd.Series(1.0, index=base_load.columns)
+    n = build_network(use_modom_commitment=True)
+    base_load = _base_load_by_hour(root)
+    seed = _seed_factors(root)
+    if seed.empty:
+        seed = pd.Series(1.0, index=base_load.columns)
+    # matriz de factores hora×barra (misma semilla por hora)
+    factors = {h: seed.copy() for h in hours}
 
     iterations: list[dict] = []
-    prev = None
-    last = {"net": None, "ctx": None, "bus_res": pd.DataFrame(),
-            "br_res": pd.DataFrame(), "summary": {}}
+    last_bus, last_br, last_summ = {}, {}, {}
     for it in range(1, max_iter + 1):
-        _apply_factors(n, base_load, factors)
+        for h in hours:                                  # aplica factor de cada hora
+            if h in base_load.index:
+                _apply_factors_hour(n, base_load, factors[h], h)
         solve_network(n)
-        dispatch = n.generators_t.p                      # snapshot × generator_id (G3)
+        dispatch = n.generators_t.p
 
-        net, ctx, bus_res, br_res, ac = run_ac_modom(
-            export_dir, hour=hour, root=str(root), gen_disp=dispatch)
-        last.update(net=net, ctx=ctx, bus_res=bus_res, br_res=br_res, summary=ac)
-
-        new_factors = lf.update_loss_factors(factors, net, ctx, base_h, damping=damping)
-        delta = lf.factor_delta(prev if prev is not None else factors, new_factors)
-
+        deltas, losses, viol, ovl = [], [], 0, 0
+        for h in hours:
+            net, ctx, bus_res, br_res, ac = run_ac_modom(
+                export_dir, hour=h, root=str(root), gen_disp=dispatch)
+            base_h = base_load.loc[h] if h in base_load.index else pd.Series(dtype=float)
+            new_f = lf.update_loss_factors(factors[h], net, ctx, base_h, damping=damping)
+            deltas.append(lf.factor_delta(factors[h], new_f))
+            factors[h] = new_f
+            losses.append(ac.get("losses_mw", float("nan")))
+            viol += ac.get("n_v_below_090", 0) + ac.get("n_v_above_110", 0)
+            ovl += _count_overloads(net)
+            last_bus[h], last_br[h], last_summ[h] = bus_res, br_res, ac
+        max_delta = max(deltas) if deltas else 0.0
         iterations.append({
-            "iter": it,
-            "loss_factor_delta": round(delta, 6),
-            "losses_mw": round(ac.get("losses_mw", float("nan")), 2),
-            "slack_mw": round(ac.get("slack_mw", float("nan")), 2),
-            "demand_mw": round(ac.get("demand_mw", float("nan")), 2),
-            "n_v_below_090": ac.get("n_v_below_090", 0),
-            "n_v_above_110": ac.get("n_v_above_110", 0),
-            "n_overload": _count_overloads(net),
-            "ac_converged": ac.get("converged", False),
-            "mean_factor": round(float(new_factors.mean()), 5),
+            "iter": it, "loss_factor_delta": round(max_delta, 6),
+            "losses_mw": round(float(pd.Series(losses).mean()), 2),
+            "n_violations": int(viol), "n_overload": int(ovl),
         })
-        prev, factors = factors, new_factors
-        if delta < tol:
+        if max_delta < tol:
             break
 
     duration = round(time.time() - t0, 1)
     converged = bool(iterations and iterations[-1]["loss_factor_delta"] < tol)
-    run_id = f"iter_{hour}_{started.strftime('%Y%m%d_%H%M%S')}"
-    last_it = iterations[-1] if iterations else {}
+    # hora pico (mayor demanda) como resumen representativo
+    peak_h = max(last_summ, key=lambda h: last_summ[h].get("demand_mw", 0) or 0)
+    peak = last_summ[peak_h]
+    tag = hours[0] if len(hours) == 1 else "24h"
+    run_id = f"iter_{tag}_{started.strftime('%Y%m%d_%H%M%S')}"
     manifest = {
         "run_id": run_id, "project_id": project_id, "type": "iterative",
-        "label": f"Iterativo DC↔AC · {hour}",
-        "status": "completed" if (converged and last["summary"].get("converged")) else "warning",
+        "label": f"Iterativo DC↔AC · {'24 h' if len(hours)>1 else hours[0]}",
+        "status": "completed" if (converged and peak.get("converged")) else "warning",
         "started": started.isoformat(), "duration_s": duration,
-        "params": {"hour": hour, "max_iter": max_iter, "tol": tol, "damping": damping,
+        "params": {"hours": hours, "max_iter": max_iter, "tol": tol, "damping": damping,
                    "export_dir": export_dir.name},
         "summary": {
-            "hour": hour, "n_iterations": len(iterations),
+            "hour": peak_h, "n_hours": len(hours), "n_iterations": len(iterations),
             "loss_factor_converged": converged,
-            **{k: last["summary"].get(k) for k in (
+            **{k: peak.get(k) for k in (
                 "converged", "demand_mw", "gen_mw", "slack_mw", "losses_mw",
                 "v_min", "v_max", "n_v_below_090", "n_v_above_110",
                 "modom_buses_with_v", "modom_buses_total")},
-            "final_overloads": last_it.get("n_overload", 0),
-            "final_delta": last_it.get("loss_factor_delta"),
+            "final_overloads": iterations[-1].get("n_overload", 0) if iterations else 0,
+            "final_delta": iterations[-1].get("loss_factor_delta") if iterations else None,
         },
-        "coverage": {k: last["summary"].get(k) for k in (
+        "coverage": {k: peak.get(k) for k in (
             "gen_coverage", "load_coverage", "gen_matched_mw", "load_matched_mw")},
     }
 
@@ -155,12 +176,24 @@ def run_iterative(hour: str = "h_19", max_iter: int = 8, tol: float = 1e-3,
             json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
         (out / "iterations.json").write_text(
             json.dumps(iterations, indent=2, ensure_ascii=False), encoding="utf-8")
-        last["bus_res"].to_csv(out / "ac_bus_voltages.csv", index=False)
-        last["br_res"].to_csv(out / "ac_branch_loading.csv", index=False)
-        # despacho final de la hora (W de la barra de conexión, MW)
-        n.generators_t.p.loc[[hour]].T.rename(columns={hour: "p_mw"}).to_csv(
-            out / "dispatch.csv")
-        factors.rename("factor_retiro").to_csv(out / "loss_factors_final.csv")
+        # AC por hora (tensiones y cargabilidad) con columna `hour`
+        _concat_hourly(last_bus).to_csv(out / "ac_bus_voltages.csv", index=False)
+        _concat_hourly(last_br).to_csv(out / "ac_branch_loading.csv", index=False)
+        # despacho 24h DC (PyPSA) por generador → para comparación DC vs AC
+        n.generators_t.p.loc[hours].to_csv(out / "dispatch_dc.csv")
+        # resumen por hora
+        pd.DataFrame([{"hour": h, **last_summ[h]} for h in hours]).to_csv(
+            out / "summary_by_hour.csv", index=False)
         manifest["_run_dir"] = str(out)
     manifest["iterations"] = iterations
     return manifest
+
+
+def _concat_hourly(by_hour: dict) -> pd.DataFrame:
+    frames = []
+    for h, df in by_hour.items():
+        if df is not None and len(df):
+            d = df.copy()
+            d.insert(0, "hour", h)
+            frames.append(d)
+    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()

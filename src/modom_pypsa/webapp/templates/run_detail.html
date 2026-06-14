@@ -31,8 +31,17 @@
   </div>
 </div>
 
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Comparación DC vs AC (24 h)</h3>
+    <span class="tag">tras converger el lazo</span></div>
+  <p class="muted" style="margin:0 0 8px;font-size:12.5px">Demanda del despacho DC vs
+    generación que la AC requiere; las barras son las pérdidas que la capa AC revela y
+    el lazo realimenta a los factores de nodo.</p>
+  {{ dcac|safe }}
+</div>
+
 <div class="row cols-2">
-  <div class="card"><h3>Mapa de tensión (hora {{ s.hour }})</h3>{{ vmap|safe }}</div>
+  <div class="card"><h3>Mapa de tensión (hora pico {{ s.hour }})</h3>{{ vmap|safe }}</div>
   <div class="card"><h3>Ramas más cargadas</h3>{{ loading|safe }}</div>
 </div>
 {% endblock %}

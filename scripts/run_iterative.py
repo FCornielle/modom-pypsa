@@ -29,16 +29,15 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    hours = [f"h_{i:02d}" for i in range(1, 25)] if args.all else [args.hour]
-    for h in hours:
-        m = run_iterative(hour=h, max_iter=args.max_iter, tol=args.tol,
-                          damping=args.damping, export_dir=args.export_dir,
-                          project_id=args.project_id)
-        s = m["summary"]
-        print(f"{h}: {m['status']} | iters={s['n_iterations']} "
-              f"delta={s.get('final_delta')} losses={s.get('losses_mw')} MW "
-              f"V={s.get('v_min')}-{s.get('v_max')} overloads={s.get('final_overloads')} "
-              f"-> {m['run_id']}")
+    hours = None if args.all else [args.hour]  # None => 24 h en UNA corrida
+    m = run_iterative(hours=hours, max_iter=args.max_iter, tol=args.tol,
+                      damping=args.damping, export_dir=args.export_dir,
+                      project_id=args.project_id)
+    s = m["summary"]
+    print(f"{m['status']} | horas={s['n_hours']} iters={s['n_iterations']} "
+          f"delta={s.get('final_delta')} pico={s.get('hour')} "
+          f"losses={s.get('losses_mw')} MW V={s.get('v_min')}-{s.get('v_max')} "
+          f"-> {m['run_id']}")
     return 0
 
 

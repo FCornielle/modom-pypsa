@@ -12,7 +12,7 @@ import datetime as _dt
 from pathlib import Path
 
 import pandas as pd
-from fastapi import FastAPI, Form, Request
+from fastapi import BackgroundTasks, FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -93,16 +93,19 @@ def run_detail(request: Request, run_id: str):
     return view("run_detail.html", ctx(
         request, active="runs", heading=run.get("label", run_id), run=run,
         iters=iters, convergence=charts.convergence_div(iters),
-        vmap=charts.voltage_map_div(bus, hour), fmt=_fmt,
-        loading=charts.loading_bars_div(br, hour)))
+        vmap=charts.voltage_map_div(bus, hour, branch_loading=br), fmt=_fmt,
+        loading=charts.loading_bars_div(br, hour),
+        dcac=charts.dc_vs_ac_div(da.run_csv(run_id, "summary_by_hour.csv"))))
 
 
 @app.post("/runs/new")
-def run_new(hour: str = Form("h_19"), max_iter: int = Form(6)):
+def run_new(background: BackgroundTasks, scope: str = Form("24h"),
+            hour: str = Form("h_19"), max_iter: int = Form(6)):
     from .iterative import run_iterative
 
-    m = run_iterative(hour=hour, max_iter=max_iter)
-    return RedirectResponse(f"/runs/{m['run_id']}", status_code=303)
+    hours = None if scope == "24h" else [hour]
+    background.add_task(run_iterative, hours=hours, max_iter=max_iter)
+    return RedirectResponse("/runs?launched=1", status_code=303)
 
 
 # --------------------------------------------------------------- Verificación AC
@@ -139,7 +142,7 @@ def _ac_charts(run_id: str, hour: str | None) -> dict:
     bus = da.run_csv(run_id, "ac_bus_voltages.csv")
     br = da.run_csv(run_id, "ac_branch_loading.csv")
     return {
-        "vmap": charts.voltage_map_div(bus, hour),
+        "vmap": charts.voltage_map_div(bus, hour, branch_loading=br),
         "profile": charts.voltage_profile_div(bus, hour),
         "loading": charts.loading_bars_div(br, hour),
     }
@@ -173,7 +176,7 @@ def _audit_items(kind: str):
     if kind == "barra":
         bus = da.run_csv(r["run_id"], "ac_bus_voltages.csv") if r else pd.DataFrame()
         ids = sorted(bus["bus_id_modom"].dropna().unique()) if "bus_id_modom" in bus else []
-        return [(b, b) for b in ids], r
+        return [(b, f"{charts.bus_name(b)} ({b})") for b in ids], r
     if kind in ("linea", "transformador"):
         br = da.run_csv(r["run_id"], "ac_branch_loading.csv") if r else pd.DataFrame()
         want = "line" if kind == "linea" else "trafo"
@@ -188,9 +191,11 @@ def _audit_items(kind: str):
 
 def _audit_panel(kind: str, eq: str | None, hour: str) -> dict:
     r = da.latest_run("iterative") or da.latest_run("ac_verify")
-    rows, series, title = [], [], eq or "—"
+    rows, series, title, ylabel = [], [], eq or "—", ""
     if eq and r:
         if kind == "barra":
+            title = f"{charts.bus_name(eq)} ({eq})"
+            ylabel = "Tensión (pu)"
             bus = da.run_csv(r["run_id"], "ac_bus_voltages.csv")
             sub = bus[bus["bus_id_modom"] == eq] if "bus_id_modom" in bus else pd.DataFrame()
             if "hour" in sub.columns:
@@ -205,6 +210,7 @@ def _audit_panel(kind: str, eq: str | None, hour: str) -> dict:
                         ("kV nominal", _round(row.get("vn_kv"), 1)),
                         ("¿Cruzada?", "Sí" if row.get("matched") else "No")]
         elif kind in ("linea", "transformador"):
+            ylabel = "Cargabilidad (%)"
             br = da.run_csv(r["run_id"], "ac_branch_loading.csv")
             sub = br[br["name"] == eq]
             if "hour" in sub.columns:
@@ -216,15 +222,18 @@ def _audit_panel(kind: str, eq: str | None, hour: str) -> dict:
                 row = cur.iloc[0]
                 rows = [("Cargabilidad (%)", _round(row.get("loading_percent"), 1)),
                         ("P extremo (MW)", _round(row.get("p_from_mw"), 1)),
-                        ("Barra origen", row.get("from_w", "—")),
-                        ("Barra destino", row.get("to_w", "—"))]
+                        ("Barra origen", f"{charts.bus_name(row.get('from_w'))}"),
+                        ("Barra destino", f"{charts.bus_name(row.get('to_w'))}")]
         else:  # generador
+            ylabel = "Despacho (MW)"
             disp = _load_dispatch()
             if eq in disp.columns:
                 series = [(h, _round(disp.at[h, eq], 1)) for h in disp.index]
                 if hour in disp.index:
                     rows = [("Despacho (MW)", _round(disp.at[hour, eq], 1))]
-    return {"kind": kind, "eq": title, "rows": rows, "series": series, "sel_hour": hour}
+    chart = charts.series_line_div(series, ylabel=ylabel, sel_hour=hour)
+    return {"kind": kind, "eq": title, "rows": rows, "series": series,
+            "sel_hour": hour, "chart": chart}
 
 
 def _round(v, dec=3):
