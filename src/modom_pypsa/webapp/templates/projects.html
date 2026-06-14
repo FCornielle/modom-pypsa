@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Proyectos · GridLab SENI{% endblock %}
+{% block content %}
+<p class="page-sub">Agrupa corridas y estudios con tus consideraciones (escenarios, salidas
+de equipo, supuestos) para construir análisis sobre la plataforma.</p>
+
+<div class="row cols-3">
+  <div class="card">
+    <h3>Nuevo proyecto</h3>
+    <form method="post" action="/projects">
+      <div class="field"><label>Nombre</label><input name="name" required placeholder="Estudio AC pico 2026"></div>
+      <div class="field"><label>Descripción</label><input name="description" placeholder="Objetivo del estudio"></div>
+      <div class="field"><label>Consideraciones / supuestos</label>
+        <textarea name="considerations" rows="3" placeholder="Escenarios, salidas, contratos…"></textarea></div>
+      <div class="field"><label>Corridas a enlazar</label>
+        <select name="run_ids" multiple size="4">
+          {% for r in runs %}<option value="{{ r.run_id }}">{{ r.label }} — {{ r.run_id }}</option>{% endfor %}
+        </select></div>
+      <button class="btn" type="submit">+ Crear proyecto</button>
+    </form>
+  </div>
+
+  <div class="span-2">
+    <div class="row cols-2">
+    {% for p in projects %}
+      <div class="card">
+        <div class="hd"><h3>{{ p.name }}</h3><span class="pill ok">Activo</span></div>
+        <p class="muted">{{ p.description or 'Sin descripción' }}</p>
+        {% if p.considerations %}<p style="font-size:13px"><b>Consideraciones:</b> {{ p.considerations }}</p>{% endif %}
+        <div class="metric-row"><span class="k">Corridas</span><b>{{ p.run_ids|length }}</b></div>
+        <div class="metric-row"><span class="k">Creado</span><b>{{ p.created[:10] }}</b></div>
+        {% for rid in p.run_ids %}<a class="tag" href="/runs/{{ rid }}">{{ rid }}</a> {% endfor %}
+      </div>
+    {% else %}
+      <div class="card span-2"><div class="empty-state">Sin proyectos. Crea el primero a la izquierda.</div></div>
+    {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
