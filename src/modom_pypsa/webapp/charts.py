@@ -287,8 +287,9 @@ def bus_name(w: str) -> str:
 
 # ----------------------------------------------------------- auditoría: serie 24h
 def series_line_div(series, ylabel: str = "", sel_hour: str | None = None,
-                    color: str = ACCENT, div_id: str | None = None) -> str:
-    """Gráfico de línea de una serie 24h [(hora, valor)] para la auditoría."""
+                    color: str = ACCENT, div_id: str | None = None,
+                    markers: bool = True, grid: bool = False) -> str:
+    """Gráfico de línea de una serie 24h [(hora, valor)]. `markers`/`grid` opcionales."""
     import plotly.graph_objects as go
 
     pts = [(h, v) for h, v in (series or []) if isinstance(v, (int, float))]
@@ -296,16 +297,16 @@ def series_line_div(series, ylabel: str = "", sel_hour: str | None = None,
         return _empty("Sin serie numérica")
     xs = [_hnum(h) for h, _ in pts]
     ys = [v for _, v in pts]
-    fig = go.Figure(go.Scatter(x=xs, y=ys, mode="lines+markers",
+    fig = go.Figure(go.Scatter(x=xs, y=ys, mode="lines+markers" if markers else "lines",
                                line=dict(color=color, width=2.5),
                                marker=dict(size=6), fill="tozeroy",
-                               fillcolor="rgba(37,99,235,.08)"))
-    if sel_hour is not None and _hnum(sel_hour) in xs:
+                               fillcolor="rgba(176,104,60,.08)"))
+    if markers and sel_hour is not None and _hnum(sel_hour) in xs:
         i = xs.index(_hnum(sel_hour))
         fig.add_trace(go.Scatter(x=[xs[i]], y=[ys[i]], mode="markers",
                                  marker=dict(size=12, color=WARN), showlegend=False))
-    fig.update_yaxes(title=ylabel, gridcolor=GRID)
-    fig.update_xaxes(title="Hora", gridcolor=GRID, dtick=2)
+    fig.update_yaxes(title=ylabel, showgrid=grid, gridcolor=GRID)
+    fig.update_xaxes(title="Hora", showgrid=grid, gridcolor=GRID, dtick=2)
     return _div(fig, div_id=div_id, height=280)
 
 
@@ -460,74 +461,95 @@ def convergence_div(iterations: list[dict]) -> str:
 
 
 # ----------------------------------------------------- MODOM: flujos por rama (24h)
+def _branch_ratings() -> dict:
+    """Snom (MVA) por par de barras, desde pypsa_branch_components (para % de carga)."""
+    rt = {}
+    for p in (LINES_CSV, TRAFOS_CSV):
+        if p.exists():
+            df = pd.read_csv(p)
+            for r in df.itertuples():
+                s = pd.to_numeric(getattr(r, "s_nom_mva_hint", None), errors="coerce")
+                if pd.notna(s) and s > 0:
+                    rt[frozenset((str(r.bus0), str(r.bus1)))] = float(s)
+    return rt
+
+
 def modom_flows_anim_div(flows: pd.DataFrame, hours: list, init_hour: str,
                          div_id: str, top: int = 15) -> str:
-    """Flujo activo (MW) de las ramas MODOM más cargadas, animado por hora."""
+    """Cargabilidad (%) de las ramas MODOM más cargadas, animado por hora.
+
+    El PDD publica el flujo activo en MW; el % = |flujo|/Snom usando los ratings de la
+    red (pypsa_branch_components). Las ramas sin rating se omiten del % ."""
     import plotly.graph_objects as go
 
     if flows.empty:
         return _empty("Sin flujos MODOM")
-    peak = flows.abs().max().sort_values(ascending=False).head(top).index.tolist()[::-1]
+    rt = _branch_ratings()
 
-    def label(c):
+    def endpoints(c):
         p = str(c).split("|")
-        return f"{bus_name(p[0])} → {bus_name(p[1])}" if len(p) >= 2 else str(c)
-    labels = [label(c) for c in peak]
+        return (p[0], p[1]) if len(p) >= 2 else (None, None)
+
+    # cargabilidad por columna y hora (solo ramas con rating)
+    cap = {}
+    for c in flows.columns:
+        a, b = endpoints(c)
+        s = rt.get(frozenset((a, b))) if a else None
+        if s:
+            cap[c] = s
+    if not cap:
+        return _empty("Sin ratings para calcular %")
+    loadpct = flows[list(cap)].abs().div(pd.Series(cap)) * 100.0
+    peak = loadpct.max().sort_values(ascending=False).head(top).index.tolist()[::-1]
+    labels = [f"{bus_name(endpoints(c)[0])} → {bus_name(endpoints(c)[1])}" for c in peak]
 
     def xy(h):
-        vals = [abs(float(flows.at[h, c])) if h in flows.index and c in flows.columns else 0.0
-                for c in peak]
-        return vals
-    v0 = xy(init_hour)
-    fig = go.Figure(go.Bar(x=v0, y=labels, orientation="h", marker_color=ACCENT,
-                           text=[f"{v:.0f}" for v in v0], textposition="auto"))
-    fig.frames = [go.Frame(name=h, data=[go.Bar(x=xy(h), text=[f"{v:.0f}" for v in xy(h)])])
-                  for h in hours]
-    fig.update_xaxes(title="Flujo activo MW", gridcolor=GRID)
+        vals = [float(loadpct.at[h, c]) if h in loadpct.index else 0.0 for c in peak]
+        colors = [BAD if v > 100 else WARN if v > 90 else ACCENT for v in vals]
+        return vals, colors
+    v0, c0 = xy(init_hour)
+    fig = go.Figure(go.Bar(x=v0, y=labels, orientation="h", marker_color=c0,
+                           text=[f"{v:.0f}%" for v in v0], textposition="auto"))
+    fig.frames = [go.Frame(name=h, data=[go.Bar(
+        x=xy(h)[0], marker=dict(color=xy(h)[1]),
+        text=[f"{v:.0f}%" for v in xy(h)[0]])]) for h in hours]
+    fig.update_xaxes(title="Cargabilidad %", showgrid=False, range=[0, 160])
     fig.update_yaxes(automargin=True)
     return _anim_html(fig, div_id, 360)
 
 
 # ----------------------------------------------------- base MODOM: mezcla por tec
 def modom_mix_div() -> str:
-    """Despacho MODOM por tecnología (24h) — la base: muestra que la térmica/hidro
-    corre todo el día (no solo renovables), por regulación de frecuencia."""
+    """Despacho MODOM por tecnología/combustible (24h), coloreado con la misma
+    clasificación que el resto del proyecto. Fuente: modom_generator_dispatch.csv."""
     import plotly.graph_objects as go
 
+    from ..dashboard import FUEL_COLORS, classify_fuel
     disp_p = REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv"
     gen_p = REPO_ROOT / "data/processed/generators/generators.csv"
     if not (disp_p.exists() and gen_p.exists()):
         return _empty("Sin despacho MODOM")
     disp = pd.read_csv(disp_p, index_col=0)
     g = pd.read_csv(gen_p)
-    tech = dict(zip(g.generator_id, g.technology_group.astype(str)))
-
-    def grp(t):
-        t = t.lower()
-        if "solar" in t or "fotovolt" in t or "pv" in t:
-            return "Solar"
-        if "eol" in t or "wind" in t:
-            return "Eólica"
-        if "hidro" in t or "hydro" in t:
-            return "Hidro"
-        if "bcs" in t or "bater" in t or "storage" in t:
-            return "Almacenamiento"
-        return "Térmica"
-    cols = {}
+    name_by = dict(zip(g.generator_id, g.generator_name.astype(str)))
+    tech_by = dict(zip(g.generator_id, g.technology_group.astype(str)))
+    cols: dict[str, list] = {}
     for gid in disp.columns:
-        cols.setdefault(grp(tech.get(gid, "")), []).append(gid)
-    palette = {"Térmica": "#6b7280", "Hidro": "#3b9ae1", "Solar": "#f4c430",
-               "Eólica": "#33c9b8", "Almacenamiento": "#9b7fd4"}
+        fuel = classify_fuel(name_by.get(gid, gid), tech_by.get(gid, ""))
+        cols.setdefault(fuel, []).append(gid)
+    x = [_hnum(h) for h in disp.index]
+    order = ["Carbón", "Fuel Oil / Diesel", "Gas Natural", "Biomasa", "Hidro",
+             "Eólica", "Solar", "Otra"]
     fig = go.Figure()
-    for name in ["Térmica", "Hidro", "Solar", "Eólica", "Almacenamiento"]:
-        if name in cols:
-            s = disp[cols[name]].sum(axis=1)
-            fig.add_trace(go.Scatter(x=list(disp.index), y=s, name=name, stackgroup="m",
-                                     line=dict(width=0.5, color=palette[name]),
-                                     fillcolor=palette[name]))
-    fig.update_yaxes(title="MW", gridcolor=GRID)
-    fig.update_xaxes(gridcolor=GRID)
-    fig.update_layout(legend=dict(orientation="h", y=1.1))
+    for fuel in [f for f in order if f in cols] + [f for f in cols if f not in order]:
+        s = disp[cols[fuel]].sum(axis=1)
+        col = FUEL_COLORS.get(fuel, "#888")
+        fig.add_trace(go.Scatter(x=x, y=s, name=fuel, stackgroup="m",
+                                 mode="none", fillcolor=col,
+                                 hovertemplate=f"{fuel}: %{{y:.0f}} MW<extra></extra>"))
+    fig.update_yaxes(title="MW", showgrid=False)
+    fig.update_xaxes(title="Hora", showgrid=False, dtick=2)
+    fig.update_layout(legend=dict(orientation="h", y=1.12))
     return _div(fig, height=320)
 
 

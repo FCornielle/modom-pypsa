@@ -63,11 +63,22 @@ def _modom_demand() -> pd.Series:
 
 
 def _modom_cost_values() -> dict:
-    """Costo por barra MODOM = costo marginal del sistema × factor de nodo (todas las
-    barras con factor/coordenada)."""
+    """Costo por barra MODOM = costo marginal del sistema × factor de nodo. Cubre TODAS
+    las barras con coordenada; si no hay factor del MODOM se usa 1.0 (sin pérdidas)."""
     mc, lf = _modom_marginal_cost(), _loss_factor_map()
-    return {h: {b: mc.get(h, 0.0) * float(f) for b, f in lf.items() if f == f}
+    buses = list(charts._geometry()["coords"].keys())
+    return {h: {b: mc.get(h, 0.0) * float(lf.get(b, 1.0) or 1.0) for b in buses}
             for h in HOURS}
+
+
+def _cost_bus_options():
+    """(value, label) de barras para el selector, por nombre. Default: una de Palamara."""
+    g = charts._geometry()
+    opts = sorted(((b, f"{g['names'].get(b, b)} ({b})") for b in g["coords"]),
+                  key=lambda t: t[1])
+    default = next((b for b, _ in opts if "PALAMARA" in g["names"].get(b, "").upper()),
+                   opts[0][0] if opts else None)
+    return opts, default
 
 
 def _modom_voltage_values() -> dict:
@@ -80,7 +91,7 @@ def _modom_voltage_values() -> dict:
 
 # --------------------------------------------------------------- MODOM · PDD
 @app.get("/", response_class=HTMLResponse)
-def modom_pdd(request: Request, hour: str = "h_19"):
+def modom_pdd(request: Request, cost_bus: str | None = None):
     dem = _modom_demand()
     disp = _load_dispatch()
     gen = disp.sum(axis=1).reindex(HOURS) if not disp.empty else pd.Series(dtype=float)
@@ -89,7 +100,7 @@ def modom_pdd(request: Request, hour: str = "h_19"):
     flows = pd.read_csv(MODOM_FLOWS_CSV, index_col=0) if MODOM_FLOWS_CSV.exists() else pd.DataFrame()
     kpis = [
         ("Demanda pico", _fmt(dem.max(), " MW"), "PDD del día"),
-        ("Energía", _fmt(dem.sum() / 1, " MWh"), "demanda 24 h"),
+        ("Energía", _fmt(dem.sum(), " MWh"), "demanda 24 h"),
         ("Costo marginal medio", _fmt(pd.Series(mc).mean(), " RD$/MWh"), "del sistema"),
         ("Generación pico", _fmt(gen.max(), " MW"), "despacho MODOM"),
         ("Barras con tensión", str(len(_modom_voltage_values().get(peak, {}))), "resultado MODOM"),
@@ -99,12 +110,18 @@ def modom_pdd(request: Request, hour: str = "h_19"):
                                       hours=HOURS, init_hour=peak, div_id="costmap")
     volt_map = charts.network_map_div(_modom_voltage_values(), None, metric="tension",
                                       hours=HOURS, init_hour=peak, div_id="voltmap")
-    mc_curve = charts.series_line_div([(h, v) for h, v in mc.items()],
-                                      ylabel="RD$/MWh", color="#b0683c", div_id="mccurve")
+    # curva de costo por BARRA (selector, default Palamara) = costo marginal × factor
+    bus_opts, default_bus = _cost_bus_options()
+    cost_bus = cost_bus or default_bus
+    lf = _loss_factor_map()
+    factor = float(lf.get(cost_bus, 1.0) or 1.0)
+    mc_curve = charts.series_line_div(
+        [(h, mc.get(h, 0.0) * factor) for h in HOURS], ylabel="RD$/MWh",
+        color="#b0683c", div_id="mccurve", markers=False, grid=False)
     return view("modom_pdd.html", ctx(
         request, active="modom", heading="MODOM · PDD del día (24 h)", kpis=kpis,
         modom_mix=charts.modom_mix_div(), cost_map=cost_map, volt_map=volt_map,
-        mc_curve=mc_curve, peak=peak,
+        mc_curve=mc_curve, peak=peak, bus_opts=bus_opts, cost_bus=cost_bus,
         flows=charts.modom_flows_anim_div(flows, HOURS, peak, "flowsbar"),
         sync_cost=charts.sync_script("costmap", [], ["mccurve"]),
         sync_volt=charts.sync_script("voltmap", ["flowsbar"], [])))
