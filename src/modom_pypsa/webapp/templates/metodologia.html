@@ -1,54 +1,133 @@
 {% extends "base.html" %}
 {% block title %}Metodología · GridLab SENI{% endblock %}
 {% block content %}
-<p class="page-sub">Qué considera el MODOM (modelo oficial del OC: GAMS + DIgSILENT) y qué
-reproduce nuestro modelo. Transparencia para no leer mal los resultados.</p>
+<script>
+  window.MathJax = {tex: {inlineMath: [['\\(','\\)']], displayMath: [['$$','$$']]}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+  .eq{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 14px;
+      margin:8px 0;overflow-x:auto;font-size:13px}
+  .doc h4{margin:16px 0 6px;font-size:14.5px} .doc p{font-size:13.5px;color:#333}
+  .doc li{font-size:13px;margin:4px 0}
+</style>
+
+<p class="page-sub">Cómo formula el problema el <b>MODOM</b> (modelo oficial del OC:
+GAMS + DIgSILENT) y qué reproduce <b>nuestro modelo</b> (PyPSA + pandapower) hasta hoy.
+Con las ecuaciones de cada uno para entender el alcance y las diferencias.</p>
 
 <div class="card" style="margin-bottom:16px;border-left:3px solid var(--warn)">
-  <h3>⚠ El sistema NO funciona solo con renovables</h3>
-  <p style="font-size:13.5px;margin:0">A mediodía el solar es abundante, pero la red
-  necesita <b>generación síncrona</b> (térmica/hidro) encendida para <b>regulación de
-  frecuencia e inercia</b> — la fotovoltaica no las provee. Por eso, aunque el
-  <b>precio de energía</b> de un modelo puramente energético colapsaría a ~0 a mediodía
-  (excedente de VRE gratis), el <b>costo marginal real del MODOM se mantiene alto</b>
-  (la unidad térmica marginal sigue fijando el precio). El mapa de <b>Costo marginal
-  MODOM</b> usa esa lógica: costo marginal del despacho MODOM × factor de nodo por barra.</p>
+  <h3>⚠ El sistema NO opera solo con renovables</h3>
+  <p style="font-size:13.5px;margin:0">A mediodía sobra solar, pero la red necesita
+  <b>máquinas síncronas</b> (térmica/hidro) encendidas para <b>inercia y regulación de
+  frecuencia</b> — la fotovoltaica no las aporta. Por eso el costo marginal del MODOM se
+  mantiene alto al mediodía aunque un modelo puramente energético daría ~0 (excedente VRE
+  gratis). El gráfico "Despacho por tecnología" (abajo) lo evidencia.</p>
 </div>
 
-<div class="card" style="margin-bottom:16px">
-  <h3>Consideraciones del modelo</h3>
+<div class="row cols-2">
+  <!-- ============================ MODOM ============================ -->
+  <div class="card doc">
+    <h3>MODOM — OC (GAMS + DIgSILENT)</h3>
+    <p>Dos motores que iteran: <b>GAMS</b> (UC + despacho económico, red DC con factores de
+    pérdidas y flowgates) y <b>DIgSILENT/PowerFactory</b> (flujo AC: tensiones, reactiva,
+    taps). PowerFactory calcula los <b>factores de nodo</b> (pérdidas marginales) y GAMS
+    los consume; iteran hasta converger.</p>
+
+    <h4>1. Objetivo — costo de operación</h4>
+    <div class="eq">$$\min \sum_{t}\sum_{g}\big(CVP_g\,p_{g,t} + c^{su}_g\,u^{su}_{g,t}\big)$$</div>
+    <p>\(CVP_g\): costo variable de producción (combustible, declarado VEROPE);
+    \(p_{g,t}\): potencia; \(c^{su}\): costo de arranque; \(u^{su}\): variable de arranque.</p>
+
+    <h4>2. Balance nodal (con pérdidas)</h4>
+    <div class="eq">$$\sum_{g\in n} p_{g,t} - f^{ret}_{n}\,D_{n,t} - \sum_{k} H_{n,k} f_{k,t} = 0
+    \quad \forall n,t$$</div>
+    <p>\(f^{ret}_n\): <b>factor de nodo (retiro)</b> = penalización por pérdidas marginales
+    en la barra \(n\) (lo calcula PowerFactory); \(D_{n,t}\): demanda; \(f_{k,t}\): flujo de
+    la rama \(k\); \(H\): incidencia.</p>
+
+    <h4>3. Red DC + flowgates</h4>
+    <div class="eq">$$f_{k,t}=\frac{\theta_{i,t}-\theta_{j,t}}{x_k},\qquad
+    |f_{k,t}|\le \bar f_k,\qquad \sum_{k\in FG} \beta_k f_{k,t}\le \overline{FG}$$</div>
+
+    <h4>4. Unit commitment, límites y reservas</h4>
+    <div class="eq">$$u_{g,t}\underline P_g \le p_{g,t}\le u_{g,t}\bar P_g,\quad
+    u_{g,t}\in\{0,1\}$$
+    $$\sum_{g\in \text{sinc}} r_{g,t}\ge R^{reg}_t \quad(\text{regulación/inercia})$$</div>
+    <p>Más rampas, tiempos mínimos de arranque/parada, contratos y seguridad.</p>
+
+    <h4>5. AC en DIgSILENT (verificación)</h4>
+    <div class="eq">$$P_i=\sum_j |V_i||V_j|(G_{ij}\cos\theta_{ij}+B_{ij}\sin\theta_{ij})$$
+    $$Q_i=\sum_j |V_i||V_j|(G_{ij}\sin\theta_{ij}-B_{ij}\cos\theta_{ij})$$</div>
+    <p>Flujo AC completo (P, Q, V, θ), taps OLTC, reactiva de máquinas, shunts. De aquí
+    salen los factores de nodo que vuelven a GAMS (lazo de iteración).</p>
+  </div>
+
+  <!-- ============================ NUESTRO ============================ -->
+  <div class="card doc">
+    <h3>Nuestro modelo — PyPSA + pandapower (hasta hoy)</h3>
+    <p>Capa DC (PyPSA, LP) <b>dentro del commitment del MODOM</b>, verificada con AC
+    (pandapower) sobre la red real de DIgSILENT, e iterando los factores de nodo
+    (Fase 3.4). Reproduce el operativo del OC sin re-decidir el commitment.</p>
+
+    <h4>1. Objetivo — despacho económico (LP)</h4>
+    <div class="eq">$$\min \sum_{t}\sum_{g} CVP_g\,p_{g,t} + VOLL\sum_{n,t} ens_{n,t}$$</div>
+    <p>Sin variables binarias: el <b>encendido se toma del despacho MODOM</b>
+    (\(S\_DESPACHOM\)). \(ens\): energía no suministrada (holgura cara); más una holgura de
+    sobre-generación ("dump").</p>
+
+    <h4>2. Balance nodal (con factores del MODOM)</h4>
+    <div class="eq">$$\sum_{g\in n} p_{g,t} - f^{ret}_{n}\,D_{n,t}
+    - \sum_{k} H_{n,k} f_{k,t} + ens_{n,t} = 0$$</div>
+    <p>Mismo \(f^{ret}_n\): consumimos los <b>factores de nodo del MODOM</b> y los
+    <b>re-estimamos</b> en el lazo DC↔AC.</p>
+
+    <h4>3. Red DC (KVL/KCL en por-unidad)</h4>
+    <div class="eq">$$f_{k,t}=\frac{\theta_{i,t}-\theta_{j,t}}{x_k},\qquad |f_{k,t}|\le \bar f_k$$</div>
+    <p>Líneas y transformadores como ramas; impedancias en por-unidad del MODOM. Sin
+    flowgates ni N-1 todavía.</p>
+
+    <h4>4. Commitment y límites</h4>
+    <div class="eq">$$u^{MODOM}_{g,t}\underline P_g \le p_{g,t}\le u^{MODOM}_{g,t}\,\bar P_g(t)$$
+    $$\textstyle\sum_{g\in\text{sinc}} p_{g,t}\ge \phi\, D_t \;(\text{mín. síncrono, opc.})$$</div>
+    <p>VRE topada por pronóstico (\(\bar P(t)\)); restricción opcional de mínimo síncrono
+    para regulación de frecuencia.</p>
+
+    <h4>5. AC en pandapower (verificación)</h4>
+    <div class="eq">$$\text{Newton–Raphson sobre } P_i,Q_i(V,\theta)\text{ de la red real DIgSILENT}$$</div>
+    <p>Inyectamos nuestro despacho por <code>for_name</code>, resolvemos el flujo AC y
+    <b>agregamos V y cargabilidad a las 717 barras MODOM</b>.</p>
+
+    <h4>6. Lazo iterativo DC↔AC y precio</h4>
+    <div class="eq">$$f^{ret,(m+1)}_n = 1 + (f^{ret,(m)}_n-1)\frac{L^{AC}}{\sum_j (f^{ret,(m)}_j-1)D_j}$$
+    $$\pi_{n,t} = \lambda^{MODOM}_t \cdot f^{ret}_n \quad(\text{costo por barra})$$</div>
+    <p>Re-estimamos los factores con las pérdidas \(L^{AC}\) medidas por la AC hasta
+    estabilizar; el costo por barra usa el costo marginal del MODOM \(\lambda^{MODOM}\) ×
+    factor de nodo.</p>
+  </div>
+</div>
+
+<div class="card" style="margin:16px 0">
+  <h3>Qué modela cada uno (resumen)</h3>
   <table class="tbl">
-    <thead><tr><th>Aspecto</th><th>MODOM (OC)</th><th>Nuestro modelo</th></tr></thead>
+    <thead><tr><th>Componente</th><th>MODOM (OC)</th><th>Nuestro modelo</th></tr></thead>
     <tbody>
-    <tr><td><b>Despacho económico</b></td><td>UC + despacho (GAMS), por mérito de CVP</td>
-      <td>LP de despacho (PyPSA) dentro del <b>commitment del MODOM</b></td></tr>
-    <tr><td><b>Unit commitment</b></td><td>Decide encendido/apagado con contratos,
-      reservas, seguridad</td><td>Se <b>toma del despacho MODOM</b> (S_DESPACHOM); no se
-      re-decide</td></tr>
-    <tr><td><b>Regulación de frecuencia / reservas</b></td>
-      <td>Co-optimiza reservas; mínimo síncrono por inercia</td>
-      <td>Restricción opcional de <b>mínimo síncrono</b>; el costo se refleja vía el
-      piso de regulación en el precio</td></tr>
-    <tr><td><b>Costos (CVP)</b></td><td>CVP declarados (VEROPE) + combustible</td>
-      <td>CVP declarado VEROPE con override; si falta, efectivo del MODOM</td></tr>
-    <tr><td><b>Pérdidas / factores de nodo</b></td><td>PowerFactory calcula factores
-      marginales; GAMS los consume</td><td>Consumimos los <b>factores de nodo del MODOM</b>
-      y los re-estimamos en el lazo DC↔AC</td></tr>
-    <tr><td><b>Red</b></td><td>DC (reactancias + factores + flowgates) en GAMS; AC en
-      DIgSILENT</td><td>DC en PyPSA + <b>AC en pandapower</b> sobre la red real DIgSILENT</td></tr>
-    <tr><td><b>Seguridad N-1</b></td><td>Contingencias y flowgates</td>
-      <td>Pendiente (roadmap)</td></tr>
-    <tr><td><b>Precio nodal</b></td><td>Costo marginal × factor de nodo</td>
-      <td>Igual estructura: <b>costo marginal MODOM × factor de nodo</b> por barra</td></tr>
+    <tr><td>Despacho económico</td><td>✅ UC + despacho (GAMS)</td><td>✅ LP dentro del commitment MODOM</td></tr>
+    <tr><td>Unit commitment</td><td>✅ binario, rampas, tiempos</td><td>➖ se toma del MODOM</td></tr>
+    <tr><td>Factores de nodo (pérdidas)</td><td>✅ de PowerFactory</td><td>✅ consumidos + re-estimados</td></tr>
+    <tr><td>Red DC + flowgates</td><td>✅</td><td>✅ DC · ➖ sin flowgates</td></tr>
+    <tr><td>Reservas / regulación de frecuencia</td><td>✅ co-optimizadas</td><td>➖ mínimo síncrono (opc.)</td></tr>
+    <tr><td>Flujo AC (V, Q, taps)</td><td>✅ DIgSILENT</td><td>✅ pandapower sobre red real</td></tr>
+    <tr><td>Iteración pérdidas DC↔AC</td><td>✅ GAMS↔PowerFactory</td><td>✅ Fase 3.4</td></tr>
+    <tr><td>Seguridad N-1</td><td>✅</td><td>❌ pendiente</td></tr>
+    <tr><td>Precio nodal</td><td>✅ costo marg. × factor</td><td>✅ misma estructura</td></tr>
     </tbody>
   </table>
 </div>
 
 <div class="card">
   <div class="hd"><h3>Base MODOM — despacho por tecnología (24 h)</h3>
-    <span class="tag">resultado oficial de referencia</span></div>
-  <p class="muted" style="margin:0 0 8px;font-size:12.5px">La térmica/hidro corre todo el
-  día (incluido el mediodía solar): evidencia de que el sistema no opera solo con VRE.</p>
+    <span class="tag">evidencia</span></div>
   {{ modom_mix|safe }}
 </div>
 {% endblock %}

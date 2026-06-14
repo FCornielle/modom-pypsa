@@ -459,6 +459,35 @@ def convergence_div(iterations: list[dict]) -> str:
     return _div(fig, height=300)
 
 
+# ----------------------------------------------------- MODOM: flujos por rama (24h)
+def modom_flows_anim_div(flows: pd.DataFrame, hours: list, init_hour: str,
+                         div_id: str, top: int = 15) -> str:
+    """Flujo activo (MW) de las ramas MODOM más cargadas, animado por hora."""
+    import plotly.graph_objects as go
+
+    if flows.empty:
+        return _empty("Sin flujos MODOM")
+    peak = flows.abs().max().sort_values(ascending=False).head(top).index.tolist()[::-1]
+
+    def label(c):
+        p = str(c).split("|")
+        return f"{bus_name(p[0])} → {bus_name(p[1])}" if len(p) >= 2 else str(c)
+    labels = [label(c) for c in peak]
+
+    def xy(h):
+        vals = [abs(float(flows.at[h, c])) if h in flows.index and c in flows.columns else 0.0
+                for c in peak]
+        return vals
+    v0 = xy(init_hour)
+    fig = go.Figure(go.Bar(x=v0, y=labels, orientation="h", marker_color=ACCENT,
+                           text=[f"{v:.0f}" for v in v0], textposition="auto"))
+    fig.frames = [go.Frame(name=h, data=[go.Bar(x=xy(h), text=[f"{v:.0f}" for v in xy(h)])])
+                  for h in hours]
+    fig.update_xaxes(title="Flujo activo MW", gridcolor=GRID)
+    fig.update_yaxes(automargin=True)
+    return _anim_html(fig, div_id, 360)
+
+
 # ----------------------------------------------------- base MODOM: mezcla por tec
 def modom_mix_div() -> str:
     """Despacho MODOM por tecnología (24h) — la base: muestra que la térmica/hidro

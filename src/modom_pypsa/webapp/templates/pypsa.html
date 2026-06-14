@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}PyPSA · Modelo · GridLab SENI{% endblock %}
+{% block content %}
+<p class="page-sub">Nuestro modelo de <b>despacho económico (DC)</b> en PyPSA, dentro del
+commitment del MODOM. Es la capa que luego verifica la AC (pandapower).</p>
+
+<div class="row cols-4" style="margin-bottom:16px">
+  {% for l,v,sub in kpis %}
+  <div class="card kpi"><div class="l">{{ l }}</div><div class="v">{{ v }}</div>
+    <div class="sub">{{ sub }}</div></div>
+  {% endfor %}
+</div>
+
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Mezcla de generación (PyPSA)</h3><span class="tag">por hora</span></div>
+  {{ base.mix|safe if base.mix else '<div class="chart-empty">Corre el caso base PyPSA</div>' }}
+</div>
+
+<div class="row cols-2">
+  <div class="card"><h3>Precio nodal · barra de referencia (LP energético)</h3>
+    <p class="muted" style="margin:0 0 8px;font-size:12.5px">Cae a ~0 a mediodía por el
+    excedente solar gratis del LP energético — ver <a href="/metodologia">Metodología</a>;
+    el costo fiel al MODOM está en MODOM · PDD.</p>
+    {{ base.price|safe if base.price else '<div class="chart-empty">Sin datos</div>' }}</div>
+  <div class="card"><h3>Líneas más cargadas (DC)</h3>
+    {{ base.cong|safe if base.cong else '<div class="chart-empty">Sin datos</div>' }}</div>
+</div>
+{% endblock %}

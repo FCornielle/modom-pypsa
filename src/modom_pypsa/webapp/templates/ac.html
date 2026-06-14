@@ -39,10 +39,28 @@ hora (▶) · zoom con la rueda · leyenda con toggles.</p>
   {{ nmap|safe }}
 </div>
 
-<div class="row cols-2">
+<div class="row cols-2" style="margin-bottom:16px">
   <div class="card"><h3>Perfil de tensión <span class="tag">sigue la hora del mapa</span></h3>{{ profile|safe }}</div>
   <div class="card"><h3>Ramas más cargadas <span class="tag">sigue la hora del mapa</span></h3>{{ loading|safe }}</div>
 </div>
+
+{% if iters %}
+<div class="row cols-2" style="margin-bottom:16px">
+  <div class="card"><div class="hd"><h3>Convergencia del lazo DC↔AC</h3>
+    <span class="tag">{{ 'convergió' if summary.loss_factor_converged else 'tope de iteraciones' }}</span></div>
+    {{ convergence|safe }}
+    <table class="tbl" style="margin-top:10px"><thead><tr><th>#</th><th>Δ factor</th>
+      <th>Pérdidas</th><th>Violaciones</th><th>Sobrecargas</th></tr></thead><tbody>
+      {% for it in iters %}<tr><td>{{ it.iter }}</td>
+        <td class="num">{{ '%.5f'|format(it.loss_factor_delta) }}</td>
+        <td class="num">{{ '%.1f'|format(it.losses_mw) }}</td>
+        <td class="num">{{ it.n_violations }}</td><td class="num">{{ it.n_overload }}</td></tr>{% endfor %}
+    </tbody></table>
+  </div>
+  <div class="card"><div class="hd"><h3>Comparación DC vs AC (24 h)</h3>
+    <span class="tag">demanda DC vs gen AC + pérdidas</span></div>{{ dcac|safe }}</div>
+</div>
+{% endif %}
 {{ sync|safe }}
 {% endif %}
 {% endblock %}

@@ -51,85 +51,90 @@ def _fmt(v, unit="", dec=0):
     return f"{v:,.{dec}f}{unit}"
 
 
-# --------------------------------------------------------------- Dashboard
+MODOM_V_CSV = REPO_ROOT / "data/processed/modom_results/modom_bus_voltage.csv"
+MODOM_FLOWS_CSV = REPO_ROOT / "data/processed/modom_results/modom_branch_flows.csv"
+LOADS_CSV = REPO_ROOT / "data/processed/loads_time_series/loads_time_series.csv"
+
+
+def _modom_demand() -> pd.Series:
+    if not LOADS_CSV.exists():
+        return pd.Series(dtype=float)
+    return pd.read_csv(LOADS_CSV).groupby("snapshot_id").p_set_mw.sum().reindex(HOURS)
+
+
+def _modom_cost_values() -> dict:
+    """Costo por barra MODOM = costo marginal del sistema × factor de nodo (todas las
+    barras con factor/coordenada)."""
+    mc, lf = _modom_marginal_cost(), _loss_factor_map()
+    return {h: {b: mc.get(h, 0.0) * float(f) for b, f in lf.items() if f == f}
+            for h in HOURS}
+
+
+def _modom_voltage_values() -> dict:
+    if not MODOM_V_CSV.exists():
+        return {}
+    mv = pd.read_csv(MODOM_V_CSV, index_col=0)
+    return {h: {b: float(mv.at[h, b]) for b in mv.columns if pd.notna(mv.at[h, b])}
+            for h in mv.index}
+
+
+# --------------------------------------------------------------- MODOM · PDD
 @app.get("/", response_class=HTMLResponse)
-def dashboard(request: Request):
-    runs = da.list_runs()
-    latest = runs[0] if runs else None
-    s = (latest or {}).get("summary", {})
-    kpis = [
-        ("⚡", _fmt(s.get("demand_mw"), " MW"), "Demanda AC", latest["label"] if latest else "—"),
-        ("◐", _fmt(s.get("losses_mw"), " MW", 1), "Pérdidas", "del flujo AC"),
-        ("▲", _fmt(s.get("v_max"), " pu", 3), "Tensión máx", "perfil AC"),
-        ("▼", _fmt(s.get("v_min"), " pu", 3), "Tensión mín", "perfil AC"),
-        ("◈", f"{s.get('modom_buses_with_v','—')}/{s.get('modom_buses_total','717')}",
-         "Barras con V", "agregadas a MODOM"),
-        ("⚠", str(s.get("n_v_below_090", 0)), "Barras < 0.9 pu", "violaciones"),
-    ]
-    base = charts.base_figures()
-    # mapa de COSTO marginal por barra (animado 24h) — fiel al MODOM
-    cost_map, sync = "", ""
-    if latest:
-        br = da.run_csv(latest["run_id"], "ac_branch_loading.csv")
-        vals, hours = _metric_values(latest["run_id"], "costo")
-        if vals:
-            cost_map = charts.network_map_div(
-                vals, br, metric="costo", hours=hours,
-                init_hour=(latest.get("summary") or {}).get("hour", "h_19"),
-                div_id="costmap")
-            sync = charts.sync_script("costmap", [], ["mccurve", "mix-div"])
-    # costo marginal del sistema (MODOM) por hora — positivo a mediodía (no 0)
+def modom_pdd(request: Request, hour: str = "h_19"):
+    dem = _modom_demand()
+    disp = _load_dispatch()
+    gen = disp.sum(axis=1).reindex(HOURS) if not disp.empty else pd.Series(dtype=float)
     mc = _modom_marginal_cost()
+    peak = dem.idxmax() if len(dem.dropna()) else "h_19"
+    flows = pd.read_csv(MODOM_FLOWS_CSV, index_col=0) if MODOM_FLOWS_CSV.exists() else pd.DataFrame()
+    kpis = [
+        ("Demanda pico", _fmt(dem.max(), " MW"), "PDD del día"),
+        ("Energía", _fmt(dem.sum() / 1, " MWh"), "demanda 24 h"),
+        ("Costo marginal medio", _fmt(pd.Series(mc).mean(), " RD$/MWh"), "del sistema"),
+        ("Generación pico", _fmt(gen.max(), " MW"), "despacho MODOM"),
+        ("Barras con tensión", str(len(_modom_voltage_values().get(peak, {}))), "resultado MODOM"),
+        ("Hora pico", peak.replace("h_", ""), "máxima demanda"),
+    ]
+    cost_map = charts.network_map_div(_modom_cost_values(), None, metric="costo",
+                                      hours=HOURS, init_hour=peak, div_id="costmap")
+    volt_map = charts.network_map_div(_modom_voltage_values(), None, metric="tension",
+                                      hours=HOURS, init_hour=peak, div_id="voltmap")
     mc_curve = charts.series_line_div([(h, v) for h, v in mc.items()],
                                       ylabel="RD$/MWh", color="#b0683c", div_id="mccurve")
-    return view("dashboard.html", ctx(
-        request, active="dashboard", heading="Dashboard", kpis=kpis,
-        base=base, runs=runs[:6], cost_map=cost_map, mc_curve=mc_curve, sync=sync))
+    return view("modom_pdd.html", ctx(
+        request, active="modom", heading="MODOM · PDD del día (24 h)", kpis=kpis,
+        modom_mix=charts.modom_mix_div(), cost_map=cost_map, volt_map=volt_map,
+        mc_curve=mc_curve, peak=peak,
+        flows=charts.modom_flows_anim_div(flows, HOURS, peak, "flowsbar"),
+        sync_cost=charts.sync_script("costmap", [], ["mccurve"]),
+        sync_volt=charts.sync_script("voltmap", ["flowsbar"], [])))
 
 
-# --------------------------------------------------------------- Corridas
-@app.get("/runs", response_class=HTMLResponse)
-def runs_list(request: Request):
-    return view("runs.html", ctx(
-        request, active="runs", heading="Corridas",
-        runs=da.list_runs(), counts=da.run_counts()))
+# --------------------------------------------------------------- PyPSA · Modelo (DC)
+@app.get("/pypsa", response_class=HTMLResponse)
+def pypsa_model(request: Request):
+    base = charts.base_figures()
+    summ = {}
+    sp = REPO_ROOT / "results/pypsa_basecase/pypsa_basecase_summary.json"
+    if sp.exists():
+        import json
+        summ = json.loads(sp.read_text(encoding="utf-8"))
+    kpis = [
+        ("Demanda pico", _fmt(summ.get("peak_load_mw"), " MW"), "despacho DC"),
+        ("Energía servida", _fmt(summ.get("served_mwh"), " MWh"), "PyPSA LOPF"),
+        ("No suministrada", _fmt(summ.get("unserved_mwh"), " MWh"), "holgura"),
+        ("Líneas ≥90%", str(summ.get("lines_above_90pct_peak", "—")), "pico"),
+    ]
+    return view("pypsa.html", ctx(
+        request, active="pypsa", heading="PyPSA · Modelo de despacho (DC)",
+        kpis=kpis, base=base))
 
 
-@app.get("/runs/{run_id}", response_class=HTMLResponse)
-def run_detail(request: Request, run_id: str):
-    run = da.get_run(run_id)
-    if run is None:
-        return RedirectResponse("/runs", status_code=303)
-    iters = run.get("iterations", [])
-    bus = da.run_csv(run_id, "ac_bus_voltages.csv")
-    br = da.run_csv(run_id, "ac_branch_loading.csv")
-    hour = (run.get("summary") or {}).get("hour")
-    return view("run_detail.html", ctx(
-        request, active="runs", heading=run.get("label", run_id), run=run,
-        iters=iters, convergence=charts.convergence_div(iters),
-        vmap=charts.voltage_map_div(bus, hour, branch_loading=br), fmt=_fmt,
-        loading=charts.loading_bars_div(br, hour),
-        dcac=charts.dc_vs_ac_div(da.run_csv(run_id, "summary_by_hour.csv"))))
-
-
-@app.post("/runs/new")
-def run_new(background: BackgroundTasks, scope: str = Form("24h"),
-            hour: str = Form("h_19"), max_iter: int = Form(6)):
-    from .iterative import run_iterative
-
-    hours = None if scope == "24h" else [hour]
-    background.add_task(run_iterative, hours=hours, max_iter=max_iter)
-    return RedirectResponse("/runs?launched=1", status_code=303)
-
-
-# --------------------------------------------------------------- Verificación AC
+# --------------------------------------------------------------- Pandapower · AC
 def _ac_run(run_id: str | None):
     if run_id:
         return da.get_run(run_id)
     return da.latest_run("iterative") or da.latest_run("ac_verify") or da.latest_run()
-
-
-MODOM_V_CSV = REPO_ROOT / "data/processed/modom_results/modom_bus_voltage.csv"
 MODOM_DISP_CSV = REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv"
 NODAL_FACTORS_CSV = REPO_ROOT / "data/processed/modom_results/nodal_factors.csv"
 GENERATORS_CSV2 = REPO_ROOT / "data/processed/generators/generators.csv"
@@ -215,7 +220,7 @@ def ac_page(request: Request, run: str | None = None, metric: str = "tension"):
     runs = [m for m in da.list_runs() if m.get("type") in ("iterative", "ac_verify")]
     if r is None:
         return view("ac.html", ctx(
-            request, active="ac", heading="Verificación AC", run=None, runs=runs))
+            request, active="ac", heading="Pandapower · Modelo AC", run=None, runs=runs))
     rid = r["run_id"]
     summ = r.get("summary", {})
     peak = summ.get("hour", "h_19")
@@ -233,10 +238,13 @@ def ac_page(request: Request, run: str | None = None, metric: str = "tension"):
         profile = charts.voltage_profile_div(bus, peak)
         loading = charts.loading_bars_div(br, peak)
         sync = ""
+    iters = r.get("iterations", [])
     return view("ac.html", ctx(
-        request, active="ac", heading="Verificación AC", run=r, runs=runs,
+        request, active="ac", heading="Pandapower · Modelo AC", run=r, runs=runs,
         summary=summ, fmt=_fmt, metric=metric, metric_labels=METRIC_LABELS,
-        peak=peak, nmap=nmap, profile=profile, loading=loading, sync=sync))
+        peak=peak, nmap=nmap, profile=profile, loading=loading, sync=sync,
+        iters=iters, convergence=charts.convergence_div(iters),
+        dcac=charts.dc_vs_ac_div(da.run_csv(rid, "summary_by_hour.csv"))))
 
 
 # --------------------------------------------------------------- Auditoría
@@ -333,22 +341,6 @@ def _round(v, dec=3):
         return round(f, dec) if f == f else "—"
     except (TypeError, ValueError):
         return "—"
-
-
-# --------------------------------------------------------------- Proyectos
-@app.get("/projects", response_class=HTMLResponse)
-def projects_page(request: Request):
-    return view("projects.html", ctx(
-        request, active="projects", heading="Proyectos",
-        projects=da.list_projects(), runs=da.list_runs()))
-
-
-@app.post("/projects")
-def project_create(name: str = Form(...), description: str = Form(""),
-                   considerations: str = Form(""), run_ids: list[str] = Form(default=[])):
-    da.save_project(name=name, description=description,
-                    considerations=considerations, run_ids=run_ids)
-    return RedirectResponse("/projects", status_code=303)
 
 
 # --------------------------------------------------------------- Metodología

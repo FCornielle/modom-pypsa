@@ -28,8 +28,8 @@ def client():
 
 
 @pytest.mark.parametrize("url", [
-    "/", "/runs", "/ac", "/audit", "/audit?kind=linea", "/audit?kind=generador",
-    "/projects", "/coming/datasets",
+    "/", "/pypsa", "/ac", "/ac?metric=costo", "/audit", "/audit?kind=linea",
+    "/metodologia", "/coming/datasets",
 ])
 def test_pages_ok(client, url):
     r = client.get(url)
@@ -37,17 +37,12 @@ def test_pages_ok(client, url):
     assert "GridLab" in r.text  # shell renderizado
 
 
-def test_dashboard_has_sidebar_sections(client):
+def test_sidebar_sections(client):
     t = client.get("/").text
-    for label in ("Dashboard", "Corridas", "Verificación AC", "Auditoría", "Proyectos"):
+    for label in ("MODOM", "PyPSA", "Pandapower", "Auditoría", "Metodología"):
         assert label in t
 
 
-def test_create_project_roundtrip(client, tmp_path, monkeypatch):
-    from modom_pypsa.webapp import data_access as da
-    monkeypatch.setattr(da, "PROJECTS_DIR", tmp_path)
-    r = client.post("/projects", data={"name": "Prueba AC", "description": "x",
-                                       "considerations": "pico"}, follow_redirects=False)
-    assert r.status_code == 303
-    projs = da.list_projects()
-    assert any(p["name"] == "Prueba AC" for p in projs)
+def test_removed_pages_are_gone(client):
+    assert client.get("/projects").status_code == 404
+    assert client.get("/runs").status_code == 404

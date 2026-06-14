@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}MODOM · PDD · GridLab SENI{% endblock %}
+{% block content %}
+<p class="page-sub">Resultados del <b>MODOM</b> para el PDD del día (24 h), fieles a la
+publicación del OC: despacho, costo marginal por barra, tensiones y flujos.</p>
+
+<div class="row cols-6" style="margin-bottom:16px">
+  {% for l,v,sub in kpis %}
+  <div class="card kpi"><div class="l">{{ l }}</div><div class="v">{{ v }}</div>
+    <div class="sub">{{ sub }}</div></div>
+  {% endfor %}
+</div>
+
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Costo marginal por barra (RD$/MWh)</h3>
+    <span class="tag">animado 24 h · ▶ play · rueda para zoom</span></div>
+  <p class="muted" style="margin:0 0 8px;font-size:12.5px">Costo marginal del sistema ×
+  factor de nodo. Se mantiene alto a mediodía (la térmica sigue marginal por regulación);
+  ver <a href="/metodologia">Metodología</a>.</p>
+  {{ cost_map|safe }}
+</div>
+
+<div class="row cols-2" style="margin-bottom:16px">
+  <div class="card"><div class="hd"><h3>Despacho por tecnología</h3>
+    <span class="tag">24 h</span></div>{{ modom_mix|safe }}</div>
+  <div class="card"><h3>Costo marginal del sistema (MODOM)</h3>
+    <p class="muted" style="margin:0 0 8px;font-size:12.5px">CVP de la unidad síncrona
+    marginal. La línea sigue la hora del mapa de costo.</p>{{ mc_curve|safe }}</div>
+</div>
+
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Tensiones por barra (MODOM)</h3>
+    <span class="tag">animado 24 h</span></div>
+  {{ volt_map|safe }}
+</div>
+
+<div class="card">
+  <div class="hd"><h3>Flujos por rama (MODOM)</h3>
+    <span class="tag">sigue la hora del mapa de tensión</span></div>
+  {{ flows|safe }}
+</div>
+{{ sync_cost|safe }}{{ sync_volt|safe }}
+{% endblock %}
