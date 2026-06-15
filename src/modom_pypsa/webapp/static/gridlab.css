@@ -111,6 +111,11 @@ label{font-size:12.5px;color:var(--muted);display:block;margin:0 0 5px}
 /* ---- misc ---- */
 .muted{color:var(--muted)} .right{text-align:right} .mono{font-variant-numeric:tabular-nums}
 .src{font-size:11px;color:var(--muted);margin:8px 0 0;font-style:italic}
+.anim-ctrl{display:flex;align-items:center;gap:8px;margin:6px 0 2px}
+.anim-ctrl button{background:var(--accent);color:#fff;border:none;border-radius:8px;
+  width:34px;height:30px;font-size:13px;cursor:pointer}
+.anim-ctrl button:hover{background:#1d4fd7}
+.anim-ctrl .anim-h{font-size:12.5px;color:var(--muted);font-weight:600}
 .tag{font-size:11px;color:var(--muted);background:var(--bg);border:1px solid var(--line);
   padding:2px 8px;border-radius:7px}
 .metric-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}

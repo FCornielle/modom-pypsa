@@ -37,6 +37,7 @@ hora (▶) · zoom con la rueda · leyenda con toggles.</p>
   <div class="hd"><h3>Mapa del SENI — {{ metric_labels[metric] }}</h3>
     <span class="tag">animado 24 h · pico {{ peak }}</span></div>
   {{ nmap|safe }}
+  {{ sync|safe }}
 </div>
 
 <div class="row cols-2" style="margin-bottom:16px">
@@ -61,6 +62,5 @@ hora (▶) · zoom con la rueda · leyenda con toggles.</p>
     <span class="tag">demanda DC vs gen AC + pérdidas</span></div>{{ dcac|safe }}</div>
 </div>
 {% endif %}
-{{ sync|safe }}
 {% endif %}
 {% endblock %}

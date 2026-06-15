@@ -19,6 +19,7 @@ publicación del OC: despacho, costo marginal por barra, tensiones y flujos.</p>
   <a href="/metodologia">Metodología</a>.
   <br><span class="src">Fuente: modom_generator_dispatch.csv (CVP marginal) × nodal_factors.csv.</span></p>
   {{ cost_map|safe }}
+  {{ sync_cost|safe }}
 </div>
 
 <div class="row cols-2" style="margin-bottom:16px">
@@ -41,6 +42,7 @@ publicación del OC: despacho, costo marginal por barra, tensiones y flujos.</p>
   <div class="hd"><h3>Tensiones por barra (MODOM)</h3>
     <span class="tag">animado 24 h</span></div>
   {{ volt_map|safe }}
+  {{ sync_volt|safe }}
   <p class="src">Fuente: modom_bus_voltage.csv (resultado de tensión del PDD).</p>
 </div>
 
@@ -51,5 +53,4 @@ publicación del OC: despacho, costo marginal por barra, tensiones y flujos.</p>
   <p class="src">Fuente: modom_branch_flows.csv (flujo MW del PDD); % = |flujo| / Snom
   (ratings de pypsa_branch_components). El PDD publica MW, no % directamente.</p>
 </div>
-{{ sync_cost|safe }}{{ sync_volt|safe }}
 {% endblock %}

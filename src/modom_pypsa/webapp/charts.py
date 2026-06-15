@@ -170,7 +170,7 @@ def network_map_div(values_by_hour: dict, branch_loading: pd.DataFrame | None,
                     metric: str = "tension", hours: list | None = None,
                     init_hour: str | None = None, height: int = 620,
                     div_id: str | None = None, cmin: float | None = None,
-                    cmax: float | None = None) -> str:
+                    cmax: float | None = None, external_controls: bool = False) -> str:
     """Mapa ANIMADO 24h: red por nivel de tensión (leyenda toggle) + barras coloreadas
     por la métrica elegida (tensión / costo marginal / Δ vs MODOM). Play + scroll-zoom."""
     import plotly.graph_objects as go
@@ -272,9 +272,12 @@ def network_map_div(values_by_hour: dict, branch_loading: pd.DataFrame | None,
                        colorbar=dict(title=m["label"].split(" (")[0], thickness=13, len=0.6, x=0.99)),
         legend=dict(x=0.01, y=0.99, bgcolor="rgba(255,255,255,.88)", bordercolor=GRID,
                     borderwidth=1, font=dict(size=11)),
-        sliders=[dict(active=hours.index(init_hour), x=0.05, y=0, len=0.9,
-                      currentvalue=dict(prefix="Hora "), steps=steps)],
-        updatemenus=[dict(type="buttons", direction="left", x=0.0, y=0, xanchor="right",
+        sliders=[dict(active=hours.index(init_hour), x=0.05, y=0, len=0.92,
+                      ticklen=5, tickwidth=1, tickcolor=MUTED, minorticklen=0,
+                      currentvalue=dict(prefix="Hora "), steps=steps)])
+    if not external_controls:
+        fig.update_layout(updatemenus=[dict(
+            type="buttons", direction="left", x=0.0, y=0, xanchor="right",
             yanchor="bottom", showactive=False, buttons=[
                 dict(label="▶", method="animate", args=[None, dict(
                     frame=dict(duration=800, redraw=True), fromcurrent=True,
@@ -337,10 +340,12 @@ def loading_bars_div(branch_loading: pd.DataFrame, hour: str | None = None,
 
 
 # --------------------------------------- AC animados (sincronizan con el mapa)
-def _anim_html(fig, div_id, height):
+def _anim_html(fig, div_id, height, margin_l=None):
     import plotly.io as pio
 
     fig.update_layout(height=height, **_LAYOUT)
+    if margin_l is not None:                # margen fijo: ejes no se mueven entre frames
+        fig.update_layout(margin=dict(l=margin_l, r=16, t=30, b=36))
     return pio.to_html(fig, full_html=False, include_plotlyjs=False, div_id=div_id,
                        config={"displayModeBar": False, "responsive": True})
 
@@ -394,30 +399,51 @@ def loading_bars_anim_div(branch_loading: pd.DataFrame, hours: list,
     fig.frames = [go.Frame(name=h, data=[go.Bar(
         x=xy(h)[0], marker=dict(color=xy(h)[1]),
         text=[f"{v:.0f}%" for v in xy(h)[0]])]) for h in hours]
-    fig.update_xaxes(title="Cargabilidad %", gridcolor=GRID, range=[0, 160])
-    fig.update_yaxes(automargin=True)
-    return _anim_html(fig, div_id, 360)
+    fig.update_xaxes(title="Cargabilidad %", showgrid=False, range=[0, 160])
+    fig.update_yaxes(automargin=False)
+    return _anim_html(fig, div_id, 360, margin_l=240)
 
 
-def sync_script(map_id: str, anim_targets: list, vline_targets: list) -> str:
-    """JS: los gráficos siguen la hora del mapa (play/slider). Anima los `anim_targets`
-    (bar charts con frames) y mueve una línea vertical en los `vline_targets` (series)."""
+def anim_controller(map_id: str, hours: list, anim_targets: list,
+                    vline_targets: list, init_hour: str, period_ms: int = 850) -> str:
+    """Botones ▶/⏸ + JS que conduce la animación del mapa en BUCLE (al llegar a 24
+    reinicia en 01) hasta pausar. Sincroniza: anima `anim_targets` (barras) y dibuja una
+    línea vertical con el VALOR de la hora sobre los `vline_targets` (series)."""
     import json
+
+    init_idx = hours.index(init_hour) if init_hour in hours else 0
     return (
+        '<div class="anim-ctrl"><button type="button" id="' + map_id + '-play">▶</button>'
+        '<button type="button" id="' + map_id + '-pause">⏸</button>'
+        '<span class="anim-h" id="' + map_id + '-lab"></span></div>'
         "<script>(function(){var M=document.getElementById(" + json.dumps(map_id) + ");"
-        "var A=" + json.dumps(anim_targets) + ",V=" + json.dumps(vline_targets) + ";"
+        "var HRS=" + json.dumps(hours) + ",A=" + json.dumps(anim_targets) +
+        ",V=" + json.dumps(vline_targets) + ",idx=" + str(init_idx) + ",timer=null;"
         "function hi(n){return parseInt(String(n).replace('h_',''));}"
-        "function go(name){var xi=hi(name);"
+        "function ann(d,xi){var t=d.data&&d.data[0];if(!t||!t.x)return[];"
+        "var xs=t.x,ys=t.y,k=-1;for(var i=0;i<xs.length;i++){if(xs[i]==xi){k=i;break;}}"
+        "if(k<0)return[];return[{x:xi,y:ys[k],text:Math.round(ys[k]).toLocaleString(),"
+        "showarrow:true,arrowhead:0,ax:0,ay:-16,bgcolor:'#fff',bordercolor:'#f59e0b',"
+        "borderwidth:1,font:{size:11,color:'#0f172a'}}];}"
+        "function apply(name){var xi=hi(name);"
+        "var lb=document.getElementById(M.id+'-lab');if(lb)lb.textContent='Hora '+name.replace('h_','');"
         "A.forEach(function(id){var d=document.getElementById(id);"
         "if(d&&d._fullLayout&&window.Plotly)Plotly.animate(d,[name],{mode:'immediate',"
         "frame:{duration:0,redraw:true},transition:{duration:0}});});"
-        "V.forEach(function(id){var d=document.getElementById(id);"
-        "if(d&&d._fullLayout&&window.Plotly)Plotly.relayout(d,{shapes:[{type:'line',"
-        "xref:'x',yref:'paper',x0:xi,x1:xi,y0:0,y1:1,"
-        "line:{color:'#f59e0b',width:2,dash:'dot'}}]});});}"
+        "V.forEach(function(id){var d=document.getElementById(id);if(!d||!d._fullLayout)return;"
+        "Plotly.relayout(d,{shapes:[{type:'line',xref:'x',yref:'paper',x0:xi,x1:xi,y0:0,y1:1,"
+        "line:{color:'#f59e0b',width:2,dash:'dot'}}],annotations:ann(d,xi)});});}"
+        "function show(){if(M&&M._fullLayout&&window.Plotly)Plotly.animate(M,[HRS[idx]],"
+        "{mode:'immediate',frame:{duration:0,redraw:true},transition:{duration:0}});apply(HRS[idx]);}"
+        "function step(){idx=(idx+1)%HRS.length;show();}"            # bucle: 24 -> 01
+        "function play(){if(timer)return;timer=setInterval(step," + str(period_ms) + ");}"
+        "function pause(){clearInterval(timer);timer=null;}"
         "function attach(){if(!M||!M.on){setTimeout(attach,200);return;}"
-        "M.on('plotly_animatingframe',function(e){if(e&&e.frame&&e.frame.name!=null)go(e.frame.name);});"
-        "M.on('plotly_sliderchange',function(e){if(e&&e.step&&e.step.args&&e.step.args[0])go(e.step.args[0][0]);});}"
+        "var pb=document.getElementById(M.id+'-play'),sb=document.getElementById(M.id+'-pause');"
+        "if(pb)pb.onclick=play;if(sb)sb.onclick=pause;"
+        "M.on('plotly_sliderchange',function(e){if(e&&e.step&&e.step.args&&e.step.args[0]){"
+        "var n=e.step.args[0][0];var i=HRS.indexOf(n);if(i>=0)idx=i;apply(n);}});"
+        "apply(HRS[idx]);}"
         "if(document.readyState!=='loading')attach();else window.addEventListener('load',attach);"
         "})();</script>")
 
@@ -527,8 +553,8 @@ def modom_flows_anim_div(flows: pd.DataFrame, hours: list, init_hour: str,
             x=v, y=y, marker=dict(color=c), text=[f"{x:.0f}%" for x in v])]))
     fig.frames = frames
     fig.update_xaxes(title="Cargabilidad %", showgrid=False, range=[0, 160])
-    fig.update_yaxes(automargin=True)
-    return _anim_html(fig, div_id, 380)
+    fig.update_yaxes(automargin=False)
+    return _anim_html(fig, div_id, 380, margin_l=240)
 
 
 # ----------------------------------------------------- base MODOM: mezcla por tec

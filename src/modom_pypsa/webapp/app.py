@@ -118,9 +118,11 @@ def modom_pdd(request: Request, cost_bus: str | None = None):
     vallv = [v for h in vvals for v in vvals[h].values() if v == v]
     vmin, vmax = (min(vallv), max(vallv)) if vallv else (None, None)
     cost_map = charts.network_map_div(cvals, None, metric="costo", hours=HOURS,
-                                      init_hour=peak, div_id="costmap", cmin=cmin, cmax=cmax)
+                                      init_hour=peak, div_id="costmap", cmin=cmin,
+                                      cmax=cmax, external_controls=True)
     volt_map = charts.network_map_div(vvals, None, metric="tension", hours=HOURS,
-                                      init_hour=peak, div_id="voltmap", cmin=vmin, cmax=vmax)
+                                      init_hour=peak, div_id="voltmap", cmin=vmin,
+                                      cmax=vmax, external_controls=True)
     # curva de costo por BARRA (selector, default barra de referencia Palamara)
     bus_opts, default_bus = _cost_bus_options()
     cost_bus = cost_bus or default_bus
@@ -135,8 +137,8 @@ def modom_pdd(request: Request, cost_bus: str | None = None):
         modom_mix=charts.modom_mix_div(), cost_map=cost_map, volt_map=volt_map,
         mc_curve=mc_curve, peak=peak, bus_opts=bus_opts, cost_bus=cost_bus,
         flows=charts.modom_flows_anim_div(flows, HOURS, peak, "flowsbar"),
-        sync_cost=charts.sync_script("costmap", [], ["mccurve"]),
-        sync_volt=charts.sync_script("voltmap", ["flowsbar"], [])))
+        sync_cost=charts.anim_controller("costmap", HOURS, [], ["mccurve"], peak),
+        sync_volt=charts.anim_controller("voltmap", HOURS, ["flowsbar"], [], peak)))
 
 
 # --------------------------------------------------------------- PyPSA · Modelo (DC)
@@ -256,13 +258,13 @@ def ac_page(request: Request, run: str | None = None, metric: str = "tension"):
     bus = da.run_csv(rid, "ac_bus_voltages.csv")
     br = da.run_csv(rid, "ac_branch_loading.csv")
     vals, hours = _metric_values(rid, metric)
-    nmap = charts.network_map_div(vals, br, metric=metric, hours=hours,
-                                  init_hour=peak, div_id="acmap")
     multi = "hour" in bus.columns and len(hours) > 1
+    nmap = charts.network_map_div(vals, br, metric=metric, hours=hours,
+                                  init_hour=peak, div_id="acmap", external_controls=multi)
     if multi:
         profile = charts.voltage_profile_anim_div(bus, hours, peak, "acprofile")
         loading = charts.loading_bars_anim_div(br, hours, peak, "acloading")
-        sync = charts.sync_script("acmap", ["acprofile", "acloading"], [])
+        sync = charts.anim_controller("acmap", hours, ["acprofile", "acloading"], [], peak)
     else:
         profile = charts.voltage_profile_div(bus, peak)
         loading = charts.loading_bars_div(br, peak)
