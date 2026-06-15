@@ -1,26 +1,21 @@
-"""Acceso a los artefactos de la plataforma: corridas y proyectos (en disco, sin BD).
+"""Acceso a los artefactos de la plataforma: corridas (en disco, sin BD).
 
-Modelo:
-- Corridas  `results/runs/<run_id>/manifest.json` (+ iterations.json, dispatch.csv,
-  ac_bus_voltages.csv, ac_branch_loading.csv, loss_factors_final.csv).
-- Proyectos `results/projects/<project_id>.json`.
+Modelo de corrida: `results/runs/<run_id>/manifest.json` (+ iterations.json,
+ac_bus_voltages.csv, ac_branch_loading.csv, summary_by_hour.csv, dispatch_dc.csv,
+nodal_prices.csv, loss_factors_final.csv).
 
-`ensure_seed_runs()` envuelve las salidas existentes del pipeline (`results/pypsa_basecase`,
-`data/processed/ac_modom`) como corridas, para que la plataforma nunca arranque vacía.
+`ensure_seed_runs()` envuelve las salidas existentes del pipeline
+(`data/processed/ac_modom`) como una corrida, para que la plataforma no arranque vacía.
 """
 from __future__ import annotations
 
 import json
-import re
-import uuid
-from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 RUNS_DIR = REPO_ROOT / "results" / "runs"
-PROJECTS_DIR = REPO_ROOT / "results" / "projects"
 
 
 # ---------------------------------------------------------------- corridas
@@ -60,49 +55,6 @@ def latest_run(run_type: str | None = None) -> dict | None:
         if run_type is None or m.get("type") == run_type:
             return m
     return None
-
-
-def run_counts() -> dict[str, int]:
-    runs = list_runs()
-    c = {"total": len(runs), "completed": 0, "warning": 0, "failed": 0, "running": 0}
-    for m in runs:
-        c[m.get("status", "warning")] = c.get(m.get("status", "warning"), 0) + 1
-    return c
-
-
-# ---------------------------------------------------------------- proyectos
-def list_projects() -> list[dict]:
-    projs = []
-    if PROJECTS_DIR.exists():
-        for f in PROJECTS_DIR.glob("*.json"):
-            try:
-                projs.append(json.loads(f.read_text(encoding="utf-8")))
-            except json.JSONDecodeError:
-                continue
-    projs.sort(key=lambda p: p.get("created", ""), reverse=True)
-    return projs
-
-
-def get_project(project_id: str) -> dict | None:
-    f = PROJECTS_DIR / f"{project_id}.json"
-    return json.loads(f.read_text(encoding="utf-8")) if f.exists() else None
-
-
-def save_project(name: str, description: str = "", considerations: str = "",
-                 run_ids: list[str] | None = None, project_id: str | None = None,
-                 owner: str = "Fernando Cornielle") -> dict:
-    PROJECTS_DIR.mkdir(parents=True, exist_ok=True)
-    if project_id is None:
-        slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-") or "proyecto"
-        project_id = f"{slug}-{uuid.uuid4().hex[:6]}"
-    proj = {
-        "id": project_id, "name": name, "description": description,
-        "considerations": considerations, "run_ids": run_ids or [],
-        "created": datetime.now(timezone.utc).isoformat(), "owner": owner,
-    }
-    (PROJECTS_DIR / f"{project_id}.json").write_text(
-        json.dumps(proj, indent=2, ensure_ascii=False), encoding="utf-8")
-    return proj
 
 
 # ---------------------------------------------------------------- semilla

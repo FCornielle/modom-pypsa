@@ -616,25 +616,7 @@ def dc_vs_ac_div(summary_by_hour: pd.DataFrame) -> str:
     return _div(fig, height=300)
 
 
-# ----------------------------------------------------------- estado de corridas
-def run_status_donut_div(counts: dict) -> str:
-    import plotly.graph_objects as go
-
-    labels = ["Completadas", "Advertencia", "Fallidas", "En curso"]
-    keys = ["completed", "warning", "failed", "running"]
-    vals = [counts.get(k, 0) for k in keys]
-    cols = [GOOD, WARN, BAD, ACCENT]
-    if sum(vals) == 0:
-        return _empty("Sin corridas")
-    fig = go.Figure(go.Pie(labels=labels, values=vals, hole=0.62,
-                           marker_colors=cols, textinfo="value"))
-    fig.update_layout(showlegend=True, legend=dict(orientation="v", x=1, y=0.5),
-                      annotations=[dict(text=str(sum(vals)), x=0.5, y=0.5,
-                                        font_size=22, showarrow=False)])
-    return _div(fig, height=260)
-
-
-# ----------------------------------------------------------- caso base (Dashboard)
+# ----------------------------------------------------------- caso base (PyPSA)
 def base_figures() -> dict[str, str]:
     """Mezcla de generación, demanda vs gen y costo marginal del caso base."""
     try:
