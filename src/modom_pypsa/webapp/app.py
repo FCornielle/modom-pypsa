@@ -143,7 +143,7 @@ def modom_pdd(request: Request, cost_bus: str | None = None):
 
 # --------------------------------------------------------------- PyPSA · Modelo (DC)
 @app.get("/pypsa", response_class=HTMLResponse)
-def pypsa_model(request: Request):
+def pypsa_model(request: Request, cost_bus: str | None = None):
     base = charts.base_figures()
     summ = {}
     sp = REPO_ROOT / "results/pypsa_basecase/pypsa_basecase_summary.json"
@@ -156,9 +156,33 @@ def pypsa_model(request: Request):
         ("No suministrada", _fmt(summ.get("unserved_mwh"), " MWh"), "holgura"),
         ("Líneas ≥90%", str(summ.get("lines_above_90pct_peak", "—")), "pico"),
     ]
+    # mapa animado de precio nodal del despacho PyPSA (LP energético), análogo al de MODOM
+    pvals = _pypsa_cost_values()
+    dem = _modom_demand()
+    peak = dem.idxmax() if len(dem.dropna()) else "h_19"
+    bus_opts, default_bus = _cost_bus_options()
+    cost_bus = cost_bus or default_bus
+    cost_map = sync_cost = mc_curve = ""
+    cong = _pypsa_line_loading_anim(peak)            # líneas DC más cargadas (animado)
+    if pvals:
+        import numpy as np
+        allv = np.array([v for h in pvals for v in pvals[h].values() if v == v])
+        cmax = float(np.percentile(allv, 97)) if allv.size else None  # robusto a 1 barra cara
+        cost_map = charts.network_map_div(pvals, None, metric="costo_pypsa", hours=HOURS,
+                                          init_hour=peak, div_id="pypsacostmap", cmin=0.0,
+                                          cmax=cmax, external_controls=True)
+        # curva de precio nodal de la barra seleccionada (sigue la hora del mapa)
+        ser = [(h, pvals.get(h, {}).get(cost_bus)) for h in HOURS]
+        mc_curve = charts.series_line_div(
+            [(h, v) for h, v in ser if v is not None], ylabel="RD$/MWh",
+            color="#2563EB", div_id="pypsamccurve", markers=False, grid=False)
+        sync_cost = charts.anim_controller(
+            "pypsacostmap", HOURS, ["pypsacong"] if cong else [],
+            ["pypsamccurve"] if mc_curve else [], peak)
     return view("pypsa.html", ctx(
         request, active="pypsa", heading="PyPSA · Modelo de despacho (DC)",
-        kpis=kpis, base=base))
+        kpis=kpis, base=base, cost_map=cost_map, sync_cost=sync_cost,
+        mc_curve=mc_curve, cong=cong, bus_opts=bus_opts, cost_bus=cost_bus))
 
 
 # --------------------------------------------------------------- Pandapower · AC
@@ -204,6 +228,57 @@ def _loss_factor_map() -> dict:
         return {}
     nf = pd.read_csv(NODAL_FACTORS_CSV)
     return dict(zip(nf.bus_id_modom, pd.to_numeric(nf.get("factor_retiro"), errors="coerce")))
+
+
+PYPSA_NODAL_CSV = REPO_ROOT / "results/pypsa_basecase/nodal_prices_by_snapshot.csv"
+
+
+def _pypsa_cost_values() -> dict:
+    """Precio nodal por barra del despacho DC (LP de PyPSA), por hora, desde el caso base.
+    A diferencia del costo fiel al MODOM (mc_sistema × factor de nodo), este es el precio
+    SOMBRA del LP energético: cae a ~0 a mediodía (excedente VRE gratis). Enmascara los
+    precios-sombra de las holguras (±1e6 = unserved/dump) y se queda con las barras con
+    coordenada para poder ubicarlas en el mapa."""
+    if not PYPSA_NODAL_CSV.exists():
+        return {}
+    df = pd.read_csv(PYPSA_NODAL_CSV, index_col=0)
+    df = df.mask(df.abs() >= 1e5)   # quita VOLL/dump (±1e6), no es precio de energía
+    coords = charts._geometry()["coords"]
+    out = {}
+    for h in HOURS:
+        if h not in df.index:
+            continue
+        row = df.loc[h]
+        out[h] = {b: float(row[b]) for b in row.index
+                  if b in coords and pd.notna(row[b])}
+    return out
+
+
+PYPSA_LOADING_CSV = REPO_ROOT / "results/pypsa_basecase/line_loading_by_snapshot.csv"
+
+
+def _pypsa_line_loading_anim(init_hour: str) -> str:
+    """Barras animadas RE-RANKEADAS de las líneas DC más cargadas, hora a hora (caso base
+    PyPSA). El CSV viene como hora×línea con la carga en fracción (0-1) → %. Cada hora
+    muestra el top de ESA hora, de mayor a menor (las líneas entran/salen)."""
+    if not PYPSA_LOADING_CSV.exists():
+        return ""
+    df = pd.read_csv(PYPSA_LOADING_CSV)
+    df = df.rename(columns={df.columns[0]: "hour"}).set_index("hour")
+    cols = list(df.columns)
+
+    def pretty(n: str) -> str:
+        p = str(n).split("__")
+        return f"{charts.bus_name(p[0])} → {charts.bus_name(p[1])}" if len(p) >= 2 else str(n)
+
+    lbl = {c: pretty(c) for c in cols}
+    load_by_hour = {}
+    for h in HOURS:
+        if h not in df.index:
+            continue
+        row = pd.to_numeric(df.loc[h], errors="coerce")
+        load_by_hour[h] = {lbl[c]: float(row[c]) * 100.0 for c in cols if pd.notna(row[c])}
+    return charts.ranked_loading_anim_div(load_by_hour, HOURS, init_hour, "pypsacong")
 
 
 def _metric_values(run_id: str, metric: str):

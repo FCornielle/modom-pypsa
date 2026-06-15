@@ -12,17 +12,44 @@ commitment del MODOM. Es la capa que luego verifica la AC (pandapower).</p>
 </div>
 
 <div class="card" style="margin-bottom:16px">
-  <div class="hd"><h3>Mezcla de generación (PyPSA)</h3><span class="tag">por hora</span></div>
-  {{ base.mix|safe if base.mix else '<div class="chart-empty">Corre el caso base PyPSA</div>' }}
+  <div class="hd"><h3>Precio nodal por barra (PyPSA · LP DC, RD$/MWh)</h3>
+    <span class="tag">animado 24 h · ▶ play · rueda para zoom</span></div>
+  <p class="muted" style="margin:0 0 8px;font-size:12.5px">Precio sombra del LP energético
+  por barra, de NUESTRA corrida PyPSA. Cae a ~0 a mediodía (excedente solar gratis) — es el
+  contraste con el costo fiel al MODOM de la pestaña <a href="/">MODOM · PDD</a>; ver
+  <a href="/metodologia">Metodología</a>.
+  <br><span class="src">Fuente: nodal_prices_by_snapshot.csv (caso base PyPSA); se omiten los
+  precios-sombra de holgura (±1e6 = no suministrada / vertido).</span></p>
+  {{ cost_map|safe if cost_map else '<div class="chart-empty">Corre el caso base PyPSA (scripts/run_dispatch_basecase.py)</div>' }}
+  {{ sync_cost|safe if sync_cost else '' }}
 </div>
 
-<div class="row cols-2">
-  <div class="card"><h3>Precio nodal · barra de referencia (LP energético)</h3>
-    <p class="muted" style="margin:0 0 8px;font-size:12.5px">Cae a ~0 a mediodía por el
-    excedente solar gratis del LP energético — ver <a href="/metodologia">Metodología</a>;
-    el costo fiel al MODOM está en MODOM · PDD.</p>
-    {{ base.price|safe if base.price else '<div class="chart-empty">Sin datos</div>' }}</div>
-  <div class="card"><h3>Líneas más cargadas (DC)</h3>
-    {{ base.cong|safe if base.cong else '<div class="chart-empty">Sin datos</div>' }}</div>
+<div class="row cols-2" style="margin-bottom:16px">
+  <div class="card">
+    <div class="hd"><h3>Mezcla de generación (PyPSA)</h3><span class="tag">24 h</span></div>
+    {{ base.mix|safe if base.mix else '<div class="chart-empty">Corre el caso base PyPSA</div>' }}
+    <p class="muted" style="margin:8px 0 0;font-size:12px">¿Precio nodal ~0 a mediodía con
+    <b>fuel oil</b> aún en la mezcla? Esas térmicas corren forzadas en su <b>Pmín</b> por el
+    commitment del MODOM (no las elige el LP); el MW marginal a mediodía lo da el <b>excedente
+    solar vertible</b> (costo 0). Aparecen despachadas pero NO fijan precio.</p></div>
+  <div class="card">
+    <div class="hd"><h3>Precio nodal por barra (PyPSA)</h3>
+      <form method="get" action="/pypsa" style="margin:0">
+        <select name="cost_bus" onchange="this.form.submit()" style="max-width:240px">
+          {% for val,lbl in bus_opts %}<option value="{{ val }}" {{ 'selected' if val==cost_bus }}>{{ lbl }}</option>{% endfor %}
+        </select></form></div>
+    <p class="muted" style="margin:0 0 8px;font-size:12.5px">Precio sombra del LP DC en la
+    barra elegida por hora. La línea sigue la hora del mapa; cae a ~0 a mediodía (excedente
+    solar vertible). El costo <i>fiel al MODOM</i> está en <a href="/">MODOM · PDD</a>.</p>
+    {{ mc_curve|safe if mc_curve else '<div class="chart-empty">Sin datos</div>' }}
+    <p class="src">Fuente: nodal_prices_by_snapshot.csv (precio sombra del LP DC).</p></div>
+</div>
+
+<div class="card">
+  <div class="hd"><h3>Líneas más cargadas (DC)</h3>
+    <span class="tag">top por hora · sigue la hora del mapa</span></div>
+  {{ cong|safe if cong else '<div class="chart-empty">Sin datos</div>' }}
+  <p class="src">Fuente: line_loading_by_snapshot.csv (cargabilidad % del flujo DC); se
+  re-rankea cada hora, mayor → menor (las líneas entran y salen del top).</p>
 </div>
 {% endblock %}

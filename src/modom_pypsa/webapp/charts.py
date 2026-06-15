@@ -162,6 +162,7 @@ def voltage_map_div(bus_voltages: pd.DataFrame, hour: str | None = None,
 METRICS = {
     "tension": dict(label="Tensión (pu)", scale="RdYlGn", cmin=0.90, cmax=1.10, dec=3),
     "costo": dict(label="Costo marginal MODOM (RD$/MWh)", scale="Turbo", cmin=7000, cmax=11500, dec=0),
+    "costo_pypsa": dict(label="Precio nodal PyPSA (RD$/MWh)", scale="Turbo", cmin=0, cmax=8000, dec=0),
     "delta_v": dict(label="ΔV vs MODOM (pu)", scale="RdBu", cmin=-0.06, cmax=0.06, dec=3),
 }
 
@@ -375,6 +376,48 @@ def voltage_profile_anim_div(bus_voltages: pd.DataFrame, hours: list,
     return _anim_html(fig, div_id, 300)
 
 
+def ranked_loading_anim_div(load_by_hour: dict, hours: list, init_hour: str,
+                            div_id: str, top: int = 15, height: int = 380) -> str:
+    """Cargabilidad animada RE-RANKEADA por hora: cada hora muestra el top-N de ESA hora,
+    de mayor a menor (mayor arriba). Las líneas ENTRAN y SALEN según su carga horaria.
+
+    A diferencia de un barh con eje Y categórico (Plotly fija las categorías del frame
+    inicial → se quedan pegadas), aquí los slots Y son fijos (0..top-1) y el NOMBRE de la
+    rama viaja DENTRO de la barra como texto, así el ranking cambia de verdad cada hora.
+
+    `load_by_hour`: {hora: {etiqueta_rama: cargabilidad_%}}.
+    """
+    import plotly.graph_objects as go
+
+    if not load_by_hour or not any(load_by_hour.values()):
+        return _empty("Sin cargabilidad")
+    slots = list(range(top))                           # slot top-1 = arriba en barh
+
+    def frame(h):
+        items = sorted(load_by_hour.get(h, {}).items(), key=lambda kv: kv[1],
+                       reverse=True)[:top]
+        items = items[::-1]                            # ascendente -> mayor arriba
+        labels = [k for k, _ in items]
+        vals = [float(v) for _, v in items]
+        while len(vals) < top:                         # padding para nº de barras fijo
+            labels.insert(0, ""); vals.insert(0, 0.0)
+        colors = [BAD if v > 100 else WARN if v > 90 else ACCENT for v in vals]
+        texts = [f"{lab}  {v:.0f}%" if lab else "" for lab, v in zip(labels, vals)]
+        return vals, colors, texts
+
+    v0, c0, t0 = frame(init_hour)
+    fig = go.Figure(go.Bar(
+        x=v0, y=slots, orientation="h", marker_color=c0, text=t0,
+        textposition="auto", insidetextanchor="start", cliponaxis=False,
+        textfont=dict(size=10.5), hoverinfo="text", hovertext=t0))
+    fig.frames = [go.Frame(name=h, data=[go.Bar(
+        x=frame(h)[0], marker=dict(color=frame(h)[1]),
+        text=frame(h)[2], hovertext=frame(h)[2])]) for h in hours]
+    fig.update_xaxes(title="Cargabilidad %", showgrid=False, range=[0, 165])
+    fig.update_yaxes(showticklabels=False, range=[-0.6, top - 0.4])
+    return _anim_html(fig, div_id, height, margin_l=12)
+
+
 def loading_bars_anim_div(branch_loading: pd.DataFrame, hours: list,
                           init_hour: str, div_id: str, top: int = 15) -> str:
     """Cargabilidad animada por hora de un set FIJO de ramas (top por carga máxima)."""
@@ -510,9 +553,8 @@ def modom_flows_anim_div(flows: pd.DataFrame, hours: list, init_hour: str,
     """Cargabilidad (%) de las ramas MODOM más cargadas, animado por hora.
 
     El PDD publica el flujo activo en MW; el % = |flujo|/Snom usando los ratings de la
-    red (pypsa_branch_components). Las ramas sin rating se omiten del % ."""
-    import plotly.graph_objects as go
-
+    red (pypsa_branch_components). Las ramas sin rating se omiten del %. Re-rankeado por
+    hora (mayor → menor): las ramas entran y salen del top según su carga horaria."""
     if flows.empty:
         return _empty("Sin flujos MODOM")
     rt = _branch_ratings()
@@ -532,29 +574,10 @@ def modom_flows_anim_div(flows: pd.DataFrame, hours: list, init_hour: str,
         return _empty("Sin ratings para calcular %")
     loadpct = flows[list(cap)].abs().div(pd.Series(cap)) * 100.0
     lbl = {c: f"{bus_name(endpoints(c)[0])} → {bus_name(endpoints(c)[1])}" for c in cap}
-
-    def frame_data(h):
-        """Top-15 ramas de ESA hora, de mayor a menor cargabilidad."""
-        row = loadpct.loc[h].sort_values(ascending=False).head(top) if h in loadpct.index \
-            else loadpct.iloc[0].head(top)
-        row = row.iloc[::-1]                            # mayor arriba en barh
-        labels = [lbl[c] for c in row.index]
-        vals = [float(v) for v in row.values]
-        colors = [BAD if v > 100 else WARN if v > 90 else ACCENT for v in vals]
-        return labels, vals, colors
-
-    y0, v0, c0 = frame_data(init_hour)
-    fig = go.Figure(go.Bar(x=v0, y=y0, orientation="h", marker_color=c0,
-                           text=[f"{v:.0f}%" for v in v0], textposition="auto"))
-    frames = []
-    for h in hours:
-        y, v, c = frame_data(h)
-        frames.append(go.Frame(name=h, data=[go.Bar(
-            x=v, y=y, marker=dict(color=c), text=[f"{x:.0f}%" for x in v])]))
-    fig.frames = frames
-    fig.update_xaxes(title="Cargabilidad %", showgrid=False, range=[0, 160])
-    fig.update_yaxes(automargin=False)
-    return _anim_html(fig, div_id, 380, margin_l=240)
+    load_by_hour = {h: {lbl[c]: float(loadpct.at[h, c]) for c in cap
+                        if h in loadpct.index and pd.notna(loadpct.at[h, c])}
+                    for h in hours}
+    return ranked_loading_anim_div(load_by_hour, hours, init_hour, div_id, top=top)
 
 
 # ----------------------------------------------------- base MODOM: mezcla por tec
