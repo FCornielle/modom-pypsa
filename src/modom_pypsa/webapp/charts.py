@@ -413,7 +413,9 @@ def ranked_loading_anim_div(load_by_hour: dict, hours: list, init_hour: str,
     fig.frames = [go.Frame(name=h, data=[go.Bar(
         x=frame(h)[0], marker=dict(color=frame(h)[1]),
         text=frame(h)[2], hovertext=frame(h)[2])]) for h in hours]
-    fig.update_xaxes(title="Cargabilidad %", showgrid=False, range=[0, 165])
+    # tope a 120%: barras más anchas en px → los nombres caben DENTRO (lo que pase de
+    # 120% se recorta visualmente, pero esas ramas igual quedan marcadas como sobrecarga)
+    fig.update_xaxes(title="Cargabilidad %", showgrid=False, range=[0, 120])
     fig.update_yaxes(showticklabels=False, range=[-0.6, top - 0.4])
     return _anim_html(fig, div_id, height, margin_l=12)
 
