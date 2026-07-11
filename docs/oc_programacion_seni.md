@@ -42,7 +42,12 @@ data/external/programacion_seni/
 | Dato | Hoja / archivo | Alimenta | Extractor | Estado |
 |---|---|---|---|---|
 | **CVP declarado + combustible oficial** | VEROPE → `COSTO VARIABLE DE PRODUCCIÓN` (col `CENTRAL`=generator_id, `COMBUSTIBLE`, `COSTO VARIABLE`) | reemplaza `effective_cvp` y la clasificación de combustible (hoy heurística del unifilar) → fidelidad de costos/precios/mezcla | `scripts/build_declared_cvp.py` (a crear) | **Recomendado primero** (fácil, alto valor, semanal). Cruza ~54/140 térmicos que declaran. |
-| **Caso operativo diario** (despacho, demanda, Q gen, factores de nodo, reservas) | PDD → `DESPACHO EN OM`, `DEMANDA SENI`, `Gen_Pot_Reactiva`, `Factores de Nodo`, `Despacho de Reserva *` | caso vigente para el despacho + **validación diaria** (nuestro despacho vs el oficial) + latido del refresco de la plataforma | `scripts/build_pdd_case.py` (a crear) | Planeado |
+| **Caso operativo diario** (despacho, demanda, factores de nodo, **tensiones y flujos**) | PDD → `DESPACHO EN OM` (G3-codes), `DEMANDA SENI` (fila total `DEMANDA DEL SENI`), `Factores de Nodo (Retiro)` (W-codes), `Analisis_Electrico` (VOLTAJES p.u. por W-code + FLUJOS POR LINEAS % por etiqueta nativa) | **alimenta la pestaña MODOM·PDD** (último PDD ingerido, sin selector): mezcla, costo por barra, mapa de tensiones, barras de cargabilidad | `scripts/build_pdd_case.py` → `data/processed/pdd/<fecha>/` (parser `modom_pypsa/pdd.py`) | **Hecho** |
+
+> **Nota:** contrario a lo que se asumió antes, el PDD **SÍ** trae el análisis eléctrico
+> resuelto (tensiones p.u. de ~28 barras monitoreadas y flujos/cargabilidad por línea) en la
+> hoja `Analisis_Electrico`. La cargabilidad usa la **etiqueta nativa Z-code** del PDD (no se
+> cruza a W-codes porque es un gráfico de barras, no un mapa). Eje 48 períodos → día 1 (1..24).
 | **Niveles de embalse (hidro)** | PSD → `Niveles de Embalse` (caudales afluentes por día + nivel inicial por central) | hidro como `StorageUnit` con presupuesto de energía (fidelidad de despacho, Fase 1) | (a crear) | Planeado |
 | **Reservas / inercia / curtailment** | PDD/PSD → `Despacho de Reserva RPF/RSF-AGC`, `S_INERCIA`, `Curtailment` | co-optimización de reservas (Fase 2) | (a crear) | Futuro |
 

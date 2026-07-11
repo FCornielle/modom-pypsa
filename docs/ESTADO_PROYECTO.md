@@ -29,6 +29,9 @@ verope/declared_cvp.csv`.
 - **Factores de nodo** del MODOM aplicados a la demanda (`effective_load = load×factor_retiro`).
 - **CVP declarado VEROPE** como override.
 - Holguras: `unserved` (cara) y `dump` (sobre-generación) mantienen el LP factible.
+- **Flowgates del MODOM** (`e_fgate`) impuestos como restricción dura simétrica
+  `-FLGTMAX ≤ Σ coef·flujo ≤ FLGTMAX` (`_flowgate_constraint`); es la representación
+  N-1 fiel al OC. Opcional: si faltan las tablas, la red corre sin flowgates.
 - `min_sync_fraction` (regulación de frecuencia) y `regulation_floor`/
   `effective_nodal_prices` existen como infraestructura (default off).
 Caso base en `results/pypsa_basecase/` (genera `scripts/run_dispatch_basecase.py`).
@@ -68,6 +71,11 @@ Levantar: `uvicorn modom_pypsa.webapp.app:app --app-dir src` → http://localhos
   propio: loop 24→01, pausa, valor sobre la línea vertical) + `modom_mix_div`,
   `modom_flows_anim_div`, `voltage_profile_anim_div`, `loading_bars_anim_div`,
   `dc_vs_ac_div`, `convergence_div`, `series_line_div`.
+- **Fuente de la pestaña MODOM·PDD**: el **último PDD publicado por el OC** ingerido en
+  `data/processed/pdd/<fecha>/` (`scripts/build_pdd_case.py`, parser `pdd.py`). El `/` toma
+  el más reciente (sin selector); fallback al workbook `modom_results/` si no hay PDD. El PDD
+  trae despacho (G3-codes), demanda (`DEMANDA DEL SENI`), factores de nodo (W-codes),
+  tensiones p.u. (~28 barras monitoreadas) y cargabilidad % por línea (etiqueta Z nativa).
 - **Páginas**: `MODOM·PDD` (`/`, landing: KPIs + despacho por tecnología + mapa de costo
   por barra + curva de costo con selector de barra (default Palamara) + mapa de tensiones
   + cargabilidad por rama, todo 24h animado) · `PyPSA·Modelo` (`/pypsa`: mezcla, precio LP,
@@ -89,13 +97,37 @@ requiere co-optimizar reservas (pendiente).
 - ✅ AC convergente sobre la red real; inyección por `for_name`; agregación a 717 barras.
 - ✅ Lazo iterativo 24h; costo por barra fiel al MODOM.
 - ✅ Plataforma web completa (5 páginas) con mapas animados sincronizados.
+- ✅ **Flowgates (seguridad N-1 fiel al MODOM)**: la hoja `e_fgate` define 2 flowgates
+  activos (fg1 ≤ 200 MW, 7 ramas; fg2 ≤ 670 MW, 3 ramas; fg3 vacío). En MODOM la N-1 se
+  codifica como flowgates (interfaces críticas con límite derateado), no como SCLOPF.
+  Ingesta: `scripts/build_flowgates.py` → `data/processed/flowgates/` (parser en
+  `flowgates.py`). En el LP se imponen como restricción dura simétrica
+  `-FLGTMAX ≤ Σ coef·flujo ≤ FLGTMAX` (`_flowgate_constraint` en `pypsa_network.py`).
+  En el caso base no muerden (fg1 máx 82%, fg2 45%); utilización visible en la pestaña
+  PyPSA·Modelo (`flowgate_utilization_by_snapshot.csv`).
+
+## Cobertura de ecuaciones (QA vs. transcripción oficial)
+El mapeo ecuación-por-ecuación MODOM → PyPSA vive en la pestaña **Metodología**
+(`webapp/templates/metodologia.html`) y se deriva de la transcripción oficial
+`docs/programacion_corto_plazo_modom_transcripcion.md` (V16, §6–§7). Resumen:
+- ✅ **Replicado** en el LP/AC: objetivo térmico + déficit (§6.1), límites de generación
+  (§7.3), flujo DC y límites térmicos (§7.13.1–2), **flowgates** (§7.13.3), balance nodal
+  (§7.15), PNS total (§7.16), flujo AC de verificación (§8.3).
+- ➖ **Tomado fijo del MODOM** (no re-optimizado): commitment y sus transiciones (§7.1),
+  arranque/parada (§6.1), rampas (§7.7), tiempos mínimos y nº de arranques (§7.8–7.11),
+  enclavamiento (§7.12), pérdidas incrementales → vía factor de nodo + lazo AC (§7.14).
+- ❌ **No modelado aún**: potencia variable en arranque/parada (§7.2), reservas RPF/RSF/AGC
+  co-optimizadas (§7.4–7.6), servicios auxiliares (§7.17), embalses hidroeléctricos (§7.18),
+  vertimiento (§6.1).
 
 ## Pendiente
-- Flowgates y **seguridad N-1** en el DC.
-- **Reservas/regulación co-optimizadas** (para precios MODOM-exactos).
+- **Reservas/regulación co-optimizadas** (§7.4–7.6, para precios MODOM-exactos).
+- **Servicios auxiliares (§7.17) y embalses hidroeléctricos (§7.18)** en el LP.
 - **Validación cuantitativa AC**: pedir un export DIgSILENT con el flujo EJECUTADO
   (tensiones resueltas) para comparar barra a barra; el actual es inputs-only.
 - Mejorar cobertura del crosswalk de W-codes (tensiones MODOM solo cubren 406/717 barras).
+- (Opción futura) **SCLOPF N-1 explícito (LODF)** sobre el núcleo mallado (isla de 668
+  barras, excluyendo los 519 puentes radiales) como verificación cruzada de los flowgates.
 - (Opción futura) correr proyectos/escenarios con overrides (quitar/añadir equipos).
 
 ## Git

@@ -319,6 +319,36 @@ def series_line_div(series, ylabel: str = "", sel_hour: str | None = None,
     return _div(fig, div_id=div_id, height=280)
 
 
+def flowgate_div(util_df: pd.DataFrame, div_id: str | None = None) -> str:
+    """Utilización % de cada flowgate del MODOM en 24h, con referencia al límite (100%).
+
+    `util_df`: columnas flowgate_id, snapshot, signed_flow_mw, limit_mw, util_pct.
+    Una línea por flowgate; línea punteada en 100% = límite FLGTMAX (seguridad N-1).
+    """
+    import plotly.graph_objects as go
+
+    if util_df is None or util_df.empty:
+        return _empty("Sin flowgates")
+    fig = go.Figure()
+    palette = [ACCENT, "#b0683c", GOOD, MUTED]
+    for i, (fg, g) in enumerate(util_df.groupby("flowgate_id")):
+        g = g.copy()
+        g["_x"] = g["snapshot"].map(_hnum)
+        g = g.sort_values("_x")
+        lim = float(g["limit_mw"].iloc[0])
+        fig.add_trace(go.Scatter(
+            x=g["_x"], y=g["util_pct"], mode="lines+markers",
+            name=f"{fg} (≤{lim:.0f} MW)", line=dict(color=palette[i % len(palette)], width=2.5),
+            marker=dict(size=6),
+            hovertemplate="%{y:.1f}% · %{customdata:.0f} MW<extra>" + str(fg) + "</extra>",
+            customdata=g["signed_flow_mw"]))
+    fig.add_hline(y=100, line=dict(color=BAD, width=1.5, dash="dash"),
+                  annotation_text="límite", annotation_position="top right")
+    fig.update_yaxes(title="Utilización %", showgrid=True, gridcolor=GRID, rangemode="tozero")
+    fig.update_xaxes(title="Hora", showgrid=False, dtick=2)
+    return _div(fig, div_id=div_id, height=320)
+
+
 # ----------------------------------------------------------- AC: cargabilidad
 def loading_bars_div(branch_loading: pd.DataFrame, hour: str | None = None,
                      top: int = 15) -> str:
@@ -583,13 +613,15 @@ def modom_flows_anim_div(flows: pd.DataFrame, hours: list, init_hour: str,
 
 
 # ----------------------------------------------------- base MODOM: mezcla por tec
-def modom_mix_div() -> str:
-    """Despacho MODOM por tecnología/combustible (24h), coloreado con la misma
-    clasificación que el resto del proyecto. Fuente: modom_generator_dispatch.csv."""
+def modom_mix_div(dispatch_path=None) -> str:
+    """Despacho por tecnología/combustible (24h), coloreado con la misma clasificación
+    que el resto del proyecto. Fuente: `dispatch_path` (despacho del PDD vigente) o, por
+    defecto, modom_generator_dispatch.csv (workbook)."""
     import plotly.graph_objects as go
 
     from ..dashboard import FUEL_COLORS, classify_fuel
-    disp_p = REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv"
+    disp_p = Path(dispatch_path) if dispatch_path else (
+        REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv")
     gen_p = REPO_ROOT / "data/processed/generators/generators.csv"
     if not (disp_p.exists() and gen_p.exists()):
         return _empty("Sin despacho MODOM")

@@ -1,0 +1,11 @@
+{
+  "pdd_date": "2026-06-11",
+  "source_file": "data\\external\\PDD 11-06-26\\PDD 11-06-26.xlsx",
+  "ingested_at": "2026-06-16T15:30:00+00:00",
+  "counts": {
+    "generators": 140,
+    "voltage_buses": 28,
+    "loading_lines": 132,
+    "nodal_factors": 292
+  }
+}

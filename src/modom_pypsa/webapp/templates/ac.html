@@ -6,43 +6,38 @@ inyectado por <code>for_name</code> y agregado a las 717 barras MODOM. Mapa anim
 hora (▶) · zoom con la rueda · leyenda con toggles.</p>
 
 {% if not run %}
-  <div class="card"><div class="empty-state">No hay corridas AC. Lanza una en
-    <a href="/runs">Corridas</a>.</div></div>
+  <div class="card"><div class="empty-state">No hay corrida AC. Genérala con
+    <code>scripts/run_iterative.py --all</code>.</div></div>
 {% else %}
-{% set s = summary %}
-<div class="row cols-2" style="margin-bottom:16px">
-  <div class="card" style="display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap">
-    <div><div class="muted">Corrida</div><b>{{ run.label }}</b>
-      <div class="muted mono">{{ run.run_id }}</div></div>
-    <form method="get" action="/ac" style="display:flex;gap:8px;align-items:end">
-      <div class="field" style="margin:0"><label>Corrida</label>
-        <select name="run" onchange="this.form.submit()">
-        {% for r in runs %}<option value="{{ r.run_id }}" {{ 'selected' if r.run_id==run.run_id }}>
-          {{ r.label }}</option>{% endfor %}</select></div>
-      <div class="field" style="margin:0"><label>Escala de color</label>
-        <select name="metric" onchange="this.form.submit()">
-        {% for k,lbl in metric_labels.items() %}<option value="{{ k }}" {{ 'selected' if k==metric }}>
-          {{ lbl }}</option>{% endfor %}</select></div>
-    </form>
-  </div>
-  <div class="card row cols-4" style="gap:10px">
-    <div class="kpi"><div class="l">Demanda (pico)</div><div class="v">{{ fmt(s.demand_mw,'',0) }}</div></div>
-    <div class="kpi"><div class="l">Pérdidas</div><div class="v">{{ fmt(s.losses_mw,'',1) }}</div></div>
-    <div class="kpi"><div class="l">&lt;0.9 pu</div><div class="v">{{ s.n_v_below_090 or 0 }}</div></div>
-    <div class="kpi"><div class="l">Barras V</div><div class="v">{{ s.modom_buses_with_v or '—' }}</div></div>
-  </div>
+<div class="row cols-6" style="margin-bottom:16px">
+  {% for l,v,sub in kpis %}
+  <div class="card kpi"><div class="l">{{ l }}</div><div class="v">{{ v }}</div>
+    <div class="sub">{{ sub }}</div></div>
+  {% endfor %}
 </div>
 
 <div class="card" style="margin-bottom:16px">
   <div class="hd"><h3>Mapa del SENI — {{ metric_labels[metric] }}</h3>
-    <span class="tag">animado 24 h · pico {{ peak }}</span></div>
+    <form method="get" action="/ac" style="margin:0">
+      <select name="metric" onchange="this.form.submit()" style="max-width:240px">
+        {% for k,lbl in metric_labels.items() %}<option value="{{ k }}" {{ 'selected' if k==metric }}>
+          {{ lbl }}</option>{% endfor %}</select></form></div>
   {{ nmap|safe }}
   {{ sync|safe }}
 </div>
 
-<div class="row cols-2" style="margin-bottom:16px">
-  <div class="card"><h3>Perfil de tensión <span class="tag">sigue la hora del mapa</span></h3>{{ profile|safe }}</div>
-  <div class="card"><h3>Ramas más cargadas <span class="tag">sigue la hora del mapa</span></h3>{{ loading|safe }}</div>
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Perfil de tensión</h3>
+    <span class="tag">sigue la hora del mapa</span></div>
+  {{ profile|safe }}
+</div>
+
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Ramas más cargadas (AC)</h3>
+    <span class="tag">top por hora · sigue la hora del mapa</span></div>
+  {{ loading|safe }}
+  <p class="src">Fuente: ac_branch_loading.csv (cargabilidad % del flujo AC); se re-rankea
+  cada hora, mayor → menor (las ramas entran y salen del top).</p>
 </div>
 
 {% if iters %}

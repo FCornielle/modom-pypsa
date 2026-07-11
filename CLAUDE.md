@@ -31,6 +31,10 @@ Levantar: `.venv\Scripts\python.exe -m uvicorn modom_pypsa.webapp.app:app --app-
 lazo) · **Auditoría** (por equipo) · **Metodología** (ecuaciones MODOM vs nuestras).
 - `app.py` rutas, `data_access.py` lee corridas, `charts.py` figuras Plotly (mapas
   animados con controlador JS propio: loop, pausa, valor sobre la línea).
+- **MODOM·PDD se alimenta del último PDD publicado** ingerido en `data/processed/pdd/<fecha>/`
+  (`scripts/build_pdd_case.py` --xlsx <PDD.xlsx>; parser `pdd.py`). El `/` toma el más
+  reciente, sin selector; fallback al workbook si no hay PDD. El PDD trae despacho, demanda,
+  factores de nodo, tensiones p.u. y cargabilidad por línea (hoja `Analisis_Electrico`).
 - Generar la corrida del día: `.venv\Scripts\python.exe scripts/run_iterative.py --all`.
 
 ## Pricing (importante)
@@ -50,7 +54,8 @@ barra fiel al MODOM** = costo marginal del despacho MODOM × factor de nodo. Ver
 
 ## Estado y pendientes
 Hecho: capa canónica, despacho DC fiel (commitment+factores+CVP VEROPE), AC convergente,
-lazo iterativo 24h, plataforma web completa. Pendiente: flowgates, reservas
-co-optimizadas, seguridad N-1, validación cuantitativa contra un export DIgSILENT con el
-flujo ejecutado (hoy el export es solo inputs). Detalle completo en
-**`docs/ESTADO_PROYECTO.md`**.
+lazo iterativo 24h, plataforma web completa, **flowgates (seguridad N-1 fiel al MODOM:
+fg1≤200MW, fg2≤670MW desde `e_fgate`, restricción dura en el LP)**. Pendiente: reservas
+co-optimizadas, SCLOPF N-1 explícito (verificación cruzada de los flowgates), validación
+cuantitativa contra un export DIgSILENT con el flujo ejecutado (hoy el export es solo
+inputs). Detalle completo en **`docs/ESTADO_PROYECTO.md`**.

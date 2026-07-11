@@ -50,6 +50,7 @@ commitment del MODOM. Es la capa que luego verifica la AC (pandapower).</p>
     <span class="tag">top por hora · sigue la hora del mapa</span></div>
   {{ cong|safe if cong else '<div class="chart-empty">Sin datos</div>' }}
   <p class="src">Fuente: line_loading_by_snapshot.csv (cargabilidad % del flujo DC); se
-  re-rankea cada hora, mayor → menor (las líneas entran y salen del top).</p>
+  re-rankea cada hora, mayor → menor (las líneas entran y salen del top). Los flowgates del
+  MODOM (seguridad N-1) se aplican como restricción intrínseca del LP.</p>
 </div>
 {% endblock %}

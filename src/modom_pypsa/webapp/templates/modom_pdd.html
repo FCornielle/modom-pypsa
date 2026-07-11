@@ -2,7 +2,8 @@
 {% block title %}MODOM · PDD · GridLab SENI{% endblock %}
 {% block content %}
 <p class="page-sub">Resultados del <b>MODOM</b> para el PDD del día (24 h), fieles a la
-publicación del OC: despacho, costo marginal por barra, tensiones y flujos.</p>
+publicación del OC: despacho, costo marginal por barra, tensiones y flujos. Todo sigue la
+hora del mapa principal (▶ play · rueda para zoom).</p>
 
 <div class="row cols-6" style="margin-bottom:16px">
   {% for l,v,sub in kpis %}
@@ -12,45 +13,41 @@ publicación del OC: despacho, costo marginal por barra, tensiones y flujos.</p>
 </div>
 
 <div class="card" style="margin-bottom:16px">
-  <div class="hd"><h3>Costo marginal por barra (RD$/MWh)</h3>
-    <span class="tag">animado 24 h · ▶ play · rueda para zoom</span></div>
-  <p class="muted" style="margin:0 0 8px;font-size:12.5px">Costo marginal del sistema ×
-  factor de nodo. Alto a mediodía (térmica marginal por regulación); ver
-  <a href="/metodologia">Metodología</a>.
-  <br><span class="src">Fuente: modom_generator_dispatch.csv (CVP marginal) × nodal_factors.csv.</span></p>
-  {{ cost_map|safe }}
-  {{ sync_cost|safe }}
+  <div class="hd"><h3>Mapa del SENI — {{ metric_labels[metric] }}</h3>
+    <form method="get" action="/" style="margin:0">
+      <input type="hidden" name="cost_bus" value="{{ cost_bus }}">
+      <select name="metric" onchange="this.form.submit()" style="max-width:280px">
+        {% for k,lbl in metric_labels.items() %}<option value="{{ k }}" {{ 'selected' if k==metric }}>
+          {{ lbl }}</option>{% endfor %}</select></form></div>
+  {{ modom_map|safe }}
+  {{ sync|safe }}
+  <p class="src">Costo: costo marginal del sistema × factor de nodo (todas las barras) ·
+  Tensión: resultado eléctrico del MODOM (~384 barras; el PDD solo publica ~28 monitoradas).
+  Ver <a href="/metodologia">Metodología</a>.</p>
 </div>
 
 <div class="row cols-2" style="margin-bottom:16px">
   <div class="card"><div class="hd"><h3>Despacho por tecnología</h3>
     <span class="tag">24 h</span></div>{{ modom_mix|safe }}
-    <p class="src">Fuente: modom_generator_dispatch.csv · clasificación por generators.csv.</p></div>
+    <p class="src">Fuente: despacho del PDD · clasificación por generators.csv.</p></div>
   <div class="card">
     <div class="hd"><h3>Costo marginal por barra</h3>
       <form method="get" action="/" style="margin:0">
+        <input type="hidden" name="metric" value="{{ metric }}">
         <select name="cost_bus" onchange="this.form.submit()" style="max-width:240px">
           {% for val,lbl in bus_opts %}<option value="{{ val }}" {{ 'selected' if val==cost_bus }}>{{ lbl }}</option>{% endfor %}
         </select></form></div>
     <p class="muted" style="margin:0 0 8px;font-size:12.5px">Costo en la barra seleccionada
-    por hora. La línea sigue la hora del mapa de costo.</p>
+    por hora. La línea sigue la hora del mapa.</p>
     {{ mc_curve|safe }}
     <p class="src">Fuente: costo marginal del sistema × factor de nodo de la barra.</p></div>
 </div>
 
-<div class="card" style="margin-bottom:16px">
-  <div class="hd"><h3>Tensiones por barra (MODOM)</h3>
-    <span class="tag">animado 24 h</span></div>
-  {{ volt_map|safe }}
-  {{ sync_volt|safe }}
-  <p class="src">Fuente: modom_bus_voltage.csv (resultado de tensión del PDD).</p>
-</div>
-
 <div class="card">
   <div class="hd"><h3>Cargabilidad por rama (MODOM)</h3>
-    <span class="tag">sigue la hora del mapa de tensión</span></div>
+    <span class="tag">top por hora · sigue la hora del mapa</span></div>
   {{ flows|safe }}
-  <p class="src">Fuente: modom_branch_flows.csv (flujo MW del PDD); % = |flujo| / Snom
-  (ratings de pypsa_branch_components). El PDD publica MW, no % directamente.</p>
+  <p class="src">Fuente: FLUJOS POR LINEAS (%) del PDD (Analisis_Electrico); se re-rankea
+  cada hora, mayor → menor (las ramas entran y salen del top).</p>
 </div>
 {% endblock %}

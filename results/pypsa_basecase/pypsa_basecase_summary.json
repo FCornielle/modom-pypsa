@@ -13,8 +13,20 @@
     "3": 917.7,
     "4": 16218.244
   },
-  "lines_above_90pct_peak": 21,
+  "lines_above_90pct_peak": 22,
   "max_line_loading_pu": 1.0,
+  "flowgates": {
+    "fg1": {
+      "limit_mw": 200.0,
+      "max_util_pct": 81.74,
+      "binding_hours": 0
+    },
+    "fg2": {
+      "limit_mw": 670.0,
+      "max_util_pct": 44.78,
+      "binding_hours": 0
+    }
+  },
   "counts": {
     "buses": 717,
     "lines_added": 592,
@@ -24,6 +36,8 @@
     "load_buses": 281,
     "committed_from_modom": 63,
     "loads_with_nodal_factor": 268,
-    "declared_cvp_overrides": 54
+    "declared_cvp_overrides": 54,
+    "flowgates": 2,
+    "flowgate_terms_missing": 0
   }
 }

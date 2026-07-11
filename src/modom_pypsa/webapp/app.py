@@ -9,6 +9,7 @@ Levantar:  uvicorn modom_pypsa.webapp.app:app --reload
 from __future__ import annotations
 
 import datetime as _dt
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -54,9 +55,36 @@ def _fmt(v, unit="", dec=0):
 MODOM_V_CSV = REPO_ROOT / "data/processed/modom_results/modom_bus_voltage.csv"
 MODOM_FLOWS_CSV = REPO_ROOT / "data/processed/modom_results/modom_branch_flows.csv"
 LOADS_CSV = REPO_ROOT / "data/processed/loads_time_series/loads_time_series.csv"
+PDD_ROOT = REPO_ROOT / "data/processed/pdd"
+
+
+def _latest_pdd_dir():
+    """Directorio del último PDD ingerido (`data/processed/pdd/<YYYY-MM-DD>`) o None.
+
+    La pestaña MODOM·PDD se alimenta de este caso (sin selector: siempre el más reciente);
+    si no hay PDD ingerido, los helpers caen al workbook (`modom_results/`)."""
+    if not PDD_ROOT.exists():
+        return None
+    dirs = sorted(d for d in PDD_ROOT.iterdir()
+                  if d.is_dir() and (d / "meta.json").exists())
+    return dirs[-1] if dirs else None
+
+
+def _pdd_date() -> str | None:
+    d = _latest_pdd_dir()
+    if not d:
+        return None
+    try:
+        return json.loads((d / "meta.json").read_text(encoding="utf-8")).get("pdd_date")
+    except Exception:
+        return d.name
 
 
 def _modom_demand() -> pd.Series:
+    pdd = _latest_pdd_dir()
+    if pdd and (pdd / "demand.csv").exists():
+        df = pd.read_csv(pdd / "demand.csv")
+        return df.set_index("snapshot_id").p_set_mw.reindex(HOURS)
     if not LOADS_CSV.exists():
         return pd.Series(dtype=float)
     return pd.read_csv(LOADS_CSV).groupby("snapshot_id").p_set_mw.sum().reindex(HOURS)
@@ -86,43 +114,52 @@ def _cost_bus_options():
 
 
 def _modom_voltage_values() -> dict:
+    # El mapa de tensión usa el resultado eléctrico del MODOM (workbook, ~384 barras
+    # geolocalizadas). El PDD solo publica ~28 barras monitoradas en p.u. — demasiado
+    # disperso para el mapa —, así que su tensión NO se usa aquí (sí su despacho/costo).
     if not MODOM_V_CSV.exists():
         return {}
     mv = pd.read_csv(MODOM_V_CSV, index_col=0)
-    return {h: {b: float(mv.at[h, b]) for b in mv.columns if pd.notna(mv.at[h, b])}
+    # tensión 0/NaN = barra sin resultado → se omite (no se pinta como 0 p.u.)
+    return {h: {b: float(mv.at[h, b]) for b in mv.columns
+                if pd.notna(mv.at[h, b]) and float(mv.at[h, b]) > 0}
             for h in mv.index}
 
 
 # --------------------------------------------------------------- MODOM · PDD
+MODOM_METRIC_LABELS = {"tension": "Tensión por barra (p.u.)",
+                       "costo": "Costo marginal por barra (RD$/MWh)"}
+
+
 @app.get("/", response_class=HTMLResponse)
-def modom_pdd(request: Request, cost_bus: str | None = None):
+def modom_pdd(request: Request, cost_bus: str | None = None, metric: str = "costo"):
+    metric = metric if metric in MODOM_METRIC_LABELS else "costo"
+    pdd = _latest_pdd_dir()
+    pdd_date = _pdd_date()
+    src_tag = f"PDD {pdd_date}" if pdd_date else "workbook"
     dem = _modom_demand()
     disp = _load_dispatch()
     gen = disp.sum(axis=1).reindex(HOURS) if not disp.empty else pd.Series(dtype=float)
     mc = _modom_marginal_cost()
     peak = dem.idxmax() if len(dem.dropna()) else "h_19"
-    flows = pd.read_csv(MODOM_FLOWS_CSV, index_col=0) if MODOM_FLOWS_CSV.exists() else pd.DataFrame()
     kpis = [
-        ("Demanda pico", _fmt(dem.max(), " MW"), "PDD del día"),
+        ("Demanda pico", _fmt(dem.max(), " MW"), src_tag),
         ("Energía", _fmt(dem.sum(), " MWh"), "demanda 24 h"),
         ("Costo marginal medio", _fmt(pd.Series(mc).mean(), " RD$/MWh"), "del sistema"),
-        ("Generación pico", _fmt(gen.max(), " MW"), "despacho MODOM"),
+        ("Generación pico", _fmt(gen.max(), " MW"), "despacho"),
         ("Barras con tensión", str(len(_modom_voltage_values().get(peak, {}))), "resultado MODOM"),
         ("Hora pico", peak.replace("h_", ""), "máxima demanda"),
     ]
-    # escala de color = mín/máx del DÍA (para que se note el cambio por hora)
-    cvals = _modom_cost_values()
-    callv = [v for h in cvals for v in cvals[h].values() if v == v]
-    cmin, cmax = (min(callv), max(callv)) if callv else (None, None)
-    vvals = _modom_voltage_values()
-    vallv = [v for h in vvals for v in vvals[h].values() if v == v]
-    vmin, vmax = (min(vallv), max(vallv)) if vallv else (None, None)
-    cost_map = charts.network_map_div(cvals, None, metric="costo", hours=HOURS,
-                                      init_hour=peak, div_id="costmap", cmin=cmin,
-                                      cmax=cmax, external_controls=True)
-    volt_map = charts.network_map_div(vvals, None, metric="tension", hours=HOURS,
-                                      init_hour=peak, div_id="voltmap", cmin=vmin,
-                                      cmax=vmax, external_controls=True)
+    # UN solo mapa, métrica elegible (tensión / costo). Escala = mín/máx del DÍA.
+    if metric == "costo":
+        vals = _modom_cost_values()
+    else:
+        vals = _modom_voltage_values()
+    allv = [v for h in vals for v in vals[h].values() if v == v]
+    vmin, vmax = (min(allv), max(allv)) if allv else (None, None)
+    modom_map = charts.network_map_div(vals, None, metric=metric, hours=HOURS,
+                                       init_hour=peak, div_id="modommap", cmin=vmin,
+                                       cmax=vmax, external_controls=True)
     # curva de costo por BARRA (selector, default barra de referencia Palamara)
     bus_opts, default_bus = _cost_bus_options()
     cost_bus = cost_bus or default_bus
@@ -132,13 +169,24 @@ def modom_pdd(request: Request, cost_bus: str | None = None):
     mc_curve = charts.series_line_div(
         [(h, mc.get(h, 0.0) * factor) for h in HOURS], ylabel="RD$/MWh",
         color="#b0683c", div_id="mccurve", markers=False, grid=False)
+    # cargabilidad por rama: del PDD (% nativo por etiqueta) si existe; si no, del workbook
+    if pdd and (pdd / "branch_loading.csv").exists():
+        bl = pd.read_csv(pdd / "branch_loading.csv", index_col=0)
+        load_by_hour = {h: {c: float(bl.at[h, c]) for c in bl.columns
+                            if h in bl.index and pd.notna(bl.at[h, c])} for h in HOURS}
+        flows_div = charts.ranked_loading_anim_div(load_by_hour, HOURS, peak, "flowsbar")
+    else:
+        flows = pd.read_csv(MODOM_FLOWS_CSV, index_col=0) if MODOM_FLOWS_CSV.exists() else pd.DataFrame()
+        flows_div = charts.modom_flows_anim_div(flows, HOURS, peak, "flowsbar")
+    heading = f"MODOM · PDD del {pdd_date} (24 h)" if pdd_date else "MODOM · PDD del día (24 h)"
+    # todos los gráficos siguen la hora del ÚNICO mapa: barras (flowsbar) + curva (mccurve)
+    sync = charts.anim_controller("modommap", HOURS, ["flowsbar"], ["mccurve"], peak)
     return view("modom_pdd.html", ctx(
-        request, active="modom", heading="MODOM · PDD del día (24 h)", kpis=kpis,
-        modom_mix=charts.modom_mix_div(), cost_map=cost_map, volt_map=volt_map,
+        request, active="modom", heading=heading, kpis=kpis,
+        modom_mix=charts.modom_mix_div(pdd / "dispatch.csv" if pdd else None),
+        modom_map=modom_map, metric=metric, metric_labels=MODOM_METRIC_LABELS,
         mc_curve=mc_curve, peak=peak, bus_opts=bus_opts, cost_bus=cost_bus,
-        flows=charts.modom_flows_anim_div(flows, HOURS, peak, "flowsbar"),
-        sync_cost=charts.anim_controller("costmap", HOURS, [], ["mccurve"], peak),
-        sync_volt=charts.anim_controller("voltmap", HOURS, ["flowsbar"], [], peak)))
+        flows=flows_div, sync=sync))
 
 
 # --------------------------------------------------------------- PyPSA · Modelo (DC)
@@ -175,7 +223,7 @@ def pypsa_model(request: Request, cost_bus: str | None = None):
         ser = [(h, pvals.get(h, {}).get(cost_bus)) for h in HOURS]
         mc_curve = charts.series_line_div(
             [(h, v) for h, v in ser if v is not None], ylabel="RD$/MWh",
-            color="#2563EB", div_id="pypsamccurve", markers=False, grid=False)
+            color="#b0683c", div_id="pypsamccurve", markers=False, grid=False)  # mismo estilo que MODOM·PDD
         sync_cost = charts.anim_controller(
             "pypsacostmap", HOURS, ["pypsacong"] if cong else [],
             ["pypsamccurve"] if mc_curve else [], peak)
@@ -193,8 +241,9 @@ def _ac_run(run_id: str | None):
 MODOM_DISP_CSV = REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv"
 NODAL_FACTORS_CSV = REPO_ROOT / "data/processed/modom_results/nodal_factors.csv"
 GENERATORS_CSV2 = REPO_ROOT / "data/processed/generators/generators.csv"
-METRIC_LABELS = {"tension": "Tensión (pu)", "costo": "Costo marginal MODOM (RD$/MWh)",
-                 "delta_v": "Δ tensión vs MODOM (pu)"}
+# Mapa AC: solo métricas de la verificación AC. El costo marginal NO va aquí (ya se
+# refleja en la pestaña PyPSA·Modelo).
+METRIC_LABELS = {"tension": "Tensión (pu)", "delta_v": "Δ tensión vs MODOM (pu)"}
 _MODOM_MC = {}
 
 
@@ -203,9 +252,9 @@ def _modom_marginal_cost() -> dict:
     flexible más cara: 0 < despacho < Pmax). Es la base del precio fiel al MODOM."""
     if _MODOM_MC:
         return _MODOM_MC
-    if not (MODOM_DISP_CSV.exists() and GENERATORS_CSV2.exists()):
+    disp = _load_dispatch()      # PDD vigente si existe; si no, workbook
+    if disp.empty or not GENERATORS_CSV2.exists():
         return {}
-    disp = pd.read_csv(MODOM_DISP_CSV, index_col=0)
     g = pd.read_csv(GENERATORS_CSV2)
     pmax = dict(zip(g.generator_id, pd.to_numeric(g.effective_pmax_mw, errors="coerce")))
     cvp = {}
@@ -224,9 +273,12 @@ def _modom_marginal_cost() -> dict:
 
 
 def _loss_factor_map() -> dict:
-    if not NODAL_FACTORS_CSV.exists():
+    pdd = _latest_pdd_dir()
+    src = (pdd / "nodal_factors.csv" if (pdd and (pdd / "nodal_factors.csv").exists())
+           else NODAL_FACTORS_CSV)
+    if not src.exists():
         return {}
-    nf = pd.read_csv(NODAL_FACTORS_CSV)
+    nf = pd.read_csv(src)
     return dict(zip(nf.bus_id_modom, pd.to_numeric(nf.get("factor_retiro"), errors="coerce")))
 
 
@@ -320,25 +372,43 @@ def _metric_values(run_id: str, metric: str):
     return vals, hours
 
 
+def _ac_loading_anim(br: pd.DataFrame, hours: list, init_hour: str) -> str:
+    """Cargabilidad AC re-rankeada por hora (mismo estilo que MODOM·PDD / PyPSA)."""
+    if br.empty or "hour" not in br.columns:
+        return ""
+    load_by_hour = {h: dict(zip(g["name"], pd.to_numeric(g["loading_percent"], errors="coerce")))
+                    for h, g in br.groupby("hour")}
+    return charts.ranked_loading_anim_div(load_by_hour, hours, init_hour, "acloading")
+
+
 @app.get("/ac", response_class=HTMLResponse)
 def ac_page(request: Request, run: str | None = None, metric: str = "tension"):
     r = _ac_run(run)
-    runs = [m for m in da.list_runs() if m.get("type") in ("iterative", "ac_verify")]
     if r is None:
         return view("ac.html", ctx(
-            request, active="ac", heading="Pandapower · Modelo AC", run=None, runs=runs))
+            request, active="ac", heading="Pandapower · Modelo AC", run=None))
     rid = r["run_id"]
     summ = r.get("summary", {})
     peak = summ.get("hour", "h_19")
     bus = da.run_csv(rid, "ac_bus_voltages.csv")
     br = da.run_csv(rid, "ac_branch_loading.csv")
     vals, hours = _metric_values(rid, metric)
+    kpis = [
+        ("Demanda (pico)", _fmt(summ.get("demand_mw"), " MW"), "hora " + str(peak).replace("h_", "")),
+        ("Pérdidas AC", _fmt(summ.get("losses_mw"), " MW", 1), "AC vs despacho"),
+        ("Tensión mín", _fmt(summ.get("v_min"), " pu", 3), "barra más baja"),
+        ("Tensión máx", _fmt(summ.get("v_max"), " pu", 3), "barra más alta"),
+        ("Violaciones V", f"{(summ.get('n_v_below_090') or 0) + (summ.get('n_v_above_110') or 0)}",
+         "<0.9 / >1.1 pu"),
+        ("Barras con V", str(summ.get("modom_buses_with_v") or "—"),
+         f"de {summ.get('modom_buses_total') or 717}"),
+    ]
     multi = "hour" in bus.columns and len(hours) > 1
     nmap = charts.network_map_div(vals, br, metric=metric, hours=hours,
                                   init_hour=peak, div_id="acmap", external_controls=multi)
     if multi:
         profile = charts.voltage_profile_anim_div(bus, hours, peak, "acprofile")
-        loading = charts.loading_bars_anim_div(br, hours, peak, "acloading")
+        loading = _ac_loading_anim(br, hours, peak)
         sync = charts.anim_controller("acmap", hours, ["acprofile", "acloading"], [], peak)
     else:
         profile = charts.voltage_profile_div(bus, peak)
@@ -346,8 +416,8 @@ def ac_page(request: Request, run: str | None = None, metric: str = "tension"):
         sync = ""
     iters = r.get("iterations", [])
     return view("ac.html", ctx(
-        request, active="ac", heading="Pandapower · Modelo AC", run=r, runs=runs,
-        summary=summ, fmt=_fmt, metric=metric, metric_labels=METRIC_LABELS,
+        request, active="ac", heading="Pandapower · Modelo AC", run=r,
+        summary=summ, fmt=_fmt, metric=metric, metric_labels=METRIC_LABELS, kpis=kpis,
         peak=peak, nmap=nmap, profile=profile, loading=loading, sync=sync,
         iters=iters, convergence=charts.convergence_div(iters),
         dcac=charts.dc_vs_ac_div(da.run_csv(rid, "summary_by_hour.csv"))))
@@ -355,7 +425,9 @@ def ac_page(request: Request, run: str | None = None, metric: str = "tension"):
 
 # --------------------------------------------------------------- Auditoría
 def _load_dispatch() -> pd.DataFrame:
-    p = REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv"
+    pdd = _latest_pdd_dir()
+    p = (pdd / "dispatch.csv" if (pdd and (pdd / "dispatch.csv").exists())
+         else REPO_ROOT / "data/processed/modom_results/modom_generator_dispatch.csv")
     return pd.read_csv(p, index_col=0) if p.exists() else pd.DataFrame()
 
 

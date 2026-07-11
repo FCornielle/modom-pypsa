@@ -310,6 +310,40 @@ def build_network(
     real_mask = ~n.generators.carrier.isin(["unserved", "dump"])
     n.generators["is_synchronous"] = real_mask & ~n.generators.index.isin(vre_ids)
 
+    # --- Flowgates del MODOM (seguridad N-1): Σ coef·flujo <= FLGTMAX, simétrico.
+    # En MODOM la N-1 se codifica como interfaces críticas con límite derateado, no como
+    # SCLOPF. Cada flowgate es una combinación lineal de flujos de rama (todas las ramas
+    # —líneas y trafos— son componentes Line en por-unidad). Estructura compacta en n.meta;
+    # la restricción se impone en solve_network vía `_flowgate_constraint`. Opcional: si
+    # faltan las tablas canónicas, la red corre sin flowgates (como antes).
+    flowgates: list[dict] = []
+    fg_members_path = data_dir / "flowgates" / "flowgate_members.csv"
+    fg_limits_path = data_dir / "flowgates" / "flowgate_limits.csv"
+    fg_missing_terms = 0
+    if fg_members_path.exists() and fg_limits_path.exists():
+        fm = _read(fg_members_path)
+        fl = _read(fg_limits_path)
+        fl["fmax_mw"] = _num(fl["fmax_mw"])
+        line_set = set(n.lines.index)
+        for fg in sorted(set(fm["flowgate_id"])):
+            sub = fm[fm["flowgate_id"] == fg]
+            terms: list[tuple[str, float]] = []
+            for _, r in sub.iterrows():
+                bname = r["branch_name"]
+                if bname not in line_set:
+                    fg_missing_terms += 1
+                    continue
+                coef = float(_num(pd.Series([r["coefficient"]])).iloc[0])
+                orient = float(_num(pd.Series([r["orient"]])).iloc[0] or 1.0)
+                terms.append((bname, coef * orient))
+            lim = fl[fl["flowgate_id"] == fg].set_index("snapshot_id")["fmax_mw"]
+            limit_by_snapshot = {
+                s: float(lim.get(s)) for s in snapshot_ids
+                if s in lim.index and pd.notna(lim.get(s))
+            }
+            if terms and limit_by_snapshot:
+                flowgates.append({"id": fg, "terms": terms, "limit": limit_by_snapshot})
+
     n.meta = {
         "model": "linear_lopf_v2_modom_commitment" if committed_units else "linear_lopf_v1",
         "min_sync_fraction": float(min_sync_fraction),
@@ -324,7 +358,17 @@ def build_network(
             "committed_from_modom": int(committed_units),
             "loads_with_nodal_factor": int(n_loss_factors),
             "declared_cvp_overrides": int(sum(1 for g in gen_added if g in declared_cvp)),
+            "flowgates": int(len(flowgates)),
+            "flowgate_terms_missing": int(fg_missing_terms),
         },
+        "flowgates": flowgates,
+        "flowgate_note": (
+            "Seguridad N-1 fiel al MODOM: " + ", ".join(
+                f"{fg['id']} (<= {next(iter(fg['limit'].values())):.0f} MW, "
+                f"{len(fg['terms'])} ramas)" for fg in flowgates
+            ) + ". Restriccion Sigma coef*flujo <= FLGTMAX, simetrica."
+            if flowgates else "Sin flowgates (tablas canonicas ausentes)."
+        ),
         "vre_note": "Las unidades con perfil renovable se capan por pronóstico "
                     "(forecast_mw), no por disponibilidad; el resto por disponibilidad.",
         "commitment_note": (
@@ -361,9 +405,77 @@ def _min_sync_constraint(n, snapshots):
     n.model.add_constraints(lhs >= rhs, name="min_synchronous")
 
 
+def _flowgate_constraint(n, snapshots):
+    """Impone los flowgates del MODOM: -FLGTMAX <= Σ coef·flujo <= FLGTMAX por hora.
+
+    En MODOM la seguridad N-1 se modela como interfaces críticas (flowgates): una
+    combinación lineal de flujos de rama acotada por un límite derateado. Cada flowgate
+    está en `n.meta["flowgates"]` (ver build_network) con sus términos `(rama, coef·orient)`
+    y el límite por snapshot. El coeficiente ya incluye la orientación, así que se aplica
+    directo sobre la variable de flujo de línea `Line-s` (orientada bus0→bus1).
+    """
+    import xarray as xr
+
+    flowgates = n.meta.get("flowgates", []) or []
+    if not flowgates:
+        return
+    if "Line-s" not in n.model.variables:
+        return
+    svar = n.model["Line-s"]
+    line_names = set(svar.coords["name"].values)
+    snaps = list(snapshots)
+    for fg in flowgates:
+        terms = [(b, c) for b, c in fg["terms"] if b in line_names]
+        if not terms:
+            continue
+        lhs = sum(coef * svar.sel(name=b) for b, coef in terms)
+        limit = xr.DataArray(
+            [float(fg["limit"].get(s, 0.0)) for s in snaps],
+            coords=[("snapshot", snaps)],
+        )
+        n.model.add_constraints(lhs <= limit, name=f"flowgate_{fg['id']}_pos")
+        n.model.add_constraints(lhs >= -limit, name=f"flowgate_{fg['id']}_neg")
+
+
+def _extra_functionality(n, snapshots):
+    """Compone todas las restricciones propias (regulación síncrona + flowgates)."""
+    _min_sync_constraint(n, snapshots)
+    _flowgate_constraint(n, snapshots)
+
+
 def solve_network(n, solver_name: str = "highs"):
-    n.optimize(solver_name=solver_name, extra_functionality=_min_sync_constraint)
+    n.optimize(solver_name=solver_name, extra_functionality=_extra_functionality)
     return n
+
+
+def flowgate_utilization(n) -> pd.DataFrame:
+    """Flujo firmado de cada flowgate por snapshot vs su límite (MW y % de utilización).
+
+    Columnas: flowgate_id, snapshot, signed_flow_mw, limit_mw, util_pct (|flujo|/límite).
+    Usa los mismos coeficientes firmados que la restricción, sobre `n.lines_t.p0`.
+    """
+    flowgates = n.meta.get("flowgates", []) or []
+    if not flowgates or not len(n.lines):
+        return pd.DataFrame(columns=["flowgate_id", "snapshot", "signed_flow_mw",
+                                     "limit_mw", "util_pct"])
+    p0 = n.lines_t.p0
+    rows = []
+    for fg in flowgates:
+        flow = pd.Series(0.0, index=p0.index)
+        for b, coef in fg["terms"]:
+            if b in p0.columns:
+                flow = flow + coef * p0[b]
+        for s in p0.index:
+            lim = float(fg["limit"].get(s, 0.0))
+            sf = float(flow.loc[s])
+            rows.append({
+                "flowgate_id": fg["id"],
+                "snapshot": s,
+                "signed_flow_mw": round(sf, 4),
+                "limit_mw": round(lim, 4),
+                "util_pct": round(100.0 * abs(sf) / lim, 2) if lim > 0 else None,
+            })
+    return pd.DataFrame(rows)
 
 
 def regulation_floor(n) -> pd.Series:
@@ -431,6 +543,18 @@ def summarize(n) -> dict[str, object]:
             "max_line_loading_pu": round(float(loading.max().max()), 4) if loading.size else 0.0,
         }
 
+    # Flowgates: máxima utilización y horas que tocan el límite (>= 99.5%).
+    flowgate_summary = {}
+    fg_util = flowgate_utilization(n)
+    if len(fg_util):
+        for fg, g in fg_util.groupby("flowgate_id"):
+            up = g["util_pct"].dropna()
+            flowgate_summary[str(fg)] = {
+                "limit_mw": round(float(g["limit_mw"].iloc[0]), 1),
+                "max_util_pct": round(float(up.max()), 2) if len(up) else None,
+                "binding_hours": int((up >= 99.5).sum()),
+            }
+
     return {
         "model": n.meta.get("model"),
         "objective": float(n.objective) if n.objective is not None else None,
@@ -442,6 +566,7 @@ def summarize(n) -> dict[str, object]:
         "peak_unserved_mw": round(float(unserved.max()), 3),
         "dispatch_by_carrier_mwh": {str(k): round(float(v), 3) for k, v in by_carrier.items()},
         **line_loading,
+        "flowgates": flowgate_summary,
         "counts": n.meta.get("counts", {}),
     }
 
@@ -459,6 +584,9 @@ def export_results(n, outdir: Path = DEFAULT_RESULTS_DIR) -> dict[str, object]:
         loading = n.lines_t.p0.abs().div(n.lines["s_nom"].replace(0.0, pd.NA), axis=1)
         loading.round(4).to_csv(outdir / "line_loading_by_snapshot.csv")
     n.buses_t.marginal_price.round(4).to_csv(outdir / "nodal_prices_by_snapshot.csv")
+    fg_util = flowgate_utilization(n)
+    if len(fg_util):
+        fg_util.to_csv(outdir / "flowgate_utilization_by_snapshot.csv", index=False)
     (outdir / "pypsa_basecase_summary.json").write_text(
         json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8"
     )

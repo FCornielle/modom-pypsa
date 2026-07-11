@@ -10,18 +10,23 @@
       margin:8px 0;overflow-x:auto;font-size:13px}
   .doc h4{margin:16px 0 6px;font-size:14.5px} .doc p{font-size:13.5px;color:#333}
   .doc li{font-size:13px;margin:4px 0}
+  .ref{color:var(--muted);font-size:11.5px;font-weight:600;letter-spacing:.02em}
+  .st{font-weight:700;white-space:nowrap} .st-y{color:#137333} .st-p{color:#a15c00} .st-n{color:#a50e0e}
+  .tbl td:nth-child(3){font-size:12.5px}
 </style>
 
-<p class="page-sub">Cómo formula el problema el <b>MODOM</b> (modelo oficial del OC:
-GAMS + DIgSILENT) y qué reproduce <b>nuestro modelo</b> (PyPSA + pandapower) hasta hoy.
-Con las ecuaciones de cada uno para entender el alcance y las diferencias.</p>
+<p class="page-sub">Las ecuaciones que el <b>MODOM</b> (modelo oficial del OC: GAMS +
+DIgSILENT) resuelve, y qué reproduce <b>nuestro modelo</b> (PyPSA + pandapower). La columna
+MODOM es fiel a la transcripción oficial <b>Programación de corto plazo V16</b> del OC
+(<code>docs/programacion_corto_plazo_modom_transcripcion.md</code>, §6–§7); los números de
+sección remiten a ella.</p>
 
 <div class="card" style="margin-bottom:16px;border-left:3px solid var(--warn)">
   <h3>⚠ El sistema NO opera solo con renovables</h3>
   <p style="font-size:13.5px;margin:0">A mediodía sobra solar, pero la red necesita
   <b>máquinas síncronas</b> (térmica/hidro) encendidas para <b>inercia y regulación de
-  frecuencia</b> — la fotovoltaica no las aporta. Por eso el costo marginal del MODOM se
-  mantiene alto al mediodía aunque un modelo puramente energético daría ~0 (excedente VRE
+  frecuencia</b> — la fotovoltaica no las aporta (§4.4). Por eso el costo marginal del MODOM
+  se mantiene alto al mediodía aunque un modelo puramente energético daría ~0 (excedente VRE
   gratis). El gráfico "Despacho por tecnología" (abajo) lo evidencia.</p>
 </div>
 
@@ -29,98 +34,145 @@ Con las ecuaciones de cada uno para entender el alcance y las diferencias.</p>
   <!-- ============================ MODOM ============================ -->
   <div class="card doc">
     <h3>MODOM — OC (GAMS + DIgSILENT)</h3>
-    <p>Dos motores que iteran: <b>GAMS</b> (UC + despacho económico, red DC con factores de
-    pérdidas y flowgates) y <b>DIgSILENT/PowerFactory</b> (flujo AC: tensiones, reactiva,
-    taps). PowerFactory calcula los <b>factores de nodo</b> (pérdidas marginales) y GAMS
-    los consume; iteran hasta converger.</p>
+    <p>Optimización MILP del despacho de corto plazo (48–168 períodos de 1 h). GAMS/CPLEX
+    resuelve unit commitment + despacho DC con pérdidas y flowgates; DIgSILENT/PowerFactory
+    verifica el flujo AC y calcula los <b>factores de nodo</b> (pérdidas marginales), que
+    vuelven a GAMS. Iteran hasta converger (NCV ↔ OPLM, §8).</p>
 
-    <h4>1. Objetivo — costo de operación</h4>
-    <div class="eq">$$\min \sum_{t}\sum_{g}\big(CVP_g\,p_{g,t} + c^{su}_g\,u^{su}_{g,t}\big)$$</div>
-    <p>\(CVP_g\): costo variable de producción (combustible, declarado VEROPE);
-    \(p_{g,t}\): potencia; \(c^{su}\): costo de arranque; \(u^{su}\): variable de arranque.</p>
+    <h4>Función objetivo — costo total de operación <span class="ref">§6.1</span></h4>
+    <div class="eq">$$\min\; Z=\underbrace{\sum_{n}\sum_{g}CVP^{ef}_g\,P_{n,g}}_{\text{térmica}}
+    +\underbrace{CENS\sum_{n}PNS^{tot}_n}_{\text{déficit}}
+    +\underbrace{\sum_{n}\sum_{e}CVERR\,VERT_{n,e}}_{\text{vertimiento}}$$
+    $$+\underbrace{CVRRF\!\!\sum_{n,g}\!(\xi^{RSF}_{n,g}+\xi^{AGC}_{n,g})}_{\text{holgura reservas}}
+    +\underbrace{\sum_{n,g}\!(C^{ARR}_g u^{ARR}_{n,g}+C^{PAR}_g u^{PAR}_{n,g})}_{\text{arranque/parada}}$$</div>
+    <p>\(CVP^{ef}_g\) = \(CVP_g\) (versión NCV) o \(CVP_g/FNPROM_g\) (versión OPLM) (§6.2).</p>
 
-    <h4>2. Balance nodal (con pérdidas)</h4>
-    <div class="eq">$$\sum_{g\in n} p_{g,t} - f^{ret}_{n}\,D_{n,t} - \sum_{k} H_{n,k} f_{k,t} = 0
-    \quad \forall n,t$$</div>
-    <p>\(f^{ret}_n\): <b>factor de nodo (retiro)</b> = penalización por pérdidas marginales
-    en la barra \(n\) (lo calcula PowerFactory); \(D_{n,t}\): demanda; \(f_{k,t}\): flujo de
-    la rama \(k\); \(H\): incidencia.</p>
+    <h4>Compromiso de unidades <span class="ref">§7.1, §7.8–7.12</span></h4>
+    <div class="eq">$$v^{ACC}_{n,g}+u^{ARR}_{n,g}\mathbf 1_{TARR_g\ge1}+u^{PAR}_{n,g}\mathbf 1_{TPAR_g\ge1}+v^{RFA}_{n,g}=1$$</div>
+    <p>Estados excluyentes (acoplada/arrancando/parando/reserva fría) + transiciones
+    prohibidas, tiempos mínimos de arranque y parada, tiempo en reserva fría, número máximo
+    de arranques y enclavamiento de pares de grupos.</p>
 
-    <h4>3. Red DC + flowgates</h4>
-    <div class="eq">$$f_{k,t}=\frac{\theta_{i,t}-\theta_{j,t}}{x_k},\qquad
-    |f_{k,t}|\le \bar f_k,\qquad \sum_{k\in FG} \beta_k f_{k,t}\le \overline{FG}$$</div>
+    <h4>Límites de generación y potencia variable <span class="ref">§7.2, §7.3</span></h4>
+    <div class="eq">$$PG^{MIN}_{n,g}+\!\sum MR_{n,g}\le P_{n,g}\le PG^{MAX}_{n,g}-\!\sum MR_{n,g}$$</div>
+    <p>\(PG^{MAX},PG^{MIN}\) varían dinámicamente durante arranque/parada; los márgenes de
+    reserva \(MR^{AGC},MR^{RSF},MR^{RPF}\) recortan la banda útil (§7.3).</p>
 
-    <h4>4. Unit commitment, límites y reservas</h4>
-    <div class="eq">$$u_{g,t}\underline P_g \le p_{g,t}\le u_{g,t}\bar P_g,\quad
-    u_{g,t}\in\{0,1\}$$
-    $$\sum_{g\in \text{sinc}} r_{g,t}\ge R^{reg}_t \quad(\text{regulación/inercia})$$</div>
-    <p>Más rampas, tiempos mínimos de arranque/parada, contratos y seguridad.</p>
+    <h4>Reservas de frecuencia co-optimizadas <span class="ref">§7.4–7.6</span></h4>
+    <div class="eq">$$\sum_{g\in G_{RPF}}\!\!(MR^{RPF}_{n,g}+\xi^{RPF}_{n,g})\ge RRPF_n\!\!\sum_{g}\!P_{n,g}$$
+    $$\sum_{g\in G_{RSF}}\!\!(MR^{RSF}_{n,g}+\dots)+\!\!\sum_{g\in G_{AGC}}\!\!MR^{AGC}_{n,g}=RRSF_n\!\!\sum_{g}\!P_{n,g}$$</div>
+    <p>RPF, RSF y AGC como fracción del despacho, con límites de margen por central (§7.5).</p>
 
-    <h4>5. AC en DIgSILENT (verificación)</h4>
-    <div class="eq">$$P_i=\sum_j |V_i||V_j|(G_{ij}\cos\theta_{ij}+B_{ij}\sin\theta_{ij})$$
-    $$Q_i=\sum_j |V_i||V_j|(G_{ij}\sin\theta_{ij}-B_{ij}\cos\theta_{ij})$$</div>
-    <p>Flujo AC completo (P, Q, V, θ), taps OLTC, reactiva de máquinas, shunts. De aquí
-    salen los factores de nodo que vuelven a GAMS (lazo de iteración).</p>
+    <h4>Rampas de generación <span class="ref">§7.7</span></h4>
+    <div class="eq">$$P_{n+1,g}-P_{n,g}\le RS_g\,v^{ACCS}_{n,g},\qquad
+    P_{n-1,g}-P_{n,g}\le RB_g\,v^{ACCB}_{n,g}$$</div>
+
+    <h4>Red DC + límites térmicos + flowgates <span class="ref">§7.13</span></h4>
+    <div class="eq">$$F_{\ell,n}=\frac{S^{BASE}}{X_\ell}(\theta_{ni,n}-\theta_{nf,n}),\qquad
+    |F_{\ell,n}|\le FLJMAX_\ell$$
+    $$\sum_{\ell\in\mathcal L_{fg}}F_{\ell,n}\,FGATE_{\ell,fg}\le FLGTMAX_{fg,n}+\varepsilon$$</div>
+
+    <h4>Pérdidas de transmisión <span class="ref">§7.14</span></h4>
+    <div class="eq">$$PERD^{LINEA}_{\ell,n}\ge S^{BASE}\tfrac{R_\ell}{X_\ell^{2}}\big[(\Delta\theta^{ref}_\ell)^2+2\Delta\theta^{ref}_\ell(\Delta\theta_{\ell,n}-\Delta\theta^{ref}_\ell)\big]$$</div>
+    <p>Pérdidas incrementales linealizadas por rama, repartidas 50/50 a los nodos extremos.</p>
+
+    <h4>Balance nodal + PNS + auxiliares <span class="ref">§7.15–7.17</span></h4>
+    <div class="eq">$$\sum_{g\in nd}\!P_{n,g}+\!\!\sum_{\ell:nf=nd}\!\!F_{n,\ell}+PNS_{n,nd}=
+    D_{n,nd}+\!\!\sum_{\ell:ni=nd}\!\!F_{n,\ell}+\!\sum_{g\in nd}\!SSA_{n,g}+PERD_{n,nd}$$</div>
+    <p>\(SSA_{n,g}=PMX_{n,g}\,SSAA_g\) (servicios auxiliares); \(PNS^{tot}_n=\sum_{nd}PNS_{n,nd}\).</p>
+
+    <h4>Embalses hidroeléctricos <span class="ref">§7.18</span></h4>
+    <div class="eq">$$NEMB_{n,e}=NEMB_{n-1,e}+APORT_{n,e}-EXTR_{n,e}+APORT\_AA_{n,e}-VERT_{n,e}-\!\!\sum_{h\in\mathcal H_e}\!\tfrac{(1-SSAA_h)P_{n,h}}{\eta_h}$$</div>
+    <p>Balance hídrico con cascada aguas arriba y límite de energía acumulada por embalse.</p>
+
+    <h4>Verificación AC (DIgSILENT) <span class="ref">§8.3</span></h4>
+    <div class="eq">$$P_i=\sum_j|V_i||V_j|(G_{ij}\cos\theta_{ij}+B_{ij}\sin\theta_{ij})$$</div>
+    <p>Flujo AC completo (P, Q, V, θ), taps OLTC, reactiva, shunts. De aquí salen los factores
+    de nodo que vuelven a GAMS.</p>
   </div>
 
   <!-- ============================ NUESTRO ============================ -->
   <div class="card doc">
     <h3>Nuestro modelo — PyPSA + pandapower (hasta hoy)</h3>
     <p>Capa DC (PyPSA, LP) <b>dentro del commitment del MODOM</b>, verificada con AC
-    (pandapower) sobre la red real de DIgSILENT, e iterando los factores de nodo
-    (Fase 3.4). Reproduce el operativo del OC sin re-decidir el commitment.</p>
+    (pandapower) sobre la red real de DIgSILENT, iterando los factores de nodo (Fase 3.4).
+    Reproduce el operativo del OC <b>sin re-decidir el commitment</b>: GAMS ya resolvió la
+    parte MILP (binarios, reservas, rampas), nosotros reproducimos el despacho y los flujos.</p>
 
-    <h4>1. Objetivo — despacho económico (LP)</h4>
-    <div class="eq">$$\min \sum_{t}\sum_{g} CVP_g\,p_{g,t} + VOLL\sum_{n,t} ens_{n,t}$$</div>
-    <p>Sin variables binarias: el <b>encendido se toma del despacho MODOM</b>
-    (\(S\_DESPACHOM\)). \(ens\): energía no suministrada (holgura cara); más una holgura de
-    sobre-generación ("dump").</p>
+    <h4>Objetivo — despacho económico (LP) <span class="ref">↔ §6.1</span></h4>
+    <div class="eq">$$\min\;\sum_{n}\sum_{g}CVP^{ef}_g\,P_{n,g}
+    +VOLL\!\sum_{n,nd}\!PNS_{n,nd}+c^{dump}\!\sum \text{(sobre-gen)}$$</div>
+    <p>Sin binarios: el <b>encendido se toma de \(S\_DESPACHOM\)</b>, así que los términos de
+    arranque/parada y de holgura de reservas del §6.1 no entran. \(CVP^{ef}\) usa el CVP
+    declarado VEROPE cuando está vigente. \(PNS\) = holgura cara; <i>dump</i> = holgura de
+    sobre-generación cuando los Pmin forzados exceden la demanda.</p>
 
-    <h4>2. Balance nodal (con factores del MODOM)</h4>
-    <div class="eq">$$\sum_{g\in n} p_{g,t} - f^{ret}_{n}\,D_{n,t}
-    - \sum_{k} H_{n,k} f_{k,t} + ens_{n,t} = 0$$</div>
-    <p>Mismo \(f^{ret}_n\): consumimos los <b>factores de nodo del MODOM</b> y los
-    <b>re-estimamos</b> en el lazo DC↔AC.</p>
+    <h4>Commitment y límites <span class="ref">↔ §7.1–7.3</span></h4>
+    <div class="eq">$$u^{MODOM}_{n,g}\,\underline P_g\le P_{n,g}\le u^{MODOM}_{n,g}\,\bar P_{n,g}$$</div>
+    <p>El binario \(u^{MODOM}\) y los tiempos/rampas/reservas del §7.1–7.12 quedan
+    <b>fijados por el despacho MODOM</b>, no re-optimizados. VRE topada por pronóstico
+    (\(\bar P_{n,g}\), ~0 de noche). Sin márgenes de reserva co-optimizados; en su lugar, una
+    restricción opcional de <b>mínimo síncrono</b> \(\sum_{g\in sinc}P_{n,g}\ge\phi\,D_n\)
+    aproxima la necesidad de regulación de frecuencia.</p>
 
-    <h4>3. Red DC (KVL/KCL en por-unidad)</h4>
-    <div class="eq">$$f_{k,t}=\frac{\theta_{i,t}-\theta_{j,t}}{x_k},\qquad |f_{k,t}|\le \bar f_k$$</div>
-    <p>Líneas y transformadores como ramas; impedancias en por-unidad del MODOM. Sin
-    flowgates ni N-1 todavía.</p>
+    <h4>Red DC + límites térmicos + flowgates <span class="ref">↔ §7.13 · replicado</span></h4>
+    <div class="eq">$$F_{\ell,n}=\tfrac{1}{x_\ell}(\theta_{ni,n}-\theta_{nf,n}),\qquad|F_{\ell,n}|\le FLJMAX_\ell$$
+    $$-FLGTMAX_{fg,n}\le\sum_{\ell\in\mathcal L_{fg}}FGATE_{\ell,fg}\,F_{\ell,n}\le FLGTMAX_{fg,n}$$</div>
+    <p>KVL/KCL linealizado en por-unidad (líneas y trafos como ramas). <b>Flowgates del MODOM
+    (§7.13.3) impuestos como restricción dura simétrica</b> — la codificación N-1 fiel al OC
+    (<code>_flowgate_constraint</code>). Se ingieren de <code>e_fgate</code>: fg1 ≤ 200 MW
+    (7 ramas), fg2 ≤ 670 MW (3 ramas).</p>
 
-    <h4>4. Commitment y límites</h4>
-    <div class="eq">$$u^{MODOM}_{g,t}\underline P_g \le p_{g,t}\le u^{MODOM}_{g,t}\,\bar P_g(t)$$
-    $$\textstyle\sum_{g\in\text{sinc}} p_{g,t}\ge \phi\, D_t \;(\text{mín. síncrono, opc.})$$</div>
-    <p>VRE topada por pronóstico (\(\bar P(t)\)); restricción opcional de mínimo síncrono
-    para regulación de frecuencia.</p>
+    <h4>Balance nodal con factores de nodo <span class="ref">↔ §7.14–7.16</span></h4>
+    <div class="eq">$$\sum_{g\in nd}\!P_{n,g}-f^{ret}_{nd}\,D_{n,nd}-\!\!\sum_{\ell:ni=nd}\!\!F_{n,\ell}+\!\!\sum_{\ell:nf=nd}\!\!F_{n,\ell}+PNS_{n,nd}=0$$</div>
+    <p>En vez de la formulación de pérdidas incrementales del §7.14 (que exige ángulos de
+    referencia por rama), aplicamos el <b>factor de nodo \(f^{ret}\) del MODOM</b> como uplift
+    de pérdidas sobre la demanda, y lo <b>re-estimamos</b> con las pérdidas AC en el lazo
+    DC↔AC. Servicios auxiliares (\(SSA\)) no modelados aún.</p>
 
-    <h4>5. AC en pandapower (verificación)</h4>
+    <h4>Verificación AC (pandapower) <span class="ref">↔ §8.3 · replicado</span></h4>
     <div class="eq">$$\text{Newton–Raphson sobre } P_i,Q_i(V,\theta)\text{ de la red real DIgSILENT}$$</div>
     <p>Inyectamos nuestro despacho por <code>for_name</code>, resolvemos el flujo AC y
-    <b>agregamos V y cargabilidad a las 717 barras MODOM</b>.</p>
+    <b>agregamos V y cargabilidad a las 717 barras MODOM</b>. Converge 24/24.</p>
 
-    <h4>6. Lazo iterativo DC↔AC y precio</h4>
-    <div class="eq">$$f^{ret,(m+1)}_n = 1 + (f^{ret,(m)}_n-1)\frac{L^{AC}}{\sum_j (f^{ret,(m)}_j-1)D_j}$$
-    $$\pi_{n,t} = \lambda^{MODOM}_t \cdot f^{ret}_n \quad(\text{costo por barra})$$</div>
-    <p>Re-estimamos los factores con las pérdidas \(L^{AC}\) medidas por la AC hasta
-    estabilizar; el costo por barra usa el costo marginal del MODOM \(\lambda^{MODOM}\) ×
-    factor de nodo.</p>
+    <h4>Lazo iterativo DC↔AC y precio por barra <span class="ref">Fase 3.4</span></h4>
+    <div class="eq">$$f^{ret,(m+1)}_n=1+(f^{ret,(m)}_n-1)\frac{L^{AC}}{\sum_j(f^{ret,(m)}_j-1)D_j}$$
+    $$\pi_{n,t}=\lambda^{MODOM}_t\cdot f^{ret}_n\quad(\text{costo por barra})$$</div>
+    <p>Reproduce GAMS↔PowerFactory: re-estimamos los factores con las pérdidas AC \(L^{AC}\)
+    hasta estabilizar; el costo por barra = costo marginal síncrono del MODOM × factor de nodo.</p>
   </div>
 </div>
 
 <div class="card" style="margin:16px 0">
-  <h3>Qué modela cada uno (resumen)</h3>
+  <h3>Cobertura ecuación por ecuación (QA vs. transcripción)</h3>
+  <p style="font-size:12.5px;color:var(--muted);margin:2px 0 10px">
+    <span class="st st-y">✅ replicado</span> en el LP/AC ·
+    <span class="st st-p">➖ tomado del MODOM</span> (fijado como entrada, no re-optimizado) ·
+    <span class="st st-n">❌ no modelado</span> todavía.</p>
   <table class="tbl">
-    <thead><tr><th>Componente</th><th>MODOM (OC)</th><th>Nuestro modelo</th></tr></thead>
+    <thead><tr><th>§</th><th>Ecuación / familia MODOM</th><th>Estado en nuestro modelo</th></tr></thead>
     <tbody>
-    <tr><td>Despacho económico</td><td>✅ UC + despacho (GAMS)</td><td>✅ LP dentro del commitment MODOM</td></tr>
-    <tr><td>Unit commitment</td><td>✅ binario, rampas, tiempos</td><td>➖ se toma del MODOM</td></tr>
-    <tr><td>Factores de nodo (pérdidas)</td><td>✅ de PowerFactory</td><td>✅ consumidos + re-estimados</td></tr>
-    <tr><td>Red DC + flowgates</td><td>✅</td><td>✅ DC · ➖ sin flowgates</td></tr>
-    <tr><td>Reservas / regulación de frecuencia</td><td>✅ co-optimizadas</td><td>➖ mínimo síncrono (opc.)</td></tr>
-    <tr><td>Flujo AC (V, Q, taps)</td><td>✅ DIgSILENT</td><td>✅ pandapower sobre red real</td></tr>
-    <tr><td>Iteración pérdidas DC↔AC</td><td>✅ GAMS↔PowerFactory</td><td>✅ Fase 3.4</td></tr>
-    <tr><td>Seguridad N-1</td><td>✅</td><td>❌ pendiente</td></tr>
-    <tr><td>Precio nodal</td><td>✅ costo marg. × factor</td><td>✅ misma estructura</td></tr>
+    <tr><td>6.1</td><td>Costo térmico \(\sum CVP^{ef}P\)</td><td><span class="st st-y">✅</span> objetivo del LP (con CVP VEROPE)</td></tr>
+    <tr><td>6.1</td><td>Déficit \(CENS\cdot PNS\)</td><td><span class="st st-y">✅</span> generador <code>unserved</code> (VOLL)</td></tr>
+    <tr><td>6.1</td><td>Vertimiento \(CVERR\cdot VERT\)</td><td><span class="st st-n">❌</span> sin embalses; hay <i>dump</i> de sobre-gen análogo</td></tr>
+    <tr><td>6.1</td><td>Holgura de reservas \(CVRRF\,\xi\)</td><td><span class="st st-n">❌</span> reservas no co-optimizadas</td></tr>
+    <tr><td>6.1</td><td>Arranque/parada \(C^{ARR}u^{ARR}+C^{PAR}u^{PAR}\)</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
+    <tr><td>7.1</td><td>Estados y transiciones de UC</td><td><span class="st st-p">➖</span> \(S\_DESPACHOM\)</td></tr>
+    <tr><td>7.2</td><td>Potencia máx/mín variable en arranque/parada</td><td><span class="st st-n">❌</span> Pmin/Pmax estáticos dentro del commitment</td></tr>
+    <tr><td>7.3</td><td>Límites de generación \(P\in[PG^{MIN},PG^{MAX}]\)</td><td><span class="st st-y">✅</span> banda; <span class="st st-n">❌</span> márgenes de reserva</td></tr>
+    <tr><td>7.4–7.6</td><td>Reservas RPF / RSF / AGC</td><td><span class="st st-n">❌</span> proxy: mínimo síncrono opcional</td></tr>
+    <tr><td>7.7</td><td>Rampas de subida/bajada</td><td><span class="st st-p">➖</span> implícitas en el commitment MODOM</td></tr>
+    <tr><td>7.8–7.11</td><td>Tiempos mín. arranque/parada, nº máx arranques</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
+    <tr><td>7.12</td><td>Enclavamiento de generadores</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
+    <tr><td>7.13.1</td><td>Flujo DC \(F=\tfrac{S^{BASE}}{X}\Delta\theta\)</td><td><span class="st st-y">✅</span> LOPF linealizado (por-unidad)</td></tr>
+    <tr><td>7.13.2</td><td>Límite térmico \(|F|\le FLJMAX\)</td><td><span class="st st-y">✅</span> <code>s_nom</code> por rama</td></tr>
+    <tr><td>7.13.3</td><td>Flowgates \(\sum FGATE\,F\le FLGTMAX\)</td><td><span class="st st-y">✅</span> restricción dura (N-1 fiel al MODOM)</td></tr>
+    <tr><td>7.14</td><td>Pérdidas incrementales por rama</td><td><span class="st st-p">➖</span> vía factor de nodo \(f^{ret}\) + lazo AC</td></tr>
+    <tr><td>7.15</td><td>Balance nodal (KCL)</td><td><span class="st st-y">✅</span>; \(SSA\) <span class="st st-n">❌</span></td></tr>
+    <tr><td>7.16</td><td>PNS total del período</td><td><span class="st st-y">✅</span> suma de <code>unserved</code></td></tr>
+    <tr><td>7.17</td><td>Servicios auxiliares \(SSA=PMX\cdot SSAA\)</td><td><span class="st st-n">❌</span> no modelado</td></tr>
+    <tr><td>7.18</td><td>Embalses (balance, cascada, energía acum.)</td><td><span class="st st-n">❌</span> hidro como generador con disponibilidad</td></tr>
+    <tr><td>8.3</td><td>Flujo AC (P, Q, V, θ) de verificación</td><td><span class="st st-y">✅</span> pandapower sobre la red real DIgSILENT</td></tr>
     </tbody>
   </table>
 </div>
