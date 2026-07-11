@@ -6,23 +6,26 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 <style>
-  .eq{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 14px;
-      margin:8px 0;overflow-x:auto;font-size:13px}
-  .doc h4{margin:18px 0 6px;font-size:14.5px}
-  .doc h4 .ref{color:var(--muted);font-size:11.5px;font-weight:600;letter-spacing:.02em;margin-left:6px}
+  .eq{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 16px;
+      margin:6px 0 4px;overflow-x:auto;overflow-y:hidden;font-size:13px}
+  .doc h4{margin:16px 0 4px;font-size:14.5px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .doc h4 .num{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;
+      padding:0 6px;border-radius:6px;background:var(--accent,#2563eb);color:#fff;font-size:12px;font-weight:700}
+  .doc h4 .ref{color:var(--muted);font-size:11.5px;font-weight:600;letter-spacing:.02em}
   .doc p{font-size:13.5px;color:#333} .doc li{font-size:13px;margin:4px 0}
-  .dom{font-size:12px;color:var(--muted);margin:2px 0 6px}
-  .secref{color:var(--muted);font-size:11.5px;font-weight:600;letter-spacing:.02em}
+  .dom{font-size:12px;color:var(--muted);margin:0 0 6px 2px}
   .st{font-weight:700;white-space:nowrap} .st-y{color:#137333} .st-p{color:#a15c00} .st-n{color:#a50e0e}
   .tbl td:nth-child(3){font-size:12.5px}
-  .grp{border-top:2px solid var(--line);margin-top:18px;padding-top:2px}
+  .grp{border-top:2px solid var(--line);margin-top:20px;padding-top:12px}
+  .grp .glbl{width:100%;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--muted);margin-bottom:2px}
 </style>
 
 <p class="page-sub">La formulación completa del <b>MODOM</b> (modelo oficial del OC: GAMS +
-DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripción oficial
-<b>Programación de corto plazo V16</b> del OC
+DIgSILENT), con <b>las 37 ecuaciones</b> numeradas tal como aparecen en la transcripción
+oficial <b>Programación de corto plazo V16</b> del OC
 (<code>docs/programacion_corto_plazo_modom_transcripcion.md</code>, §6–§7), y qué reproduce
-<b>nuestro modelo</b> (PyPSA + pandapower). Los números de sección remiten a esa transcripción.</p>
+<b>nuestro modelo</b> (PyPSA + pandapower). La etiqueta §X.Y remite a la sección del documento.</p>
 
 <div class="card" style="margin-bottom:16px;border-left:3px solid var(--warn)">
   <h3>⚠ El sistema NO opera solo con renovables</h3>
@@ -37,17 +40,17 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
 <!-- ====================  MODOM — FORMULACIÓN COMPLETA  ================= -->
 <!-- ==================================================================== -->
 <div class="card doc">
-  <h3>MODOM — formulación completa (transcripción V16)</h3>
+  <h3>MODOM — formulación completa (37 ecuaciones, transcripción V16)</h3>
   <p>MILP del despacho de corto plazo (48–168 períodos de 1 h). GAMS/CPLEX resuelve unit
   commitment + despacho DC con pérdidas y flowgates; DIgSILENT/PowerFactory verifica el flujo
   AC y calcula los <b>factores de nodo</b> (pérdidas marginales), que vuelven a GAMS (NCV ↔
-  OPLM, §8). A continuación, las ecuaciones exactas del documento.</p>
+  OPLM, §8). A continuación, las ecuaciones exactas del documento, numeradas 1 a 37.</p>
 
-  <h4 class="grp">6. Función objetivo <span class="ref">§6.1</span></h4>
-  <p>Minimizar el costo total de generación y operación:</p>
+  <h4 class="grp"><span class="glbl">Función objetivo</span>
+    <span class="num">1</span> Costo total de operación <span class="ref">§6.1</span></h4>
   <div class="eq">$$
   \begin{aligned}
-  Z ={}&
+  \min\; Z ={}&
   \sum_{n\in N}\sum_{g\in G_{\text{térmico}}} CVP_g^{ef}\,P_{n,g}
   + CENS\sum_{n\in N}PNS_n^{\text{total}}
   + \sum_{n\in N}\sum_{e\in\mathcal{E}} CVERR\,VERT_{n,e}
@@ -59,10 +62,10 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   + \sum_{n\in N}\sum_{g\in G_{\text{térmico}}} C_g^{PAR}\,u_{n,g}^{PAR}.
   \end{aligned}
   $$</div>
-  <p>Términos: costo de generación térmica, costo de déficit, costo de vertimientos,
-  penalizaciones por reserva, y costos de arranque y parada.</p>
+  <p class="dom">Costo de generación térmica + déficit + vertimientos + penalizaciones por
+  reserva + costos de arranque y parada.</p>
 
-  <h4>Costo variable efectivo <span class="ref">§6.2</span></h4>
+  <h4><span class="num">2</span> Costo variable efectivo <span class="ref">§6.2</span></h4>
   <div class="eq">$$
   CVP_g^{ef}=
   \begin{cases}
@@ -71,7 +74,8 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   \end{cases}
   $$</div>
 
-  <h4 class="grp">7.1 Compromiso de unidades — estados mutuamente excluyentes <span class="ref">§7.1.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.1 · Compromiso de unidades</span>
+    <span class="num">3</span> Estados mutuamente excluyentes <span class="ref">§7.1.1</span></h4>
   <div class="eq">$$
   v_{n,g}^{ACC}
   + u_{n,g}^{ARR}\,\mathbf{1}_{TARR_g\ge 1}
@@ -81,7 +85,7 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{activo}}\setminus G_{\text{mantenimiento}}\).
   Estados: \(v^{ACC}\) acoplada, \(u^{ARR}\) arrancando, \(u^{PAR}\) parando, \(v^{RFA}\) reserva fría.</p>
 
-  <h4>Transiciones de estado prohibidas <span class="ref">§7.1.2</span></h4>
+  <h4><span class="num">4</span> Transiciones de estado prohibidas <span class="ref">§7.1.2</span></h4>
   <div class="eq">$$
   \begin{aligned}
   &\text{Parada}\to\text{acoplada:} & u_{n-1,g}^{PAR}+v_{n,g}^{ACC}&\le 1. \\
@@ -94,10 +98,10 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   &\text{Paradas consecutivas:} & u_{n-1,g}^{PAR}+u_{n,g}^{PAR}&\le 1.
   \end{aligned}
   $$</div>
-  <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{transitorio}}\), con
-  \(G_{\text{transitorio}}=\left\{g\in G_{\text{activo}}:TARR_g\ge 1\ \lor\ TPAR_g\ge 1\right\}\).</p>
+  <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{transitorio}}=\left\{g\in G_{\text{activo}}:TARR_g\ge 1\ \lor\ TPAR_g\ge 1\right\}\).</p>
 
-  <h4 class="grp">7.2 Potencia máxima variable <span class="ref">§7.2.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.2 · Potencias variables en arranque/parada</span>
+    <span class="num">5</span> Potencia máxima variable <span class="ref">§7.2.1</span></h4>
   <div class="eq">$$
   \begin{aligned}
   PG_{n,g}^{MAX} ={}&
@@ -107,11 +111,11 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   &+ \frac{PMN_{n,g}}{TPAR_g}\sum_{t\in\mathcal{T}_{PAR}}\left(t^*+TPAR_g-n^*\right)u_{t,g}^{PAR}.
   \end{aligned}
   $$
-  $$\mathcal{T}_{ARR}=\left\{t\in N:n^*\le t^*<n^*+TARR_g\right\},\quad
+  $$\mathcal{T}_{ARR}=\left\{t\in N:n^*\le t^*\lt n^*+TARR_g\right\},\quad
   \mathcal{T}_{PAR}=\left\{t\in N:n^*-TPAR_g+1\le t^*\le n^*\right\}.$$</div>
   <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{activo}}\).</p>
 
-  <h4>Potencia mínima variable <span class="ref">§7.2.2</span></h4>
+  <h4><span class="num">6</span> Potencia mínima variable <span class="ref">§7.2.2</span></h4>
   <div class="eq">$$
   \begin{aligned}
   PG_{n,g}^{MIN} ={}&
@@ -124,86 +128,85 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   <p class="dom">Mismos \(\mathcal{T}_{ARR},\mathcal{T}_{PAR}\) y dominio. La diferencia con
   \(PG^{MAX}\) es el término estable: \(PMX_{n,g}\) frente a \(PMN_{n,g}\).</p>
 
-  <h4 class="grp">7.3 Límites de generación — límite superior <span class="ref">§7.3.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.3 · Límites de generación</span>
+    <span class="num">7</span> Límite superior <span class="ref">§7.3.1</span></h4>
   <div class="eq">$$
   P_{n,g} \le PG_{n,g}^{MAX} - MR_{n,g}^{AGC} - MR_{n,g}^{RSF}
   - \left(MR_{n,g}^{RPF}-SAE_{g,n}\right)v_{n,g}^{ACC},
   $$</div>
   <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{activo}}\).</p>
 
-  <h4>Límite inferior — centrales regulares <span class="ref">§7.3.2</span></h4>
+  <h4><span class="num">8</span> Límite inferior — centrales regulares <span class="ref">§7.3.2</span></h4>
   <div class="eq">$$
   P_{n,g} \ge PG_{n,g}^{MIN} + MR_{n,g}^{AGC} + MR_{n,g}^{RSF}
   + HSF_{g,n}v_{n,g}^{ACC} + \left(MR_{n,g}^{RPF}-SAE_{g,n}\right)v_{n,g}^{ACC},
   $$</div>
   <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{regular}}\).</p>
 
-  <h4>Límite inferior — autoproductores <span class="ref">§7.3.3</span></h4>
+  <h4><span class="num">9</span> Límite inferior — autoproductores <span class="ref">§7.3.3</span></h4>
   <div class="eq">$$
   P_{n,g} \ge PFP_{g,n} + MR_{n,g}^{AGC} + MR_{n,g}^{RSF}
   + HSF_{g,n}v_{n,g}^{ACC} + \left(MR_{n,g}^{RPF}-SAE_{g,n}\right)v_{n,g}^{ACC},
   $$</div>
   <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{autoproductor}}\).</p>
 
-  <h4 class="grp">7.4 Reserva del sistema — requisito de RPF <span class="ref">§7.4.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.4 · Reserva del sistema</span>
+    <span class="num">10</span> Requisito de RPF <span class="ref">§7.4.1</span></h4>
   <div class="eq">$$
   \sum_{g\in G_{RPF}}\left(MR_{n,g}^{RPF}+\xi_{n,g}^{RPF}\right)
   \ge RRPF_n\sum_{g\in G_{\text{activo}}}P_{n,g},
   $$</div>
-  <p class="dom">\(\forall n\in N:RRPF_n>0\).</p>
+  <p class="dom">\(\forall n\in N:RRPF_n\gt 0\).</p>
 
-  <h4>Requisito de RSF <span class="ref">§7.4.2</span></h4>
+  <h4><span class="num">11</span> Requisito de RSF <span class="ref">§7.4.2</span></h4>
   <div class="eq">$$
   \sum_{g\in G_{RSF}}\left(MR_{n,g}^{RSF}+HSF_{g,n}v_{n,g}^{ACC}+\xi_{n,g}^{RSF}\right)
   + \sum_{g\in G_{AGC}}MR_{n,g}^{AGC}
   = RRSF_n\sum_{g\in G_{\text{activo}}}P_{n,g},
   $$</div>
-  <p class="dom">\(\forall n\in N:RRSF_n>0\).</p>
+  <p class="dom">\(\forall n\in N:RRSF_n\gt 0\).</p>
 
-  <h4 class="grp">7.5 Límites de margen por central — regulares <span class="ref">§7.5.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.5 · Límites de margen por central</span>
+    <span class="num">12</span> Centrales regulares <span class="ref">§7.5.1</span></h4>
   <div class="eq">$$
   MR_{n,g}^{RSF} \le
   \min\left(MTSF_{g,n},\;MRSFU_g\,UND_{g,n},\;MRSF_g\right) v_{n,g}^{ACC}DRS_{g,n}
   - MR_{n,g}^{AGC}.
   $$</div>
 
-  <h4>Autoproductores <span class="ref">§7.5.2</span></h4>
+  <h4><span class="num">13</span> Autoproductores <span class="ref">§7.5.2</span></h4>
   <div class="eq">$$
   MR_{n,g}^{RSF} \le
   \min\left(\frac{MX_{g,n}-\left(PFP_{g,n}+2MR_{n,g}^{RPF}\right)}{2},\;MRSF_g\right)
   DRS_{g,n} - MR_{n,g}^{AGC}.
   $$</div>
 
-  <h4 class="grp">7.6 Reserva de AGC — requisito agregado <span class="ref">§7.6.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.6 · Reserva de AGC</span>
+    <span class="num">14</span> Requisito agregado <span class="ref">§7.6.1</span></h4>
   <div class="eq">$$
   \sum_{g\in G_{AGC}}\left(MR_{n,g}^{AGC}+\xi_{n,g}^{AGC}\right)
   \ge RRSF_n\sum_{g\in G_{\text{activo}}}P_{n,g},
   $$</div>
-  <p class="dom">\(\forall n\in N:RRSF_n>0\).</p>
+  <p class="dom">\(\forall n\in N:RRSF_n\gt 0\).</p>
 
-  <h4>Límite por central <span class="ref">§7.6.2</span></h4>
+  <h4><span class="num">15</span> Límite por central <span class="ref">§7.6.2</span></h4>
   <div class="eq">$$ MR_{n,g}^{AGC}\le AGC_{g,n}, \qquad \forall n\in N,\ \forall g\in G_{AGC}. $$</div>
 
-  <h4 class="grp">7.7 Rampas de generación — subida <span class="ref">§7.7.1</span></h4>
-  <div class="eq">$$
-  P_{n+1,g}-P_{n,g} \le RS_g\,v_{n,g}^{ACCS},
-  $$</div>
-  <p class="dom">\(\forall n\in N_{\text{interior}},\ \forall g\in G_{\text{rampa-subida}}\),
-  con \(N_{\text{interior}}=\{n\in N:n^*>1\}\), \(G_{\text{rampa-subida}}=\{g\in G_{\text{activo}}:RS_g>0\}\).</p>
+  <h4 class="grp"><span class="glbl">7.7 · Rampas de generación</span>
+    <span class="num">16</span> Rampa de subida <span class="ref">§7.7.1</span></h4>
+  <div class="eq">$$ P_{n+1,g}-P_{n,g} \le RS_g\,v_{n,g}^{ACCS}, $$</div>
+  <p class="dom">\(\forall n\in N_{\text{interior}}=\{n\in N:n^*\gt 1\},\ \forall g\in G_{\text{rampa-subida}}=\{g\in G_{\text{activo}}:RS_g\gt 0\}\).</p>
 
-  <h4>Rampa de bajada <span class="ref">§7.7.2</span></h4>
-  <div class="eq">$$
-  P_{n-1,g}-P_{n,g} \le RB_g\,v_{n,g}^{ACCB},
-  $$</div>
-  <p class="dom">\(\forall n\in N_{\text{interior}},\ \forall g\in G_{\text{rampa-bajada}}\),
-  con \(G_{\text{rampa-bajada}}=\{g\in G_{\text{activo}}:RB_g>0\}\).</p>
+  <h4><span class="num">17</span> Rampa de bajada <span class="ref">§7.7.2</span></h4>
+  <div class="eq">$$ P_{n-1,g}-P_{n,g} \le RB_g\,v_{n,g}^{ACCB}, $$</div>
+  <p class="dom">\(\forall n\in N_{\text{interior}},\ \forall g\in G_{\text{rampa-bajada}}=\{g\in G_{\text{activo}}:RB_g\gt 0\}\).</p>
 
-  <h4>Exclusividad de dirección de rampa <span class="ref">§7.7.3</span></h4>
+  <h4><span class="num">18</span> Exclusividad de dirección de rampa <span class="ref">§7.7.3</span></h4>
   <div class="eq">$$ v_{n,g}^{ACCS}+v_{n,g}^{ACCB}\le 1, $$</div>
-  <p class="dom">\(\forall n\in N_{\text{interior}},\ \forall g\in G_{\text{con-rampa}}\),
-  con \(G_{\text{con-rampa}}=\{g\in G_{\text{activo}}:RS_g>0\ \lor\ RB_g>0\}\).</p>
+  <p class="dom">\(\forall n\in N_{\text{interior}},\ \forall g\in G_{\text{con-rampa}}=\{g\in G_{\text{activo}}:RS_g\gt 0\ \lor\ RB_g\gt 0\}\).</p>
 
-  <h4 class="grp">7.8 Tiempo mínimo de arranque <span class="ref">§7.8</span></h4>
+  <h4 class="grp"><span class="glbl">7.8–7.9 · Tiempos mínimos</span>
+    <span class="num">19</span> Tiempo mínimo de arranque <span class="ref">§7.8</span></h4>
   <div class="eq">$$
   \sum_{t\in\mathcal{T}_{\text{ventana}}}u_{t,g}^{ARR2}
   = TARR_g\,u_{n,g}^{ARR}
@@ -212,71 +215,76 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   $$\mathcal{T}_{\text{ventana}}=\left\{t\in N:n^*-TARR_g+1\le t^*\le n^*\right\}.$$</div>
   <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{arrancable}}=\{g\in G_{\text{activo}}:TARR_g\ge 1\}\).</p>
 
-  <h4>Tiempo mínimo de parada <span class="ref">§7.9</span></h4>
+  <h4><span class="num">20</span> Tiempo mínimo de parada <span class="ref">§7.9</span></h4>
   <div class="eq">$$
   \sum_{t\in\mathcal{T}_{\text{ventana}}}u_{t,g}^{PAR2}
   = TPAR_g\,u_{n,g}^{PAR}
   + \sum_{k=1}^{TPAR_g}\left(TPAR_g-k\right)\left(u_{n-k,g}^{PAR}+u_{n+k,g}^{PAR}\right).
   $$
-  $$\mathcal{T}_{\text{ventana}}=\left\{t\in N:n^*\le t^*<n^*+TPAR_g\right\}.$$</div>
+  $$\mathcal{T}_{\text{ventana}}=\left\{t\in N:n^*\le t^*\lt n^*+TPAR_g\right\}.$$</div>
   <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{parable}}\).</p>
 
-  <h4 class="grp">7.10 Tiempo entre parada y arranque — mínimo en reserva fría <span class="ref">§7.10.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.10 · Tiempo entre parada y arranque</span>
+    <span class="num">21</span> Mínimo en reserva fría <span class="ref">§7.10.1</span></h4>
   <div class="eq">$$
   \sum_{t\in\mathcal{T}_{\min}}v_{t,g}^{RFA}
   \ge \left(TMPA_g+TPAR_g+TARR_g-1\right)u_{n,g}^{PAR}.
   $$
-  $$\mathcal{T}_{\min}=\left\{t\in N:n^*<t^*\le n^*+TMPA_g+TPAR_g+TARR_g-1\right\}.$$</div>
-  <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{enfriamiento}}=\{g\in G_{\text{activo}}:TMPA_g>0\}\).</p>
+  $$\mathcal{T}_{\min}=\left\{t\in N:n^*\lt t^*\le n^*+TMPA_g+TPAR_g+TARR_g-1\right\}.$$</div>
+  <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{enfriamiento}}=\{g\in G_{\text{activo}}:TMPA_g\gt 0\}\).</p>
 
-  <h4>Tiempo máximo en reserva fría <span class="ref">§7.10.2</span></h4>
+  <h4><span class="num">22</span> Máximo en reserva fría <span class="ref">§7.10.2</span></h4>
   <div class="eq">$$
   \sum_{t\in\mathcal{T}_{\max}}v_{t,g}^{RFA}
   \le TMXPA_g+TPAR_g+TARR_g-2.
   $$
-  $$\mathcal{T}_{\max}=\left\{t\in N:n^*<t^*\le n^*+TMXPA_g+TPAR_g+TARR_g\right\}.$$</div>
-  <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{rearranque}}=\{g\in G_{\text{activo}}:TMXPA_g>0\}\).</p>
+  $$\mathcal{T}_{\max}=\left\{t\in N:n^*\lt t^*\le n^*+TMXPA_g+TPAR_g+TARR_g\right\}.$$</div>
+  <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{rearranque}}=\{g\in G_{\text{activo}}:TMXPA_g\gt 0\}\).</p>
 
-  <h4 class="grp">7.11 Arranques consecutivos <span class="ref">§7.11.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.11 · Arranques</span>
+    <span class="num">23</span> Arranques consecutivos <span class="ref">§7.11.1</span></h4>
   <div class="eq">$$
   \sum_{t\in\mathcal{T}_{\text{ventana}}}u_{t,g}^{ARR}\le 1,\qquad
-  \mathcal{T}_{\text{ventana}}=\left\{t\in N:n^*\le t^*<n^*+TARR_g\right\}.
+  \mathcal{T}_{\text{ventana}}=\left\{t\in N:n^*\le t^*\lt n^*+TARR_g\right\}.
   $$</div>
   <p class="dom">\(\forall n\in N,\ \forall g\in G_{\text{arrancable}}=\{g\in G_{\text{activo}}:TARR_g\ge 1\}\).</p>
 
-  <h4>Número máximo de arranques <span class="ref">§7.11.2</span></h4>
+  <h4><span class="num">24</span> Número máximo de arranques <span class="ref">§7.11.2</span></h4>
   <div class="eq">$$
   \sum_{n\in N}u_{n,g}^{ARR}\le NAMX_g,\qquad
   \forall g\in G_{\text{ciclable}}=\{g\in G_{\text{activo}}:NAMX_g\ge 1\}.
   $$</div>
 
-  <h4 class="grp">7.12 Enclavamiento de generadores <span class="ref">§7.12</span></h4>
+  <h4 class="grp"><span class="glbl">7.12 · Enclavamiento</span>
+    <span class="num">25</span> Enclavamiento de generadores <span class="ref">§7.12</span></h4>
   <div class="eq">$$
   ENCLAV_{g,g'}\left(v_{n,g}^{ACC}+v_{n,g'}^{ACC}\right)\le 1,
   $$</div>
   <p class="dom">\(\forall(g,g')\in\mathcal{P}_{\text{enclavado}},\ \forall n\in N\), con
-  \(\mathcal{P}_{\text{enclavado}}=\{(g,g')\in G_{\text{activo}}\times G_{\text{activo}}:ENCLAV_{g,g'}>0\}\).</p>
+  \(\mathcal{P}_{\text{enclavado}}=\{(g,g')\in G_{\text{activo}}\times G_{\text{activo}}:ENCLAV_{g,g'}\gt 0\}\).</p>
 
-  <h4 class="grp">7.13 Flujo de potencia — ley de flujo DC <span class="ref">§7.13.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.13 · Flujo de potencia</span>
+    <span class="num">26</span> Ley de flujo DC <span class="ref">§7.13.1</span></h4>
   <div class="eq">$$
   F_{\ell,n} = \frac{S^{BASE}}{X_{\ell}}\left(\theta_{ni,n}-\theta_{nf,n}\right),
   \qquad \forall n\in N,\ \forall\ell\in\mathcal{L}.
   $$</div>
 
-  <h4>Límites térmicos de líneas <span class="ref">§7.13.2</span></h4>
+  <h4><span class="num">27</span> Límites térmicos de líneas <span class="ref">§7.13.2</span></h4>
   <div class="eq">$$
   -FLJMAX_{\ell} \le F_{\ell,n} \le FLJMAX_{\ell},
   \qquad \forall n\in N,\ \forall\ell\in\mathcal{L}.
   $$</div>
 
-  <h4>Restricciones de flowgate <span class="ref">§7.13.3</span></h4>
+  <h4><span class="num">28</span> Restricciones de flowgate <span class="ref">§7.13.3</span></h4>
   <div class="eq">$$
   \sum_{\ell\in\mathcal{L}_{fg}} F_{\ell,n}\,FGATE_{\ell,fg} \le FLGTMAX_{fg,n}+\varepsilon,
-  \qquad \mathcal{L}_{fg}=\left\{\ell\in\mathcal{L}:FGATE_{\ell,fg}>0\right\}.
+  \qquad \mathcal{L}_{fg}=\left\{\ell\in\mathcal{L}:FGATE_{\ell,fg}\gt 0\right\}.
   $$</div>
   <p class="dom">\(\forall n\in N,\ \forall fg\in FG\).</p>
 
-  <h4 class="grp">7.14 Pérdidas de transmisión — modelo incremental <span class="ref">§7.14.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.14 · Pérdidas de transmisión</span>
+    <span class="num">29</span> Modelo incremental <span class="ref">§7.14.1</span></h4>
   <div class="eq">$$
   \begin{aligned}
   PERD_{\ell,n}^{LINEA}\ge{}&
@@ -286,9 +294,9 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   \left[\left(\theta_{ni,n}-\theta_{nf,n}\right)-\Delta\theta_{\ell}^{ref}\right].
   \end{aligned}
   $$</div>
-  <p class="dom">\(\forall n\in N,\ \forall\ell\in\mathcal{L}_{\text{activo}}=\{\ell\in\mathcal{L}:\Delta\theta_{\ell}^{ref}>0\}\).</p>
+  <p class="dom">\(\forall n\in N,\ \forall\ell\in\mathcal{L}_{\text{activo}}=\{\ell\in\mathcal{L}:\Delta\theta_{\ell}^{ref}\gt 0\}\).</p>
 
-  <h4>Distribución de pérdidas por nodo <span class="ref">§7.14.2</span></h4>
+  <h4><span class="num">30</span> Distribución de pérdidas por nodo <span class="ref">§7.14.2</span></h4>
   <div class="eq">$$
   PERD_{n,nd} =
   0.5\sum_{\ell\in\mathcal{L}_{\text{saliente}}}PERD_{\ell,n}^{LINEA}
@@ -297,7 +305,8 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   <p class="dom">\(\mathcal{L}_{\text{saliente}}=\{\ell:ni=nd\}\),
   \(\mathcal{L}_{\text{entrante}}=\{\ell:nf=nd\}\); \(\forall n\in N,\ \forall nd\in\mathcal{N}\).</p>
 
-  <h4 class="grp">7.15 Balance de potencia nodal <span class="ref">§7.15</span></h4>
+  <h4 class="grp"><span class="glbl">7.15–7.17 · Balance y servicios</span>
+    <span class="num">31</span> Balance de potencia nodal <span class="ref">§7.15</span></h4>
   <div class="eq">$$
   \sum_{g\in G_{nd}}P_{n,g} + \sum_{\ell\in\mathcal{L}:nf=nd}F_{n,\ell} + PNS_{n,nd}
   = D_{n,nd} + \sum_{\ell\in\mathcal{L}:ni=nd}F_{n,\ell}
@@ -305,18 +314,19 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   $$</div>
   <p class="dom">\(\forall n\in N,\ \forall nd\in\mathcal{ND}_{\text{no aislado}}\).</p>
 
-  <h4>Potencia no suministrada total <span class="ref">§7.16</span></h4>
+  <h4><span class="num">32</span> Potencia no suministrada total <span class="ref">§7.16</span></h4>
   <div class="eq">$$
   PNS_n^{\text{total}} = \sum_{nd\in\mathcal{ND}}PNS_{n,nd}, \qquad \forall n\in N.
   $$</div>
 
-  <h4>Servicios auxiliares <span class="ref">§7.17</span></h4>
+  <h4><span class="num">33</span> Servicios auxiliares <span class="ref">§7.17</span></h4>
   <div class="eq">$$
   SSA_{n,g} = PMX_{n,g}\,SSAA_g,
-  \qquad \forall n\in N,\ \forall g\in G_{\text{con-servicios}}=\{g\in G_{\text{activo}}:SSAA_g>0\}.
+  \qquad \forall n\in N,\ \forall g\in G_{\text{con-servicios}}=\{g\in G_{\text{activo}}:SSAA_g\gt 0\}.
   $$</div>
 
-  <h4 class="grp">7.18 Embalses hidroeléctricos — balance hídrico <span class="ref">§7.18.1</span></h4>
+  <h4 class="grp"><span class="glbl">7.18 · Embalses hidroeléctricos</span>
+    <span class="num">34</span> Balance hídrico del embalse <span class="ref">§7.18.1</span></h4>
   <div class="eq">$$
   \begin{aligned}
   NEMBALSE_{n,e} ={}&
@@ -327,7 +337,7 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   $$</div>
   <p class="dom">\(\forall n\in N,\ \forall e\in\mathcal{E}_{\text{activo}}\).</p>
 
-  <h4>Aportaciones desde aguas arriba <span class="ref">§7.18.2</span></h4>
+  <h4><span class="num">35</span> Aportaciones desde aguas arriba <span class="ref">§7.18.2</span></h4>
   <div class="eq">$$
   \begin{aligned}
   APORT\_AA_{n,e} ={}&
@@ -339,20 +349,21 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   $$</div>
   <p class="dom">\(\forall n\in N,\ \forall e\in\mathcal{E}_{\text{activo}}\).</p>
 
-  <h4>Límite de generación acumulada <span class="ref">§7.18.3</span></h4>
+  <h4><span class="num">36</span> Límite de generación acumulada <span class="ref">§7.18.3</span></h4>
   <div class="eq">$$
   \sum_{n\in N}\sum_{h\in\mathcal{H}_e}P_{n,h} \le N\_INI_e, \qquad \forall e\in\mathcal{E}.
   $$</div>
 
-  <h4 class="grp">Verificación AC (DIgSILENT / PowerFactory) <span class="ref">§8.3</span></h4>
+  <h4 class="grp"><span class="glbl">Verificación eléctrica</span>
+    <span class="num">37</span> Flujo AC (DIgSILENT / PowerFactory) <span class="ref">§8.3</span></h4>
   <div class="eq">$$
   P_i=\sum_j |V_i||V_j|(G_{ij}\cos\theta_{ij}+B_{ij}\sin\theta_{ij})
   $$
   $$
   Q_i=\sum_j |V_i||V_j|(G_{ij}\sin\theta_{ij}-B_{ij}\cos\theta_{ij})
   $$</div>
-  <p>Flujo AC completo (P, Q, V, θ), taps OLTC, reactiva de máquinas, shunts. De aquí salen los
-  factores de nodo que vuelven a GAMS.</p>
+  <p class="dom">Flujo AC completo (P, Q, V, θ), taps OLTC, reactiva de máquinas, shunts. De aquí
+  salen los factores de nodo que vuelven a GAMS.</p>
 </div>
 
 <!-- ==================================================================== -->
@@ -363,45 +374,45 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
   <p>Capa DC (PyPSA, LP) <b>dentro del commitment del MODOM</b>, verificada con AC
   (pandapower) sobre la red real de DIgSILENT, iterando los factores de nodo (Fase 3.4).
   Reproduce el operativo del OC <b>sin re-decidir el commitment</b>: GAMS ya resolvió la parte
-  MILP (binarios §7.1, reservas §7.4–7.6, rampas §7.7, tiempos §7.8–7.11); nosotros
+  MILP (binarios eq. 3–4, reservas eq. 10–15, rampas eq. 16–18, tiempos eq. 19–24); nosotros
   reproducimos el despacho económico y los flujos dentro de ese commitment.</p>
 
-  <h4>Objetivo — despacho económico (LP) <span class="ref">↔ §6.1</span></h4>
+  <h4>Objetivo — despacho económico (LP) <span class="ref">↔ eq. 1</span></h4>
   <div class="eq">$$
   \min\;\sum_{n}\sum_{g}CVP^{ef}_g\,P_{n,g}
   + VOLL\!\sum_{n,nd}\!PNS_{n,nd} + c^{dump}\!\sum \text{(sobre-gen)}
   $$</div>
   <p>Sin binarios: el encendido se toma de \(S\_DESPACHOM\), así que los términos de
-  arranque/parada y de holgura de reservas del §6.1 no entran. \(CVP^{ef}\) usa el CVP
-  declarado VEROPE cuando está vigente.</p>
+  arranque/parada y de holgura de reservas de la eq. 1 no entran. \(CVP^{ef}\) (eq. 2) usa el
+  CVP declarado VEROPE cuando está vigente.</p>
 
-  <h4>Commitment y límites <span class="ref">↔ §7.1–7.3</span></h4>
+  <h4>Commitment y límites <span class="ref">↔ eq. 3–9</span></h4>
   <div class="eq">$$ u^{MODOM}_{n,g}\,\underline P_g \le P_{n,g} \le u^{MODOM}_{n,g}\,\bar P_{n,g} $$</div>
   <p>\(u^{MODOM}\) y los tiempos/rampas/reservas quedan fijados por el despacho MODOM. VRE
   topada por pronóstico (\(\bar P_{n,g}\), ~0 de noche). Restricción opcional de mínimo
   síncrono \(\sum_{g\in sinc}P_{n,g}\ge\phi\,D_n\) como proxy de la regulación de frecuencia.</p>
 
-  <h4>Red DC + límites térmicos + flowgates <span class="ref">↔ §7.13 · replicado</span></h4>
+  <h4>Red DC + límites térmicos + flowgates <span class="ref">↔ eq. 26–28 · replicado</span></h4>
   <div class="eq">$$
   F_{\ell,n}=\tfrac{1}{x_\ell}(\theta_{ni,n}-\theta_{nf,n}),\qquad |F_{\ell,n}|\le FLJMAX_\ell
   $$
   $$
   -FLGTMAX_{fg,n}\le\sum_{\ell\in\mathcal L_{fg}}FGATE_{\ell,fg}\,F_{\ell,n}\le FLGTMAX_{fg,n}
   $$</div>
-  <p>KVL/KCL linealizado en por-unidad. <b>Flowgates del MODOM (§7.13.3) como restricción dura
+  <p>KVL/KCL linealizado en por-unidad. <b>Flowgates del MODOM (eq. 28) como restricción dura
   simétrica</b> — la codificación N-1 fiel al OC (<code>_flowgate_constraint</code>): fg1 ≤ 200 MW
   (7 ramas), fg2 ≤ 670 MW (3 ramas), ingeridos de <code>e_fgate</code>.</p>
 
-  <h4>Balance nodal con factores de nodo <span class="ref">↔ §7.14–7.16</span></h4>
+  <h4>Balance nodal con factores de nodo <span class="ref">↔ eq. 29–32</span></h4>
   <div class="eq">$$
   \sum_{g\in nd}\!P_{n,g}-f^{ret}_{nd}\,D_{n,nd}-\!\!\sum_{\ell:ni=nd}\!\!F_{n,\ell}
   +\!\!\sum_{\ell:nf=nd}\!\!F_{n,\ell}+PNS_{n,nd}=0
   $$</div>
-  <p>En vez de las pérdidas incrementales del §7.14 (que exigen ángulos de referencia por
+  <p>En vez de las pérdidas incrementales de la eq. 29 (que exigen ángulos de referencia por
   rama), aplicamos el <b>factor de nodo \(f^{ret}\) del MODOM</b> como uplift sobre la demanda y
-  lo <b>re-estimamos</b> con las pérdidas AC en el lazo DC↔AC. \(SSA\) (§7.17) no modelado aún.</p>
+  lo <b>re-estimamos</b> con las pérdidas AC en el lazo DC↔AC. \(SSA\) (eq. 33) no modelado aún.</p>
 
-  <h4>Verificación AC (pandapower) + lazo y precio <span class="ref">↔ §8.3, Fase 3.4</span></h4>
+  <h4>Verificación AC (pandapower) + lazo y precio <span class="ref">↔ eq. 37, Fase 3.4</span></h4>
   <div class="eq">$$ \text{Newton–Raphson sobre } P_i,Q_i(V,\theta)\text{ de la red real DIgSILENT} $$
   $$ f^{ret,(m+1)}_n=1+(f^{ret,(m)}_n-1)\frac{L^{AC}}{\sum_j(f^{ret,(m)}_j-1)D_j},\qquad
   \pi_{n,t}=\lambda^{MODOM}_t\cdot f^{ret}_n $$</div>
@@ -421,30 +432,27 @@ DIgSILENT), con <b>todas</b> las ecuaciones tal como aparecen en la transcripci�
     <span class="st st-p">➖ tomado del MODOM</span> (fijado como entrada, no re-optimizado) ·
     <span class="st st-n">❌ no modelado</span> todavía.</p>
   <table class="tbl">
-    <thead><tr><th>§</th><th>Ecuación / familia MODOM</th><th>Estado en nuestro modelo</th></tr></thead>
+    <thead><tr><th>Eq.</th><th>§</th><th>Ecuación / familia MODOM</th><th>Estado en nuestro modelo</th></tr></thead>
     <tbody>
-    <tr><td>6.1</td><td>Costo térmico \(\sum CVP^{ef}P\)</td><td><span class="st st-y">✅</span> objetivo del LP (con CVP VEROPE)</td></tr>
-    <tr><td>6.1</td><td>Déficit \(CENS\cdot PNS\)</td><td><span class="st st-y">✅</span> generador <code>unserved</code> (VOLL)</td></tr>
-    <tr><td>6.1</td><td>Vertimiento \(CVERR\cdot VERT\)</td><td><span class="st st-n">❌</span> sin embalses; hay <i>dump</i> de sobre-gen análogo</td></tr>
-    <tr><td>6.1</td><td>Holgura de reservas \(CVRRF\,\xi\)</td><td><span class="st st-n">❌</span> reservas no co-optimizadas</td></tr>
-    <tr><td>6.1</td><td>Arranque/parada \(C^{ARR}u^{ARR}+C^{PAR}u^{PAR}\)</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
-    <tr><td>6.2</td><td>CVP efectivo (NCV / OPLM)</td><td><span class="st st-y">✅</span> <code>effective_cvp</code> / CVP declarado VEROPE</td></tr>
-    <tr><td>7.1</td><td>Estados y transiciones de UC</td><td><span class="st st-p">➖</span> \(S\_DESPACHOM\)</td></tr>
-    <tr><td>7.2</td><td>Potencia máx/mín variable en arranque/parada</td><td><span class="st st-n">❌</span> Pmin/Pmax estáticos dentro del commitment</td></tr>
-    <tr><td>7.3</td><td>Límites de generación \(P\in[PG^{MIN},PG^{MAX}]\)</td><td><span class="st st-y">✅</span> banda; <span class="st st-n">❌</span> márgenes de reserva</td></tr>
-    <tr><td>7.4–7.6</td><td>Reservas RPF / RSF / AGC</td><td><span class="st st-n">❌</span> proxy: mínimo síncrono opcional</td></tr>
-    <tr><td>7.7</td><td>Rampas de subida/bajada</td><td><span class="st st-p">➖</span> implícitas en el commitment MODOM</td></tr>
-    <tr><td>7.8–7.11</td><td>Tiempos mín. arranque/parada, nº máx arranques</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
-    <tr><td>7.12</td><td>Enclavamiento de generadores</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
-    <tr><td>7.13.1</td><td>Flujo DC \(F=\tfrac{S^{BASE}}{X}\Delta\theta\)</td><td><span class="st st-y">✅</span> LOPF linealizado (por-unidad)</td></tr>
-    <tr><td>7.13.2</td><td>Límite térmico \(|F|\le FLJMAX\)</td><td><span class="st st-y">✅</span> <code>s_nom</code> por rama</td></tr>
-    <tr><td>7.13.3</td><td>Flowgates \(\sum FGATE\,F\le FLGTMAX\)</td><td><span class="st st-y">✅</span> restricción dura (N-1 fiel al MODOM)</td></tr>
-    <tr><td>7.14</td><td>Pérdidas incrementales por rama</td><td><span class="st st-p">➖</span> vía factor de nodo \(f^{ret}\) + lazo AC</td></tr>
-    <tr><td>7.15</td><td>Balance nodal (KCL)</td><td><span class="st st-y">✅</span>; \(SSA\) <span class="st st-n">❌</span></td></tr>
-    <tr><td>7.16</td><td>PNS total del período</td><td><span class="st st-y">✅</span> suma de <code>unserved</code></td></tr>
-    <tr><td>7.17</td><td>Servicios auxiliares \(SSA=PMX\cdot SSAA\)</td><td><span class="st st-n">❌</span> no modelado</td></tr>
-    <tr><td>7.18</td><td>Embalses (balance, cascada, energía acum.)</td><td><span class="st st-n">❌</span> hidro como generador con disponibilidad</td></tr>
-    <tr><td>8.3</td><td>Flujo AC (P, Q, V, θ) de verificación</td><td><span class="st st-y">✅</span> pandapower sobre la red real DIgSILENT</td></tr>
+    <tr><td>1</td><td>6.1</td><td>Costo térmico \(\sum CVP^{ef}P\) (+ déficit \(CENS\cdot PNS\))</td><td><span class="st st-y">✅</span> objetivo del LP (VEROPE) + <code>unserved</code></td></tr>
+    <tr><td>1</td><td>6.1</td><td>Vertimiento / holgura de reservas / arranque-parada</td><td><span class="st st-n">❌</span> / <span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
+    <tr><td>2</td><td>6.2</td><td>CVP efectivo (NCV / OPLM)</td><td><span class="st st-y">✅</span> <code>effective_cvp</code> / CVP declarado</td></tr>
+    <tr><td>3–4</td><td>7.1</td><td>Estados y transiciones de UC</td><td><span class="st st-p">➖</span> \(S\_DESPACHOM\)</td></tr>
+    <tr><td>5–6</td><td>7.2</td><td>Potencia máx/mín variable en arranque/parada</td><td><span class="st st-n">❌</span> Pmin/Pmax estáticos dentro del commitment</td></tr>
+    <tr><td>7–9</td><td>7.3</td><td>Límites de generación \(P\in[PG^{MIN},PG^{MAX}]\)</td><td><span class="st st-y">✅</span> banda; <span class="st st-n">❌</span> márgenes de reserva</td></tr>
+    <tr><td>10–15</td><td>7.4–7.6</td><td>Reservas RPF / RSF / AGC</td><td><span class="st st-n">❌</span> proxy: mínimo síncrono opcional</td></tr>
+    <tr><td>16–18</td><td>7.7</td><td>Rampas de subida/bajada</td><td><span class="st st-p">➖</span> implícitas en el commitment MODOM</td></tr>
+    <tr><td>19–24</td><td>7.8–7.11</td><td>Tiempos mín. arranque/parada, nº máx arranques</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
+    <tr><td>25</td><td>7.12</td><td>Enclavamiento de generadores</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
+    <tr><td>26</td><td>7.13.1</td><td>Flujo DC \(F=\tfrac{S^{BASE}}{X}\Delta\theta\)</td><td><span class="st st-y">✅</span> LOPF linealizado (por-unidad)</td></tr>
+    <tr><td>27</td><td>7.13.2</td><td>Límite térmico \(|F|\le FLJMAX\)</td><td><span class="st st-y">✅</span> <code>s_nom</code> por rama</td></tr>
+    <tr><td>28</td><td>7.13.3</td><td>Flowgates \(\sum FGATE\,F\le FLGTMAX\)</td><td><span class="st st-y">✅</span> restricción dura (N-1 fiel al MODOM)</td></tr>
+    <tr><td>29–30</td><td>7.14</td><td>Pérdidas incrementales por rama</td><td><span class="st st-p">➖</span> vía factor de nodo \(f^{ret}\) + lazo AC</td></tr>
+    <tr><td>31</td><td>7.15</td><td>Balance nodal (KCL)</td><td><span class="st st-y">✅</span>; \(SSA\) <span class="st st-n">❌</span></td></tr>
+    <tr><td>32</td><td>7.16</td><td>PNS total del período</td><td><span class="st st-y">✅</span> suma de <code>unserved</code></td></tr>
+    <tr><td>33</td><td>7.17</td><td>Servicios auxiliares \(SSA=PMX\cdot SSAA\)</td><td><span class="st st-n">❌</span> no modelado</td></tr>
+    <tr><td>34–36</td><td>7.18</td><td>Embalses (balance, cascada, energía acum.)</td><td><span class="st st-n">❌</span> hidro como generador con disponibilidad</td></tr>
+    <tr><td>37</td><td>8.3</td><td>Flujo AC (P, Q, V, θ) de verificación</td><td><span class="st st-y">✅</span> pandapower sobre la red real DIgSILENT</td></tr>
     </tbody>
   </table>
 </div>
