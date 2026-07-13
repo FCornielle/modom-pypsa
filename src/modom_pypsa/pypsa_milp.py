@@ -79,19 +79,31 @@ def build_milp_network(
     data_dir: Path = DEFAULT_DATA_DIR,
     with_reserves: bool = True,
     with_hydro_budget: bool = True,
+    with_flowgates: bool = True,
+    pors: float | None = None,
+    min_sync_fraction: float = 0.0,
 ):
     """Arma la red PyPSA con commitment binario y parámetros del MILP del MODOM.
 
     Parte de la topología libre (`build_network(use_modom_commitment=False)`) y
     reconfigura las térmicas como `committable`, añade servicios auxiliares y el tope
     hidro. Las reservas se imponen en `solve_milp` (extra_functionality).
+
+    Consideraciones configurables (para la plataforma / escenarios):
+    - `with_reserves`: activa las reservas RPF/RSF co-optimizadas (eq. 10–15).
+    - `with_flowgates`: mantiene los flowgates N-1 (eq. 28) como restricción dura.
+    - `pors`: fracción de reserva del sistema (RRPF/RRSF); por defecto la del workbook (3%).
+    - `min_sync_fraction`: piso de generación síncrona (regulación de frecuencia).
     """
     # Topología + loads (con factores) + flowgates + VRE por pronóstico, SIN commitment fijo.
-    n = pn.build_network(data_dir=data_dir, use_modom_commitment=False)
+    n = pn.build_network(data_dir=data_dir, use_modom_commitment=False,
+                         min_sync_fraction=min_sync_fraction)
 
     gp, opts = _load_params(data_dir)
     n.meta["milp_options"] = opts
     n.meta["milp"] = True
+    if not with_flowgates:
+        n.meta["flowgates"] = []  # desactiva la N-1 (escenario sin seguridad)
 
     vre_ids = set(n.generators.index[n.generators.get("is_synchronous", True) == False]) \
         if "is_synchronous" in n.generators.columns else set()
@@ -184,7 +196,7 @@ def build_milp_network(
     # disponibilidad (no muerde); se puede sobre-escribir con hydro_daily_budget.
     n.meta["milp_reserves"] = {
         "rpf": reserve_rpf, "rsf": reserve_rsf,
-        "pors": float(opts.get("PORS", 0.03) or 0.03),
+        "pors": float(pors if pors is not None else (opts.get("PORS", 0.03) or 0.03)),
         "cvrrf": float(opts.get("CVRRF", 2e6) or 2e6),
         "enabled": bool(with_reserves),
     }

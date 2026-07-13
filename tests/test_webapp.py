@@ -29,7 +29,7 @@ def client():
 
 @pytest.mark.parametrize("url", [
     "/", "/pypsa", "/ac", "/ac?metric=costo", "/audit", "/audit?kind=linea",
-    "/metodologia", "/coming/datasets",
+    "/metodologia", "/milp", "/coming/datasets",
 ])
 def test_pages_ok(client, url):
     r = client.get(url)
@@ -46,3 +46,19 @@ def test_sidebar_sections(client):
 def test_removed_pages_are_gone(client):
     assert client.get("/projects").status_code == 404
     assert client.get("/runs").status_code == 404
+
+
+def test_milp_status_partial(client):
+    """El endpoint de status devuelve el fragmento HTMX (no una página completa)."""
+    r = client.get("/milp/status")
+    assert r.status_code == 200
+    assert "milp-run" in r.text          # clase del fragmento
+    assert "GridLab" not in r.text       # es un partial, no la base
+
+
+def test_milp_page_has_configurator(client):
+    """La página del optimizador trae el configurador de consideraciones y el form de run."""
+    r = client.get("/milp")
+    assert r.status_code == 200
+    assert "Consideraciones del escenario" in r.text
+    assert 'hx-post="/milp/run"' in r.text

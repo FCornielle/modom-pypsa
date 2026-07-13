@@ -34,9 +34,10 @@ transcripción oficial [`docs/programacion_corto_plazo_modom_transcripcion.md`](
 ```
 
 Pestañas: **MODOM·PDD** (resultado oficial del día, animado 24 h) · **PyPSA·Modelo**
-(despacho DC: precio nodal, mezcla, líneas cargadas, flowgates) · **Pandapower·Modelo AC**
-(verificación AC + lazo) · **Auditoría** (por equipo) · **Metodología** (ecuaciones MODOM
-vs. nuestras).
+(despacho DC, commitment fijo) · **Optimizador MILP** (MILP completo: configura las
+*consideraciones* —reservas, PORS, flowgates, mín. síncrono—, corre el optimizador en
+background y explora el mapa de costo + heatmap de commitment) · **Pandapower·Modelo AC**
+(verificación AC + lazo) · **Auditoría** · **Metodología** (37 ecuaciones + cobertura).
 
 ## Conceptos clave
 

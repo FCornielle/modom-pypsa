@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}Optimizador MILP · GridLab SENI{% endblock %}
+{% block content %}
+<style>
+  .cfg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 26px}
+  .cfg .opt{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;
+    padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);cursor:pointer}
+  .cfg .opt input{width:16px;height:16px;accent-color:var(--accent)}
+  .cfg .opt small{color:var(--muted);font-weight:500;margin-left:auto}
+  .cfg .fld{display:flex;flex-direction:column;gap:4px;font-size:12.5px}
+  .cfg .fld .lab{display:flex;justify-content:space-between;font-weight:600}
+  .cfg .fld .lab output{color:var(--accent);font-variant-numeric:tabular-nums}
+  .cfg .fld input[type=range]{width:100%;accent-color:var(--accent)}
+  .cfg .fld small{color:var(--muted)}
+  .milp-actions{display:flex;align-items:center;gap:16px;margin-top:16px;
+    border-top:1px solid var(--line);padding-top:14px}
+  .milp-actions .btn{font-size:14px;padding:10px 20px}
+  .milp-run{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+  .milp-run.done{color:#137333}.milp-run.err{color:#a50e0e}.milp-run.running{color:var(--accent)}
+  .spin{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);
+    border-radius:50%;display:inline-block;animation:sp .8s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .fgtab{width:100%;border-collapse:collapse;font-size:13px}
+  .fgtab th,.fgtab td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  .fgtab .bar{height:7px;border-radius:4px;background:var(--line);overflow:hidden;min-width:90px}
+  .fgtab .bar i{display:block;height:100%;background:var(--accent)}
+</style>
+
+<p class="page-sub">Reconstrucción del <b>MILP completo del MODOM</b> en PyPSA:
+<b>re-decide el commitment</b> (binarios, arranques, tiempos, rampas) con
+<b>reservas RPF/RSF co-optimizadas</b>, flowgates N-1 y servicios auxiliares. Ajusta las
+<b>consideraciones</b>, corre el optimizador y explora los resultados en el mapa y el
+programa de encendido. Ver el alcance por ecuación en <a href="/metodologia">Metodología</a>.</p>
+
+<!-- ==================== CONFIGURADOR (INPUTS) ==================== -->
+<div class="card" style="margin-bottom:16px;border-left:3px solid var(--accent)">
+  <div class="hd"><h3>⚙ Consideraciones del escenario</h3>
+    <span class="tag">MILP · HiGHS · ~30 s</span></div>
+  <form hx-post="/milp/run" hx-target="#milp-run-status" hx-swap="innerHTML">
+    <div class="cfg">
+      <label class="opt"><input type="checkbox" name="reserves" {{ 'checked' if consid.reserves }}>
+        Reservas RPF/RSF co-optimizadas <small>eq. 10–15</small></label>
+      <label class="opt"><input type="checkbox" name="flowgates" {{ 'checked' if consid.flowgates }}>
+        Flowgates N-1 (seguridad) <small>eq. 28</small></label>
+      <div class="fld"><div class="lab"><span>Reserva del sistema (PORS)</span>
+        <output id="o-pors">{{ consid.pors }}%</output></div>
+        <input type="range" name="pors" min="0" max="6" step="0.5" value="{{ consid.pors }}"
+          oninput="document.getElementById('o-pors').value=this.value+'%'">
+        <small>fracción de la demanda como reserva rodante (RRPF/RRSF)</small></div>
+      <div class="fld"><div class="lab"><span>Mínimo síncrono φ</span>
+        <output id="o-sync">{{ consid.min_sync }}%</output></div>
+        <input type="range" name="min_sync" min="0" max="60" step="5" value="{{ consid.min_sync }}"
+          oninput="document.getElementById('o-sync').value=this.value+'%'">
+        <small>piso de generación síncrona (inercia / regulación de frecuencia)</small></div>
+      <div class="fld"><div class="lab"><span>Gap MIP</span>
+        <output id="o-gap">{{ consid.gap }}%</output></div>
+        <input type="range" name="gap" min="0.5" max="5" step="0.5" value="{{ consid.gap }}"
+          oninput="document.getElementById('o-gap').value=this.value+'%'">
+        <small>tolerancia de optimalidad (menor = más exacto, más lento)</small></div>
+      <div class="fld"><div class="lab"><span>Tiempo límite</span>
+        <output id="o-time">{{ consid.time }}s</output></div>
+        <input type="range" name="time" min="60" max="600" step="60" value="{{ consid.time }}"
+          oninput="document.getElementById('o-time').value=this.value+'s'">
+        <small>corte del solver si no cierra el gap</small></div>
+    </div>
+    <div class="milp-actions">
+      <button type="submit" class="btn">▶ Optimizar</button>
+      <span id="milp-run-status">{% if job and job.status=='running' %}{% include 'partials/milp_status.html' %}{% endif %}</span>
+      <span class="src" style="margin-left:auto">Escenario actual:
+        reservas {{ 'ON' if consid.reserves else 'OFF' }} · flowgates
+        {{ 'ON' if consid.flowgates else 'OFF' }} · PORS {{ consid.pors }}%</span>
+    </div>
+  </form>
+</div>
+
+{% if not has_result %}
+<div class="card"><div class="chart-empty">Aún no hay una corrida del MILP. Ajusta las
+  consideraciones y pulsa <b>Optimizar</b>, o corre <code>scripts/run_milp.py</code>.</div></div>
+{% else %}
+
+<!-- ==================== KPIs (OUTPUTS) ==================== -->
+<div class="row cols-6" style="margin-bottom:16px">
+  {% for l,v,sub in kpis %}
+  <div class="card kpi"><div class="l">{{ l }}</div><div class="v">{{ v }}</div>
+    <div class="sub">{{ sub }}</div></div>
+  {% endfor %}
+</div>
+
+<!-- ==================== MAPA ==================== -->
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Costo por barra — despacho del MILP (RD$/MWh)</h3>
+    <span class="tag">animado 24 h · ▶ play · rueda para zoom</span></div>
+  <p class="muted" style="margin:0 0 8px;font-size:12.5px">Costo por barra = costo marginal
+  síncrono del despacho MILP × factor de nodo (pérdidas), misma estructura que el mapa del
+  <a href="/">MODOM · PDD</a>.</p>
+  {{ cost_map|safe if cost_map else '<div class="chart-empty">Sin mapa</div>' }}
+  {{ sync|safe if sync else '' }}
+</div>
+
+<!-- ==================== COMMITMENT + MEZCLA ==================== -->
+<div class="row cols-2" style="margin-bottom:16px">
+  <div class="card">
+    <div class="hd"><h3>Programa de encendido (commitment)</h3>
+      <span class="tag">unidades × 24 h · MW</span></div>
+    <p class="muted" style="margin:0 0 8px;font-size:12px">Cada fila es una máquina; el color
+    es su despacho (0 = apagada). El MILP decide <b>qué se enciende y cuándo</b>.</p>
+    {{ heat|safe if heat else '<div class="chart-empty">Sin commitment</div>' }}</div>
+  <div class="card">
+    <div class="hd"><h3>Despacho por tecnología</h3><span class="tag">24 h</span></div>
+    {{ mix|safe if mix else '<div class="chart-empty">Sin despacho</div>' }}
+    <p class="muted" style="margin:8px 0 0;font-size:12px">Mezcla resultante del MILP
+    co-optimizado (energía + reservas), dentro de flujos DC y flowgates.</p></div>
+</div>
+
+<!-- ==================== FLOWGATES + CURVA ==================== -->
+<div class="row cols-2">
+  <div class="card">
+    <div class="hd"><h3>Flowgates (seguridad N-1)</h3><span class="tag">utilización máx.</span></div>
+    {% if flowgates %}
+    <table class="fgtab"><thead><tr><th>Flowgate</th><th>Límite</th><th>Utilización máx.</th>
+      <th>Horas al límite</th></tr></thead><tbody>
+      {% for fid,lim,util,binding in flowgates %}
+      <tr><td><b>{{ fid }}</b></td><td>{{ '%.0f'|format(lim) }} MW</td>
+        <td><div style="display:flex;align-items:center;gap:8px">
+          <div class="bar"><i style="width:{{ [util,100]|min }}%"></i></div>
+          <span>{{ '%.0f'|format(util) }}%</span></div></td>
+        <td>{{ binding }}</td></tr>
+      {% endfor %}
+    </tbody></table>
+    {% else %}<div class="chart-empty">Flowgates desactivados en este escenario</div>{% endif %}
+    <p class="src">Restricción dura \(\sum FGATE\cdot F \le FLGTMAX\); fg1 ≤ 200 MW, fg2 ≤ 670 MW.</p>
+  </div>
+  <div class="card">
+    <div class="hd"><h3>Costo marginal por barra</h3>
+      <form method="get" action="/milp" style="margin:0">
+        <select name="cost_bus" onchange="this.form.submit()" style="max-width:240px">
+          {% for val,lbl in bus_opts %}<option value="{{ val }}" {{ 'selected' if val==cost_bus }}>{{ lbl }}</option>{% endfor %}
+        </select></form></div>
+    {{ mc_curve|safe if mc_curve else '<div class="chart-empty">Sin datos</div>' }}
+    <p class="src">Costo marginal síncrono del MILP × factor de nodo, por hora.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

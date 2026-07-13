@@ -1,0 +1,12 @@
+{% if job.status == 'running' %}
+<span class="milp-run running" hx-get="/milp/status" hx-trigger="load delay:2s" hx-swap="outerHTML">
+  <span class="spin"></span> Optimizando… {{ '%.0f'|format(job.elapsed or 0) }} s
+</span>
+{% elif job.status == 'done' %}
+<span class="milp-run done">✓ Óptimo encontrado en {{ '%.0f'|format(job.elapsed or 0) }} s — recargando resultados…</span>
+<script>setTimeout(function(){ window.location.href = '/milp'; }, 900);</script>
+{% elif job.status == 'error' %}
+<span class="milp-run err">✗ {{ job.error }}</span>
+{% else %}
+<span class="milp-run">Listo para optimizar.</span>
+{% endif %}

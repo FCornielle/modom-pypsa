@@ -521,6 +521,190 @@ def _round(v, dec=3):
         return "—"
 
 
+# --------------------------------------------------------------- Optimizador MILP
+import threading
+
+from fastapi import Form
+
+MILP_DIR = REPO_ROOT / "results/pypsa_milp"
+MILP_SUMMARY_JSON = MILP_DIR / "pypsa_milp_summary.json"
+MILP_GEN_CSV = MILP_DIR / "generation_by_snapshot.csv"
+MILP_FG_CSV = MILP_DIR / "flowgate_utilization_by_snapshot.csv"
+MILP_CONSID_JSON = MILP_DIR / "considerations.json"
+
+DEFAULT_CONSID = {"reserves": True, "flowgates": True, "pors": 3.0,
+                  "min_sync": 0.0, "gap": 2.0, "time": 300}
+_MILP_JOB = {"status": "idle", "started": None, "elapsed": 0.0, "error": None}
+_MILP_LOCK = threading.Lock()
+_MILP_MC: dict = {}
+
+
+def _milp_considerations() -> dict:
+    if MILP_CONSID_JSON.exists():
+        try:
+            return {**DEFAULT_CONSID, **json.loads(MILP_CONSID_JSON.read_text(encoding="utf-8"))}
+        except Exception:
+            pass
+    return dict(DEFAULT_CONSID)
+
+
+def _milp_summary() -> dict:
+    if MILP_SUMMARY_JSON.exists():
+        try:
+            return json.loads(MILP_SUMMARY_JSON.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+
+def _milp_marginal_cost() -> dict:
+    """Costo marginal del sistema por hora desde el despacho del MILP (CVP de la unidad
+    flexible más cara: 0 < despacho < Pmax). Análogo a `_modom_marginal_cost`."""
+    if _MILP_MC:
+        return _MILP_MC
+    if not (MILP_GEN_CSV.exists() and GENERATORS_CSV2.exists()):
+        return {}
+    disp = pd.read_csv(MILP_GEN_CSV, index_col=0)
+    g = pd.read_csv(GENERATORS_CSV2)
+    pmax = dict(zip(g.generator_id, pd.to_numeric(g.effective_pmax_mw, errors="coerce")))
+    cvp = {}
+    for _, r in g.iterrows():
+        c = pd.to_numeric(r.get("effective_cvp"), errors="coerce")
+        if pd.isna(c):
+            c = pd.to_numeric(r.get("cvp"), errors="coerce")
+        if pd.notna(c) and 0 < float(c) < 50000:
+            cvp[r.generator_id] = float(c)
+    for h in disp.index:
+        prices = [cvp[gid] for gid in disp.columns
+                  if gid in cvp and gid in pmax
+                  and 1e-3 < float(disp.at[h, gid]) < float(pmax[gid]) - 1e-3]
+        _MILP_MC[str(h)] = max(prices) if prices else 0.0
+    return _MILP_MC
+
+
+def _milp_cost_values() -> dict:
+    mc, lf = _milp_marginal_cost(), _loss_factor_map()
+    buses = list(charts._geometry()["coords"].keys())
+    return {h: {b: mc.get(h, 0.0) * float(lf.get(b, 1.0) or 1.0) for b in buses}
+            for h in HOURS}
+
+
+def _milp_flowgate_kpis() -> list:
+    if not MILP_FG_CSV.exists():
+        return []
+    fg = pd.read_csv(MILP_FG_CSV)
+    out = []
+    for name, grp in fg.groupby("flowgate_id"):
+        up = pd.to_numeric(grp["util_pct"], errors="coerce").dropna()
+        out.append((str(name), float(grp["limit_mw"].iloc[0]),
+                    float(up.max()) if len(up) else 0.0,
+                    int((up >= 99.5).sum())))
+    return out
+
+
+def _run_milp_job(consid: dict) -> None:
+    """Corre el MILP en background y persiste resultados + consideraciones."""
+    import time as _time
+
+    from .. import pypsa_milp as milp
+    t0 = _time.time()
+    try:
+        n = milp.build_milp_network(
+            with_reserves=bool(consid["reserves"]),
+            with_flowgates=bool(consid["flowgates"]),
+            pors=float(consid["pors"]) / 100.0,
+            min_sync_fraction=float(consid["min_sync"]) / 100.0)
+        with _MILP_LOCK:
+            _MILP_JOB["elapsed"] = _time.time() - t0
+        milp.solve_milp(n, mip_rel_gap=float(consid["gap"]) / 100.0,
+                        time_limit=float(consid["time"]))
+        if n.objective is None:
+            raise RuntimeError("El MILP resultó infactible con estas consideraciones.")
+        milp.export_results(n)
+        MILP_DIR.mkdir(parents=True, exist_ok=True)
+        MILP_CONSID_JSON.write_text(json.dumps(consid), encoding="utf-8")
+        _MILP_MC.clear()
+        with _MILP_LOCK:
+            _MILP_JOB.update(status="done", elapsed=_time.time() - t0, error=None)
+    except Exception as e:  # noqa: BLE001
+        with _MILP_LOCK:
+            _MILP_JOB.update(status="error", elapsed=_time.time() - t0, error=str(e))
+
+
+@app.get("/milp", response_class=HTMLResponse)
+def milp_page(request: Request, cost_bus: str | None = None):
+    consid = _milp_considerations()
+    summ = _milp_summary()
+    commit = summ.get("commitment", {}) or {}
+    counts = summ.get("counts", {}) or {}
+    kpis = [
+        ("Costo total", _fmt(summ.get("objective"), " RD$", 0), "objetivo del MILP"),
+        ("Demanda pico", _fmt(summ.get("peak_load_mw"), " MW"), "24 h"),
+        ("No suministrada", _fmt(summ.get("unserved_mwh"), " MWh"), "holgura"),
+        ("Unidades ON (pico)", str(commit.get("units_on_peak", "—")),
+         f"de {commit.get('committable_units', '—')} committable"),
+        ("Arranques", str(commit.get("total_startups", "—")), "en 24 h"),
+        ("Reservas RPF/RSF", f"{counts.get('reserve_rpf_units', '—')}/{counts.get('reserve_rsf_units', '—')}",
+         "unidades habilitadas"),
+    ]
+    # mapa de costo por barra del MILP (mismo componente/estilo que MODOM)
+    dem = _modom_demand()
+    peak = dem.idxmax() if len(dem.dropna()) else "h_19"
+    vals = _milp_cost_values() if MILP_GEN_CSV.exists() else {}
+    cost_map = ""
+    if vals and any(vals.values()):
+        allv = [v for h in vals for v in vals[h].values() if v == v]
+        vmax = max(allv) if allv else None
+        cost_map = charts.network_map_div(vals, None, metric="costo", hours=HOURS,
+                                          init_hour=peak, div_id="milpmap", cmin=0.0,
+                                          cmax=vmax, external_controls=True)
+    # despacho por tecnología + heatmap de commitment + curva de costo
+    mix = charts.milp_mix_div(MILP_GEN_CSV) if MILP_GEN_CSV.exists() else ""
+    heat = charts.commitment_heatmap_div(MILP_GEN_CSV) if MILP_GEN_CSV.exists() else ""
+    mc = _milp_marginal_cost()
+    bus_opts, default_bus = _cost_bus_options()
+    cost_bus = cost_bus or default_bus
+    lf = _loss_factor_map()
+    _f = lf.get(cost_bus, 1.0)
+    factor = float(_f) if (_f == _f and _f) else 1.0
+    mc_curve = charts.series_line_div(
+        [(h, mc.get(h, 0.0) * factor) for h in HOURS], ylabel="RD$/MWh",
+        color="#b0683c", div_id="milpmccurve", markers=False, grid=False)
+    sync = charts.anim_controller("milpmap", HOURS, [], ["milpmccurve"], peak) if cost_map else ""
+    fgk = _milp_flowgate_kpis()
+    with _MILP_LOCK:
+        job = dict(_MILP_JOB)
+    return view("milp.html", ctx(
+        request, active="milp", heading="Optimizador MILP · MODOM completo",
+        consid=consid, kpis=kpis, cost_map=cost_map, mix=mix, heat=heat,
+        mc_curve=mc_curve, sync=sync, bus_opts=bus_opts, cost_bus=cost_bus,
+        flowgates=fgk, has_result=bool(summ), job=job, peak=peak))
+
+
+@app.post("/milp/run", response_class=HTMLResponse)
+def milp_run(request: Request, reserves: str = Form("off"), flowgates: str = Form("off"),
+             pors: float = Form(3.0), min_sync: float = Form(0.0),
+             gap: float = Form(2.0), time: int = Form(300)):
+    with _MILP_LOCK:
+        if _MILP_JOB["status"] == "running":
+            return view("partials/milp_status.html", ctx(request, job=dict(_MILP_JOB)))
+        consid = {"reserves": reserves in ("on", "true", "1", "yes"),
+                  "flowgates": flowgates in ("on", "true", "1", "yes"),
+                  "pors": float(pors), "min_sync": float(min_sync),
+                  "gap": float(gap), "time": int(time)}
+        _MILP_JOB.update(status="running", started=_dt.datetime.now().isoformat(),
+                         elapsed=0.0, error=None)
+    threading.Thread(target=_run_milp_job, args=(consid,), daemon=True).start()
+    return view("partials/milp_status.html", ctx(request, job={"status": "running"}))
+
+
+@app.get("/milp/status", response_class=HTMLResponse)
+def milp_status(request: Request):
+    with _MILP_LOCK:
+        job = dict(_MILP_JOB)
+    return view("partials/milp_status.html", ctx(request, job=job))
+
+
 # --------------------------------------------------------------- Metodología
 @app.get("/metodologia", response_class=HTMLResponse)
 def metodologia(request: Request):

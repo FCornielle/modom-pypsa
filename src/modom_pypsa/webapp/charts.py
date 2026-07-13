@@ -649,6 +649,55 @@ def modom_mix_div(dispatch_path=None) -> str:
     return _div(fig, height=320)
 
 
+def milp_mix_div(generation_path) -> str:
+    """Despacho por tecnología del MILP (mismo estilo que modom_mix_div)."""
+    return modom_mix_div(generation_path)
+
+
+def commitment_heatmap_div(generation_path, commitment_path=None, height: int = 460) -> str:
+    """Heatmap de commitment (unidades × 24 h): despacho en MW por unidad y hora.
+
+    La visualización insignia del unit commitment: cada fila es una máquina térmica,
+    cada columna una hora; el color es el despacho (0 = apagada). Ordena por energía
+    diaria y agrupa por combustible, para leer de un vistazo qué se enciende y cuándo.
+    """
+    import plotly.graph_objects as go
+
+    from ..dashboard import classify_fuel
+    gen_p = Path(generation_path)
+    meta_p = REPO_ROOT / "data/processed/generators/generators.csv"
+    if not gen_p.exists():
+        return _empty("Sin despacho del MILP")
+    disp = pd.read_csv(gen_p, index_col=0)
+    disp = disp[[c for c in disp.columns if not str(c).startswith(("unserved", "dump", "ssa_"))]]
+    # unidades que operan en alguna hora
+    active = [c for c in disp.columns if pd.to_numeric(disp[c], errors="coerce").fillna(0).abs().sum() > 1e-3]
+    if not active:
+        return _empty("Sin unidades despachadas")
+    name_by, tech_by = {}, {}
+    if meta_p.exists():
+        g = pd.read_csv(meta_p)
+        name_by = dict(zip(g.generator_id, g.generator_name.astype(str)))
+        tech_by = dict(zip(g.generator_id, g.technology_group.astype(str)))
+    fuel_order = {"Carbón": 0, "Fuel Oil / Diesel": 1, "Gas Natural": 2, "Biomasa": 3,
+                  "Hidro": 4, "Eólica": 5, "Solar": 6, "Otra": 7}
+    energy = {c: float(pd.to_numeric(disp[c], errors="coerce").fillna(0).sum()) for c in active}
+    fuel = {c: classify_fuel(name_by.get(c, c), tech_by.get(c, "")) for c in active}
+    order = sorted(active, key=lambda c: (fuel_order.get(fuel[c], 9), -energy[c]))
+    hours = [_hnum(h) for h in disp.index]
+    z = [[float(pd.to_numeric(disp.at[h, c], errors="coerce") or 0.0) for h in disp.index]
+         for c in order]
+    ylabels = [f"{name_by.get(c, c)[:22]}" for c in order]
+    fig = go.Figure(go.Heatmap(
+        z=z, x=hours, y=ylabels, colorscale="YlOrRd", zmin=0,
+        colorbar=dict(title="MW", thickness=12),
+        hovertemplate="%{y}<br>Hora %{x}: %{z:.0f} MW<extra></extra>"))
+    fig.update_xaxes(title="Hora", dtick=2, showgrid=False)
+    fig.update_yaxes(autorange="reversed", tickfont=dict(size=9))
+    fig.update_layout(margin=dict(l=8, r=8, t=8, b=8))
+    return _div(fig, height=height)
+
+
 # ----------------------------------------------------- comparación DC vs AC (24h)
 def dc_vs_ac_div(summary_by_hour: pd.DataFrame) -> str:
     """Demanda vs generación AC y pérdidas por hora (la corrección que aporta la AC)."""
