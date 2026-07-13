@@ -16,7 +16,8 @@ Primero fiel al MODOM; luego, base para correr escenarios.
 | # | Capa | Módulo | Qué hace |
 |---|---|---|---|
 | 1 | **Canónica MODOM** | `scripts/build_*.py` → `data/processed/**` | Tablas limpias (buses, generators, branches, loads, snapshots, flowgates, `modom_results/*`) desde el workbook MODOM. |
-| 2 | **Despacho DC** | `pypsa_network.py` | LP de costo mínimo (HiGHS) **dentro del commitment del MODOM**, demanda con factores de nodo, **flowgates como restricción dura** (N-1). Caso base → `results/pypsa_basecase/`. |
+| 2a | **Despacho DC (commitment fijo)** | `pypsa_network.py` | LP de costo mínimo (HiGHS) **dentro del commitment del MODOM**, demanda con factores de nodo, **flowgates como restricción dura** (N-1). Fiel al despacho por unidad (R²≈0.94). Caso base → `results/pypsa_basecase/`. |
+| 2b | **MILP completo** | `pypsa_milp.py` | **Re-decide el commitment**: binarios, costos de arranque, tiempos, rampas y **reservas RPF/RSF co-optimizadas** (eq. 1, 3–24, 33 del MODOM). Parámetros de `e_datgen/e_opcn/e_hidro` (`build_modom_params.py`). Resuelve en ~30 s; total del sistema exacto (0.5%), mezcla por unidad diverge (el commitment del OC embebe contratos/must-run fuera de las ecuaciones). → `results/pypsa_milp/`. |
 | 3 | **Verificación AC** | `ac_digsilent.py` + `ac_inject.py` | Arma la red real del export DIgSILENT, inyecta NUESTRO despacho por `for_name`, agrega V/cargabilidad a las 717 barras MODOM. Converge 24/24. |
 | 4 | **Lazo DC↔AC→MODOM** | `iterative.py` + `loss_factors.py` | Re-estima los factores de nodo desde las pérdidas AC y re-despacha hasta estabilizar (24 h). Persiste en `results/runs/<run_id>/` (gitignored). |
 
@@ -66,10 +67,10 @@ vs. nuestras).
 ## Estado
 
 Hecho: capa canónica, despacho DC fiel (commitment + factores + CVP VEROPE + **flowgates**),
-AC convergente, lazo iterativo 24 h, plataforma web (5 páginas). Pendiente: reservas
-co-optimizadas (§7.4–7.6), servicios auxiliares y embalses (§7.17–7.18), SCLOPF N-1 explícito,
-validación cuantitativa contra un export DIgSILENT con el flujo ejecutado. Detalle en
-[`docs/ESTADO_PROYECTO.md`](./docs/ESTADO_PROYECTO.md).
+**MILP completo del MODOM** (unit commitment + reservas co-optimizadas, eq. 1–33), AC
+convergente, lazo iterativo 24 h, plataforma web (5 páginas). Pendiente: embalses con
+RENDH/aportes (§7.18), enclavamiento (§7.12), integrar el MILP en la web, validación
+cuantitativa AC. Detalle en [`docs/ESTADO_PROYECTO.md`](./docs/ESTADO_PROYECTO.md).
 
 ## Disclaimer
 

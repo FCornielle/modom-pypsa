@@ -36,6 +36,29 @@ verope/declared_cvp.csv`.
   `effective_nodal_prices` existen como infraestructura (default off).
 Caso base en `results/pypsa_basecase/` (genera `scripts/run_dispatch_basecase.py`).
 
+### 2b. MILP completo del MODOM — `pypsa_milp.py`
+`build_milp_network()` + `solve_milp()` **re-deciden el commitment** (a diferencia de 2, que
+lo toma fijo). Reconstruye las familias de ecuaciones del MODOM que antes se tomaban como
+entrada, con los parámetros reales del workbook (ingeridos por `modom_params.py` +
+`scripts/build_modom_params.py` → `data/processed/commitment/` y `hydro/`):
+- **Commitment binario** (`committable`): costos de arranque (proxy, `C_ARR` no tabulado),
+  `min_up_time` (TARR; TMO vacío en el workbook), `min_down_time` (TMPA/TPAR), rampas RS/RB
+  donde se declaran, estado inicial ACC_INI, nº máx de arranques NAMX (eq. 1, 3–4, 16–24).
+- **Reservas RPF/RSF co-optimizadas** (`_reserve_constraint`): headroom `P+r≤Pmax·u`, tope de
+  margen `r≤MR·u`, requisito del sistema `Σr+ξ≥PORS·ΣP` (PORS=3%) con holgura penalizada a
+  CVRRF=2e6 (eq. 7–15). Márgenes de e_datgen (MRPF 69 uds, MRSF 40 uds).
+- **Servicios auxiliares** (eq. 33): `SSA=PMX·SSAA` como consumo fijo por barra.
+- **Embalses** (eq. 34–36): estructura de tope de energía diaria; el workbook no puebla
+  RENDH/aportes, así que la hidro se acota por disponibilidad (documentado).
+- Reutiliza flujo DC, límites térmicos y **flowgates** de la capa 2.
+Resuelve en ~30 s (HiGHS, 2267 binarias, gap 2%). Resultados en `results/pypsa_milp/`
+(`scripts/run_milp.py`). **Validación vs MODOM**: total del sistema por hora err. 0.5%
+(casi exacto), despacho por unidad R²≈0.82 — más bajo que el commitment-fijo (0.94) porque
+el MILP re-optimiza libremente y el commitment real del OC embebe contratos/must-run que no
+están en las ecuaciones publicadas. **Hallazgo: reproducir las ecuaciones ≠ reproducir el
+despacho exacto.** Los dos modelos son complementarios (2 = fiel al despacho; 2b = fiel a
+las ecuaciones). Precios: el MILP no da duales → usar `effective_nodal_prices` (como en 2).
+
 ### 3. Verificación AC — `ac_digsilent.py` + `ac_inject.py`
 - `build_from_digsilent(export_dir)`: arma la red pandapower NATIVA desde el export
   DIgSILENT `salida_PDD_*` (terminales fusionadas por interruptores cerrados + jumpers
@@ -121,8 +144,11 @@ El mapeo ecuación-por-ecuación MODOM → PyPSA vive en la pestaña **Metodolog
   vertimiento (§6.1).
 
 ## Pendiente
-- **Reservas/regulación co-optimizadas** (§7.4–7.6, para precios MODOM-exactos).
-- **Servicios auxiliares (§7.17) y embalses hidroeléctricos (§7.18)** en el LP.
+- **Integrar el MILP (2b) en la plataforma web** (hoy solo por script/API).
+- **Embalses hidroeléctricos completos (§7.18)**: requiere RENDH/aportes que este workbook no
+  puebla (DAT_AP vacío) — pedir un caso con esos datos para el balance hídrico real.
+- **Enclavamiento (§7.12)**: no hay tabla ENCLAV en el workbook; ingerir si aparece.
+- **Precios del MILP**: exponer `effective_nodal_prices` (el MILP no da duales directos).
 - **Validación cuantitativa AC**: pedir un export DIgSILENT con el flujo EJECUTADO
   (tensiones resueltas) para comparar barra a barra; el actual es inputs-only.
 - Mejorar cobertura del crosswalk de W-codes (tensiones MODOM solo cubren 406/717 barras).

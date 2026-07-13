@@ -369,13 +369,22 @@ oficial <b>Programación de corto plazo V16</b> del OC
 <!-- ==================================================================== -->
 <!-- ======================  NUESTRO MODELO  ============================= -->
 <!-- ==================================================================== -->
-<div class="card doc" style="margin-top:16px">
-  <h3>Nuestro modelo — PyPSA + pandapower (qué reproduce y qué toma fijo del MODOM)</h3>
+<div class="card doc" style="margin-top:16px;border-left:3px solid var(--accent,#2563eb)">
+  <h3>Dos modelos PyPSA complementarios</h3>
+  <p><b>A · Commitment-fijo</b> (<code>pypsa_network</code>, LP): toma el encendido ya resuelto
+  del MODOM (\(S\_DESPACHOM\)) y reproduce el despacho y los flujos <b>dentro</b> de él.
+  Fiel al despacho por unidad del OC (R²≈0.94), porque hereda sus contratos y must-run.</p>
+  <p><b>B · MILP completo</b> (<code>pypsa_milp</code>): <b>re-decide</b> el commitment resolviendo
+  el MILP con binarios, costos de arranque, tiempos, rampas y <b>reservas RPF/RSF co-optimizadas</b>
+  — implementa las eq. 1, 3–4, 7–24, 33 con los parámetros reales del workbook (e_datgen, e_opcn,
+  e_hidro). Resuelve en ~30 s (HiGHS, 2267 binarias). El total del sistema cuadra casi exacto con
+  el MODOM (error 0.5%); la mezcla por unidad diverge (R²≈0.82) porque el commitment real del OC
+  embebe <b>contratos y must-run de seguridad que NO están en las ecuaciones</b>, sino que son
+  entradas de política. <b>Hallazgo QA: reproducir las ecuaciones ≠ reproducir el despacho exacto.</b></p>
+
+  <h3 style="margin-top:14px">Modelo A — despacho dentro del commitment MODOM</h3>
   <p>Capa DC (PyPSA, LP) <b>dentro del commitment del MODOM</b>, verificada con AC
-  (pandapower) sobre la red real de DIgSILENT, iterando los factores de nodo (Fase 3.4).
-  Reproduce el operativo del OC <b>sin re-decidir el commitment</b>: GAMS ya resolvió la parte
-  MILP (binarios eq. 3–4, reservas eq. 10–15, rampas eq. 16–18, tiempos eq. 19–24); nosotros
-  reproducimos el despacho económico y los flujos dentro de ese commitment.</p>
+  (pandapower) sobre la red real de DIgSILENT, iterando los factores de nodo (Fase 3.4).</p>
 
   <h4>Objetivo — despacho económico (LP) <span class="ref">↔ eq. 1</span></h4>
   <div class="eq">$$
@@ -428,33 +437,42 @@ oficial <b>Programación de corto plazo V16</b> del OC
 <div class="card" style="margin:16px 0">
   <h3>Cobertura ecuación por ecuación (QA vs. transcripción)</h3>
   <p style="font-size:12.5px;color:var(--muted);margin:2px 0 10px">
-    <span class="st st-y">✅ replicado</span> en el LP/AC ·
-    <span class="st st-p">➖ tomado del MODOM</span> (fijado como entrada, no re-optimizado) ·
-    <span class="st st-n">❌ no modelado</span> todavía.</p>
+    <span class="st st-y">✅ implementado</span> ·
+    <span class="st st-p">➖ tomado del MODOM / proxy</span> ·
+    <span class="st st-n">❌ no modelado</span>. Dos columnas: <b>A</b> = commitment-fijo
+    (<code>pypsa_network</code>), <b>B</b> = MILP completo (<code>pypsa_milp</code>).</p>
   <table class="tbl">
-    <thead><tr><th>Eq.</th><th>§</th><th>Ecuación / familia MODOM</th><th>Estado en nuestro modelo</th></tr></thead>
+    <thead><tr><th>Eq.</th><th>§</th><th>Ecuación / familia MODOM</th><th>A · fijo</th><th>B · MILP</th></tr></thead>
     <tbody>
-    <tr><td>1</td><td>6.1</td><td>Costo térmico \(\sum CVP^{ef}P\) (+ déficit \(CENS\cdot PNS\))</td><td><span class="st st-y">✅</span> objetivo del LP (VEROPE) + <code>unserved</code></td></tr>
-    <tr><td>1</td><td>6.1</td><td>Vertimiento / holgura de reservas / arranque-parada</td><td><span class="st st-n">❌</span> / <span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
-    <tr><td>2</td><td>6.2</td><td>CVP efectivo (NCV / OPLM)</td><td><span class="st st-y">✅</span> <code>effective_cvp</code> / CVP declarado</td></tr>
-    <tr><td>3–4</td><td>7.1</td><td>Estados y transiciones de UC</td><td><span class="st st-p">➖</span> \(S\_DESPACHOM\)</td></tr>
-    <tr><td>5–6</td><td>7.2</td><td>Potencia máx/mín variable en arranque/parada</td><td><span class="st st-n">❌</span> Pmin/Pmax estáticos dentro del commitment</td></tr>
-    <tr><td>7–9</td><td>7.3</td><td>Límites de generación \(P\in[PG^{MIN},PG^{MAX}]\)</td><td><span class="st st-y">✅</span> banda; <span class="st st-n">❌</span> márgenes de reserva</td></tr>
-    <tr><td>10–15</td><td>7.4–7.6</td><td>Reservas RPF / RSF / AGC</td><td><span class="st st-n">❌</span> proxy: mínimo síncrono opcional</td></tr>
-    <tr><td>16–18</td><td>7.7</td><td>Rampas de subida/bajada</td><td><span class="st st-p">➖</span> implícitas en el commitment MODOM</td></tr>
-    <tr><td>19–24</td><td>7.8–7.11</td><td>Tiempos mín. arranque/parada, nº máx arranques</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
-    <tr><td>25</td><td>7.12</td><td>Enclavamiento de generadores</td><td><span class="st st-p">➖</span> commitment fijado del MODOM</td></tr>
-    <tr><td>26</td><td>7.13.1</td><td>Flujo DC \(F=\tfrac{S^{BASE}}{X}\Delta\theta\)</td><td><span class="st st-y">✅</span> LOPF linealizado (por-unidad)</td></tr>
-    <tr><td>27</td><td>7.13.2</td><td>Límite térmico \(|F|\le FLJMAX\)</td><td><span class="st st-y">✅</span> <code>s_nom</code> por rama</td></tr>
-    <tr><td>28</td><td>7.13.3</td><td>Flowgates \(\sum FGATE\,F\le FLGTMAX\)</td><td><span class="st st-y">✅</span> restricción dura (N-1 fiel al MODOM)</td></tr>
-    <tr><td>29–30</td><td>7.14</td><td>Pérdidas incrementales por rama</td><td><span class="st st-p">➖</span> vía factor de nodo \(f^{ret}\) + lazo AC</td></tr>
-    <tr><td>31</td><td>7.15</td><td>Balance nodal (KCL)</td><td><span class="st st-y">✅</span>; \(SSA\) <span class="st st-n">❌</span></td></tr>
-    <tr><td>32</td><td>7.16</td><td>PNS total del período</td><td><span class="st st-y">✅</span> suma de <code>unserved</code></td></tr>
-    <tr><td>33</td><td>7.17</td><td>Servicios auxiliares \(SSA=PMX\cdot SSAA\)</td><td><span class="st st-n">❌</span> no modelado</td></tr>
-    <tr><td>34–36</td><td>7.18</td><td>Embalses (balance, cascada, energía acum.)</td><td><span class="st st-n">❌</span> hidro como generador con disponibilidad</td></tr>
-    <tr><td>37</td><td>8.3</td><td>Flujo AC (P, Q, V, θ) de verificación</td><td><span class="st st-y">✅</span> pandapower sobre la red real DIgSILENT</td></tr>
+    <tr><td>1</td><td>6.1</td><td>Costo térmico + déficit (\(CVP^{ef}P\), \(CENS\cdot PNS\))</td><td><span class="st st-y">✅</span></td><td><span class="st st-y">✅</span></td></tr>
+    <tr><td>1</td><td>6.1</td><td>Costos de arranque / parada (\(C^{ARR}u^{ARR}\))</td><td><span class="st st-p">➖</span> fijo</td><td><span class="st st-y">✅</span> <code>start_up_cost</code></td></tr>
+    <tr><td>1</td><td>6.1</td><td>Vertimiento \(CVERR\cdot VERT\)</td><td><span class="st st-n">❌</span></td><td><span class="st st-n">❌</span> sin embalses</td></tr>
+    <tr><td>2</td><td>6.2</td><td>CVP efectivo (NCV / OPLM)</td><td><span class="st st-y">✅</span></td><td><span class="st st-y">✅</span></td></tr>
+    <tr><td>3–4</td><td>7.1</td><td>Estados y transiciones de UC</td><td><span class="st st-p">➖</span> \(S\_DESPACHOM\)</td><td><span class="st st-y">✅</span> <code>committable</code></td></tr>
+    <tr><td>5–6</td><td>7.2</td><td>Potencia máx/mín variable en arranque/parada</td><td><span class="st st-n">❌</span></td><td><span class="st st-p">➖</span> vía rampas de arranque</td></tr>
+    <tr><td>7–9</td><td>7.3</td><td>Límites de generación con márgenes de reserva</td><td><span class="st st-p">➖</span> banda sin margen</td><td><span class="st st-y">✅</span> headroom + margen</td></tr>
+    <tr><td>10–15</td><td>7.4–7.6</td><td>Reservas RPF / RSF / AGC co-optimizadas</td><td><span class="st st-n">❌</span> proxy síncrono</td><td><span class="st st-y">✅</span> reservas + holgura CVRRF</td></tr>
+    <tr><td>16–18</td><td>7.7</td><td>Rampas de subida/bajada</td><td><span class="st st-p">➖</span></td><td><span class="st st-y">✅</span> <code>ramp_limit</code> (donde se declara)</td></tr>
+    <tr><td>19–23</td><td>7.8–7.11</td><td>Tiempos mín. de arranque/parada</td><td><span class="st st-p">➖</span></td><td><span class="st st-y">✅</span> <code>min_up/down_time</code></td></tr>
+    <tr><td>24</td><td>7.11.2</td><td>Número máximo de arranques \(\le NAMX\)</td><td><span class="st st-p">➖</span></td><td><span class="st st-y">✅</span> Σ start_up ≤ NAMX</td></tr>
+    <tr><td>25</td><td>7.12</td><td>Enclavamiento de generadores</td><td><span class="st st-p">➖</span></td><td><span class="st st-n">❌</span> sin datos ENCLAV</td></tr>
+    <tr><td>26</td><td>7.13.1</td><td>Flujo DC \(F=\tfrac{S^{BASE}}{X}\Delta\theta\)</td><td><span class="st st-y">✅</span></td><td><span class="st st-y">✅</span></td></tr>
+    <tr><td>27</td><td>7.13.2</td><td>Límite térmico \(|F|\le FLJMAX\)</td><td><span class="st st-y">✅</span></td><td><span class="st st-y">✅</span></td></tr>
+    <tr><td>28</td><td>7.13.3</td><td>Flowgates \(\sum FGATE\,F\le FLGTMAX\)</td><td><span class="st st-y">✅</span></td><td><span class="st st-y">✅</span></td></tr>
+    <tr><td>29–30</td><td>7.14</td><td>Pérdidas incrementales por rama</td><td><span class="st st-p">➖</span> factor \(f^{ret}\)</td><td><span class="st st-p">➖</span> factor \(f^{ret}\)</td></tr>
+    <tr><td>31</td><td>7.15</td><td>Balance nodal (KCL)</td><td><span class="st st-y">✅</span></td><td><span class="st st-y">✅</span></td></tr>
+    <tr><td>32</td><td>7.16</td><td>PNS total del período</td><td><span class="st st-y">✅</span></td><td><span class="st st-y">✅</span></td></tr>
+    <tr><td>33</td><td>7.17</td><td>Servicios auxiliares \(SSA=PMX\cdot SSAA\)</td><td><span class="st st-n">❌</span></td><td><span class="st st-y">✅</span> consumo fijo por barra</td></tr>
+    <tr><td>34–36</td><td>7.18</td><td>Embalses (balance, cascada, energía acum.)</td><td><span class="st st-n">❌</span></td><td><span class="st st-p">➖</span> estructura; sin RENDH/aportes</td></tr>
+    <tr><td>37</td><td>8.3</td><td>Flujo AC (P, Q, V, θ) de verificación</td><td><span class="st st-y">✅</span></td><td><span class="st st-y">✅</span> (pandapower)</td></tr>
     </tbody>
   </table>
+  <p style="font-size:12px;color:var(--muted);margin-top:8px"><b>Notas de fidelidad honestas:</b>
+  el min-up usa <code>TARR</code> (el <code>TMO</code> del workbook está vacío); las rampas solo
+  se activan donde el MODOM declara <code>RS/RB</code>; el costo de arranque es un proxy
+  documentado (<code>C_ARR</code> no se tabula); los embalses no tienen <code>RENDH</code>/aportes
+  poblados, así que la hidro se acota por disponibilidad. El MILP resuelve un único problema
+  co-optimizado, en vez de los 8 SOLVE + escalones de RPF del GAMS.</p>
 </div>
 
 <div class="card">

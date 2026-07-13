@@ -1,0 +1,54 @@
+{
+  "model": "milp_modom_full",
+  "objective": 1418554615.9261868,
+  "snapshots": 24,
+  "total_load_mwh": 76908.656,
+  "served_mwh": 81088.835,
+  "unserved_mwh": 1168.601,
+  "peak_load_mw": 3627.767,
+  "peak_unserved_mw": 69.854,
+  "dispatch_by_carrier_mwh": {
+    "1": 59297.319,
+    "2": 3340.4,
+    "3": 929.624,
+    "4": 17521.492
+  },
+  "lines_above_90pct_peak": 21,
+  "max_line_loading_pu": 1.0,
+  "flowgates": {
+    "fg1": {
+      "limit_mw": 200.0,
+      "max_util_pct": 80.34,
+      "binding_hours": 0
+    },
+    "fg2": {
+      "limit_mw": 670.0,
+      "max_util_pct": 61.82,
+      "binding_hours": 0
+    }
+  },
+  "counts": {
+    "buses": 717,
+    "lines_added": 592,
+    "transformers_added": 161,
+    "generators_added": 140,
+    "vre_with_forecast": 43,
+    "load_buses": 281,
+    "committed_from_modom": 0,
+    "loads_with_nodal_factor": 268,
+    "declared_cvp_overrides": 54,
+    "flowgates": 2,
+    "flowgate_terms_missing": 0,
+    "committable_units": 50,
+    "reserve_rpf_units": 48,
+    "reserve_rsf_units": 25,
+    "ssa_buses": 81,
+    "hydro_units": 17,
+    "max_starts_units": 3
+  },
+  "commitment": {
+    "committable_units": 421,
+    "units_on_peak": 46,
+    "total_startups": 9
+  }
+}
