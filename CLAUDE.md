@@ -26,12 +26,19 @@ plataforma web para auditarlo. Fiel al MODOM; luego sirve para correr escenarios
 
 ## Plataforma web (FastAPI + Jinja + HTMX) — `src/modom_pypsa/webapp/`
 Levantar: `.venv\Scripts\python.exe -m uvicorn modom_pypsa.webapp.app:app --app-dir src`
-(http://localhost:8000). Menú: **MODOM·PDD** (resultados oficiales del día) ·
-**PyPSA·Modelo** (despacho DC, commitment fijo) · **Optimizador MILP** (MILP completo del
-MODOM: re-decide commitment + reservas co-optimizadas; configurador de consideraciones + run
-en background + mapa/heatmap de commitment; `pypsa_milp.py`) · **Pandapower·Modelo AC**
-(verificación AC + auditoría del lazo) · **Auditoría** (por equipo) · **Metodología**
-(las 37 ecuaciones MODOM + matriz de cobertura a dos modelos).
+(http://localhost:8000, o `launch.py` / `run_webapp.bat` para abrir+navegador). La plataforma
+está **enfocada en el Optimizador** (página principal `/`); menú: **Optimizador** ·
+**Metodología**. Las pestañas antiguas (MODOM·PDD, PyPSA·Modelo, Pandapower·AC, Auditoría)
+quedan bajo `/legacy/*` (fuera del menú).
+- **Optimizador (Scenario Studio)** — MILP completo del MODOM (`pypsa_milp.py`): re-decide
+  commitment + reservas co-optimizadas; **editor de variables** (CVP/disponibilidad/on-off por
+  unidad, demanda, flowgates, derateos → `overrides` en `_apply_overrides`); run en background
+  (elapsed en vivo, cancelar, watchdog); mapa de costo + heatmap de commitment + gráfico de
+  demanda; **escenarios con nombre + comparación A/B**; **verificación AC integrada** (botón →
+  `ac_inject.run_ac_modom` sobre el export DIgSILENT, 24/24 convergen); cabecera de versión
+  MODOM (serial V449 + fecha). Cada corrida se archiva en `results/runs/milp_<fecha>/`.
+- **Metodología** — las 37 ecuaciones MODOM + matriz de cobertura a dos modelos + sección
+  "cómo se incorpora al software".
 - `app.py` rutas, `data_access.py` lee corridas, `charts.py` figuras Plotly (mapas
   animados con controlador JS propio: loop, pausa, valor sobre la línea).
 - **MODOM·PDD se alimenta del último PDD publicado** ingerido en `data/processed/pdd/<fecha>/`

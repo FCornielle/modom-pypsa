@@ -275,6 +275,35 @@ corre el optimizador y compara corridas. Alcance por ecuación en <a href="/meto
     {{ mc_curve|safe if mc_curve else '<div class="chart-empty">Sin datos</div>' }}
   </div>
 </div>
+
+<!-- ==================== VERIFICACIÓN AC (pandapower) ==================== -->
+<div class="card" style="margin-top:16px;border-left:3px solid #7c3aed">
+  <div class="hd"><h3>🔌 Verificación AC — flujo real (pandapower)</h3>
+    <span class="tag">lo que el MODOM hace en DIgSILENT</span></div>
+  <p class="muted" style="margin:0 0 10px;font-size:12.5px">Inyecta el despacho del MILP en la
+  <b>red real</b> (export DIgSILENT) y resuelve el <b>flujo AC</b>: tensiones y cargabilidad
+  por barra. Es el equivalente a la verificación que el OC hace en DIgSILENT.</p>
+  <div class="milp-actions" style="margin-top:0;border-top:none;padding-top:0">
+    <button type="button" class="btn ghost" hx-post="/milp/verify-ac"
+      hx-target="#milp-ac-status" hx-swap="innerHTML">🔌 Verificar flujo AC (24 h)</button>
+    <span id="milp-ac-status">{% if ac_job and ac_job.status=='running' %}{% include 'partials/milp_ac_status.html' %}{% endif %}</span>
+    <span class="src" style="margin-left:auto">~30–60 s · pandapower Newton–Raphson</span>
+  </div>
+  {% if has_ac %}
+  <div class="row cols-6" style="margin:14px 0">
+    {% for l,v,sub in ac_kpis %}
+    <div class="card kpi" title="{{ sub }}"><div class="l">{{ l }}</div><div class="v">{{ v }}</div>
+      <div class="sub">{{ sub }}</div></div>
+    {% endfor %}
+  </div>
+  <div class="hd"><h3 style="font-size:13px">Tensión por barra (p.u.) — flujo AC</h3>
+    <span class="tag">animado 24 h</span></div>
+  {{ ac_map|safe if ac_map else '' }}
+  {{ ac_sync|safe if ac_sync else '' }}
+  <div class="hd" style="margin-top:12px"><h3 style="font-size:13px">Líneas más cargadas (AC)</h3></div>
+  {{ ac_loading|safe if ac_loading else '<div class="chart-empty">Sin cargabilidad</div>' }}
+  {% endif %}
+</div>
 {% endif %}
 
 <script>

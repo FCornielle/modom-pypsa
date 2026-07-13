@@ -475,6 +475,40 @@ oficial <b>Programación de corto plazo V16</b> del OC
   co-optimizado, en vez de los 8 SOLVE + escalones de RPF del GAMS.</p>
 </div>
 
+<div class="card doc" style="margin:16px 0">
+  <h3>Cómo se incorpora al software</h3>
+  <p>La plataforma es una tubería de datos → optimización → verificación → dashboard. Cada
+  familia de ecuaciones vive en un módulo concreto y se conecta así:</p>
+  <div class="eq" style="font-family:inherit;font-size:12.5px;line-height:1.7">
+    <b>1 · Ingesta</b> del workbook MODOM (<code>V449</code>) → capa canónica
+    (<code>scripts/build_*.py</code>, <code>modom_params.py</code>) →
+    <code>data/processed/**</code>.<br>
+    <b>2 · Construcción del MILP</b> (<code>pypsa_milp.build_milp_network</code>): arma la red,
+    hace las térmicas <i>committable</i> y carga reservas/tiempos/rampas.<br>
+    <b>3 · Consideraciones y variables</b> (pestaña Optimizador): las ediciones del usuario se
+    aplican como <i>overrides</i> antes de resolver (<code>_apply_overrides</code>).<br>
+    <b>4 · Solución</b> (<code>solve_milp</code>, HiGHS) con las restricciones propias
+    (<code>_reserve_constraint</code>, <code>_flowgate_constraint</code>, …).<br>
+    <b>5 · Verificación AC</b> (<code>ac_inject.run_ac_modom</code>, pandapower) sobre la red
+    real del export DIgSILENT — el paso que el OC hace en DIgSILENT.<br>
+    <b>6 · Dashboard</b>: mapa de costo, heatmap de commitment, tensiones AC, comparación de
+    escenarios.
+  </div>
+  <table class="tbl" style="margin-top:10px">
+    <thead><tr><th>Bloque de ecuaciones</th><th>Dónde se incorpora (módulo · mecanismo)</th></tr></thead>
+    <tbody>
+    <tr><td>Objetivo + CVP (eq. 1–2)</td><td><code>pypsa_milp</code> · <code>marginal_cost</code> + <code>start_up_cost</code>; CVP editable en el Optimizador</td></tr>
+    <tr><td>Commitment y tiempos (eq. 3–4, 19–24)</td><td><code>pypsa_milp</code> · generadores <code>committable</code> (min_up/down, NAMX)</td></tr>
+    <tr><td>Límites + reservas (eq. 7–15)</td><td><code>_reserve_constraint</code> (extra_functionality); PORS/reservas como consideración</td></tr>
+    <tr><td>Rampas (eq. 16–18)</td><td><code>pypsa_milp</code> · <code>ramp_limit_up/down</code> desde <code>e_datgen</code></td></tr>
+    <tr><td>Red DC + flowgates (eq. 26–28)</td><td><code>_flowgate_constraint</code>; flowgates editables (límite por interfaz)</td></tr>
+    <tr><td>Balance + PNS + auxiliares (eq. 31–33)</td><td><code>pypsa_milp</code> · KCL de PyPSA + holgura <code>unserved</code> + SSA como carga</td></tr>
+    <tr><td>Verificación AC (eq. 37)</td><td><code>ac_inject.run_ac_modom</code> · pandapower sobre el export DIgSILENT</td></tr>
+    <tr><td>Variables editables (todas)</td><td>Optimizador · editor de CVP/disponibilidad/on-off, demanda, flowgates, derateos → <code>overrides</code></td></tr>
+    </tbody>
+  </table>
+</div>
+
 <div class="card">
   <div class="hd"><h3>Base MODOM — despacho por tecnología (24 h)</h3>
     <span class="tag">evidencia</span></div>

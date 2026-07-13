@@ -1,0 +1,13 @@
+{% if ac.status == 'running' %}
+<span class="milp-run running" hx-get="/milp/ac-status" hx-trigger="load delay:2s" hx-swap="outerHTML">
+  <span class="spin"></span>
+  <span>{{ ac.phase or 'Verificando AC' }}… <b>{{ ac.done_hours }}/24 h</b> · {{ '%.0f'|format(ac.elapsed or 0) }} s</span>
+</span>
+{% elif ac.status == 'done' %}
+<span class="milp-run done">✓ Verificación AC completa ({{ '%.0f'|format(ac.elapsed or 0) }} s) — recargando…</span>
+<script>setTimeout(function(){ window.location.href = '/milp'; }, 900);</script>
+{% elif ac.status == 'error' %}
+<span class="milp-run err">✗ {{ ac.error }}</span>
+{% else %}
+<span class="milp-run"></span>
+{% endif %}

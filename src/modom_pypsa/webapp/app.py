@@ -534,6 +534,12 @@ MILP_FG_CSV = MILP_DIR / "flowgate_utilization_by_snapshot.csv"
 MILP_CONSID_JSON = MILP_DIR / "considerations.json"
 MILP_OVERRIDES_JSON = MILP_DIR / "overrides.json"
 MILP_SCEN_DIR = MILP_DIR / "scenarios"
+AC_BUS_CSV = MILP_DIR / "ac_bus_voltages.csv"
+AC_BR_CSV = MILP_DIR / "ac_branch_loading.csv"
+AC_SUMMARY_JSON = MILP_DIR / "ac_summary.json"
+_AC_JOB = {"status": "idle", "started": 0.0, "elapsed": 0.0, "error": None,
+           "cancel": False, "phase": "", "done_hours": 0}
+_AC_LOCK = threading.Lock()
 
 DEFAULT_CONSID = {"reserves": True, "flowgates": True, "pors": 3.0,
                   "min_sync": 0.0, "gap": 2.0, "time": 300}
@@ -728,6 +734,30 @@ def _list_scenarios() -> list[dict]:
     return sorted(out, key=lambda s: s.get("saved", ""), reverse=True)
 
 
+def _archive_run(consid: dict, overrides: dict) -> str:
+    """Archiva la corrida del MILP en results/runs/milp_<fecha-hora>/ (historial, gitignored).
+
+    Reproduce el guardado 'como al principio': cada corrida queda versionada por fecha con
+    su manifiesto (consideraciones + overrides + resumen) y una copia de los CSV de salida.
+    """
+    import shutil
+
+    ts = _dt.datetime.now().strftime("%Y%m%d_%H%M%S")
+    dest = REPO_ROOT / "results" / "runs" / f"milp_{ts}"
+    dest.mkdir(parents=True, exist_ok=True)
+    (dest / "manifest.json").write_text(json.dumps({
+        "run_id": f"milp_{ts}", "kind": "milp", "created": _dt.datetime.now().isoformat(timespec="seconds"),
+        "modom": _modom_version(), "considerations": consid, "overrides": overrides,
+        "summary": _milp_summary(),
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
+    for fn in ("generation_by_snapshot.csv", "commitment_by_snapshot.csv",
+               "flowgate_utilization_by_snapshot.csv", "nodal_prices_by_snapshot.csv"):
+        src = MILP_DIR / fn
+        if src.exists():
+            shutil.copy2(src, dest / fn)
+    return f"milp_{ts}"
+
+
 def _load_scenario(slug: str) -> dict | None:
     meta = MILP_SCEN_DIR / slug / "scenario.json"
     if meta.exists():
@@ -781,6 +811,7 @@ def _run_milp_job(consid: dict, overrides: dict | None = None, name: str = "") -
         MILP_CONSID_JSON.write_text(json.dumps(consid), encoding="utf-8")
         MILP_OVERRIDES_JSON.write_text(json.dumps(overrides or {}), encoding="utf-8")
         _MILP_MC.clear()
+        _archive_run(consid, overrides or {})  # historial versionado por fecha
         if name.strip():
             _save_scenario(name.strip(), consid, overrides or {})
         with _MILP_LOCK:
@@ -792,6 +823,106 @@ def _run_milp_job(consid: dict, overrides: dict | None = None, name: str = "") -
                 status="cancelled" if cancelled else "error",
                 elapsed=_time.time() - t0, phase="",
                 error=None if cancelled else str(e))
+
+
+# ---- Verificación AC (pandapower) del despacho del MILP: lo que el MODOM hace en DIgSILENT
+def _run_ac_job() -> None:
+    """Corre el flujo AC (pandapower) sobre el despacho del MILP, hora a hora (24 h).
+
+    Reproduce la verificación que el MODOM hace en DIgSILENT: inyecta NUESTRO despacho en la
+    red real del export y calcula tensiones/cargabilidad. Persiste ac_bus_voltages.csv,
+    ac_branch_loading.csv y ac_summary.json en results/pypsa_milp/.
+    """
+    import time as _time
+    t0 = _time.time()
+    try:
+        if not MILP_GEN_CSV.exists():
+            raise RuntimeError("Primero corre una optimización MILP.")
+        from ..ac_inject import run_ac_modom
+        from ..iterative import DEFAULT_EXPORT
+        if not Path(DEFAULT_EXPORT).exists():
+            raise RuntimeError("Falta el export DIgSILENT en data/external/.")
+        gd = pd.read_csv(MILP_GEN_CSV, index_col=0)
+        bus_rows, br_rows, summ_rows = [], [], []
+        for i, h in enumerate(HOURS, start=1):
+            with _AC_LOCK:
+                if _AC_JOB.get("cancel"):
+                    raise RuntimeError("__cancelled__")
+                _AC_JOB.update(phase=f"flujo AC {h}", done_hours=i - 1,
+                               elapsed=_time.time() - t0)
+            _net, _ctx, bus_res, br_res, summ = run_ac_modom(
+                DEFAULT_EXPORT, hour=h, root=str(REPO_ROOT), gen_disp=gd)
+            if len(bus_res):
+                bus_res = bus_res.assign(hour=h)
+                bus_rows.append(bus_res)
+            if len(br_res):
+                br_rows.append(br_res.assign(hour=h))
+            summ_rows.append(summ)
+        MILP_DIR.mkdir(parents=True, exist_ok=True)
+        if bus_rows:
+            pd.concat(bus_rows, ignore_index=True).to_csv(AC_BUS_CSV, index=False)
+        if br_rows:
+            pd.concat(br_rows, ignore_index=True).to_csv(AC_BR_CSV, index=False)
+        conv = sum(1 for s in summ_rows if s.get("converged"))
+        AC_SUMMARY_JSON.write_text(json.dumps({
+            "hours": summ_rows, "converged_hours": conv, "total_hours": len(HOURS),
+        }, ensure_ascii=False), encoding="utf-8")
+        with _AC_LOCK:
+            _AC_JOB.update(status="done", elapsed=_time.time() - t0, phase="",
+                           done_hours=len(HOURS), error=None)
+    except Exception as e:  # noqa: BLE001
+        cancelled = str(e) == "__cancelled__"
+        with _AC_LOCK:
+            _AC_JOB.update(status="cancelled" if cancelled else "error",
+                           elapsed=_time.time() - t0, phase="",
+                           error=None if cancelled else str(e))
+
+
+def _live_ac_job() -> dict:
+    with _AC_LOCK:
+        job = dict(_AC_JOB)
+    if job["status"] == "running" and job.get("started"):
+        job["elapsed"] = max(0.0, _time_mod.time() - float(job["started"]))
+    return job
+
+
+def _ac_summary() -> dict:
+    if AC_SUMMARY_JSON.exists():
+        try:
+            return json.loads(AC_SUMMARY_JSON.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+
+def _ac_voltage_values() -> dict:
+    """{hora: {barra: vm_pu}} desde la verificación AC persistida (para el mapa)."""
+    if not AC_BUS_CSV.exists():
+        return {}
+    bus = pd.read_csv(AC_BUS_CSV)
+    if "hour" not in bus.columns:
+        return {}
+    out = {}
+    for h, g in bus.groupby("hour"):
+        out[str(h)] = {b: float(v) for b, v in zip(g["bus_id_modom"], g["vm_pu"])
+                       if pd.notna(v)}
+    return out
+
+
+@app.post("/milp/verify-ac", response_class=HTMLResponse)
+def milp_verify_ac(request: Request):
+    with _AC_LOCK:
+        if _AC_JOB["status"] == "running":
+            return view("partials/milp_ac_status.html", ctx(request, ac=_live_ac_job()))
+        _AC_JOB.update(status="running", started=_time_mod.time(), elapsed=0.0,
+                       error=None, cancel=False, phase="iniciando", done_hours=0)
+    threading.Thread(target=_run_ac_job, daemon=True).start()
+    return view("partials/milp_ac_status.html", ctx(request, ac=_live_ac_job()))
+
+
+@app.get("/milp/ac-status", response_class=HTMLResponse)
+def milp_ac_status(request: Request):
+    return view("partials/milp_ac_status.html", ctx(request, ac=_live_ac_job()))
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -842,6 +973,31 @@ def milp_page(request: Request, cost_bus: str | None = None):
     dem_curve = charts.series_line_div(
         [(h, float(dem.get(h, 0.0)) * dpct) for h in HOURS if pd.notna(dem.get(h))],
         ylabel="MW", color="#2563eb", div_id="milpdemand", markers=False, grid=False)
+    # --- Verificación AC (pandapower) del despacho del MILP, si existe ---
+    ac_sum = _ac_summary()
+    ac_map = ac_loading = ac_sync = ""
+    ac_kpis: list = []
+    ac_vals = _ac_voltage_values()
+    if ac_vals and any(ac_vals.values()):
+        acbr = pd.read_csv(AC_BR_CSV) if AC_BR_CSV.exists() else None
+        ac_map = charts.network_map_div(ac_vals, acbr, metric="tension", hours=HOURS,
+                                        init_hour=peak, div_id="acmap2",
+                                        external_controls=True)
+        if acbr is not None and "hour" in acbr.columns:
+            lbh = {h: dict(zip(gp["name"], pd.to_numeric(gp["loading_percent"], errors="coerce")))
+                   for h, gp in acbr.groupby("hour")}
+            ac_loading = charts.ranked_loading_anim_div(lbh, HOURS, peak, "acload2")
+        ac_sync = charts.anim_controller("acmap2", HOURS, ["acload2"] if ac_loading else [], [], peak)
+        hrs = ac_sum.get("hours", [])
+        pk = next((s for s in hrs if s.get("hour") == peak), (hrs[0] if hrs else {}))
+        ac_kpis = [
+            ("Convergencia", f"{ac_sum.get('converged_hours', 0)}/{ac_sum.get('total_hours', 24)}", "horas AC"),
+            ("Pérdidas AC", _fmt(pk.get("losses_mw"), " MW", 1), f"hora {str(peak).replace('h_', '')}"),
+            ("Tensión mín", _fmt(pk.get("v_min"), " pu", 3), "barra más baja"),
+            ("Tensión máx", _fmt(pk.get("v_max"), " pu", 3), "barra más alta"),
+            ("Violaciones V", str((pk.get("n_v_below_090") or 0) + (pk.get("n_v_above_110") or 0)), "<0.9 / >1.1 pu"),
+            ("Barras con V", str(pk.get("modom_buses_with_v") or "—"), f"de {pk.get('modom_buses_total') or 717}"),
+        ]
     return view("milp.html", ctx(
         request, active="milp", heading="Optimizador MILP · MODOM completo",
         consid=consid, kpis=kpis, cost_map=cost_map, mix=mix, heat=heat,
@@ -850,7 +1006,9 @@ def milp_page(request: Request, cost_bus: str | None = None):
         oglobal=overrides.get("global", {}) or {}, dem_curve=dem_curve,
         version=_modom_version(), fg_rows=_flowgate_rows(overrides),
         gen_rows=_milp_gen_editor_rows(overrides), scenarios=_list_scenarios(),
-        n_overrides=_n_overrides(overrides)))
+        n_overrides=_n_overrides(overrides),
+        ac_map=ac_map, ac_loading=ac_loading, ac_sync=ac_sync, ac_kpis=ac_kpis,
+        has_ac=bool(ac_vals), ac_job=_live_ac_job()))
 
 
 def _n_overrides(overrides: dict) -> int:

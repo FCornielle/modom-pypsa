@@ -29,15 +29,19 @@ transcripción oficial [`docs/programacion_corto_plazo_modom_transcripcion.md`](
 
 ```bash
 .venv/Scripts/python.exe -m pip install -e ".[web,pypsa,ac,dev]"   # una vez
-.venv/Scripts/python.exe -m uvicorn modom_pypsa.webapp.app:app --app-dir src
+.venv/Scripts/python.exe launch.py        # abre el servidor + navegador (o run_webapp.bat)
 # http://localhost:8000
 ```
 
-Pestañas: **MODOM·PDD** (resultado oficial del día, animado 24 h) · **PyPSA·Modelo**
-(despacho DC, commitment fijo) · **Optimizador MILP** (MILP completo: configura las
-*consideraciones* —reservas, PORS, flowgates, mín. síncrono—, corre el optimizador en
-background y explora el mapa de costo + heatmap de commitment) · **Pandapower·Modelo AC**
-(verificación AC + lazo) · **Auditoría** · **Metodología** (37 ecuaciones + cobertura).
+Plataforma **enfocada en el Optimizador** (página principal). Dos pestañas:
+- **Optimizador (Scenario Studio)** — edita las *variables del MODOM* (CVP, disponibilidad y
+  on/off por unidad, demanda, flowgates, derateos) y las *consideraciones* (reservas, PORS,
+  mín. síncrono), corre el MILP en background y explora **mapa de costo, heatmap de commitment,
+  demanda, escenarios A/B y verificación AC integrada** (pandapower sobre el export DIgSILENT).
+  Cabecera de versión MODOM (serial + fecha). Cada corrida se archiva por fecha.
+- **Metodología** — 37 ecuaciones + cobertura a dos modelos + cómo se incorpora al software.
+
+Empaquetado a instalable: ver [`docs/empaquetado.md`](./docs/empaquetado.md).
 
 ## Conceptos clave
 
