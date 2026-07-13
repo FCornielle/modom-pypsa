@@ -131,7 +131,7 @@ MODOM_METRIC_LABELS = {"tension": "Tensión por barra (p.u.)",
                        "costo": "Costo marginal por barra (RD$/MWh)"}
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/legacy/modom-pdd", response_class=HTMLResponse)
 def modom_pdd(request: Request, cost_bus: str | None = None, metric: str = "costo"):
     metric = metric if metric in MODOM_METRIC_LABELS else "costo"
     pdd = _latest_pdd_dir()
@@ -190,7 +190,7 @@ def modom_pdd(request: Request, cost_bus: str | None = None, metric: str = "cost
 
 
 # --------------------------------------------------------------- PyPSA · Modelo (DC)
-@app.get("/pypsa", response_class=HTMLResponse)
+@app.get("/legacy/pypsa", response_class=HTMLResponse)
 def pypsa_model(request: Request, cost_bus: str | None = None):
     base = charts.base_figures()
     summ = {}
@@ -381,7 +381,7 @@ def _ac_loading_anim(br: pd.DataFrame, hours: list, init_hour: str) -> str:
     return charts.ranked_loading_anim_div(load_by_hour, hours, init_hour, "acloading")
 
 
-@app.get("/ac", response_class=HTMLResponse)
+@app.get("/legacy/ac", response_class=HTMLResponse)
 def ac_page(request: Request, run: str | None = None, metric: str = "tension"):
     r = _ac_run(run)
     if r is None:
@@ -431,7 +431,7 @@ def _load_dispatch() -> pd.DataFrame:
     return pd.read_csv(p, index_col=0) if p.exists() else pd.DataFrame()
 
 
-@app.get("/audit", response_class=HTMLResponse)
+@app.get("/legacy/audit", response_class=HTMLResponse)
 def audit_page(request: Request, kind: str = "barra", eq: str | None = None,
                hour: str = "h_19"):
     items, _ = _audit_items(kind)
@@ -442,7 +442,7 @@ def audit_page(request: Request, kind: str = "barra", eq: str | None = None,
         panel=_audit_panel(kind, eq, hour)))
 
 
-@app.get("/audit/panel", response_class=HTMLResponse)
+@app.get("/legacy/audit/panel", response_class=HTMLResponse)
 def audit_panel(request: Request, kind: str, eq: str, hour: str = "h_19"):
     return view("partials/audit_panel.html", ctx(
         request, **_audit_panel(kind, eq, hour)))
@@ -523,6 +523,7 @@ def _round(v, dec=3):
 
 # --------------------------------------------------------------- Optimizador MILP
 import threading
+import time as _time_mod
 
 from fastapi import Form
 
@@ -531,10 +532,15 @@ MILP_SUMMARY_JSON = MILP_DIR / "pypsa_milp_summary.json"
 MILP_GEN_CSV = MILP_DIR / "generation_by_snapshot.csv"
 MILP_FG_CSV = MILP_DIR / "flowgate_utilization_by_snapshot.csv"
 MILP_CONSID_JSON = MILP_DIR / "considerations.json"
+MILP_OVERRIDES_JSON = MILP_DIR / "overrides.json"
+MILP_SCEN_DIR = MILP_DIR / "scenarios"
 
 DEFAULT_CONSID = {"reserves": True, "flowgates": True, "pors": 3.0,
                   "min_sync": 0.0, "gap": 2.0, "time": 300}
-_MILP_JOB = {"status": "idle", "started": None, "elapsed": 0.0, "error": None}
+# started = epoch al lanzar (para elapsed en vivo); cancel = bandera de cancelación;
+# time_limit = para el watchdog "sin respuesta"; phase = etapa legible del solve.
+_MILP_JOB = {"status": "idle", "started": 0.0, "elapsed": 0.0, "error": None,
+             "cancel": False, "time_limit": 0.0, "phase": ""}
 _MILP_LOCK = threading.Lock()
 _MILP_MC: dict = {}
 
@@ -602,35 +608,193 @@ def _milp_flowgate_kpis() -> list:
     return out
 
 
-def _run_milp_job(consid: dict) -> None:
-    """Corre el MILP en background y persiste resultados + consideraciones."""
-    import time as _time
+def _modom_version() -> dict:
+    """Serie y fecha del MODOM cargado: serial del nombre del workbook + fecha de carga
+    (mtime) + fecha del último PDD ingerido. Es el 'sello' de versión de los datos."""
+    import re
 
-    from .. import pypsa_milp as milp
+    wb = list((REPO_ROOT / "data" / "raw").glob("MODOM_*.xlsm"))
+    serial, loaded = "—", "—"
+    if wb:
+        f = wb[0]
+        mo = re.search(r"V(\d+)", f.name)
+        serial = f"V{mo.group(1)}" if mo else "—"
+        loaded = _dt.datetime.fromtimestamp(f.stat().st_mtime).date().isoformat()
+    return {"serial": serial, "loaded": loaded, "pdd": _pdd_date() or "—"}
+
+
+def _flowgate_rows(overrides: dict) -> list[dict]:
+    """Flowgates con su límite MODOM por defecto y el límite editado vigente (si hay)."""
+    p = REPO_ROOT / "data/processed/flowgates/flowgate_limits.csv"
+    if not p.exists():
+        return []
+    fl = pd.read_csv(p)
+    ov = (overrides or {}).get("flowgates", {}) or {}
+    out = []
+    for fg, grp in fl.groupby("flowgate_id"):
+        default = float(pd.to_numeric(grp["fmax_mw"], errors="coerce").dropna().iloc[0])
+        cur = ov.get(str(fg), {}).get("limit_mw")
+        out.append({"id": str(fg), "default": round(default, 0),
+                    "current": round(float(cur), 0) if cur not in (None, "") else round(default, 0),
+                    "edited": cur not in (None, "")})
+    return sorted(out, key=lambda r: r["id"])
+
+
+def _milp_gen_editor_rows(overrides: dict, limit: int = 40) -> list[dict]:
+    """Filas curadas del editor por generador: las de mayor energía en la última corrida,
+    con su CVP base, disponibilidad y on/off (aplicando los overrides vigentes)."""
+    if not GENERATORS_CSV2.exists():
+        return []
+    g = pd.read_csv(GENERATORS_CSV2)
+    name_by = dict(zip(g.generator_id, g.generator_name.astype(str)))
+    cvp_by = {}
+    for _, r in g.iterrows():
+        c = pd.to_numeric(r.get("effective_cvp"), errors="coerce")
+        if pd.isna(c):
+            c = pd.to_numeric(r.get("cvp"), errors="coerce")
+        cvp_by[r.generator_id] = round(float(c), 1) if pd.notna(c) else None
+    # ranking por energía de la última corrida (si existe); si no, por Pmax
+    rank = {}
+    if MILP_GEN_CSV.exists():
+        disp = pd.read_csv(MILP_GEN_CSV, index_col=0)
+        for gid in disp.columns:
+            rank[gid] = float(pd.to_numeric(disp[gid], errors="coerce").fillna(0).abs().sum())
+    pmax_by = dict(zip(g.generator_id, pd.to_numeric(g.effective_pmax_mw, errors="coerce")))
+    # candidatos: térmicas/hidro despachables (excluye holguras); enabled en el workbook
+    ov_gens = (overrides or {}).get("generators", {}) or {}
+    cand = [gid for gid in g.generator_id if str(gid).startswith("G")]
+    cand.sort(key=lambda x: (-(rank.get(x, 0.0)), -(pmax_by.get(x, 0) or 0)))
+    rows = []
+    for gid in cand[:limit]:
+        ed = ov_gens.get(gid, {})
+        rows.append({
+            "gid": gid, "name": name_by.get(gid, gid)[:26],
+            "cvp": ed.get("cvp", cvp_by.get(gid)),
+            "avail": ed.get("availability_pct", 100),
+            "enabled": ed.get("enabled", True) is not False,
+            "edited": bool(ed),
+        })
+    return rows
+
+
+def _scenario_gen_csv(slug: str) -> Path:
+    return MILP_SCEN_DIR / slug / "generation_by_snapshot.csv"
+
+
+def _current_overrides() -> dict:
+    if MILP_OVERRIDES_JSON.exists():
+        try:
+            return json.loads(MILP_OVERRIDES_JSON.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+
+def _slug(name: str) -> str:
+    s = "".join(c.lower() if c.isalnum() else "-" for c in name.strip())
+    return "-".join(p for p in s.split("-") if p)[:48] or "escenario"
+
+
+def _save_scenario(name: str, consid: dict, overrides: dict) -> str:
+    """Persiste el escenario (metadatos + copia de los CSV de resultado) y lo devuelve."""
+    import shutil
+
+    slug = _slug(name)
+    dest = MILP_SCEN_DIR / slug
+    dest.mkdir(parents=True, exist_ok=True)
+    (dest / "scenario.json").write_text(json.dumps({
+        "name": name, "slug": slug, "considerations": consid, "overrides": overrides,
+        "summary": _milp_summary(), "saved": _dt.datetime.now().isoformat(timespec="seconds"),
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
+    for fn in ("generation_by_snapshot.csv", "commitment_by_snapshot.csv",
+               "flowgate_utilization_by_snapshot.csv"):
+        src = MILP_DIR / fn
+        if src.exists():
+            shutil.copy2(src, dest / fn)
+    return slug
+
+
+def _list_scenarios() -> list[dict]:
+    if not MILP_SCEN_DIR.exists():
+        return []
+    out = []
+    for d in sorted(MILP_SCEN_DIR.iterdir()):
+        meta = d / "scenario.json"
+        if meta.exists():
+            try:
+                out.append(json.loads(meta.read_text(encoding="utf-8")))
+            except Exception:
+                pass
+    return sorted(out, key=lambda s: s.get("saved", ""), reverse=True)
+
+
+def _load_scenario(slug: str) -> dict | None:
+    meta = MILP_SCEN_DIR / slug / "scenario.json"
+    if meta.exists():
+        try:
+            return json.loads(meta.read_text(encoding="utf-8"))
+        except Exception:
+            return None
+    return None
+
+
+def _run_milp_job(consid: dict, overrides: dict | None = None, name: str = "") -> None:
+    """Corre el MILP en background y persiste resultados, consideraciones y overrides.
+
+    TODO va dentro del try (incluida la importación): cualquier fallo pasa a `error`, nunca
+    deja el estado en `running` fantasma. Respeta la bandera de cancelación entre etapas.
+    """
+    import time as _time
     t0 = _time.time()
+
+    def _cancelled() -> bool:
+        with _MILP_LOCK:
+            return bool(_MILP_JOB.get("cancel"))
+
+    def _phase(p: str) -> None:
+        with _MILP_LOCK:
+            _MILP_JOB["phase"] = p
+            _MILP_JOB["elapsed"] = _time.time() - t0
+
     try:
+        _phase("armando la red")
+        from .. import pypsa_milp as milp
         n = milp.build_milp_network(
             with_reserves=bool(consid["reserves"]),
             with_flowgates=bool(consid["flowgates"]),
             pors=float(consid["pors"]) / 100.0,
-            min_sync_fraction=float(consid["min_sync"]) / 100.0)
-        with _MILP_LOCK:
-            _MILP_JOB["elapsed"] = _time.time() - t0
+            min_sync_fraction=float(consid["min_sync"]) / 100.0,
+            overrides=overrides)
+        if _cancelled():
+            raise RuntimeError("__cancelled__")
+        _phase("optimizando (MILP)")
         milp.solve_milp(n, mip_rel_gap=float(consid["gap"]) / 100.0,
                         time_limit=float(consid["time"]))
+        if _cancelled():
+            raise RuntimeError("__cancelled__")
         if n.objective is None:
-            raise RuntimeError("El MILP resultó infactible con estas consideraciones.")
+            raise RuntimeError("El MILP resultó infactible con estas consideraciones "
+                               "(no hay solución factible dentro del tiempo límite).")
+        _phase("exportando resultados")
         milp.export_results(n)
         MILP_DIR.mkdir(parents=True, exist_ok=True)
         MILP_CONSID_JSON.write_text(json.dumps(consid), encoding="utf-8")
+        MILP_OVERRIDES_JSON.write_text(json.dumps(overrides or {}), encoding="utf-8")
         _MILP_MC.clear()
+        if name.strip():
+            _save_scenario(name.strip(), consid, overrides or {})
         with _MILP_LOCK:
-            _MILP_JOB.update(status="done", elapsed=_time.time() - t0, error=None)
+            _MILP_JOB.update(status="done", elapsed=_time.time() - t0, error=None, phase="")
     except Exception as e:  # noqa: BLE001
+        cancelled = str(e) == "__cancelled__"
         with _MILP_LOCK:
-            _MILP_JOB.update(status="error", elapsed=_time.time() - t0, error=str(e))
+            _MILP_JOB.update(
+                status="cancelled" if cancelled else "error",
+                elapsed=_time.time() - t0, phase="",
+                error=None if cancelled else str(e))
 
 
+@app.get("/", response_class=HTMLResponse)
 @app.get("/milp", response_class=HTMLResponse)
 def milp_page(request: Request, cost_bus: str | None = None):
     consid = _milp_considerations()
@@ -672,37 +836,172 @@ def milp_page(request: Request, cost_bus: str | None = None):
         color="#b0683c", div_id="milpmccurve", markers=False, grid=False)
     sync = charts.anim_controller("milpmap", HOURS, [], ["milpmccurve"], peak) if cost_map else ""
     fgk = _milp_flowgate_kpis()
-    with _MILP_LOCK:
-        job = dict(_MILP_JOB)
+    overrides = _current_overrides()
+    # curva de demanda del SENI (24 h), escalada por el override de demanda si lo hay
+    dpct = float((overrides.get("global", {}) or {}).get("demand_pct", 100) or 100) / 100.0
+    dem_curve = charts.series_line_div(
+        [(h, float(dem.get(h, 0.0)) * dpct) for h in HOURS if pd.notna(dem.get(h))],
+        ylabel="MW", color="#2563eb", div_id="milpdemand", markers=False, grid=False)
     return view("milp.html", ctx(
         request, active="milp", heading="Optimizador MILP · MODOM completo",
         consid=consid, kpis=kpis, cost_map=cost_map, mix=mix, heat=heat,
         mc_curve=mc_curve, sync=sync, bus_opts=bus_opts, cost_bus=cost_bus,
-        flowgates=fgk, has_result=bool(summ), job=job, peak=peak))
+        flowgates=fgk, has_result=bool(summ), job=_live_job(), peak=peak,
+        oglobal=overrides.get("global", {}) or {}, dem_curve=dem_curve,
+        version=_modom_version(), fg_rows=_flowgate_rows(overrides),
+        gen_rows=_milp_gen_editor_rows(overrides), scenarios=_list_scenarios(),
+        n_overrides=_n_overrides(overrides)))
+
+
+def _n_overrides(overrides: dict) -> int:
+    o = overrides or {}
+    return len(o.get("generators", {})) + len([k for k, v in (o.get("global", {}) or {}).items()
+                                               if v not in (None, "", 100, 100.0)])
+
+
+@app.get("/milp/compare", response_class=HTMLResponse)
+def milp_compare(request: Request, a: str, b: str):
+    sa, sb = _load_scenario(a), _load_scenario(b)
+    if not sa or not sb:
+        return view("milp_compare.html", ctx(
+            request, active="milp", heading="Comparar escenarios", ok=False))
+    ca = (sa.get("summary") or {}); cb = (sb.get("summary") or {})
+    cma = ca.get("commitment", {}) or {}; cmb = cb.get("commitment", {}) or {}
+
+    def _d(x, y, unit="", dec=0):
+        if x is None or y is None:
+            return "—"
+        return f"{(y - x):+,.{dec}f}{unit}"
+
+    deltas = [
+        ("Costo total", _fmt(ca.get("objective"), " RD$"), _fmt(cb.get("objective"), " RD$"),
+         _d(ca.get("objective"), cb.get("objective"), " RD$")),
+        ("No suministrada", _fmt(ca.get("unserved_mwh"), " MWh"), _fmt(cb.get("unserved_mwh"), " MWh"),
+         _d(ca.get("unserved_mwh"), cb.get("unserved_mwh"), " MWh", 1)),
+        ("Arranques", str(cma.get("total_startups", "—")), str(cmb.get("total_startups", "—")),
+         _d(cma.get("total_startups"), cmb.get("total_startups"))),
+        ("Unidades ON (pico)", str(cma.get("units_on_peak", "—")), str(cmb.get("units_on_peak", "—")),
+         _d(cma.get("units_on_peak"), cmb.get("units_on_peak"))),
+    ]
+    mix_a = charts.milp_mix_div(_scenario_gen_csv(a)) if _scenario_gen_csv(a).exists() else ""
+    mix_b = charts.milp_mix_div(_scenario_gen_csv(b)) if _scenario_gen_csv(b).exists() else ""
+    movers = _scenario_gen_movers(a, b)
+    return view("milp_compare.html", ctx(
+        request, active="milp", heading="Comparar escenarios", ok=True,
+        sa=sa, sb=sb, deltas=deltas, mix_a=mix_a, mix_b=mix_b, movers=movers))
+
+
+def _scenario_gen_movers(a: str, b: str, top: int = 12) -> list:
+    """Generadores con mayor cambio de energía diaria entre dos escenarios (A→B)."""
+    pa, pb = _scenario_gen_csv(a), _scenario_gen_csv(b)
+    if not (pa.exists() and pb.exists()):
+        return []
+    da = pd.read_csv(pa, index_col=0).sum()
+    db = pd.read_csv(pb, index_col=0).sum()
+    names = {}
+    if GENERATORS_CSV2.exists():
+        g = pd.read_csv(GENERATORS_CSV2)
+        names = dict(zip(g.generator_id, g.generator_name.astype(str)))
+    gids = [c for c in set(da.index) | set(db.index) if str(c).startswith("G")]
+    rows = []
+    for gid in gids:
+        ea, eb = float(da.get(gid, 0.0)), float(db.get(gid, 0.0))
+        if abs(eb - ea) > 1.0:
+            rows.append((names.get(gid, gid)[:26], round(ea, 0), round(eb, 0), round(eb - ea, 0)))
+    rows.sort(key=lambda t: -abs(t[3]))
+    return rows[:top]
 
 
 @app.post("/milp/run", response_class=HTMLResponse)
 def milp_run(request: Request, reserves: str = Form("off"), flowgates: str = Form("off"),
              pors: float = Form(3.0), min_sync: float = Form(0.0),
-             gap: float = Form(2.0), time: int = Form(300)):
+             gap: float = Form(2.0), time: int = Form(300),
+             overrides: str = Form("{}"), scenario_name: str = Form("")):
+    try:
+        ov = json.loads(overrides) if overrides else {}
+        if not isinstance(ov, dict):
+            ov = {}
+    except Exception:
+        ov = {}
     with _MILP_LOCK:
         if _MILP_JOB["status"] == "running":
-            return view("partials/milp_status.html", ctx(request, job=dict(_MILP_JOB)))
+            return view("partials/milp_status.html", ctx(request, job=_live_job()))
         consid = {"reserves": reserves in ("on", "true", "1", "yes"),
                   "flowgates": flowgates in ("on", "true", "1", "yes"),
                   "pors": float(pors), "min_sync": float(min_sync),
                   "gap": float(gap), "time": int(time)}
-        _MILP_JOB.update(status="running", started=_dt.datetime.now().isoformat(),
-                         elapsed=0.0, error=None)
-    threading.Thread(target=_run_milp_job, args=(consid,), daemon=True).start()
-    return view("partials/milp_status.html", ctx(request, job={"status": "running"}))
+        _MILP_JOB.update(status="running", started=_time_mod.time(), elapsed=0.0,
+                         error=None, cancel=False, time_limit=float(time),
+                         phase="armando la red")
+    threading.Thread(target=_run_milp_job, args=(consid, ov, scenario_name),
+                     daemon=True).start()
+    return view("partials/milp_status.html", ctx(request, job=_live_job()))
+
+
+def _live_job() -> dict:
+    """Snapshot del job con `elapsed` calculado en vivo + watchdog de 'sin respuesta'."""
+    with _MILP_LOCK:
+        job = dict(_MILP_JOB)
+    if job["status"] == "running" and job.get("started"):
+        job["elapsed"] = max(0.0, _time_mod.time() - float(job["started"]))
+        # watchdog: si pasó el time_limit + 45 s sin terminar, se declara sin respuesta.
+        if job["elapsed"] > float(job.get("time_limit") or 300.0) + 45.0:
+            with _MILP_LOCK:
+                _MILP_JOB.update(status="error", error="El solver no respondió a tiempo.")
+            job = dict(_MILP_JOB)
+    return job
 
 
 @app.get("/milp/status", response_class=HTMLResponse)
 def milp_status(request: Request):
+    return view("partials/milp_status.html", ctx(request, job=_live_job()))
+
+
+@app.post("/milp/cancel", response_class=HTMLResponse)
+def milp_cancel(request: Request):
     with _MILP_LOCK:
-        job = dict(_MILP_JOB)
-    return view("partials/milp_status.html", ctx(request, job=job))
+        if _MILP_JOB["status"] == "running":
+            _MILP_JOB["cancel"] = True
+            _MILP_JOB["phase"] = "cancelando…"
+    return view("partials/milp_status.html", ctx(request, job=_live_job()))
+
+
+@app.post("/milp/scenario/save", response_class=HTMLResponse)
+def milp_scenario_save(request: Request, scenario_name: str = Form("")):
+    """Guarda la corrida ACTUAL como escenario con nombre (sin re-optimizar)."""
+    name = scenario_name.strip() or f"escenario-{_dt.datetime.now():%H%M%S}"
+    if MILP_SUMMARY_JSON.exists():
+        _save_scenario(name, _milp_considerations(), _current_overrides())
+    return view("partials/milp_scenarios.html", ctx(request, scenarios=_list_scenarios()))
+
+
+@app.get("/milp/inspect", response_class=HTMLResponse)
+def milp_inspect(request: Request, bus: str):
+    """Panel inspector de una barra: nombre/kV, curva de costo 24 h y generadores en ella."""
+    geo = charts._geometry()
+    name = geo["names"].get(bus, bus)
+    kv = geo["bus_kv"].get(bus)
+    mc, lf = _milp_marginal_cost(), _loss_factor_map()
+    _f = lf.get(bus, 1.0)
+    factor = float(_f) if (_f == _f and _f) else 1.0
+    curve = charts.series_line_div([(h, mc.get(h, 0.0) * factor) for h in HOURS],
+                                   ylabel="RD$/MWh", color="#b0683c",
+                                   div_id="inspcurve", markers=False, grid=False)
+    gens = []
+    if MILP_GEN_CSV.exists() and GENERATORS_CSV2.exists():
+        g = pd.read_csv(GENERATORS_CSV2)
+        at_bus = g[g["bus_id"] == bus]
+        disp = pd.read_csv(MILP_GEN_CSV, index_col=0)
+        for _, r in at_bus.iterrows():
+            gid = r["generator_id"]
+            if gid in disp.columns:
+                e = float(pd.to_numeric(disp[gid], errors="coerce").fillna(0).sum())
+                if e > 1e-3:
+                    gens.append((str(r.get("generator_name") or gid), round(e, 1)))
+    gens.sort(key=lambda t: -t[1])
+    return view("partials/milp_inspect.html", ctx(
+        request, bus=bus, bus_name=name, bus_kv=_round(kv, 1), curve=curve,
+        gens=gens[:12], factor=round(factor, 4)))
 
 
 # --------------------------------------------------------------- Metodología

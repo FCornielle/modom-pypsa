@@ -12,89 +12,228 @@
   .cfg .fld .lab output{color:var(--accent);font-variant-numeric:tabular-nums}
   .cfg .fld input[type=range]{width:100%;accent-color:var(--accent)}
   .cfg .fld small{color:var(--muted)}
-  .milp-actions{display:flex;align-items:center;gap:16px;margin-top:16px;
+  .milp-actions{display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap;
     border-top:1px solid var(--line);padding-top:14px}
   .milp-actions .btn{font-size:14px;padding:10px 20px}
   .milp-run{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
   .milp-run.done{color:#137333}.milp-run.err{color:#a50e0e}.milp-run.running{color:var(--accent)}
+  .btn.tiny{font-size:12px;padding:5px 10px}
   .spin{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);
     border-radius:50%;display:inline-block;animation:sp .8s linear infinite}
   @keyframes sp{to{transform:rotate(360deg)}}
+  /* editor por generador */
+  .gedit{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+  .gedit table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .gedit th{position:sticky;top:0;background:var(--panel);text-align:left;padding:8px 10px;
+    border-bottom:1px solid var(--line);font-size:11.5px;color:var(--muted);z-index:1}
+  .gedit td{padding:5px 10px;border-bottom:1px solid var(--line)}
+  .gedit tr.edited td{background:rgba(37,99,235,.06)}
+  .gedit input[type=number]{width:82px;padding:4px 6px;border:1px solid var(--line);
+    border-radius:6px;font-size:12.5px}
+  .gedit input[type=checkbox]{width:15px;height:15px;accent-color:var(--accent)}
+  .gsearch{width:100%;max-width:280px;padding:7px 10px;margin-bottom:8px;border:1px solid var(--line);
+    border-radius:8px;font-size:13px}
+  /* tooltip */
+  .tip{position:relative;cursor:help;border-bottom:1px dotted var(--muted)}
+  .tip:hover::after{content:attr(data-tip);position:absolute;left:0;top:135%;z-index:50;
+    width:250px;background:#111827;color:#fff;padding:8px 10px;border-radius:8px;font-size:11.5px;
+    font-weight:500;line-height:1.45;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+  /* barra de escenarios */
+  .scen-compare{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .scen-compare select{max-width:200px}
+  .scen-chips{display:flex;gap:6px;flex-wrap:wrap}
+  /* inspector */
+  .inspector{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--bg)}
+  .insp-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+  .insp-hd small{display:block;color:var(--muted);font-size:11.5px}
+  .insp-x{background:none;border:none;cursor:pointer;font-size:15px;color:var(--muted)}
+  .insp-gens{margin-top:8px;font-size:12px}
+  .insp-gens-t{color:var(--muted);font-size:11px;margin-bottom:4px}
+  .insp-gen{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dotted var(--line)}
   .fgtab{width:100%;border-collapse:collapse;font-size:13px}
   .fgtab th,.fgtab td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
   .fgtab .bar{height:7px;border-radius:4px;background:var(--line);overflow:hidden;min-width:90px}
   .fgtab .bar i{display:block;height:100%;background:var(--accent)}
+  /* cabecera de versión MODOM */
+  .modom-ver{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;
+    color:var(--muted);margin:-8px 0 16px;padding:8px 12px;border:1px solid var(--line);
+    border-radius:10px;background:var(--bg)}
+  .mv-badge{background:var(--accent);color:#fff;font-weight:700;padding:2px 9px;border-radius:6px;font-size:12px}
+  .mv-sep{opacity:.5}
+  /* flowgates editables */
+  .fgedit{display:flex;gap:18px;flex-wrap:wrap;margin-top:4px}
+  .fgedit .fgi{display:flex;flex-direction:column;gap:3px;font-size:12.5px}
+  .fgedit .fgi b{font-size:12px}
+  .fgedit input[type=number]{width:96px;padding:5px 7px;border:1px solid var(--line);border-radius:6px}
+  .fgedit small{color:var(--muted);font-size:10.5px}
 </style>
 
-<p class="page-sub">Reconstrucción del <b>MILP completo del MODOM</b> en PyPSA:
-<b>re-decide el commitment</b> (binarios, arranques, tiempos, rampas) con
-<b>reservas RPF/RSF co-optimizadas</b>, flowgates N-1 y servicios auxiliares. Ajusta las
-<b>consideraciones</b>, corre el optimizador y explora los resultados en el mapa y el
-programa de encendido. Ver el alcance por ecuación en <a href="/metodologia">Metodología</a>.</p>
+<p class="page-sub">Estudio de escenarios sobre el <b>MILP completo del MODOM</b>: edita las
+<b class="tip" data-tip="Todo dato que entra a las ecuaciones del MODOM es una variable: CVP, disponibilidad, on/off por unidad, demanda, derateos de red, flowgates y las consideraciones de reserva/seguridad.">variables del modelo</b>,
+corre el optimizador y compara corridas. Alcance por ecuación en <a href="/metodologia">Metodología</a>.</p>
 
-<!-- ==================== CONFIGURADOR (INPUTS) ==================== -->
+<div class="modom-ver">
+  <span class="mv-badge">MODOM {{ version.serial }}</span>
+  <span class="tip" data-tip="Los valores por defecto del editor provienen de este caso MODOM cargado.">
+    Valores por defecto del MODOM cargado</span>
+  <span class="mv-sep">·</span> datos cargados <b>{{ version.loaded }}</b>
+  <span class="mv-sep">·</span> último PDD <b>{{ version.pdd }}</b>
+</div>
+
+<!-- ==================== BARRA DE ESCENARIOS ==================== -->
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>📁 Escenarios guardados</h3>
+    <form hx-post="/milp/scenario/save" hx-target="#milp-scenarios" hx-swap="innerHTML"
+      hx-include="[name=scenario_name]" style="display:flex;gap:8px;margin:0">
+      <input name="scenario_name" placeholder="Nombre del escenario" style="width:200px"
+        title="Guarda la corrida actual (consideraciones + ediciones) para compararla después.">
+      <button class="btn ghost tiny" type="submit">💾 Guardar escenario</button></form></div>
+  <div id="milp-scenarios">{% include 'partials/milp_scenarios.html' %}</div>
+</div>
+
+<!-- ==================== FORM: CONSIDERACIONES + EDITOR ==================== -->
+<form id="milp-form" hx-post="/milp/run" hx-target="#milp-run-status" hx-swap="innerHTML"
+  hx-vals='js:{overrides: window.buildOverrides()}'>
 <div class="card" style="margin-bottom:16px;border-left:3px solid var(--accent)">
   <div class="hd"><h3>⚙ Consideraciones del escenario</h3>
     <span class="tag">MILP · HiGHS · ~30 s</span></div>
-  <form hx-post="/milp/run" hx-target="#milp-run-status" hx-swap="innerHTML">
-    <div class="cfg">
-      <label class="opt"><input type="checkbox" name="reserves" {{ 'checked' if consid.reserves }}>
-        Reservas RPF/RSF co-optimizadas <small>eq. 10–15</small></label>
-      <label class="opt"><input type="checkbox" name="flowgates" {{ 'checked' if consid.flowgates }}>
-        Flowgates N-1 (seguridad) <small>eq. 28</small></label>
-      <div class="fld"><div class="lab"><span>Reserva del sistema (PORS)</span>
-        <output id="o-pors">{{ consid.pors }}%</output></div>
-        <input type="range" name="pors" min="0" max="6" step="0.5" value="{{ consid.pors }}"
-          oninput="document.getElementById('o-pors').value=this.value+'%'">
-        <small>fracción de la demanda como reserva rodante (RRPF/RRSF)</small></div>
-      <div class="fld"><div class="lab"><span>Mínimo síncrono φ</span>
-        <output id="o-sync">{{ consid.min_sync }}%</output></div>
-        <input type="range" name="min_sync" min="0" max="60" step="5" value="{{ consid.min_sync }}"
-          oninput="document.getElementById('o-sync').value=this.value+'%'">
-        <small>piso de generación síncrona (inercia / regulación de frecuencia)</small></div>
-      <div class="fld"><div class="lab"><span>Gap MIP</span>
-        <output id="o-gap">{{ consid.gap }}%</output></div>
-        <input type="range" name="gap" min="0.5" max="5" step="0.5" value="{{ consid.gap }}"
-          oninput="document.getElementById('o-gap').value=this.value+'%'">
-        <small>tolerancia de optimalidad (menor = más exacto, más lento)</small></div>
-      <div class="fld"><div class="lab"><span>Tiempo límite</span>
-        <output id="o-time">{{ consid.time }}s</output></div>
-        <input type="range" name="time" min="60" max="600" step="60" value="{{ consid.time }}"
-          oninput="document.getElementById('o-time').value=this.value+'s'">
-        <small>corte del solver si no cierra el gap</small></div>
-    </div>
-    <div class="milp-actions">
-      <button type="submit" class="btn">▶ Optimizar</button>
-      <span id="milp-run-status">{% if job and job.status=='running' %}{% include 'partials/milp_status.html' %}{% endif %}</span>
-      <span class="src" style="margin-left:auto">Escenario actual:
-        reservas {{ 'ON' if consid.reserves else 'OFF' }} · flowgates
-        {{ 'ON' if consid.flowgates else 'OFF' }} · PORS {{ consid.pors }}%</span>
-    </div>
-  </form>
+  <div class="cfg">
+    <label class="opt" title="Co-optimiza reservas rodantes RPF/RSF (eq. 10–15). Fuerza a mantener margen y sube el costo a mediodía.">
+      <input type="checkbox" name="reserves" {{ 'checked' if consid.reserves }}>
+      Reservas RPF/RSF co-optimizadas <small>eq. 10–15</small></label>
+    <label class="opt" title="Restricción dura de seguridad N-1: interfaces críticas con límite derateado (eq. 28).">
+      <input type="checkbox" name="flowgates" {{ 'checked' if consid.flowgates }}>
+      Flowgates N-1 (seguridad) <small>eq. 28</small></label>
+    <div class="fld"><div class="lab"><span class="tip" data-tip="PORS en el MODOM = Porcentaje de Regulación: la fracción de la demanda que se exige como reserva rodante RRPF/RRSF. En el MODOM ≈ 3%.">Reserva rodante (% demanda) <small style="color:var(--muted);font-weight:400">·PORS</small></span>
+      <output id="o-pors">{{ consid.pors }}%</output></div>
+      <input type="range" name="pors" min="0" max="6" step="0.5" value="{{ consid.pors }}"
+        oninput="document.getElementById('o-pors').value=this.value+'%'">
+      <small>fracción de la demanda como reserva rodante (RRPF/RRSF)</small></div>
+    <div class="fld"><div class="lab"><span class="tip" data-tip="Obliga a que un mínimo de la demanda lo cubran máquinas síncronas (inercia/regulación). La PV no la aporta.">Mínimo síncrono φ</span>
+      <output id="o-sync">{{ consid.min_sync }}%</output></div>
+      <input type="range" name="min_sync" min="0" max="60" step="5" value="{{ consid.min_sync }}"
+        oninput="document.getElementById('o-sync').value=this.value+'%'">
+      <small>piso de generación síncrona (inercia / regulación de frecuencia)</small></div>
+    <div class="fld"><div class="lab"><span class="tip" data-tip="Tolerancia de optimalidad del MILP. Menor = solución más exacta pero más lenta.">Gap MIP</span>
+      <output id="o-gap">{{ consid.gap }}%</output></div>
+      <input type="range" name="gap" min="0.5" max="5" step="0.5" value="{{ consid.gap }}"
+        oninput="document.getElementById('o-gap').value=this.value+'%'">
+      <small>tolerancia de optimalidad (menor = más exacto, más lento)</small></div>
+    <div class="fld"><div class="lab"><span class="tip" data-tip="Corte del solver si no cierra el gap. La corrida se cancela sola si excede este tiempo + 45 s.">Tiempo límite</span>
+      <output id="o-time">{{ consid.time }}s</output></div>
+      <input type="range" name="time" min="60" max="600" step="60" value="{{ consid.time }}"
+        oninput="document.getElementById('o-time').value=this.value+'s'">
+      <small>corte del solver si no cierra el gap</small></div>
+  </div>
 </div>
+
+<!-- ==================== EDITOR DE VARIABLES ==================== -->
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>✎ Variables del escenario</h3>
+    <span class="tag">se aplican antes de resolver</span></div>
+  <div class="cfg" style="margin-bottom:14px">
+    <div class="fld"><div class="lab"><span class="tip" data-tip="Escala TODA la demanda del SENI. 110% = pico y energía +10%.">Demanda global</span>
+      <output id="o-demand">{{ oglobal.demand_pct or 100 }}%</output></div>
+      <input type="range" id="g-demand" min="70" max="130" step="1"
+        value="{{ oglobal.demand_pct or 100 }}"
+        oninput="document.getElementById('o-demand').value=this.value+'%'"></div>
+    <div class="fld"><div class="lab"><span class="tip" data-tip="Escala los límites de los flowgates N-1. 80% = seguridad más estricta.">Derateo de flowgates</span>
+      <output id="o-fgd">{{ oglobal.flowgate_derate_pct or 100 }}%</output></div>
+      <input type="range" id="g-fgderate" min="50" max="120" step="5"
+        value="{{ oglobal.flowgate_derate_pct or 100 }}"
+        oninput="document.getElementById('o-fgd').value=this.value+'%'"></div>
+    <div class="fld"><div class="lab"><span class="tip" data-tip="Escala los límites térmicos de todas las líneas (s_nom). Simula mantenimientos / clima.">Derateo de líneas</span>
+      <output id="o-lnd">{{ oglobal.line_derate_pct or 100 }}%</output></div>
+      <input type="range" id="g-lnderate" min="50" max="120" step="5"
+        value="{{ oglobal.line_derate_pct or 100 }}"
+        oninput="document.getElementById('o-lnd').value=this.value+'%'"></div>
+  </div>
+  {% if fg_rows %}
+  <div style="margin-bottom:12px">
+    <div style="font-size:12.5px;font-weight:600;margin-bottom:4px" class="tip"
+      data-tip="Límite absoluto de cada interfaz crítica N-1 (eq. 28). Editar sobre-escribe el valor del MODOM.">
+      Límites de flowgate (seguridad N-1) — MW</div>
+    <div class="fgedit">
+      {% for fg in fg_rows %}
+      <div class="fgi"><b>{{ fg.id }}</b>
+        <input type="number" class="fg-lim" data-fg="{{ fg.id }}" data-def="{{ fg.default }}"
+          step="10" min="0" value="{{ fg.current }}">
+        <small>MODOM: {{ fg.default }} MW</small></div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  <input class="gsearch" id="gsearch" placeholder="🔎 Buscar unidad…"
+    oninput="window.filterGens(this.value)">
+  <div class="gedit"><table>
+    <thead><tr><th>Unidad</th>
+      <th class="tip" data-tip="Costo variable de producción (RD$/MWh). Editar cambia el orden de mérito.">CVP</th>
+      <th class="tip" data-tip="Escala la disponibilidad de la unidad (0–120% de su tope declarado).">Disp. %</th>
+      <th class="tip" data-tip="Saca la unidad del despacho (Pnom = 0).">ON</th></tr></thead>
+    <tbody>
+      {% for r in gen_rows %}
+      <tr class="gen-row {{ 'edited' if r.edited }}" data-gid="{{ r.gid }}"
+        data-name="{{ r.name|lower }}" data-cvp0="{{ r.cvp if r.cvp is not none else '' }}">
+        <td>{{ r.name }}<br><span class="muted" style="font-size:10.5px">{{ r.gid }}</span></td>
+        <td><input type="number" class="g-cvp" step="1" value="{{ r.cvp if r.cvp is not none else '' }}"></td>
+        <td><input type="number" class="g-avail" step="5" min="0" max="120" value="{{ r.avail }}"></td>
+        <td style="text-align:center"><input type="checkbox" class="g-enabled" {{ 'checked' if r.enabled }}></td>
+      </tr>
+      {% endfor %}
+    </tbody></table></div>
+  <p class="src">Se listan las {{ gen_rows|length }} unidades de mayor energía; usa el buscador
+    para el resto. Solo se envían las celdas que cambies.</p>
+</div>
+
+<!-- ==================== ACCIÓN ==================== -->
+<div class="card" style="margin-bottom:16px">
+  <div class="milp-actions">
+    <button type="submit" class="btn">▶ Optimizar</button>
+    <span id="milp-run-status">{% if job and job.status=='running' %}{% include 'partials/milp_status.html' %}{% endif %}</span>
+    <span class="src" style="margin-left:auto">Escenario actual: reservas
+      {{ 'ON' if consid.reserves else 'OFF' }} · flowgates {{ 'ON' if consid.flowgates else 'OFF' }}
+      · PORS {{ consid.pors }}% · {{ n_overrides or 0 }} variables editadas</span>
+  </div>
+</div>
+</form>
 
 {% if not has_result %}
 <div class="card"><div class="chart-empty">Aún no hay una corrida del MILP. Ajusta las
-  consideraciones y pulsa <b>Optimizar</b>, o corre <code>scripts/run_milp.py</code>.</div></div>
+  variables y pulsa <b>Optimizar</b>.</div></div>
 {% else %}
 
-<!-- ==================== KPIs (OUTPUTS) ==================== -->
+<!-- ==================== KPIs ==================== -->
 <div class="row cols-6" style="margin-bottom:16px">
   {% for l,v,sub in kpis %}
-  <div class="card kpi"><div class="l">{{ l }}</div><div class="v">{{ v }}</div>
+  <div class="card kpi" title="{{ sub }}"><div class="l">{{ l }}</div><div class="v">{{ v }}</div>
     <div class="sub">{{ sub }}</div></div>
   {% endfor %}
 </div>
 
-<!-- ==================== MAPA ==================== -->
+<!-- ==================== DEMANDA ==================== -->
 <div class="card" style="margin-bottom:16px">
-  <div class="hd"><h3>Costo por barra — despacho del MILP (RD$/MWh)</h3>
-    <span class="tag">animado 24 h · ▶ play · rueda para zoom</span></div>
-  <p class="muted" style="margin:0 0 8px;font-size:12.5px">Costo por barra = costo marginal
-  síncrono del despacho MILP × factor de nodo (pérdidas), misma estructura que el mapa del
-  <a href="/">MODOM · PDD</a>.</p>
-  {{ cost_map|safe if cost_map else '<div class="chart-empty">Sin mapa</div>' }}
-  {{ sync|safe if sync else '' }}
+  <div class="hd"><h3>Demanda del SENI (24 h)</h3>
+    <span class="tag">escenario actual · MW por hora</span></div>
+  <p class="muted" style="margin:0 0 4px;font-size:12px">Curva de demanda que resuelve el
+  MILP (refleja el <b>factor de demanda global</b> del escenario).</p>
+  {{ dem_curve|safe if dem_curve else '<div class="chart-empty">Sin demanda</div>' }}
+</div>
+
+<!-- ==================== MAPA + INSPECTOR ==================== -->
+<div class="row" style="grid-template-columns:2fr 1fr;margin-bottom:16px">
+  <div class="card">
+    <div class="hd"><h3>Costo por barra — despacho del MILP (RD$/MWh)</h3>
+      <span class="tag">click en una barra para inspeccionar · ▶ play</span></div>
+    <p class="muted" style="margin:0 0 8px;font-size:12.5px">Costo por barra = costo marginal
+    síncrono del MILP × factor de nodo. <b>Haz click en una barra</b> para ver su curva 24 h.</p>
+    {{ cost_map|safe if cost_map else '<div class="chart-empty">Sin mapa</div>' }}
+    {{ sync|safe if sync else '' }}
+  </div>
+  <div class="card">
+    <div class="hd"><h3>Inspector de elemento</h3><span class="tag">click en el mapa</span></div>
+    <div id="milp-inspector"><div class="chart-empty" style="font-size:12.5px">
+      Selecciona una barra en el mapa para ver su costo 24 h y sus generadores.</div></div>
+  </div>
 </div>
 
 <!-- ==================== COMMITMENT + MEZCLA ==================== -->
@@ -107,9 +246,7 @@ programa de encendido. Ver el alcance por ecuación en <a href="/metodologia">Me
     {{ heat|safe if heat else '<div class="chart-empty">Sin commitment</div>' }}</div>
   <div class="card">
     <div class="hd"><h3>Despacho por tecnología</h3><span class="tag">24 h</span></div>
-    {{ mix|safe if mix else '<div class="chart-empty">Sin despacho</div>' }}
-    <p class="muted" style="margin:8px 0 0;font-size:12px">Mezcla resultante del MILP
-    co-optimizado (energía + reservas), dentro de flujos DC y flowgates.</p></div>
+    {{ mix|safe if mix else '<div class="chart-empty">Sin despacho</div>' }}</div>
 </div>
 
 <!-- ==================== FLOWGATES + CURVA ==================== -->
@@ -128,7 +265,6 @@ programa de encendido. Ver el alcance por ecuación en <a href="/metodologia">Me
       {% endfor %}
     </tbody></table>
     {% else %}<div class="chart-empty">Flowgates desactivados en este escenario</div>{% endif %}
-    <p class="src">Restricción dura \(\sum FGATE\cdot F \le FLGTMAX\); fg1 ≤ 200 MW, fg2 ≤ 670 MW.</p>
   </div>
   <div class="card">
     <div class="hd"><h3>Costo marginal por barra</h3>
@@ -137,8 +273,63 @@ programa de encendido. Ver el alcance por ecuación en <a href="/metodologia">Me
           {% for val,lbl in bus_opts %}<option value="{{ val }}" {{ 'selected' if val==cost_bus }}>{{ lbl }}</option>{% endfor %}
         </select></form></div>
     {{ mc_curve|safe if mc_curve else '<div class="chart-empty">Sin datos</div>' }}
-    <p class="src">Costo marginal síncrono del MILP × factor de nodo, por hora.</p>
   </div>
 </div>
 {% endif %}
+
+<script>
+// --- serializa las ediciones del editor a overrides JSON (para hx-vals) ---
+window.buildOverrides = function(){
+  var gens = {};
+  document.querySelectorAll('.gen-row').forEach(function(tr){
+    var gid = tr.dataset.gid, ed = {};
+    var cvp = tr.querySelector('.g-cvp').value.trim();
+    var cvp0 = tr.dataset.cvp0;
+    if(cvp !== '' && cvp !== cvp0){ ed.cvp = parseFloat(cvp); }
+    var av = tr.querySelector('.g-avail').value.trim();
+    if(av !== '' && parseFloat(av) !== 100){ ed.availability_pct = parseFloat(av); }
+    if(!tr.querySelector('.g-enabled').checked){ ed.enabled = false; }
+    if(Object.keys(ed).length){ gens[gid] = ed; }
+  });
+  var g = {};
+  var d = +document.getElementById('g-demand').value; if(d!==100) g.demand_pct = d;
+  var f = +document.getElementById('g-fgderate').value; if(f!==100) g.flowgate_derate_pct = f;
+  var l = +document.getElementById('g-lnderate').value; if(l!==100) g.line_derate_pct = l;
+  var fgs = {};
+  document.querySelectorAll('.fg-lim').forEach(function(inp){
+    var v = inp.value.trim();
+    if(v !== '' && parseFloat(v) !== parseFloat(inp.dataset.def)){
+      fgs[inp.dataset.fg] = {limit_mw: parseFloat(v)};
+    }
+  });
+  var ov = {};
+  if(Object.keys(gens).length) ov.generators = gens;
+  if(Object.keys(g).length) ov.global = g;
+  if(Object.keys(fgs).length) ov.flowgates = fgs;
+  return JSON.stringify(ov);
+};
+// --- buscador del editor ---
+window.filterGens = function(q){
+  q = (q||'').toLowerCase();
+  document.querySelectorAll('.gen-row').forEach(function(tr){
+    var hit = tr.dataset.name.indexOf(q)>=0 || tr.dataset.gid.toLowerCase().indexOf(q)>=0;
+    tr.style.display = hit ? '' : 'none';
+  });
+};
+// --- click en el mapa -> inspector ---
+(function(){
+  function bind(){
+    var gd = document.getElementById('milpmap');
+    if(!gd || !gd.on){ return setTimeout(bind, 400); }
+    gd.on('plotly_click', function(e){
+      var p = e.points && e.points[0];
+      if(p && p.customdata){
+        htmx.ajax('GET', '/milp/inspect?bus='+encodeURIComponent(p.customdata),
+                  {target:'#milp-inspector', swap:'innerHTML'});
+      }
+    });
+  }
+  bind();
+})();
+</script>
 {% endblock %}

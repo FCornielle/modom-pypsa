@@ -19,12 +19,8 @@
       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
       stroke-linejoin="round">{{ inner|safe }}</svg>{% endmacro %}
     <nav class="nav">
-      <div class="sec">Operación diaria</div>
-      <a href="/" class="{{ 'active' if active=='modom' }}">{{ ic('<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v5h5"/><path d="M16 13H8"/><path d="M16 17H8"/>') }}MODOM · PDD</a>
-      <a href="/pypsa" class="{{ 'active' if active=='pypsa' }}">{{ ic('<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>') }}PyPSA · Modelo</a>
-      <a href="/milp" class="{{ 'active' if active=='milp' }}">{{ ic('<path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/>') }}Optimizador MILP</a>
-      <a href="/ac" class="{{ 'active' if active=='ac' }}">{{ ic('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>') }}Pandapower · Modelo AC</a>
-      <a href="/audit" class="{{ 'active' if active=='audit' }}">{{ ic('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>') }}Auditoría</a>
+      <div class="sec">Plataforma MODOM</div>
+      <a href="/" class="{{ 'active' if active=='milp' }}">{{ ic('<path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/>') }}Optimizador</a>
       <a href="/metodologia" class="{{ 'active' if active=='metodologia' }}">{{ ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>') }}Metodología</a>
       <div class="sec">Datos</div>
       <a href="/coming/datasets">{{ ic('<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>') }}Datasets<span class="soon">Pronto</span></a>

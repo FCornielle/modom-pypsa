@@ -248,6 +248,7 @@ def network_map_div(values_by_hour: dict, branch_loading: pd.DataFrame | None,
             mode="markers", name=f"Barras {bucket[0].split()[-2]} {bucket[0].split()[-1]}"
                  if len(bucket[0].split()) >= 3 else f"Barras {bucket[0]}",
             marker=dict(size=8, color=col, coloraxis="coloraxis"),
+            customdata=bs,  # id de barra por punto -> click para inspeccionar
             text=txt, hovertemplate="%{text}<extra></extra>", legendrank=2000 + bucket[0].__hash__() % 100))
         bus_trace_idx.append(len(fig.data) - 1)
 

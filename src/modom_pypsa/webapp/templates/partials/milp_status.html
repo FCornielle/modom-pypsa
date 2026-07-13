@@ -1,10 +1,15 @@
 {% if job.status == 'running' %}
 <span class="milp-run running" hx-get="/milp/status" hx-trigger="load delay:2s" hx-swap="outerHTML">
-  <span class="spin"></span> Optimizando… {{ '%.0f'|format(job.elapsed or 0) }} s
+  <span class="spin"></span>
+  <span>{{ job.phase or 'Optimizando' }}… <b>{{ '%.0f'|format(job.elapsed or 0) }} s</b></span>
+  <button type="button" class="btn ghost tiny" hx-post="/milp/cancel"
+    hx-target="#milp-run-status" hx-swap="innerHTML">Cancelar</button>
 </span>
 {% elif job.status == 'done' %}
 <span class="milp-run done">✓ Óptimo encontrado en {{ '%.0f'|format(job.elapsed or 0) }} s — recargando resultados…</span>
 <script>setTimeout(function(){ window.location.href = '/milp'; }, 900);</script>
+{% elif job.status == 'cancelled' %}
+<span class="milp-run">■ Corrida cancelada.</span>
 {% elif job.status == 'error' %}
 <span class="milp-run err">✗ {{ job.error }}</span>
 {% else %}

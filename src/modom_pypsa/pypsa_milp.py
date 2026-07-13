@@ -75,6 +75,71 @@ def _load_params(data_dir: Path):
     return gp, opts
 
 
+def _apply_overrides(n, overrides: dict) -> dict:
+    """Aplica ediciones de escenario sobre la red ANTES de resolver (Scenario Studio).
+
+    `overrides["generators"][gid]`: `cvp` (RD$/MWh → marginal_cost), `availability_pct`
+    (escala p_max_pu), `enabled` (False → p_nom=0, la unidad sale del despacho).
+    `overrides["global"]`: `demand_pct` (escala la demanda), `flowgate_derate_pct`
+    (escala los límites de flowgate), `line_derate_pct` (escala s_nom de líneas).
+    Devuelve un resumen de lo aplicado para auditar la corrida.
+    """
+    import pandas as _pd
+
+    applied = {"generators": 0, "global": {}}
+    gens = (overrides or {}).get("generators", {}) or {}
+    glob = (overrides or {}).get("global", {}) or {}
+
+    for gid, ed in gens.items():
+        if gid not in n.generators.index:
+            continue
+        changed = False
+        if "cvp" in ed and ed["cvp"] not in (None, ""):
+            n.generators.at[gid, "marginal_cost"] = float(ed["cvp"])
+            changed = True
+        if ed.get("enabled") is False:
+            n.generators.at[gid, "p_nom"] = 0.0
+            changed = True
+        if "availability_pct" in ed and ed["availability_pct"] not in (None, ""):
+            f = max(0.0, float(ed["availability_pct"]) / 100.0)
+            pmax = n.generators_t.p_max_pu
+            if gid in pmax.columns:
+                n.generators_t.p_max_pu[gid] = (pmax[gid] * f).clip(0.0, 1.0)
+            else:
+                n.generators_t.p_max_pu[gid] = _pd.Series(
+                    min(f, 1.0), index=n.snapshots)
+            changed = True
+        applied["generators"] += int(changed)
+
+    dpct = glob.get("demand_pct")
+    if dpct not in (None, "") and float(dpct) != 100.0:
+        n.loads_t.p_set = n.loads_t.p_set * (float(dpct) / 100.0)
+        applied["global"]["demand_pct"] = float(dpct)
+    fgd = glob.get("flowgate_derate_pct")
+    if fgd not in (None, "") and float(fgd) != 100.0:
+        f = float(fgd) / 100.0
+        for fg in n.meta.get("flowgates", []) or []:
+            fg["limit"] = {k: v * f for k, v in fg["limit"].items()}
+        applied["global"]["flowgate_derate_pct"] = float(fgd)
+    lnd = glob.get("line_derate_pct")
+    if lnd not in (None, "") and float(lnd) != 100.0 and len(n.lines):
+        f = float(lnd) / 100.0
+        n.lines["s_nom"] = n.lines["s_nom"] * f
+        applied["global"]["line_derate_pct"] = float(lnd)
+
+    # Límite ABSOLUTO por flowgate (eq. 28): sobre-escribe el del MODOM en todos los
+    # períodos. Se aplica después del derateo global, así que el valor editado manda.
+    fgs = (overrides or {}).get("flowgates", {}) or {}
+    if fgs:
+        for fg in n.meta.get("flowgates", []) or []:
+            ed = fgs.get(fg["id"])
+            if ed and ed.get("limit_mw") not in (None, ""):
+                lim = float(ed["limit_mw"])
+                fg["limit"] = {k: lim for k in fg["limit"]}
+                applied.setdefault("flowgates", {})[fg["id"]] = lim
+    return applied
+
+
 def build_milp_network(
     data_dir: Path = DEFAULT_DATA_DIR,
     with_reserves: bool = True,
@@ -82,6 +147,7 @@ def build_milp_network(
     with_flowgates: bool = True,
     pors: float | None = None,
     min_sync_fraction: float = 0.0,
+    overrides: dict | None = None,
 ):
     """Arma la red PyPSA con commitment binario y parámetros del MILP del MODOM.
 
@@ -104,6 +170,10 @@ def build_milp_network(
     n.meta["milp"] = True
     if not with_flowgates:
         n.meta["flowgates"] = []  # desactiva la N-1 (escenario sin seguridad)
+
+    # Overrides del escenario (Scenario Studio): CVP/disponibilidad/on-off por unidad y
+    # derateos globales. Se aplican ANTES de reconfigurar committable y las reservas.
+    n.meta["overrides_applied"] = _apply_overrides(n, overrides or {})
 
     vre_ids = set(n.generators.index[n.generators.get("is_synchronous", True) == False]) \
         if "is_synchronous" in n.generators.columns else set()

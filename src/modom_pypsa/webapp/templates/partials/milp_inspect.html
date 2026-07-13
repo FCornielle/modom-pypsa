@@ -1,0 +1,17 @@
+<div class="inspector">
+  <div class="insp-hd">
+    <div><b>{{ bus_name }}</b><small>{{ bus }} · {{ bus_kv }} kV</small></div>
+    <button type="button" class="insp-x" onclick="document.getElementById('milp-inspector').innerHTML=''">✕</button>
+  </div>
+  <p class="muted" style="font-size:12px;margin:0 0 6px">Costo por barra 24 h
+    (factor de nodo {{ factor }}).</p>
+  {{ curve|safe }}
+  {% if gens %}
+  <div class="insp-gens">
+    <div class="insp-gens-t">Generadores en esta barra (energía 24 h)</div>
+    {% for name,e in gens %}
+    <div class="insp-gen"><span>{{ name }}</span><span>{{ '%.0f'|format(e) }} MWh</span></div>
+    {% endfor %}
+  </div>
+  {% else %}<p class="muted" style="font-size:12px">Sin generación despachada en esta barra.</p>{% endif %}
+</div>

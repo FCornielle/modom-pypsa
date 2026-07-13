@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Comparar escenarios · GridLab SENI{% endblock %}
+{% block content %}
+<p class="page-sub"><a href="/milp">◂ Optimizador MILP</a> · comparación de dos corridas.</p>
+
+{% if not ok %}
+<div class="card"><div class="chart-empty">Faltan escenarios para comparar. Guarda al menos
+  dos desde el Optimizador y vuelve a elegirlos.</div></div>
+{% else %}
+<div class="row cols-2" style="margin-bottom:16px">
+  <div class="card"><div class="l" style="color:var(--muted);font-size:12px">Escenario A</div>
+    <div style="font-size:18px;font-weight:700">{{ sa.name }}</div>
+    <div class="src">reservas {{ 'ON' if sa.considerations.reserves else 'OFF' }} · flowgates
+      {{ 'ON' if sa.considerations.flowgates else 'OFF' }} · PORS {{ sa.considerations.pors }}%
+      · {{ (sa.overrides.generators|length) if sa.overrides.generators else 0 }} unidades editadas</div></div>
+  <div class="card"><div class="l" style="color:var(--muted);font-size:12px">Escenario B</div>
+    <div style="font-size:18px;font-weight:700">{{ sb.name }}</div>
+    <div class="src">reservas {{ 'ON' if sb.considerations.reserves else 'OFF' }} · flowgates
+      {{ 'ON' if sb.considerations.flowgates else 'OFF' }} · PORS {{ sb.considerations.pors }}%
+      · {{ (sb.overrides.generators|length) if sb.overrides.generators else 0 }} unidades editadas</div></div>
+</div>
+
+<div class="card" style="margin-bottom:16px">
+  <div class="hd"><h3>Diferencias clave (A → B)</h3><span class="tag">Δ = B − A</span></div>
+  <table class="fgtab"><thead><tr><th>Métrica</th><th>Escenario A</th><th>Escenario B</th>
+    <th>Δ</th></tr></thead><tbody>
+    {% for m,va,vb,d in deltas %}
+    <tr><td><b>{{ m }}</b></td><td>{{ va }}</td><td>{{ vb }}</td>
+      <td style="font-weight:700">{{ d }}</td></tr>
+    {% endfor %}
+  </tbody></table>
+</div>
+
+<div class="row cols-2" style="margin-bottom:16px">
+  <div class="card"><div class="hd"><h3>Mezcla A · {{ sa.name }}</h3></div>
+    {{ mix_a|safe if mix_a else '<div class="chart-empty">Sin datos</div>' }}</div>
+  <div class="card"><div class="hd"><h3>Mezcla B · {{ sb.name }}</h3></div>
+    {{ mix_b|safe if mix_b else '<div class="chart-empty">Sin datos</div>' }}</div>
+</div>
+
+<div class="card">
+  <div class="hd"><h3>Unidades que más cambian (energía 24 h)</h3>
+    <span class="tag">mayor |Δ| primero</span></div>
+  {% if movers %}
+  <table class="fgtab"><thead><tr><th>Unidad</th><th>A (MWh)</th><th>B (MWh)</th><th>Δ MWh</th></tr></thead>
+    <tbody>{% for nm,ea,eb,d in movers %}
+      <tr><td>{{ nm }}</td><td>{{ '%.0f'|format(ea) }}</td><td>{{ '%.0f'|format(eb) }}</td>
+        <td style="font-weight:700;color:{{ '#137333' if d>0 else '#a50e0e' }}">{{ '%+.0f'|format(d) }}</td></tr>
+    {% endfor %}</tbody></table>
+  {% else %}<div class="chart-empty">Sin diferencias de despacho entre A y B.</div>{% endif %}
+</div>
+{% endif %}
+{% endblock %}

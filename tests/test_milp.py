@@ -58,6 +58,35 @@ def test_build_milp_network_committable() -> None:
     assert (n.generators_t.p_min_pu.fillna(0.0).values >= -1e-9).all()
 
 
+# ------------------------------------------------------ Scenario Studio: overrides
+def test_overrides_applied() -> None:
+    pytest.importorskip("pypsa")
+    if not (PROCESSED / "commitment" / "gen_params.csv").exists():
+        pytest.skip("faltan los parámetros de commitment")
+    from modom_pypsa import pypsa_milp as milp
+
+    n0 = milp.build_milp_network()
+    gid = next(g for g in n0.generators.index if str(g).startswith("G")
+               and float(n0.generators.at[g, "p_nom"]) > 0)
+    base_cvp = float(n0.generators.at[gid, "marginal_cost"])
+    base_dem = float(n0.loads_t.p_set.sum().sum())
+    off = next(g for g in n0.generators.index[n0.generators.committable] if g != gid)
+
+    ov = {"generators": {gid: {"cvp": base_cvp * 2 + 1, "availability_pct": 50},
+                         off: {"enabled": False}},
+          "global": {"demand_pct": 110, "flowgate_derate_pct": 80}}
+    n1 = milp.build_milp_network(overrides=ov)
+    assert float(n1.generators.at[gid, "marginal_cost"]) == pytest.approx(base_cvp * 2 + 1)
+    assert float(n1.generators.at[off, "p_nom"]) == 0.0
+    assert float(n1.loads_t.p_set.sum().sum()) == pytest.approx(base_dem * 1.1, rel=1e-6)
+    ap = n1.meta["overrides_applied"]
+    assert ap["generators"] == 2 and ap["global"]["demand_pct"] == 110.0
+    if n1.meta.get("flowgates"):
+        lim0 = next(iter(n0.meta["flowgates"][0]["limit"].values()))
+        lim1 = next(iter(n1.meta["flowgates"][0]["limit"].values()))
+        assert lim1 == pytest.approx(lim0 * 0.8)
+
+
 # ------------------------------------------------------ solve (lento; opt-in)
 @pytest.mark.skipif(not os.environ.get("RUN_MILP"), reason="solve lento; set RUN_MILP=1")
 def test_solve_milp_optimal() -> None:

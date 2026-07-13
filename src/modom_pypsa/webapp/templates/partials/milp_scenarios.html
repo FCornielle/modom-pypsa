@@ -1,0 +1,17 @@
+{% if scenarios %}
+<form method="get" action="/milp/compare" class="scen-compare">
+  <span class="muted">Comparar</span>
+  <select name="a" title="Escenario A">
+    {% for s in scenarios %}<option value="{{ s.slug }}">{{ s.name }}</option>{% endfor %}</select>
+  <span class="muted">vs</span>
+  <select name="b" title="Escenario B">
+    {% for s in scenarios %}<option value="{{ s.slug }}" {{ 'selected' if loop.index==2 }}>{{ s.name }}</option>{% endfor %}</select>
+  <button class="btn ghost tiny" type="submit">Comparar ▸</button>
+</form>
+<div class="scen-chips">
+  {% for s in scenarios %}<span class="chip" title="reservas {{ 'ON' if s.considerations.reserves else 'OFF' }} · PORS {{ s.considerations.pors }}% · guardado {{ s.saved }}">📌 {{ s.name }}</span>{% endfor %}
+</div>
+{% else %}
+<span class="muted" style="font-size:12.5px">Aún no hay escenarios guardados. Corre una
+  optimización y pulsa <b>Guardar escenario</b> para compararlos después.</span>
+{% endif %}

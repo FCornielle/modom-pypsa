@@ -42,3 +42,5 @@ results/dashboard/seni_dashboard.html
 # corridas y proyectos generados por la plataforma
 results/runs/
 results/projects/
+results/pypsa_milp/scenarios/
+results/pypsa_milp/overrides.json
