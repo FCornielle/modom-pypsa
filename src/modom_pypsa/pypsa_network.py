@@ -31,8 +31,10 @@ from pathlib import Path
 
 import pandas as pd
 
-DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "processed"
-DEFAULT_RESULTS_DIR = Path(__file__).resolve().parents[2] / "results" / "pypsa_basecase"
+from .paths import PROCESSED_DIR as _PROCESSED, RESULTS_DIR as _RESULTS  # frozen-aware
+
+DEFAULT_DATA_DIR = _PROCESSED
+DEFAULT_RESULTS_DIR = _RESULTS / "pypsa_basecase"
 
 EPS_X = 1e-5  # reactancia mínima para que KVL sea resoluble
 UNSERVED_COST = 1_000_000.0  # costo de energía no suministrada

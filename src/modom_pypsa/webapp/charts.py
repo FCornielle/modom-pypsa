@@ -10,7 +10,8 @@ from pathlib import Path
 
 import pandas as pd
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+from ..paths import APP_ROOT as REPO_ROOT  # frozen-aware
+
 COORDS_CSV = REPO_ROOT / "data/external/buses_with_coords.csv"
 BUSES_CSV = REPO_ROOT / "data/processed/buses/buses.csv"
 LINES_CSV = REPO_ROOT / "data/processed/pypsa_branch_components/lines_v1.csv"

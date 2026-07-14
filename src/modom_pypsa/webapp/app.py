@@ -21,8 +21,9 @@ from fastapi.templating import Jinja2Templates
 from . import charts
 from . import data_access as da
 
-BASE = Path(__file__).resolve().parent
-REPO_ROOT = BASE.parents[2]
+from ..paths import APP_ROOT as REPO_ROOT  # frozen-aware (datos/resultados junto al .exe)
+
+BASE = Path(__file__).resolve().parent  # dir del paquete webapp (plantillas/estáticos)
 HOURS = [f"h_{i:02d}" for i in range(1, 25)]
 
 app = FastAPI(title="GridLab SENI")

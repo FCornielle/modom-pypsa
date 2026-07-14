@@ -35,9 +35,10 @@ import pandas as pd
 
 from . import pypsa_network as pn
 
+from .paths import RESULTS_DIR as _RESULTS  # frozen-aware
+
 DEFAULT_DATA_DIR = pn.DEFAULT_DATA_DIR
-DEFAULT_RESULTS_DIR = pn.REPO_ROOT / "results" / "pypsa_milp" if hasattr(pn, "REPO_ROOT") \
-    else Path(__file__).resolve().parents[2] / "results" / "pypsa_milp"
+DEFAULT_RESULTS_DIR = _RESULTS / "pypsa_milp"
 
 # Costo de arranque por defecto (C_ARR no está tabulado en el workbook): se usa un
 # múltiplo pequeño del CVP·Pmin·TARR como proxy documentado. Mantiene el incentivo a no

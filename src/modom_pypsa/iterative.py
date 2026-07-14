@@ -23,8 +23,19 @@ import pandas as pd
 
 from . import loss_factors as lf
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_EXPORT = REPO_ROOT / "data/external/salida_PDD_30_09_2025_20260613_022117"
+from .paths import APP_ROOT as REPO_ROOT, EXTERNAL_DIR  # frozen-aware
+
+
+def _default_export() -> Path:
+    """Export DIgSILENT vigente: el fijado, o el más reciente `salida_PDD_*` disponible."""
+    pinned = EXTERNAL_DIR / "salida_PDD_30_09_2025_20260613_022117"
+    if pinned.exists():
+        return pinned
+    cands = sorted(EXTERNAL_DIR.glob("salida_PDD_*")) if EXTERNAL_DIR.exists() else []
+    return cands[-1] if cands else pinned
+
+
+DEFAULT_EXPORT = _default_export()
 RUNS_DIR = REPO_ROOT / "results" / "runs"
 LOADS_CSV = REPO_ROOT / "data/processed/loads_time_series/loads_time_series.csv"
 NODAL_FACTORS_CSV = REPO_ROOT / "data/processed/modom_results/nodal_factors.csv"

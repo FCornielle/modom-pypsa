@@ -44,3 +44,8 @@ results/runs/
 results/projects/
 results/pypsa_milp/scenarios/
 results/pypsa_milp/overrides.json
+
+# artefactos de empaquetado (PyInstaller)
+dist/
+build_pyi/
+*.pyi

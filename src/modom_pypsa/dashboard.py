@@ -21,9 +21,10 @@ from pathlib import Path
 
 import pandas as pd
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RESULTS_DIR = REPO_ROOT / "results" / "pypsa_basecase"
-DEFAULT_DATA_DIR = REPO_ROOT / "data" / "processed"
+from .paths import APP_ROOT as REPO_ROOT, PROCESSED_DIR, RESULTS_DIR  # frozen-aware
+
+DEFAULT_RESULTS_DIR = RESULTS_DIR / "pypsa_basecase"
+DEFAULT_DATA_DIR = PROCESSED_DIR
 DEFAULT_EXTERNAL_DIR = REPO_ROOT / "data" / "external"
 DEFAULT_OUT = REPO_ROOT / "results" / "dashboard" / "seni_dashboard.html"
 

@@ -1,48 +1,47 @@
-# Empaquetado de la plataforma (instalable)
+# Empaquetado — app de escritorio (.exe)
 
-Objetivo: un instalable que se abre con doble-click, levanta el servidor local y abre el
-navegador en el Optimizador — "abrir y hacer corridas", sin consola ni instalación de Python.
+La plataforma se distribuye como una **app de escritorio de Windows**: doble-click en
+`PlataformaMODOM.exe`, arranca el servidor local y abre una **ventana de aplicación** de
+Microsoft Edge en modo `--app` (sin barra de navegador, con su icono en la barra de tareas).
+Cerrar la ventana detiene el servidor. **No requiere Python instalado.**
 
-Punto de entrada: [`launch.py`](../launch.py) (arranca uvicorn + abre el navegador). Hoy se
-usa con `run_webapp.bat`; el ejecutable lo envuelve.
-
-## Enfoque recomendado (robusto para este stack)
-El stack (PyPSA + HiGHS + pandapower + numpy/scipy) es **pesado y sensible** al empaquetado.
-El camino más fiable es **PyInstaller en modo carpeta (`--onedir`)** envolviendo `launch.py`,
-NO `--onefile` (que descomprime en temp y rompe con los solvers).
-
+## Cómo se construye (probado)
 ```bash
-.venv/Scripts/python.exe -m pip install pyinstaller
-.venv/Scripts/pyinstaller --onedir --name PlataformaMODOM ^
-  --collect-all pypsa --collect-all linopy --collect-all highspy ^
-  --collect-all pandapower --collect-all plotly ^
-  --add-data "src/modom_pypsa/webapp/templates;modom_pypsa/webapp/templates" ^
-  --add-data "src/modom_pypsa/webapp/static;modom_pypsa/webapp/static" ^
-  --add-data "data/processed;data/processed" ^
-  --add-data "data/raw;data/raw" ^
-  --add-data "data/external;data/external" ^
-  launch.py
+.venv/Scripts/python.exe build_app.py
 ```
+Eso ejecuta PyInstaller (`PlataformaMODOM.spec`, modo carpeta/onedir) y luego copia los datos
+junto al ejecutable. Produce:
+```
+dist/PlataformaMODOM/
+├─ PlataformaMODOM.exe        ← doble-click
+├─ _internal/                 ← Python + libs (numpy, scipy, pypsa, HiGHS, pandapower…)
+├─ data/                      ← processed / raw (workbook) / external (export DIgSILENT)
+└─ results/                   ← corridas (escribible; el historial se guarda aquí)
+```
+Para distribuir: comprimir la carpeta `dist/PlataformaMODOM/` (o hacer un instalador, ver
+abajo). Corre en cualquier **Windows 10/11 x64**; para Mac/Linux se rehace el build en cada SO.
 
-- Los `--collect-all` incluyen binarios/datos de los paquetes científicos (HiGHS trae su
-  solver, pandapower sus tablas). Verificar tras el build que `runpp` y `n.optimize` corren.
-- Los datos (`data/`) y `results/` deben quedar **junto al ejecutable** (escribibles): las
-  corridas se guardan en `results/`, así que esa carpeta no puede ir dentro del bundle de solo
-  lectura. Configurar rutas relativas al ejecutable si se detecta `sys.frozen`.
-- Tamaño esperado: ~700 MB – 1.2 GB (numpy/scipy/pandas/pypsa/pandapower). Es normal.
+## Decisiones de diseño (por qué así)
+- **Ventana con Edge `--app`, no pywebview.** pywebview en un bundle PyInstaller falla al
+  cargar `Python.Runtime.dll` (pythonnet/.NET) — es frágil. Edge/Chrome en modo app dan una
+  ventana chromeless robusta y sin dependencias .NET (`desktop.py`).
+- **Rutas `frozen-aware` (`paths.py`).** En el .exe, `APP_ROOT` = carpeta del ejecutable, así
+  `data/` y `results/` viven junto al .exe (escribibles, actualizables) y no dentro del bundle.
+- **onedir, no onefile.** `--onefile` descomprime en temp y rompe con los solvers; onedir es
+  fiable.
+- **matplotlib incluido**: PyPSA lo importa; sin él el solve falla (`No module named matplotlib`).
 
-## Alternativa más simple (menos frágil)
-Un instalador (Inno Setup / NSIS) que empaquete **el proyecto + un Python embebido/venv** y
-un acceso directo que ejecute `python launch.py`. Evita los problemas de PyInstaller con los
-solvers, a cambio de shippear el intérprete. Recomendado si el `--onedir` da guerra con HiGHS.
+## Verificado
+- El .exe arranca (servidor 200), corre el **MILP (HiGHS)** y la **verificación AC
+  (pandapower)** de punta a punta, guarda escenarios y archiva corridas por fecha.
+- Tamaño ~1 GB (stack científico); se puede bajar con UPX/`--strip` y más `excludes`.
+
+## Instalador (opcional, para distribución pulida)
+Envolver `dist/PlataformaMODOM/` con **Inno Setup**: instala en `Archivos de programa`, crea
+acceso directo en el menú Inicio y escritorio, e icono. Alternativa más liviana: instalador
+con Python embebido que ejecute `launch.py` (más fácil de actualizar datos del MODOM).
 
 ## Versionado
-La "versión" de la plataforma = fecha/serial del MODOM cargado (se muestra en la cabecera del
-Optimizador: `MODOM V449 · datos cargados … · último PDD …`). Al cargar un MODOM nuevo, la
-plataforma toma sus valores como defaults y la versión se actualiza sola.
-
-## Checklist antes de empaquetar
-- [ ] `pytest -q` verde.
-- [ ] `launch.py` abre el Optimizador y una corrida termina OK.
-- [ ] La verificación AC corre (requiere el export DIgSILENT en `data/external/`).
-- [ ] `results/` es escribible junto al ejecutable (historial de corridas).
+La versión de la plataforma = fecha/serial del MODOM cargado (cabecera del Optimizador:
+`MODOM V449 · datos cargados … · último PDD …`). Para actualizar datos, reemplazar los
+archivos en `data/` junto al .exe; la app toma esos valores como defaults.
