@@ -21,6 +21,22 @@ DIST = REPO / "dist" / "PlataformaMODOM"
 PINNED_EXPORT = "salida_PDD_30_09_2025_20260613_022117"
 
 
+def _force_rmtree(path: Path) -> None:
+    """Borra un árbol aunque tenga archivos de solo-lectura (el export DIgSILENT los trae)."""
+    import os
+    import stat
+
+    def _on_error(func, p, _exc):
+        try:
+            os.chmod(p, stat.S_IWRITE)
+            func(p)
+        except Exception:
+            pass
+
+    if path.exists():
+        shutil.rmtree(path, onerror=_on_error)
+
+
 def _copy(src: Path, dst: Path) -> None:
     if not src.exists():
         print(f"  aviso: falta {src}")
@@ -53,6 +69,8 @@ def main() -> None:
     ap.add_argument("--no-build", action="store_true", help="solo copiar datos")
     args = ap.parse_args()
     if not args.no_build:
+        print("Limpiando dist previo (con manejo de solo-lectura)...")
+        _force_rmtree(DIST)  # evita el choque de PyInstaller con los datos copiados
         print("Compilando con PyInstaller (esto tarda varios minutos)...")
         pyi = REPO / ".venv" / "Scripts" / "pyinstaller.exe"
         subprocess.run([str(pyi), "PlataformaMODOM.spec", "--noconfirm",

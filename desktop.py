@@ -49,7 +49,18 @@ def _find_browser() -> str | None:
     return next((c for c in candidates if os.path.exists(c)), None)
 
 
+def _ensure_std_streams() -> None:
+    """En una app sin consola (console=False), sys.stdout/stderr son None y varias libs
+    fallan (uvicorn: `sys.stdout.isatty()`). Se redirigen a un sumidero seguro."""
+    devnull = open(os.devnull, "w")  # noqa: SIM115
+    if sys.stdout is None:
+        sys.stdout = devnull
+    if sys.stderr is None:
+        sys.stderr = devnull
+
+
 def main() -> None:
+    _ensure_std_streams()
     if not getattr(sys, "frozen", False):
         src = Path(__file__).resolve().parent / "src"
         if src.exists() and str(src) not in sys.path:
